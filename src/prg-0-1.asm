@@ -3193,21 +3193,6 @@ PlayerTileCollision_CheckDamageTile:
 	ROR z12
 
 	JSR PlayerTileCollision_HurtPlayer
-	LDA z0e
-	CMP #$02
-	BCC PlayerTileCollision_DamageTile
-	BNE PlayerTileCollision_HealthTile
-
-	; instant kill
-	LDY #$0F
-	STY iPlayerHP
-
-PlayerTileCollision_DamageTile:
-	JSR PlayerTileCollision_HurtPlayer
-	JMP PlayerTileCollision_Horizontal
-
-PlayerTileCollision_HealthTile:
-	JSR RestorePlayerToFullHealth
 
 PlayerTileCollision_Horizontal:
 	LDY #$02
