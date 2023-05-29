@@ -222,10 +222,10 @@ SpriteAnimation_Climbing = $0A
 ; ---------------------------------------------------------------------------
 
 ; enum iPlayerHPValues
-iPlayerHP_1_HP = $0F
-iPlayerHP_2_HP = $1F
-iPlayerHP_3_HP = $2F
-iPlayerHP_4_HP = $3F
+PlayerHealth_1_HP = $0F
+PlayerHealth_2_HP = $1F
+PlayerHealth_3_HP = $2F
+PlayerHealth_4_HP = $3F
 
 ; ---------------------------------------------------------------------------
 
