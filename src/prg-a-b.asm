@@ -131,7 +131,7 @@ CopyBonusChanceLayoutToRAM:
 	LDY #$00
 CopyBonusChanceLayoutToRAM_Loop1:
 	LDA BonusChanceLayout, Y ; Blindly copy $100 bytes from $8140 to $7400
-	STA PPUBuffer_BonusChanceLayout, Y
+	STA wBonusLayoutBuffer, Y
 	DEY
 	BNE CopyBonusChanceLayoutToRAM_Loop1
 
@@ -140,7 +140,7 @@ CopyBonusChanceLayoutToRAM_Loop2:
 	; Blindly copy $100 more bytes from $8240 to $7500
 	; That range includes this code! clap. clap.
 	LDA BonusChanceLayout + $100, Y
-	STA PPUBuffer_BonusChanceLayout + $100, Y
+	STA wBonusLayoutBuffer + $100, Y
 	DEY
 	BNE CopyBonusChanceLayoutToRAM_Loop2
 
@@ -149,24 +149,24 @@ CopyBonusChanceLayoutToRAM_Loop2:
 ; =============== S U B R O U T I N E =======================================
 
 DrawTitleCardWorldImage:
-	LDA CurrentWorld
+	LDA iCurrentWorld
 	CMP #6
 	BEQ loc_BANKA_8392 ; Special case for World 7's title card
 
 	LDA #$25
-	STA byte_RAM_0
+	STA z00
 	LDA #$C8
-	STA byte_RAM_1
+	STA z01
 	LDY #$00
 
 loc_BANKA_8338:
 	LDX #$0F
 	LDA PPUSTATUS
-	LDA byte_RAM_0
+	LDA z00
 	STA PPUADDR
 
 loc_BANKA_8342:
-	LDA byte_RAM_1
+	LDA z01
 	STA PPUADDR
 
 loc_BANKA_8347:
@@ -179,18 +179,18 @@ loc_BANKA_8347:
 	CPY #$A0
 	BCS loc_BANKA_8364
 
-	LDA byte_RAM_1
+	LDA z01
 	ADC #$20
-	STA byte_RAM_1
-	LDA byte_RAM_0
+	STA z01
+	LDA z00
 	ADC #0
-	STA byte_RAM_0
+	STA z00
 	JMP loc_BANKA_8338
 
 ; ---------------------------------------------------------------------------
 
 loc_BANKA_8364:
-	LDA CurrentWorld
+	LDA iCurrentWorld
 	CMP #1
 	BEQ loc_BANKA_8371
 
@@ -204,36 +204,36 @@ loc_BANKA_8371:
 	BNE loc_BANKA_8389
 
 	LDA #$26
-	STA byte_RAM_0
+	STA z00
 	LDA #$88
-	STA byte_RAM_1
-	LDA CurrentWorld
+	STA z01
+	LDA iCurrentWorld
 	ORA #$80
-	STA CurrentWorld
+	STA iCurrentWorld
 	LDY #$80
 	BNE loc_BANKA_8338
 
 loc_BANKA_8389:
-	LDA CurrentWorld
+	LDA iCurrentWorld
 	AND #$F
-	STA CurrentWorld
+	STA iCurrentWorld
 	RTS
 
 ; ---------------------------------------------------------------------------
 
 loc_BANKA_8392:
 	LDA #$25
-	STA byte_RAM_0
+	STA z00
 	LDA #$C8
-	STA byte_RAM_1
+	STA z01
 	LDY #0
 
 loc_BANKA_839C:
 	LDX #$F
 	LDA PPUSTATUS
-	LDA byte_RAM_0
+	LDA z00
 	STA PPUADDR
-	LDA byte_RAM_1
+	LDA z01
 	STA PPUADDR
 
 loc_BANKA_83AB:
@@ -246,12 +246,12 @@ loc_BANKA_83AB:
 	CPY #$A0
 	BCS locret_BANKA_83C8
 
-	LDA byte_RAM_1
+	LDA z01
 	ADC #$20
-	STA byte_RAM_1
-	LDA byte_RAM_0
+	STA z01
+	LDA z00
 	ADC #0
-	STA byte_RAM_0
+	STA z00
 	JMP loc_BANKA_839C
 
 ; ---------------------------------------------------------------------------
@@ -424,29 +424,26 @@ MysteryData14439:
 ; god knows what else.
 ;
 CopyCharacterStatsAndStuff:
-IFDEF CONTROLLER_2_DEBUG
-	JSR CopyCharacterStats
-ENDIF
 
-	LDX CurrentCharacter
+	LDX zCurrentCharacter
 	LDY StatOffsets, X
 	LDX #$00
 loc_BANKA_8458:
 	LDA CharacterStats, Y
-	STA CharacterStatsRAM, X
+	STA iStatsRAM, X
 	INY
 	INX
 	CPX #$17
 	BCC loc_BANKA_8458
 
-	LDA CurrentCharacter
+	LDA zCurrentCharacter
 	ASL A
 	ASL A
 	TAY
 	LDX #$00
 loc_BANKA_846B:
 	LDA CharacterPalette, Y
-	STA RestorePlayerPalette0, X
+	STA iBackupPlayerPal, X
 	INY
 	INX
 	CPX #$04
@@ -455,7 +452,7 @@ loc_BANKA_846B:
 	LDY #$4C
 loc_BANKA_8479:
 	LDA PlayerSelectPalettes, Y
-	STA PPUBuffer_TitleCardPalette, Y
+	STA iStartingPalettes, Y
 	DEY
 	CPY #$FF
 	BNE loc_BANKA_8479
@@ -463,7 +460,7 @@ loc_BANKA_8479:
 	LDY #$B6
 loc_BANKA_8486:
 	LDA BonusChanceReel1Order, Y
-	STA SlotMachineReelOrder1RAM, Y
+	STA iReelBuffer, Y
 	DEY
 	CPY #$FF
 	BNE loc_BANKA_8486
@@ -471,7 +468,7 @@ loc_BANKA_8486:
 	LDY #$63
 loc_BANKA_8493:
 	LDA TitleCardText, Y
-	STA PPUBuffer_TitleCardText, Y
+	STA wTitleCardBuffer, Y
 	DEY
 	CPY #$FF
 	BNE loc_BANKA_8493
@@ -480,7 +477,7 @@ loc_BANKA_8493:
 	LDY #$17
 loc_BANKA_84A0:
 	LDA MysteryData14439, Y
-	STA MysteryData14439_RAM, Y
+	STA w7150, Y
 	DEY
 	BPL loc_BANKA_84A0
 
@@ -488,7 +485,7 @@ loc_BANKA_84A0:
 	LDY #$4F
 loc_BANKA_84AB:
 	LDA ObjectCollisionHitboxLeft, Y
-	STA ObjectCollisionHitboxLeft_RAM, Y
+	STA wColBoxLeft, Y
 	DEY
 	BPL loc_BANKA_84AB
 
@@ -496,7 +493,7 @@ loc_BANKA_84AB:
 	LDY #$03
 loc_BANKA_84B6:
 	LDA FlyingCarpetAcceleration, Y
-	STA FlyingCarpetAcceleration_RAM, Y
+	STA wCarpetVelocity, Y
 	DEY
 	BPL loc_BANKA_84B6
 
@@ -504,7 +501,7 @@ loc_BANKA_84B6:
 	LDY #$49
 loc_BANKA_84C1:
 	LDA EnemyPlayerCollisionTable, Y
-	STA EnemyPlayerCollisionTable_RAM, Y
+	STA wObjectInteractionTable, Y
 	DEY
 	BPL loc_BANKA_84C1
 
@@ -515,7 +512,7 @@ loc_BANKA_84C1:
 	LDY #$20
 loc_BANKA_84CC:
 	LDA EndOfLevelDoor, Y
-	STA PPUBuffer_EndOfLevelDoor, Y
+	STA wHawkDoorBuffer, Y
 	DEY
 	BPL loc_BANKA_84CC
 
@@ -523,7 +520,7 @@ loc_BANKA_84CC:
 	LDY #$06
 loc_BANKA_84D7:
 	LDA WartOAMOffsets, Y
-	STA WartOAMOffsets_RAM, Y
+	STA wMamuOAMOffsets, Y
 	DEY
 	BPL loc_BANKA_84D7
 
@@ -705,23 +702,3 @@ UnusedText_Blank214D:
 	.db $21, $4D, $06
 	.db $FB, $FB, $FB, $FB, $FB, $FB
 	.db $00
-
-IFDEF CONTROLLER_2_DEBUG
-;
-; Copies all character stats to RAM for hot-swapping the current character
-;
-CopyCharacterStats:
-	LDX #(MysteryData14439 - StatOffsets - 1)
-CopyCharacterStats_Loop:
-	LDA StatOffsets, X
-	STA StatOffsetsRAM, X
-	DEX
-	BPL CopyCharacterStats_Loop
-
-	RTS
-ENDIF
-
-
-IFDEF DEBUG
-	.include "src/extras/debug-a.asm"
-ENDIF

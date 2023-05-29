@@ -56,31 +56,19 @@ MusicData:
 .include "src/music/segments/ending/ending-3.asm"
 .include "src/music/segments/ending/ending-4.asm"
 .include "src/music/segments/ending/ending-2.asm"
-IFNDEF PROTOTYPE_MUSIC_ENDING
-	.include "src/music/segments/ending/ending-5.asm"
-	.include "src/music/segments/ending/ending-6.asm"
-ELSE
-	.include "src/music/segments/ending/ending-5-prototype.asm"
-ENDIF
+.include "src/music/segments/ending/ending-5.asm"
+.include "src/music/segments/ending/ending-6.asm"
 
 ;
 ; Starman music
 ;
-IFNDEF PROTOTYPE_MUSIC_STARMAN
-	.include "src/music/segments/star/star.asm"
-ELSE
-	.include "src/music/segments/star/star-prototype.asm"
-ENDIF
+.include "src/music/segments/star/star.asm"
 
 ;
 ; Underground music
 ; (including prototype version)
 ;
-IFNDEF PROTOTYPE_MUSIC_UNDERGROUND
-	.include "src/music/segments/underground/underground.asm"
-ELSE
-	.include "src/music/segments/underground/underground-prototype.asm"
-ENDIF
+.include "src/music/segments/underground/underground.asm"
 
 ;
 ; Subspace music

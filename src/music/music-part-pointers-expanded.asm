@@ -16,14 +16,8 @@ Music_Overworld:
 	.db <MusicHeaderOverworld4
 	.db <MusicHeaderOverworld5
 	.db <MusicHeaderOverworld6
-IFNDEF PROTOTYPE_MUSIC_UNDERGROUND
 Music_Underground:
 	.db <MusicHeaderUnderground
-ELSE
-Music_Underground:
-	.db <MusicHeaderUndergroundBeta1
-	.db <MusicHeaderUndergroundBeta2
-ENDIF
 Music_Boss:
 	.db <MusicHeaderBoss
 Music_Star:
@@ -73,12 +67,7 @@ MusicHeaderPointersHi:
 	.db >MusicHeaderOverworld4
 	.db >MusicHeaderOverworld5
 	.db >MusicHeaderOverworld6
-IFNDEF PROTOTYPE_MUSIC_UNDERGROUND
 	.db >MusicHeaderUnderground
-ELSE
-	.db >MusicHeaderUndergroundBeta1
-	.db >MusicHeaderUndergroundBeta2
-ENDIF
 	.db >MusicHeaderBoss
 	.db >MusicHeaderStar
 	.db >MusicHeaderWart
@@ -114,7 +103,7 @@ ENDIF
 ;
 MusicPartPointers:
 
-; These pointers correspond to MusicQueue2 fanfares that temporarily interrupt
+; These pointers correspond to iMusic2 fanfares that temporarily interrupt
 ; the current background music
 MusicPartPointers_Mushroom:
   musicPointerOffset Music_MushroomBonusChance, 0
@@ -208,30 +197,14 @@ MusicPartPointers_Ending:
 	musicPointerOffset Music_Ending, 1
 	musicPointerOffset Music_Ending, 2
 	musicPointerOffset Music_Ending, 3
-IFNDEF PROTOTYPE_MUSIC_ENDING
 	musicPointerOffset Music_Ending, 4
 MusicPartPointers_EndingLoop:
 MusicPartPointers_EndingEnd:
 	musicPointerOffset Music_Ending, 5
-ELSE
-MusicPartPointers_EndingEnd:
-	musicPointerOffset Music_Ending, 4
-ENDIF
 
-
-IFNDEF PROTOTYPE_MUSIC_UNDERGROUND
 MusicPartPointers_Underground:
 MusicPartPointers_UndergroundLoop:
 MusicPartPointers_UndergroundEnd:
 	musicPointerOffset Music_Underground, 0
-ELSE
-MusicPartPointers_Underground:
-MusicPartPointers_UndergroundLoop:
-	musicPointerOffset Music_Underground, 0
-	musicPointerOffset Music_Underground, 0
-	musicPointerOffset Music_Underground, 1
-MusicPartPointers_UndergroundEnd:
-	musicPointerOffset Music_Underground, 1
-ENDIF
 
 .pad MusicPartPointers + $100, $FF

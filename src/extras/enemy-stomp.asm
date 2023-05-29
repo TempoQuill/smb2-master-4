@@ -1,12 +1,12 @@
 ; inside CheckCollisionWithPlayer_NotInvincible
 IFDEF JUMP_STOMPS
-	LDA ObjectType, Y
+	LDA zObjectType, Y
 	CMP #Enemy_ShyguyRed
 	BMI CheckCollisionWithPlayer_NoStompEnemy
 	CMP #Enemy_Ostro
 	BPL CheckCollisionWithPlayer_NoStompEnemy
 
-	LDA byte_RAM_F
+	LDA z0f
 	AND #$0B
 	BEQ CheckCollisionWithPlayer_StompEnemy
 CheckCollisionWithPlayer_NoStompEnemy:
@@ -15,15 +15,15 @@ ENDIF
 ; new subroutine
 IFDEF JUMP_STOMPS
 CheckCollisionWithPlayer_StompEnemy:
-	LDA PlayerYVelocity
+	LDA zPlayerYVelocity
 	BMI CheckCollisionWithPlayer_ExitStompEnemy
 
 	LDA #EnemyState_Dead
-	STA EnemyState, Y
+	STA zEnemyState, Y
 
-	LDA EnemyCollision, Y
+	LDA zEnemyCollision, Y
 	ORA #CollisionFlags_Damage
-	STA EnemyCollision, Y
+	STA zEnemyCollision, Y
 
 	; stash Y
 	TYA
@@ -32,20 +32,20 @@ CheckCollisionWithPlayer_StompEnemy:
 	LDY #$02
 	; INY
 
-	LDA JumpHeightStanding, Y
+	LDA iMainJumpHeights, Y
 	AND #$7F
 	ASL A
 	ORA #$80
-	STA PlayerYVelocity
-	LDA JumpFloatLength
-	STA JumpFloatTimer
+	STA zPlayerYVelocity
+	LDA iFloatLength
+	STA iFloatTimer
 
 	; restore Y
 	PLA
 	TAY
 
 	LDA #SoundEffect1_EnemyHit
-	STA SoundEffectQueue1
+	STA iPulse2SFX
 
 CheckCollisionWithPlayer_ExitStompEnemy:
 	RTS

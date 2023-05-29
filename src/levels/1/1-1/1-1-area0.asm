@@ -7,9 +7,7 @@ LevelData_1_1_Area0:
 	levelHeader 3, LevelDirection_Vertical, 1, 1, LevelMusic_Overworld, 0, 0, $13, $0
 
 	.db $B7, $0A
-IFNDEF DISABLE_DOOR_POINTERS
 	.db $00, $00
-ENDIF
 	.db $56, $10
 	.db $1A, $10
 	.db $D6, $C2
@@ -20,11 +18,6 @@ ENDIF
 	.db $75, $C7
 	.db $1E, $C1
 	.db $3E, $0A
-IFNDEF DISABLE_DOOR_POINTERS
 	.db $00, $20
-ENDIF
-IFDEF DISABLE_DOOR_POINTERS
-	.db $F5, $00, $20
-ENDIF
 	.db $20, $CF
 	.db $FF

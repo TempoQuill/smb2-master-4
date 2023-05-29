@@ -7,12 +7,7 @@ LevelData_4_3_Area3:
 	levelHeader 6, LevelDirection_Vertical, 4, 0, LevelMusic_Underground, 0, 2, $00, $1
 
 	.db $37, $0A
-IFNDEF DISABLE_DOOR_POINTERS
 	.db $0B, $42
-ENDIF
-IFDEF DISABLE_DOOR_POINTERS
-	.db $F5, $0B, $42
-ENDIF
 	.db $26, $33
 	.db $44, $3A
 	.db $31, $78
@@ -26,12 +21,7 @@ ENDIF
 	.db $68, $29
 	.db $D9, $29
 	.db $88, $0A
-IFNDEF DISABLE_DOOR_POINTERS
 	.db $0B, $50
-ENDIF
-IFDEF DISABLE_DOOR_POINTERS
-	.db $F5, $0B, $50
-ENDIF
 	.db $12, $29
 	.db $15, $35
 	.db $F0, $D3
@@ -50,12 +40,7 @@ ENDIF
 	.db $34, $33
 	.db $31, $32
 	.db $16, $09
-IFNDEF DISABLE_DOOR_POINTERS
 	.db $0B, $17
-ENDIF
-IFDEF DISABLE_DOOR_POINTERS
-	.db $F5, $0B, $17
-ENDIF
 	.db $0B, $33
 	.db $21, $38
 	.db $F1, $7A

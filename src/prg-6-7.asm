@@ -110,9 +110,6 @@ World1SpritePalettes:
 	.db $FF, $30, $16, $0F ; $18
 	.db $FF, $30, $10, $0F ; $1C
 	.db $FF, $25, $10, $0F ; $20
-IFDEF EXPAND_TABLES
-	unusedSpace World1SpritePalettes + $30, $FF
-ENDIF
 
 ;
 ; #### World 2
@@ -167,9 +164,6 @@ World2SpritePalettes:
 	.db $FF, $30, $16, $0F ; $18
 	.db $FF, $30, $10, $0F ; $1C
 	.db $FF, $30, $23, $0F ; $20
-IFDEF EXPAND_TABLES
-	unusedSpace World2SpritePalettes + $30, $FF
-ENDIF
 
 ;
 ; #### World 3
@@ -224,9 +218,6 @@ World3SpritePalettes:
 	.db $FF, $30, $16, $0F ; $18
 	.db $FF, $30, $10, $0F ; $1C
 	.db $FF, $2B, $10, $0F ; $20
-IFDEF EXPAND_TABLES
-	unusedSpace World3SpritePalettes + $30, $FF
-ENDIF
 
 ;
 ; #### World 4
@@ -281,9 +272,6 @@ World4SpritePalettes:
 	.db $FF, $30, $16, $0F ; $18
 	.db $FF, $30, $10, $0F ; $1C
 	.db $FF, $27, $16, $0F ; $20
-IFDEF EXPAND_TABLES
-	unusedSpace World4SpritePalettes + $30, $FF
-ENDIF
 
 ;
 ; #### World 5
@@ -338,9 +326,6 @@ World5SpritePalettes:
 	.db $FF, $30, $16, $0F ; $18
 	.db $FF, $30, $16, $0F ; $1C
 	.db $FF, $16, $30, $0F ; $20
-IFDEF EXPAND_TABLES
-	unusedSpace World5SpritePalettes + $30, $FF
-ENDIF
 
 ;
 ; #### World 6
@@ -395,9 +380,6 @@ World6SpritePalettes:
 	.db $FF, $30, $16, $0F ; $18
 	.db $FF, $30, $10, $0F ; $1C
 	.db $FF, $30, $23, $0F ; $20
-IFDEF EXPAND_TABLES
-	unusedSpace World6SpritePalettes + $30, $FF
-ENDIF
 
 ;
 ; #### World 7
@@ -452,9 +434,6 @@ World7SpritePalettes:
 	.db $FF, $30, $16, $0F ; $18
 	.db $FF, $30, $10, $0F ; $1C
 	.db $FF, $30, $2A, $0F ; $20
-IFDEF EXPAND_TABLES
-	unusedSpace World7SpritePalettes + $30, $FF
-ENDIF
 
 ; -----
 
@@ -528,9 +507,6 @@ World1GroundTilesHorizontal:
 	.db $00, $A0, $A0, $99 ; $05
 	.db $00, $00, $00, $00 ; $06
 	.db $00, $00, $00, $00 ; $07
-IFDEF EXPAND_TABLES
-	unusedSpace World1GroundTilesHorizontal + $40, $00
-ENDIF
 
 World1GroundTilesVertical:
 	.db $00, $9D, $9E, $C6 ; $00
@@ -541,9 +517,6 @@ World1GroundTilesVertical:
 	.db $00, $00, $A0, $00 ; $05
 	.db $00, $93, $9E, $C6 ; $06
 	.db $00, $40, $9E, $C6 ; $07
-IFDEF EXPAND_TABLES
-	unusedSpace World1GroundTilesVertical + $40, $00
-ENDIF
 
 World2GroundTilesHorizontal:
 	.db $00, $99, $99, $99 ; $00
@@ -554,9 +527,6 @@ World2GroundTilesHorizontal:
 	.db $00, $D6, $9B, $18 ; $05
 	.db $00, $00, $00, $00 ; $06
 	.db $00, $00, $00, $00 ; $07
-IFDEF EXPAND_TABLES
-	unusedSpace World2GroundTilesHorizontal + $40, $00
-ENDIF
 
 World2GroundTilesVertical:
 	.db $00, $9D, $9E, $C6 ; $00
@@ -567,9 +537,6 @@ World2GroundTilesVertical:
 	.db $00, $00, $00, $00 ; $05
 	.db $00, $00, $00, $00 ; $06
 	.db $00, $00, $00, $00 ; $07
-IFDEF EXPAND_TABLES
-	unusedSpace World2GroundTilesVertical + $40, $00
-ENDIF
 
 World3GroundTilesHorizontal:
 	.db $00, $99, $D5, $00 ; $00
@@ -580,9 +547,6 @@ World3GroundTilesHorizontal:
 	.db $00, $A0, $A0, $99 ; $05
 	.db $00, $00, $00, $00 ; $06
 	.db $00, $00, $00, $00 ; $07
-IFDEF EXPAND_TABLES
-	unusedSpace World3GroundTilesHorizontal + $40, $00
-ENDIF
 
 World3GroundTilesVertical:
 	.db $00, $C6, $9E, $9D ; $00
@@ -593,9 +557,6 @@ World3GroundTilesVertical:
 	.db $00, $00, $A0, $00 ; $05
 	.db $00, $40, $9E, $C6 ; $06
 	.db $00, $06, $A0, $00 ; $07
-IFDEF EXPAND_TABLES
-	unusedSpace World3GroundTilesVertical + $40, $00
-ENDIF
 
 World4GroundTilesHorizontal:
 	.db $00, $99, $D5, $00 ; $00
@@ -606,9 +567,6 @@ World4GroundTilesHorizontal:
 	.db $00, $0A, $0A, $08 ; $05
 	.db $00, $1F, $1F, $1F ; $06
 	.db $00, $00, $00, $00 ; $07
-IFDEF EXPAND_TABLES
-	unusedSpace World4GroundTilesHorizontal + $40, $00
-ENDIF
 
 World4GroundTilesVertical:
 	.db $00, $C6, $99, $9D ; $00
@@ -619,9 +577,6 @@ World4GroundTilesVertical:
 	.db $00, $18, $18, $18 ; $05
 	.db $00, $00, $00, $00 ; $06
 	.db $00, $00, $00, $00 ; $07
-IFDEF EXPAND_TABLES
-	unusedSpace World4GroundTilesVertical + $40, $00
-ENDIF
 
 World5GroundTilesHorizontal:
 	.db $00, $99, $D5, $40 ; $00
@@ -632,9 +587,6 @@ World5GroundTilesHorizontal:
 	.db $00, $A0, $A0, $99 ; $05
 	.db $00, $00, $00, $00 ; $06
 	.db $00, $00, $00, $00 ; $07
-IFDEF EXPAND_TABLES
-	unusedSpace World5GroundTilesHorizontal + $40, $00
-ENDIF
 
 World5GroundTilesVertical:
 	.db $00, $9D, $9E, $C6 ; $00
@@ -645,9 +597,6 @@ World5GroundTilesVertical:
 	.db $00, $00, $A0, $00 ; $05
 	.db $00, $93, $9E, $C6 ; $06
 	.db $00, $40, $9E, $C6 ; $07
-IFDEF EXPAND_TABLES
-	unusedSpace World5GroundTilesVertical + $40, $00
-ENDIF
 
 World6GroundTilesHorizontal:
 	.db $00, $99, $99, $99 ; $00
@@ -658,9 +607,6 @@ World6GroundTilesHorizontal:
 	.db $00, $D6, $9B, $18 ; $05
 	.db $00, $00, $00, $00 ; $06
 	.db $00, $00, $00, $00 ; $07
-IFDEF EXPAND_TABLES
-	unusedSpace World6GroundTilesHorizontal + $40, $00
-ENDIF
 
 World6GroundTilesVertical:
 	.db $00, $9D, $9E, $C6 ; $00
@@ -671,9 +617,6 @@ World6GroundTilesVertical:
 	.db $00, $00, $00, $00 ; $05
 	.db $00, $00, $00, $00 ; $06
 	.db $00, $00, $00, $00 ; $07
-IFDEF EXPAND_TABLES
-	unusedSpace World6GroundTilesVertical + $40, $00
-ENDIF
 
 World7GroundTilesHorizontal:
 	.db $00, $9C, $9C, $9C ; $00
@@ -684,9 +627,6 @@ World7GroundTilesHorizontal:
 	.db $00, $00, $00, $00 ; $05
 	.db $00, $00, $00, $00 ; $06
 	.db $00, $00, $00, $00 ; $07
-IFDEF EXPAND_TABLES
-	unusedSpace World7GroundTilesHorizontal + $40, $00
-ENDIF
 
 World7GroundTilesVertical:
 	.db $00, $9C, $9C, $9C ; $00
@@ -697,9 +637,6 @@ World7GroundTilesVertical:
 	.db $00, $00, $A0, $00 ; $05
 	.db $00, $00, $00, $00 ; $06
 	.db $00, $00, $00, $00 ; $07
-IFDEF EXPAND_TABLES
-	unusedSpace World7GroundTilesVertical + $40, $00
-ENDIF
 
 ; -----
 
@@ -919,13 +856,8 @@ CreateObjects_30thruF0:
 	.dw CreateObject_VerticalBlocks ; $8X
 	.dw CreateObject_VerticalBlocks ; $9X
 	.dw CreateObject_VerticalBlocks ; $AX
-IFNDEF ENABLE_LEVEL_OBJECT_MODE
 	.dw CreateObject_WhaleOrDrawBridgeChain ; $BX
 	.dw CreateObject_JumpthroughPlatform ; $CX
-ELSE
-	.dw CreateObject_Platform_BX ; $BX
-	.dw CreateObject_Platform_CX ; $CX
-ENDIF
 	.dw CreateObject_HorizontalPlatform ; $DX
 	.dw CreateObject_HorizontalPlatform ; $EX
 	.dw CreateObject_WaterfallOrFrozenRocks ; $FX
@@ -944,11 +876,7 @@ CreateObjects_00:
 	.dw CreateObject_SingleBlock ; $02
 	.dw CreateObject_SingleBlock ; $03
 	.dw CreateObject_SingleBlock ; $04
-IFNDEF LEVEL_ENGINE_UPGRADES
 	.dw CreateObject_SingleBlock ; $05
-ELSE
-	.dw CreateObject_StandableAutomatic ; $05
-ENDIF
 	.dw CreateObject_Vase ; $06
 	.dw CreateObject_Vase ; $07
 	.dw CreateObject_Vase ; $08
@@ -961,7 +889,7 @@ ENDIF
 	.dw CreateObject_Pillar ; $0F
 
 CreateObjects_10:
-	LDA byte_RAM_50E
+	LDA i50e
 	JSR JumpToTableAfterJump
 
 	.dw CreateObject_BigCloud ; $10
@@ -1102,114 +1030,13 @@ World7ObjectTiles:
 ; such as drawing an _n_-tile row or column of tile _x_. Many fall somewhere in-between.
 ;
 
-IFDEF LEVEL_ENGINE_UPGRADES
-;
-; #### Automatic climbable tile generation
-;
-ClimbableTileSearch:
-	.db BackgroundTile_LadderShadow
-	.db BackgroundTile_Ladder
-	.db BackgroundTile_Chain
-	.db BackgroundTile_Vine
-
-ClimbableTilePlatform:
-	.db BackgroundTile_LadderStandableShadow
-	.db BackgroundTile_LadderStandable
-	.db BackgroundTile_ChainStandable
-	.db BackgroundTile_VineStandable
-
-
-;
-; Find the corresponding climbable tile
-;
-; ##### Input
-; - `A`: search tile
-;
-; ##### Output
-; - `A`: replace tile
-; - `C`: set if a match was found
-;
-FindClimableTile:
-	STX byte_RAM_7
-	LDX #(ClimbableTilePlatform - ClimbableTileSearch - 1)
-
-FindClimableTile_Loop:
-	CMP ClimbableTileSearch, X
-	BEQ FindClimableTile_LoadReplacement
-
-	DEX
-	BPL FindClimableTile_Loop
-
-	LDX byte_RAM_7
-	CLC
-	RTS
-
-FindClimableTile_LoadReplacement:
-	LDA ClimbableTilePlatform, X
-	LDX byte_RAM_7
-	RTS
-
-;
-; Creates a climbable tile that you can stand on based on ObjectTypeAXthruFX
-;
-; ##### Output
-; - `A`: tile that was written
-;
-CreateObject_StandableObjectType:
-	LDA ObjectTypeAXthruFX
-	BEQ CreateObject_StandableObjectType_TableOffset
-
-	; Offset for shadow
-	CLC
-	ADC #$04
-
-CreateObject_StandableObjectType_TableOffset:
-	; Offset to ladder/chain object definition
-	ADC #$1C
-	TAX
-
-	LDY byte_RAM_E7
-	STX byte_RAM_7
-	STY byte_RAM_8
-	LDX CurrentWorldTileset
-	LDA WorldObjectTilePointersLo, X
-	STA byte_RAM_C
-	LDA WorldObjectTilePointersHi, X
-	STA byte_RAM_D
-	LDY byte_RAM_7
-	LDA (byte_RAM_C), Y
-	LDY byte_RAM_8
-	LDX byte_RAM_7
-
-	JSR FindClimableTile
-
-	STA (byte_RAM_1), Y
-	RTS
-
-;
-; Creates a climbable tile that you can stand on based on the based on the tile underneath.
-;
-; ##### Output
-; - `A`: tile that was written
-;
-CreateObject_StandableAutomatic:
-	LDY byte_RAM_E7
-	LDA (byte_RAM_1), Y
-
-	JSR FindClimableTile
-	BCC CreateObject_StandableObjectType
-
-	STA (byte_RAM_1), Y
-	RTS
-ENDIF
-
 
 ;
 ; Places a tile using the world-specific tile lookup table.
 ;
 ; ##### Input
 ; - `Y`: destination tile
-; - `byte_RAM_50E`: type of object to create (upper nybble of level object minus 3)
+; - `i50e`: type of object to create (upper nybble of level object minus 3)
 ;
 ;     ```
 ;     $00 = jumpthrough block
@@ -1231,31 +1058,31 @@ ENDIF
 ; - `A`: tile that was written
 ;
 CreateWorldSpecificTile:
-	LDA byte_RAM_50E
+	LDA i50e
 	ASL A
 	ASL A
-	STA byte_RAM_F
-	LDA byte_RAM_50E
+	STA z0f
+	LDA i50e
 	CMP #$07
 	BCC CreateWorldSpecificTile_3Xthru9X
 
 CreateWorldSpecificTile_AXthruFX:
-	LDA ObjectTypeAXthruFX
+	LDA iSpriteTypeHi
 	JMP CreateWorldSpecificTile_ApplyObjectType
 
 CreateWorldSpecificTile_3Xthru9X:
-	LDA ObjectType3Xthru9X
+	LDA iSpriteTypeLo
 
 CreateWorldSpecificTile_ApplyObjectType:
 	CLC
-	ADC byte_RAM_F
+	ADC z0f
 	TAX
-	LDA byte_RAM_50E
+	LDA i50e
 	CMP #$03
 	BNE CreateWorldSpecificTile_LookUpTile
 
 	; bridge casts a shadow on background bricks
-	LDA (byte_RAM_1), Y
+	LDA (z01), Y
 	CMP #BackgroundTile_BackgroundBrick
 	BNE CreateWorldSpecificTile_LookUpTile
 
@@ -1263,20 +1090,20 @@ CreateWorldSpecificTile_ApplyObjectType:
 	BNE CreateWorldSpecificTile_Exit
 
 CreateWorldSpecificTile_LookUpTile:
-	STX byte_RAM_7
-	STY byte_RAM_8
-	LDX CurrentWorldTileset
+	STX z07
+	STY z08
+	LDX iCurrentWorldTileset
 	LDA WorldObjectTilePointersLo, X
-	STA byte_RAM_C
+	STA z0c
 	LDA WorldObjectTilePointersHi, X
-	STA byte_RAM_D
-	LDY byte_RAM_7
-	LDA (byte_RAM_C), Y
-	LDY byte_RAM_8
-	LDX byte_RAM_7
+	STA z0d
+	LDY z07
+	LDA (z0c), Y
+	LDY z08
+	LDX z07
 
 CreateWorldSpecificTile_Exit:
-	STA (byte_RAM_1), Y
+	STA (z01), Y
 	RTS
 
 
@@ -1284,18 +1111,18 @@ CreateWorldSpecificTile_Exit:
 ; Creates a horizontal run of blocks
 ;
 ; ##### Input
-; - `byte_RAM_50D`: number of blocks to create
-; - `byte_RAM_E7`: target tile placement offset
+; - `i50d`: number of blocks to create
+; - `ze7`: target tile placement offset
 ;
 CreateObject_HorizontalBlocks:
-	LDY byte_RAM_E7
+	LDY ze7
 
 CreateObject_HorizontalBlocks_Loop:
 	JSR CreateWorldSpecificTile
 
 	JSR IncrementAreaXOffset
 
-	DEC byte_RAM_50D
+	DEC i50d
 	BPL CreateObject_HorizontalBlocks_Loop
 
 	RTS
@@ -1307,63 +1134,61 @@ CreateObject_HorizontalBlocks_Loop:
 ; World 6 has some extra logic to make the entrance extend down to the floor.
 ;
 ; ##### Input
-; - `byte_RAM_E7`: target tile placement offset
+; - `ze7`: target tile placement offset
 ;
 CreateObject_LightEntranceRight:
-	LDA CurrentWorldTileset
+	LDA iCurrentWorldTileset
 	CMP #$05
 	BNE CreateObject_LightEntranceRight_NotWorld6
 
 	JMP CreateObject_LightEntranceRight_World6
 
 CreateObject_LightEntranceRight_NotWorld6:
-	LDY byte_RAM_E7
+	LDY ze7
 	LDA #BackgroundTile_LightDoor
-	STA (byte_RAM_1), Y
+	STA (z01), Y
 	INY
 	LDA #BackgroundTile_LightTrailRight
-	STA (byte_RAM_1), Y
-	LDA byte_RAM_E7
+	STA (z01), Y
+	LDA ze7
 	CLC
 	ADC #$10
 	TAY
 	LDA #BackgroundTile_LightDoor
-	STA (byte_RAM_1), Y
+	STA (z01), Y
 	INY
 	LDA #BackgroundTile_LightTrail
-	STA (byte_RAM_1), Y
+	STA (z01), Y
 	INY
 	LDA #BackgroundTile_LightTrailRight
-	STA (byte_RAM_1), Y
+	STA (z01), Y
 
-IFNDEF DISABLE_DOOR_POINTERS
-	LDA CurrentWorld
+	LDA iCurrentWorld
 	CMP #$05
 	BEQ CreateObject_LightEntranceRight_World6or7Exit
 
-	LDA CurrentWorld
+	LDA iCurrentWorld
 	CMP #$06
 	BEQ CreateObject_LightEntranceRight_World6or7Exit
 
 	JSR LevelParser_EatDoorPointer
-ENDIF
 
 CreateObject_LightEntranceRight_World6or7Exit:
 	RTS
 
 CreateObject_LightEntranceRight_World6:
-	LDY byte_RAM_E7
+	LDY ze7
 	LDA #$00
-	STA byte_RAM_8
+	STA z08
 
 CreateObject_LightEntranceRight_World6Loop:
-	LDA (byte_RAM_1), Y
+	LDA (z01), Y
 	CMP #BackgroundTile_Sky
 	BNE CreateObject_LightEntranceRight_World6_Exit
 
 	LDA #BackgroundTile_LightDoor
-	STA (byte_RAM_1), Y
-	LDA byte_RAM_8
+	STA (z01), Y
+	LDA z08
 	TAX
 
 CreateObject_LightEntranceRight_World6InnerLoop:
@@ -1372,21 +1197,21 @@ CreateObject_LightEntranceRight_World6InnerLoop:
 
 	INY
 	LDA #BackgroundTile_LightTrail
-	STA (byte_RAM_1), Y
+	STA (z01), Y
 	DEX
 	JMP CreateObject_LightEntranceRight_World6InnerLoop
 
 CreateObject_LightEntranceRight_World6_TrailRight:
 	INY
 	LDA #BackgroundTile_LightTrailRight
-	STA (byte_RAM_1), Y
-	INC byte_RAM_8
-	LDY byte_RAM_E7
+	STA (z01), Y
+	INC z08
+	LDY ze7
 	TYA
 	CLC
 	ADC #$10
 	TAY
-	STA byte_RAM_E7
+	STA ze7
 	JMP CreateObject_LightEntranceRight_World6Loop
 
 CreateObject_LightEntranceRight_World6_Exit:
@@ -1397,40 +1222,38 @@ CreateObject_LightEntranceRight_World6_Exit:
 ; Creates a light entrance with the trail facing left
 ;
 ; ##### Input
-; - `byte_RAM_E7`: target tile placement offset
+; - `ze7`: target tile placement offset
 ;
 CreateObject_LightEntranceLeft:
-	LDY byte_RAM_E7
+	LDY ze7
 	LDA #BackgroundTile_LightDoor
-	STA (byte_RAM_1), Y
+	STA (z01), Y
 	DEY
 	LDA #BackgroundTile_LightTrailLeft
-	STA (byte_RAM_1), Y
-	LDY byte_RAM_E7
+	STA (z01), Y
+	LDY ze7
 	TYA
 	CLC
 	ADC #$10
 	TAY
 	LDA #BackgroundTile_LightDoor
-	STA (byte_RAM_1), Y
+	STA (z01), Y
 	DEY
 	LDA #BackgroundTile_LightTrail
-	STA (byte_RAM_1), Y
+	STA (z01), Y
 	DEY
 	LDA #BackgroundTile_LightTrailLeft
-	STA (byte_RAM_1), Y
+	STA (z01), Y
 
-IFNDEF DISABLE_DOOR_POINTERS
-	LDA CurrentWorld
+	LDA iCurrentWorld
 	CMP #$05
 	BEQ CreateObject_LightEntranceLeft_World6or7Exit
 
-	LDA CurrentWorld
+	LDA iCurrentWorld
 	CMP #$06
 	BEQ CreateObject_LightEntranceLeft_World6or7Exit
 
 	JSR LevelParser_EatDoorPointer
-ENDIF
 
 CreateObject_LightEntranceLeft_World6or7Exit:
 	RTS
@@ -1440,8 +1263,8 @@ CreateObject_LightEntranceLeft_World6or7Exit:
 ; Creates a vertical run of blocks.
 ;
 ; ##### Input
-; - `byte_RAM_50D`: number of blocks to create
-; - `byte_RAM_50E`: type of object to create (upper nybble of level object minus 3)
+; - `i50d`: number of blocks to create
+; - `i50e`: type of object to create (upper nybble of level object minus 3)
 ;
 ;     ```
 ;     $00 = jumpthrough block
@@ -1458,59 +1281,40 @@ CreateObject_LightEntranceLeft_World6or7Exit:
 ;     $0B = cloud platform
 ;     $0C = waterfall
 ;     ```
-; - `byte_RAM_E7`: target tile placement offset
+; - `ze7`: target tile placement offset
 ;
 CreateObject_VerticalBlocks:
-	LDY byte_RAM_E7
+	LDY ze7
 
-IFNDEF LEVEL_ENGINE_UPGRADES
-	LDA byte_RAM_50E
+	LDA i50e
 	CMP #$06
 	BNE CreateObject_VerticalBlocks_NotClawGrip
 
-	LDA CurrentLevel
+	LDA iCurrentLvl
 	CMP #$0E
 	BNE CreateObject_VerticalBlocks_NotClawGrip
 
-	LDA CurrentLevelArea
+	LDA iCurrentLvlArea
 	CMP #$05
 	BNE CreateObject_VerticalBlocks_NotClawGrip
 
 CreateObject_VerticalBlocks_ClawGripRockLoop:
 	LDA #BackgroundTile_ClawGripRock
-	STA (byte_RAM_1), Y
+	STA (z01), Y
 	JSR IncrementAreaYOffset
 
-	DEC byte_RAM_50D
+	DEC i50d
 	BPL CreateObject_VerticalBlocks_ClawGripRockLoop
 
 	RTS
-ENDIF
 
 CreateObject_VerticalBlocks_NotClawGrip:
-	LDA byte_RAM_50E
+	LDA i50e
 	CMP #$06
 	BNE CreateObject_VerticalBlocks_Normal
 
-IFNDEF LEVEL_ENGINE_UPGRADES
 	LDA #BackgroundTile_RockWallAngle
-ELSE
-	;
-	; Use the previous tile for the top of the column UNLESS we're using a sky
-	; tile or have set an object type for in the level header.
-	;
-	; This supports creating a normal vertical block run for $9X as well as the
-	; special rock wall with an angled top.
-	;
-	LDX ObjectType3Xthru9X
-	BNE CreateObject_VerticalBlocks_Normal
-	JSR CreateWorldSpecificTile
-	CMP #BackgroundTile_Sky
-	BEQ CreateObject_VerticalBlocks_NextRow
-	CLC
-	SBC #$00
-ENDIF
-	STA (byte_RAM_1), Y
+	STA (z01), Y
 	JMP CreateObject_VerticalBlocks_NextRow
 
 CreateObject_VerticalBlocks_Normal:
@@ -1519,7 +1323,7 @@ CreateObject_VerticalBlocks_Normal:
 CreateObject_VerticalBlocks_NextRow:
 	JSR IncrementAreaYOffset
 
-	DEC byte_RAM_50D
+	DEC i50d
 	BPL CreateObject_VerticalBlocks_Normal
 
 	RTS
@@ -1554,31 +1358,31 @@ World7SingleBlocks:
 ; Creates a single block
 ;
 ; ##### Input
-; - `byte_RAM_50E`: object type to use as an offset in the lookup table
+; - `i50e`: object type to use as an offset in the lookup table
 ;
 CreateObject_SingleBlock:
-	LDA byte_RAM_50E
+	LDA i50e
 	TAX
 
 ;
 ; Object `$05` is a single ladder tile that the player can stand on.
 ;
-; When `ObjectTypeAXthruFX` is set, it is given a shadow. This works by
+; When `iSpriteTypeHi` is set, it is given a shadow. This works by
 ; incrementing the offset by one so that object `$05` ends up using offset `$06`
 ; in the lookup table!
 ;
 	CMP #$05
 	BNE CreateObject_SingleBlock_NotLadderStandable
 
-	LDA ObjectTypeAXthruFX
+	LDA iSpriteTypeHi
 	BEQ CreateObject_SingleBlock_NotLadderStandable
 
 	INX
 
 CreateObject_SingleBlock_NotLadderStandable:
-	LDY byte_RAM_E7
+	LDY ze7
 	; World 7 gets its own lookup table for climbable chains instead of vines
-	LDA CurrentWorldTileset
+	LDA iCurrentWorldTileset
 	CMP #$06
 	BNE CreateObject_SingleBlock_NotWorld7
 
@@ -1590,7 +1394,7 @@ CreateObject_SingleBlock_NotWorld7:
 	LDA World1thru6SingleBlocks, X
 
 CreateObject_SingleBlock_Exit:
-	STA (byte_RAM_1), Y
+	STA (z01), Y
 	RTS
 
 
@@ -1613,7 +1417,7 @@ HorizontalPlatformRightTiles:
 ; The log platforms and jump-through cloud platforms both use this.
 ;
 CreateObject_HorizontalPlatform:
-	LDA CurrentWorldTileset
+	LDA iCurrentWorldTileset
 	CMP #$04
 	BNE CreateObject_HorizontalPlatform_NotWorld5
 
@@ -1622,29 +1426,29 @@ CreateObject_HorizontalPlatform:
 	JMP CreateObject_HorizontalPlatform_World5
 
 CreateObject_HorizontalPlatform_NotWorld5:
-	LDY byte_RAM_E7
-	LDA byte_RAM_50E
+	LDY ze7
+	LDA i50e
 	SEC
 	SBC #$0A
 	TAX
 	LDA HorizontalPlatformLeftTiles, X
-	STA (byte_RAM_1), Y
-	DEC byte_RAM_50D
+	STA (z01), Y
+	DEC i50d
 	BEQ CreateObject_HorizontalPlatform_Exit
 
 CreateObject_HorizontalPlatform_Loop:
 	JSR IncrementAreaXOffset
 
 	LDA HorizontalPlatformMiddleTiles, X
-	STA (byte_RAM_1), Y
-	DEC byte_RAM_50D
+	STA (z01), Y
+	DEC i50d
 	BNE CreateObject_HorizontalPlatform_Loop
 
 CreateObject_HorizontalPlatform_Exit:
 	JSR IncrementAreaXOffset
 
 	LDA HorizontalPlatformRightTiles, X
-	STA (byte_RAM_1), Y
+	STA (z01), Y
 	RTS
 
 
@@ -1665,36 +1469,19 @@ GreenPlatformOverwriteTiles:
 	.db BackgroundTile_Sky
 	.db BackgroundTile_WaterfallTop
 	.db BackgroundTile_Waterfall
-IFDEF LEVEL_ENGINE_UPGRADES
-	.db BackgroundTile_WaterfallSplash
-	.db BackgroundTile_Water
-	.db BackgroundTile_WaterTop
-ENDIF
 GreenPlatformTiles_End:
 
 
-IFNDEF ENABLE_LEVEL_OBJECT_MODE
 ;
 ; Draws the typical green hill platforms in Worlds 1 through 6 or the mushroom
 ; house platforms in World 7.
 ;
 CreateObject_JumpthroughPlatform:
-	LDA CurrentWorldTileset
+	LDA iCurrentWorldTileset
 	CMP #$06
 	BNE CreateObject_GreenJumpthroughPlatform
 
 	JMP CreateObject_MushroomJumpthroughPlatform
-ELSE
-CreateObject_Platform_CX:
-	LDA LevelObjectMode
-	JSR JumpToTableAfterJump
-
-	.dw CreateObject_GreenJumpthroughPlatform
-	.dw CreateObject_GreenJumpthroughPlatform
-	.dw CreateObject_Whale
-	.dw CreateObject_MushroomJumpthroughPlatform
-ENDIF
-
 
 ;
 ; #### Green platforms
@@ -1705,34 +1492,34 @@ ENDIF
 ; are already present in the area.
 ;
 ; ##### Input
-; - `byte_RAM_E7`: target tile placement offset
-; - `byte_RAM_E8`: area page
-; - `byte_RAM_50D`: width of platform
+; - `ze7`: target tile placement offset
+; - `ze8`: area page
+; - `i50d`: width of platform
 ;
 CreateObject_GreenJumpthroughPlatform:
 	; Start with a top-left tile.
 	LDX #$00
 
 CreateObject_GreenJumpthroughPlatform_Row:
-	STX byte_RAM_B
+	STX z0b
 	; Update the area page.
-	LDX byte_RAM_E8
+	LDX ze8
 	JSR SetAreaPageAddr_Bank6
 
 	; These two lines seem like leftovers.
 	LDX #$05
-	LDY byte_RAM_E7
+	LDY ze7
 
 	; Draw a left corner or side.
-	LDX byte_RAM_B
-	LDY byte_RAM_E7
-	LDA byte_RAM_50D
-	STA byte_RAM_7
+	LDX z0b
+	LDY ze7
+	LDA i50d
+	STA z07
 	JSR CreateObject_GreenJumpthroughPlatformTile
 
 	; Skip to the right side if we're drawing a short platform.
 	INX
-	LDA byte_RAM_7
+	LDA z07
 	BEQ CreateObject_GreenJumpthroughPlatform_Right
 
 	; Draw top or middle tiles.
@@ -1751,7 +1538,7 @@ CreateObject_GreenJumpthroughPlatform_Right:
 	JSR CreateObject_GreenJumpthroughPlatformTile
 
 	; Exit if we've hit the bottom of the page.
-	LDA byte_RAM_E7
+	LDA ze7
 	CLC
 	ADC #$10
 	CMP #$F0
@@ -1759,7 +1546,7 @@ CreateObject_GreenJumpthroughPlatform_Right:
 
 	; Drawing a left side tile next.
 	LDX #$03
-	STA byte_RAM_E7
+	STA ze7
 	JMP CreateObject_GreenJumpthroughPlatform_Row
 
 CreateObject_GreenJumpthroughPlatform_Exit:
@@ -1796,13 +1583,13 @@ GreenPlatformOverlapRightTiles:
 ; - `Y`: raw data offset
 ;
 CreateObject_GreenJumpthroughPlatformTile:
-	STX byte_RAM_8
+	STX z08
 	TXA
 	BNE CreateObject_GreenJumpthroughPlatformTile_NotTopLeft
 
 	; Check if the top left corner requires a special tile
 	LDX #(GreenPlatformOverlapLeftTiles - GreenPlatformOverlapCompareTiles - 1)
-	LDA (byte_RAM_1), Y
+	LDA (z01), Y
 
 CreateObject_GreenJumpthroughPlatformTile_TopLeftLoop:
 	CMP GreenPlatformOverlapCompareTiles, X
@@ -1818,13 +1605,13 @@ CreateObject_GreenJumpthroughPlatformTile_TopLeftMatch:
 	BNE CreateObject_GreenJumpthroughPlatformTile_SetTile
 
 CreateObject_GreenJumpthroughPlatformTile_NotTopLeft:
-	LDX byte_RAM_8
+	LDX z08
 	CPX #$02
 	BNE CreateObject_GreenJumpthroughPlatformTile_CheckOverwrite
 
 	; Check if the top right corner requires a special tile
 	LDX #(GreenPlatformOverlapLeftTiles - GreenPlatformOverlapCompareTiles - 1)
-	LDA (byte_RAM_1), Y
+	LDA (z01), Y
 
 CreateObject_GreenJumpthroughPlatformTile_TopRightLoop:
 	CMP GreenPlatformOverlapCompareTiles, X
@@ -1844,7 +1631,7 @@ CreateObject_GreenJumpthroughPlatformTile_CheckOverwrite:
 	LDX #(GreenPlatformTiles_End - GreenPlatformTiles - 1)
 
 CreateObject_GreenJumpthroughPlatformTile_CheckOverwriteLoop:
-	LDA (byte_RAM_1), Y
+	LDA (z01), Y
 	CMP GreenPlatformTiles, X
 	BEQ CreateObject_GreenJumpthroughPlatformTile_Overwrite
 
@@ -1852,19 +1639,19 @@ CreateObject_GreenJumpthroughPlatformTile_CheckOverwriteLoop:
 	BPL CreateObject_GreenJumpthroughPlatformTile_CheckOverwriteLoop
 
 	; Otherwise, we cannot overwrite this tile with a green platform.
-	LDX byte_RAM_8
+	LDX z08
 	JMP CreateObject_GreenJumpthroughPlatformTile_Exit
 
 CreateObject_GreenJumpthroughPlatformTile_Overwrite:
-	LDX byte_RAM_8
+	LDX z08
 	LDA GreenPlatformTiles, X
 
 CreateObject_GreenJumpthroughPlatformTile_SetTile:
-	STA (byte_RAM_1), Y
+	STA (z01), Y
 
 CreateObject_GreenJumpthroughPlatformTile_Exit:
-	LDX byte_RAM_8
-	DEC byte_RAM_7
+	LDX z08
+	DEC z07
 	RTS
 
 ; -----
@@ -1886,37 +1673,37 @@ TallObjectBottomTiles:
 ; #### Tall objects
 ;
 ; ##### Input
-; - `byte_RAM_E7`: target tile placement offset
-; - `byte_RAM_50E`: type of object to create (lower nybble of level object minus 5)
+; - `ze7`: target tile placement offset
+; - `i50e`: type of object to create (lower nybble of level object minus 5)
 ;
 ; Creates a tree or light door object that extends down until it hits another tile.
 ;
 CreateObject_Tall:
-	LDA CurrentWorldTileset
+	LDA iCurrentWorldTileset
 	CMP #$04
 	BNE CreateObject_Tall_NotWorld5
 	JMP CreateObject_Tall_World5
 
 CreateObject_Tall_NotWorld5:
-	LDA byte_RAM_50E
+	LDA i50e
 	SEC
 	SBC #$05
-	STA byte_RAM_7
+	STA z07
 	TAX
-	LDY byte_RAM_E7
+	LDY ze7
 	LDA TallObjectTopTiles, X
-	STA (byte_RAM_1), Y
+	STA (z01), Y
 
 CreateObject_Tall_NotWorld5_Loop:
 	JSR IncrementAreaYOffset
 
-	LDA (byte_RAM_1), Y
+	LDA (z01), Y
 	CMP #BackgroundTile_Sky
 	BNE CreateObject_Tall_NotWorld5_Exit
 
-	LDX byte_RAM_7
+	LDX z07
 	LDA TallObjectBottomTiles, X
-	STA (byte_RAM_1), Y
+	STA (z01), Y
 	BNE CreateObject_Tall_NotWorld5_Loop
 
 CreateObject_Tall_NotWorld5_Exit:
@@ -1951,28 +1738,28 @@ World5TallObjectBottomTiles:
 ;
 CreateObject_Tall_World5:
 	LDX #$00
-	LDA byte_RAM_50E
+	LDA i50e
 	CMP #$05
 	BEQ CreateObject_Tall_World5_DoLookup
 
 	INX
 
 CreateObject_Tall_World5_DoLookup:
-	STX byte_RAM_7
-	LDY byte_RAM_E7
+	STX z07
+	LDY ze7
 	LDA World5TallObjectTopTiles, X
-	STA (byte_RAM_1), Y
+	STA (z01), Y
 
 CreateObject_Tall_World5_Loop:
 	JSR IncrementAreaYOffset
 
-	LDA (byte_RAM_1), Y
+	LDA (z01), Y
 	CMP #BackgroundTile_Sky
 	BNE CreateObject_Tall_World5_Exit
 
-	LDX byte_RAM_7
+	LDX z07
 	LDA World5TallObjectBottomTiles, X
-	STA (byte_RAM_1), Y
+	STA (z01), Y
 	CPY #$E0
 	BCC CreateObject_Tall_World5_Loop
 
@@ -1985,12 +1772,12 @@ CreateObject_Tall_World5_Exit:
 ; Creates the larger, two-tile-wide big cloud.
 ;
 CreateObject_BigCloud:
-	LDY byte_RAM_E7
+	LDY ze7
 	LDA #BackgroundTile_BgCloudLeft
-	STA (byte_RAM_1), Y
+	STA (z01), Y
 	INY
 	LDA #BackgroundTile_BgCloudRight
-	STA (byte_RAM_1), Y
+	STA (z01), Y
 	RTS
 
 ; -----
@@ -2000,9 +1787,9 @@ CreateObject_BigCloud:
 ; Creates a tiny, single-tile cloud.
 ;
 CreateObject_SmallCloud:
-	LDY byte_RAM_E7
+	LDY ze7
 	LDA #BackgroundTile_BgCloudSmall
-	STA (byte_RAM_1), Y
+	STA (z01), Y
 	RTS
 
 ; -----
@@ -2015,23 +1802,23 @@ JarTopTiles:
 
 
 CreateObject_Vase:
-	LDY byte_RAM_E7
-	LDA byte_RAM_50E
+	LDY ze7
+	LDA i50e
 	SEC
 	SBC #$06
 	TAX
 	LDA JarTopTiles, X
-	STA (byte_RAM_1), Y
+	STA (z01), Y
 
 CreateObject_Vase_Loop:
 	JSR IncrementAreaYOffset
 
-	LDA (byte_RAM_1), Y
+	LDA (z01), Y
 	CMP #BackgroundTile_Sky
 	BNE CreateObject_Vase_Exit
 
 	LDA #BackgroundTile_JarMiddle
-	STA (byte_RAM_1), Y
+	STA (z01), Y
 	JMP CreateObject_Vase_Loop
 
 CreateObject_Vase_Exit:
@@ -2040,7 +1827,7 @@ CreateObject_Vase_Exit:
 	SBC #$10
 	TAY
 	LDA #BackgroundTile_JarBottom
-	STA (byte_RAM_1), Y
+	STA (z01), Y
 	RTS
 
 
@@ -2048,30 +1835,30 @@ CreateObject_Vase_Exit:
 ; Creates a vine that extends downwards until it hits another tile.
 ;
 ; ##### Input
-; - `byte_RAM_E7`: target tile placement offset
-; - `byte_RAM_50E`: type of object to create
+; - `ze7`: target tile placement offset
+; - `i50e`: type of object to create
 ;
 CreateObject_Vine:
-	LDY byte_RAM_E7
-	LDA byte_RAM_50E
+	LDY ze7
+	LDA i50e
 	; `$0D` is a vine with no top, so start right at the middle.
 	CMP #$0D
 	BEQ CreateObject_Vine_Middle
 
 	LDA #BackgroundTile_VineTop
-	STA (byte_RAM_1), Y
+	STA (z01), Y
 
 CreateObject_Vine_Loop:
 	JSR IncrementAreaYOffset
 
 CreateObject_Vine_Middle:
-	LDA (byte_RAM_1), Y
+	LDA (z01), Y
 	CMP #BackgroundTile_Sky
 	BNE CreateObject_Vine_Exit
 
 	LDA #BackgroundTile_Vine
-	STA (byte_RAM_1), Y
-	LDA IsHorizontalLevel
+	STA (z01), Y
+	LDA zScrollCondition
 	BEQ CreateObject_Vine_Next
 
 	; In horizontal areas, stop at the bottom of the screen.
@@ -2091,12 +1878,12 @@ CreateObject_Vine_Exit:
 ; Creates a vine that extends upwards until it hits another tile.
 ;
 ; ##### Input
-; - `byte_RAM_E7`: target tile placement offset for the BOTTOM of the vine
+; - `ze7`: target tile placement offset for the BOTTOM of the vine
 ;
 CreateObject_VineBottom:
-	LDY byte_RAM_E7
+	LDY ze7
 	LDA #BackgroundTile_VineBottom
-	STA (byte_RAM_1), Y
+	STA (z01), Y
 
 CreateObject_VineBottom_Loop:
 	; Stop at the top of the page.
@@ -2108,13 +1895,13 @@ CreateObject_VineBottom_Loop:
 	BCS CreateObject_VineBottom_Exit
 
 	; Stop if we hit tile that isn't blank.
-	LDA (byte_RAM_1), Y
+	LDA (z01), Y
 	CMP #BackgroundTile_Sky
 	BNE CreateObject_VineBottom_Exit
 
 	; Draw a section of the vine
 	LDA #BackgroundTile_Vine
-	STA (byte_RAM_1), Y
+	STA (z01), Y
 	JMP CreateObject_VineBottom_Loop
 
 CreateObject_VineBottom_Exit:
@@ -2141,23 +1928,19 @@ SingleObjects:
 	.db BackgroundTile_SubspaceMushroom2 ; $2D
 	.db BackgroundTile_WhaleEye ; $2E
 	; No entry for $2F in this table, so it uses tile $A4 due to the LDY below
-IFDEF EXPAND_TABLES
-	.db BackgroundTile_SolidWood ; $2F
-ENDIF
-
 
 ;
 ; Creates a single tile object using the lookup table above.
 ;
 ; ##### Input
-; - `byte_RAM_E7`: target tile placement offset
-; - `byte_RAM_50E`: type of object to create
+; - `ze7`: target tile placement offset
+; - `i50e`: type of object to create
 ;
 CreateObject_SingleObject:
-	LDY byte_RAM_E7
-	LDX byte_RAM_50E
+	LDY ze7
+	LDX i50e
 	LDA SingleObjects, X
-	STA (byte_RAM_1), Y
+	STA (z01), Y
 	RTS
 
 ; -----
@@ -2173,24 +1956,24 @@ World7BrickWallTiles:
 
 
 CreateObject_Wall:
-	LDA byte_RAM_50E
+	LDA i50e
 	SEC
 	SBC #$08
-	STA byte_RAM_8
-	LDY byte_RAM_E7
-	LDX byte_RAM_E8
+	STA z08
+	LDY ze7
+	LDX ze8
 	JSR SetAreaPageAddr_Bank6
 
-	LDY byte_RAM_E7
+	LDY ze7
 	LDA #$05
-	STA byte_RAM_7
-	LDA (byte_RAM_1), Y
+	STA z07
+	LDA (z01), Y
 	CMP #BackgroundTile_Sky
 	BNE CreateObject_Wall_Exit
 
 loc_BANK6_8D69:
-	LDX byte_RAM_8
-	LDA CurrentWorldTileset
+	LDX z08
+	LDA iCurrentWorldTileset
 	CMP #$06
 	BNE loc_BANK6_8D78
 
@@ -2201,19 +1984,19 @@ loc_BANK6_8D78:
 	LDA World1thru6BrickWallTiles, X
 
 loc_BANK6_8D7B:
-	STA (byte_RAM_1), Y
+	STA (z01), Y
 	JSR IncrementAreaXOffset
 
-	DEC byte_RAM_7
+	DEC z07
 	BPL loc_BANK6_8D69
 
-	LDA byte_RAM_E7
+	LDA ze7
 	CLC
 	ADC #$10
 	CMP #$F0
 	BCS CreateObject_Wall_Exit
 
-	STA byte_RAM_E7
+	STA ze7
 	JMP CreateObject_Wall
 
 CreateObject_Wall_Exit:
@@ -2226,100 +2009,55 @@ WaterfallTiles:
 
 
 CreateObject_WaterfallOrFrozenRocks:
-IFNDEF ENABLE_LEVEL_OBJECT_MODE
-	LDA CurrentWorldTileset
+	LDA iCurrentWorldTileset
 	CMP #$03
 	BNE CreateObject_Waterfall
 
 	JMP CreateObject_FrozenRocks
-ENDIF
 
 CreateObject_Waterfall:
 	LDA #$00
-	STA byte_RAM_8
+	STA z08
 
 CreateObject_Waterfall_OuterLoop:
-	LDY byte_RAM_E7
-	LDX byte_RAM_E8
+	LDY ze7
+	LDX ze8
 	JSR SetAreaPageAddr_Bank6
 
-	LDY byte_RAM_E7
-	LDA byte_RAM_50D
-	STA byte_RAM_7
-	LDX byte_RAM_8
+	LDY ze7
+	LDA i50d
+	STA z07
+	LDX z08
 
 CreateObject_Waterfall_InnerLoop:
 	LDA WaterfallTiles, X
-	STA (byte_RAM_1), Y
+	STA (z01), Y
 	JSR IncrementAreaXOffset
 
-	DEC byte_RAM_7
+	DEC z07
 	BPL CreateObject_Waterfall_InnerLoop
 
 	LDA #$01
-	STA byte_RAM_8
-	LDA byte_RAM_E7
+	STA z08
+	LDA ze7
 	CLC
 	ADC #$10
 	CMP #$F0
 	BCS CreateObject_Waterfall_Exit
 
-	STA byte_RAM_E7
+	STA ze7
 	JMP CreateObject_Waterfall_OuterLoop
 
 CreateObject_Waterfall_Exit:
 	RTS
 
-
-IFDEF ENABLE_LEVEL_OBJECT_MODE
-WaterTiles:
-	.db BackgroundTile_WaterTop
-	.db BackgroundTile_Water
-
-CreateObject_Water:
-	LDA #$00
-	STA byte_RAM_8
-
-CreateObject_Water_OuterLoop:
-	LDY byte_RAM_E7
-	LDX byte_RAM_E8
-	JSR SetAreaPageAddr_Bank6
-
-	LDY byte_RAM_E7
-	LDA byte_RAM_50D
-	STA byte_RAM_7
-	LDX byte_RAM_8
-
-CreateObject_Water_InnerLoop:
-	LDA WaterTiles, X
-	STA (byte_RAM_1), Y
-	JSR IncrementAreaXOffset
-
-	DEC byte_RAM_7
-	BPL CreateObject_Water_InnerLoop
-
-	LDA #$01
-	STA byte_RAM_8
-	LDA byte_RAM_E7
-	CLC
-	ADC #$10
-	CMP #$F0
-	BCS CreateObject_Water_Exit
-
-	STA byte_RAM_E7
-	JMP CreateObject_Water_OuterLoop
-
-CreateObject_Water_Exit:
-	RTS
-ENDIF
-
 CreateObject_Pyramid:
-	LDY byte_RAM_E7
+	LDY ze7
 	LDA #$00
-	STA byte_RAM_8
+	STA z08
 
 loc_BANK6_8DD8:
-	LDA (byte_RAM_1), Y
+	LDA (z01), Y
 	CMP #BackgroundTile_Sky
 	BEQ loc_BANK6_8DDF
 
@@ -2329,49 +2067,49 @@ loc_BANK6_8DD8:
 
 loc_BANK6_8DDF:
 	LDA #BackgroundTile_PyramidLeftAngle
-	STA (byte_RAM_1), Y
-	LDX byte_RAM_8
+	STA (z01), Y
+	LDX z08
 	BEQ loc_BANK6_8DF9
 
 loc_BANK6_8DE7:
 	INY
 	LDA #BackgroundTile_PyramidLeft
-	STA (byte_RAM_1), Y
+	STA (z01), Y
 	DEX
 	BNE loc_BANK6_8DE7
 
-	LDX byte_RAM_8
+	LDX z08
 
 loc_BANK6_8DF1:
 	INY
 	LDA #BackgroundTile_PyramidRight
-	STA (byte_RAM_1), Y
+	STA (z01), Y
 	DEX
 	BNE loc_BANK6_8DF1
 
 loc_BANK6_8DF9:
 	INY
 	LDA #BackgroundTile_PyramidRightAngle
-	STA (byte_RAM_1), Y
-	INC byte_RAM_8
-	LDA byte_RAM_E7
+	STA (z01), Y
+	INC z08
+	LDA ze7
 	CLC
 	ADC #$10
-	STA byte_RAM_E7
+	STA ze7
 	SEC
-	SBC byte_RAM_8
+	SBC z08
 	TAY
 	JMP loc_BANK6_8DD8
 
 ; Not referenced, maybe unused...?
-	LDY byte_RAM_E7
+	LDY ze7
 	LDA #BackgroundTile_CactusTop
-	STA (byte_RAM_1), Y
+	STA (z01), Y
 
 loc_BANK6_8E14:
 	JSR IncrementAreaYOffset
 
-	LDA (byte_RAM_1), Y
+	LDA (z01), Y
 	CMP #BackgroundTile_Sky
 	BEQ loc_BANK6_8E1E
 
@@ -2381,21 +2119,21 @@ loc_BANK6_8E14:
 
 loc_BANK6_8E1E:
 	LDA #BackgroundTile_CactusMiddle
-	STA (byte_RAM_1), Y
+	STA (z01), Y
 	BNE loc_BANK6_8E14
 
 ; =============== S U B R O U T I N E =======================================
 
 sub_BANK6_8E24:
-	LDA byte_RAM_9
+	LDA z09
 	ASL A
 	ASL A
 	SEC
-	ADC byte_RAM_9
-	STA byte_RAM_9
-	ASL byte_RAM_A
+	ADC z09
+	STA z09
+	ASL z0a
 	LDA #$20
-	BIT byte_RAM_A
+	BIT z0a
 	BCS loc_BANK6_8E39
 
 	BNE loc_BANK6_8E3B
@@ -2406,11 +2144,11 @@ loc_BANK6_8E39:
 	BNE loc_BANK6_8E3D
 
 loc_BANK6_8E3B:
-	INC byte_RAM_A
+	INC z0a
 
 loc_BANK6_8E3D:
-	LDA byte_RAM_A
-	EOR byte_RAM_9
+	LDA z0a
+	EOR z09
 	RTS
 
 ; End of function sub_BANK6_8E24
@@ -2426,12 +2164,12 @@ StarBackgroundTiles:
 	.db BackgroundTile_Sky
 
 CreateObject_StarBackground:
-	LDA byte_RAM_E8
-	STA byte_RAM_D
+	LDA ze8
+	STA z0d
 	LDA #$80
-	STA byte_RAM_A
+	STA z0a
 	LDA #$31
-	STA byte_RAM_9
+	STA z09
 
 CreateObject_StarBackground_Loop:
 	JSR sub_BANK6_8E24
@@ -2439,7 +2177,7 @@ CreateObject_StarBackground_Loop:
 	AND #$07
 	TAX
 	LDA StarBackgroundTiles, X
-	STA (byte_RAM_1), Y
+	STA (z01), Y
 	JSR IncrementAreaYOffset
 
 	CPY #$30
@@ -2450,15 +2188,15 @@ CreateObject_StarBackground_Loop:
 	TAY
 	JSR IncrementAreaXOffset
 
-	LDA byte_RAM_D
-	STA byte_RAM_E8
+	LDA z0d
+	STA ze8
 	CMP #$A
 	BNE CreateObject_StarBackground_Loop
 
 	LDA #$00
-	STA byte_RAM_E8
-	STA byte_RAM_E6
-	STA byte_RAM_E5
+	STA ze8
+	STA ze6
+	STA ze5
 	RTS
 
 
@@ -2494,83 +2232,72 @@ WhaleRightTiles:
 ; Draws a row of the whale
 ;
 ; ##### Input
-; - `byte_RAM_E7`: target tile placement offset
-; - `byte_RAM_50D`: width of house
-; - `byte_RAM_50E`: offset in the tile lookup table plus `$0A`, for some reason
+; - `ze7`: target tile placement offset
+; - `i50d`: width of house
+; - `i50e`: offset in the tile lookup table plus `$0A`, for some reason
 ;
 CreateObject_WhaleRow:
-	LDY byte_RAM_E7
-	LDA byte_RAM_50E
+	LDY ze7
+	LDA i50e
 	SEC
 	SBC #$0A
 	TAX
 	LDA WhaleLeftTiles, X
-	STA (byte_RAM_1), Y
-	DEC byte_RAM_50D
+	STA (z01), Y
+	DEC i50d
 	BEQ CreateObject_WhaleRow_Right
 
 CreateObject_WhaleRow_Loop:
 	JSR IncrementAreaXOffset
 
 	LDA WhaleMiddleTiles, X
-	STA (byte_RAM_1), Y
-	DEC byte_RAM_50D
+	STA (z01), Y
+	DEC i50d
 	BNE CreateObject_WhaleRow_Loop
 
 CreateObject_WhaleRow_Right:
 	JSR IncrementAreaXOffset
 
 	LDA WhaleRightTiles, X
-	STA (byte_RAM_1), Y
+	STA (z01), Y
 	RTS
 
 
-IFNDEF ENABLE_LEVEL_OBJECT_MODE
 CreateObject_WhaleOrDrawBridgeChain:
-	LDA CurrentWorldTileset
+	LDA iCurrentWorldTileset
 	CMP #$06
 	BNE CreateObject_Whale
 
 	JMP CreateObject_DrawBridgeChain
-ELSE
-CreateObject_Platform_BX:
-	LDA LevelObjectMode
-	JSR JumpToTableAfterJump
-
-	.dw CreateObject_Water
-	.dw CreateObject_FrozenRocks
-	.dw CreateObject_FrozenRocks
-	.dw CreateObject_DrawBridgeChain
-ENDIF
 
 ;
 ; Draws a whale.
 ;
 ; ##### Input
-; - `byte_RAM_50D`: width of whale
+; - `i50d`: width of whale
 ;
 CreateObject_Whale:
-	LDA byte_RAM_50D
-	STA byte_RAM_7
+	LDA i50d
+	STA z07
 	LDA #$0C
-	STA byte_RAM_50E
+	STA i50e
 	JSR CreateObject_WhaleRow
 
-	INC byte_RAM_50E
+	INC i50e
 
 CreateObject_Whale_Loop:
-	LDA byte_RAM_7
-	STA byte_RAM_50D
-	LDA byte_RAM_E7
+	LDA z07
+	STA i50d
+	LDA ze7
 	CLC
 	ADC #$10
-	STA byte_RAM_E7
+	STA ze7
 	CMP #$B0
 	; This branch doesn't actually skip anything...
 	BCC CreateObject_Whale_AboveWater
 
 CreateObject_Whale_AboveWater:
-	LDX byte_RAM_E8
+	LDX ze8
 	JSR SetAreaPageAddr_Bank6
 
 	JSR CreateObject_WhaleRow
@@ -2586,12 +2313,12 @@ CreateObject_Whale_AboveWater:
 	JSR IncrementAreaXOffset
 
 	LDA #BackgroundTile_WhaleTail
-	STA (byte_RAM_1), Y
-	INC byte_RAM_50E
+	STA (z01), Y
+	INC i50e
 	JMP CreateObject_Whale_Loop
 
 CreateObject_Whale_NotTail:
-	LDA byte_RAM_50E
+	LDA i50e
 	CMP #$0E
 	BNE CreateObject_Whale_Loop
 
@@ -2599,7 +2326,7 @@ CreateObject_Whale_NotTail:
 	JSR IncrementAreaXOffset
 
 	LDA #BackgroundTile_WaterWhaleTail
-	STA (byte_RAM_1), Y
+	STA (z01), Y
 	RTS
 
 
@@ -2613,27 +2340,27 @@ FrozenRockTiles:
 
 CreateObject_FrozenRocks:
 	LDA #$01
-	STA byte_RAM_8
+	STA z08
 
 loc_BANK6_8F19:
-	LDY byte_RAM_E7
-	LDX byte_RAM_E8
+	LDY ze7
+	LDX ze8
 	JSR SetAreaPageAddr_Bank6
 
-	LDY byte_RAM_E7
-	LDA byte_RAM_50D
-	STA byte_RAM_7
-	LDX byte_RAM_8
+	LDY ze7
+	LDA i50d
+	STA z07
+	LDX z08
 
 loc_BANK6_8F29:
 	LDA FrozenRockTiles, X
-	STA (byte_RAM_1), Y
+	STA (z01), Y
 	JSR IncrementAreaXOffset
 
-	DEC byte_RAM_7
+	DEC z07
 	BPL loc_BANK6_8F29
 
-	LDA byte_RAM_8
+	LDA z08
 	BNE loc_BANK6_8F3A
 
 	RTS
@@ -2641,16 +2368,16 @@ loc_BANK6_8F29:
 ; ---------------------------------------------------------------------------
 
 loc_BANK6_8F3A:
-	LDA byte_RAM_E7
+	LDA ze7
 	CLC
 	ADC #$10
 	CMP #$C0
 	BCC loc_BANK6_8F45
 
-	DEC byte_RAM_8
+	DEC z08
 
 loc_BANK6_8F45:
-	STA byte_RAM_E7
+	STA ze7
 	JMP loc_BANK6_8F19
 
 ;
@@ -2681,25 +2408,25 @@ HorizontalPlatformWithOverlapRightTiles:
 ; turn into logs if they overlap another object.
 ;
 CreateObject_HorizontalPlatform_World5:
-	LDY byte_RAM_E7
-	LDA byte_RAM_50E
+	LDY ze7
+	LDA i50e
 	SEC
 	SBC #$0A
 	TAX
 	JSR CreateObject_HorizontalPlatform_World5CheckOverlap
 
 	LDA HorizontalPlatformWithOverlapLeftTiles, X
-	STA (byte_RAM_1), Y
-	LDX byte_RAM_7
-	DEC byte_RAM_50D
+	STA (z01), Y
+	LDX z07
+	DEC i50d
 	BEQ CreateObject_HorizontalPlatform_World5_Exit
 
 CreateObject_HorizontalPlatform_World5_Loop:
 	JSR IncrementAreaXOffset
 
 	LDA HorizontalPlatformWithOverlapMiddleTiles, X
-	STA (byte_RAM_1), Y
-	DEC byte_RAM_50D
+	STA (z01), Y
+	DEC i50d
 	BNE CreateObject_HorizontalPlatform_World5_Loop
 
 CreateObject_HorizontalPlatform_World5_Exit:
@@ -2708,7 +2435,7 @@ CreateObject_HorizontalPlatform_World5_Exit:
 	JSR CreateObject_HorizontalPlatform_World5CheckOverlap
 
 	LDA HorizontalPlatformWithOverlapRightTiles, X
-	STA (byte_RAM_1), Y
+	STA (z01), Y
 	RTS
 
 
@@ -2719,8 +2446,8 @@ CreateObject_HorizontalPlatform_World5_Exit:
 ; - `X`: table offset for (2 if there is an overlap)
 ;
 CreateObject_HorizontalPlatform_World5CheckOverlap:
-	STX byte_RAM_7
-	LDA (byte_RAM_1), Y
+	STX z07
+	LDA (z01), Y
 	CMP #BackgroundTile_Sky
 	BEQ CreateObject_HorizontalPlatform_World5CheckOverlap_Exit
 
@@ -2744,28 +2471,28 @@ TreeBackgroundTiles:
 ; Creates a tree background
 ;
 ; ##### Input
-; - `byte_RAM_E7`: target tile placement offset
-; - `byte_RAM_E8`: area page
+; - `ze7`: target tile placement offset
+; - `ze8`: area page
 ;
 CreateObject_TreeBackground:
 	; width of the middle of the tree (0 = two tiles, 4 = ten tiles)
 	LDA #$04
-	STA byte_RAM_7
-	LDY byte_RAM_E7
-	LDX byte_RAM_E8
+	STA z07
+	LDY ze7
+	LDX ze8
 	JSR SetAreaPageAddr_Bank6
 
 	LDX #$02
 
 	; Stop when it touches the ground
-	LDA (byte_RAM_1), Y
+	LDA (z01), Y
 	CMP #BackgroundTile_Sky
 	BNE CreateObject_TreeBackground_Exit
 
 CreateObject_TreeBackground_Loop:
 	; Draw the left side of the tree
 	LDA TreeBackgroundTiles, X
-	STA (byte_RAM_1), Y
+	STA (z01), Y
 	JSR IncrementAreaXOffset
 
 	; Draw the middle of the tree
@@ -2781,10 +2508,10 @@ CreateObject_TreeBackground_Right:
 	BPL CreateObject_TreeBackground_Loop
 
 	; Try to draw the next row
-	LDY byte_RAM_E7
+	LDY ze7
 	JSR IncrementAreaYOffset
 
-	STY byte_RAM_E7
+	STY ze7
 	JMP CreateObject_TreeBackground
 
 CreateObject_TreeBackground_Exit:
@@ -2796,14 +2523,14 @@ CreateObject_TreeBackground_Exit:
 ;
 CreateObject_TreeBackground_MiddleLoop:
 	LDA #BackgroundTile_TreeBackgroundMiddleLeft
-	STA (byte_RAM_1), Y
+	STA (z01), Y
 	JSR IncrementAreaXOffset
 
 	LDA #BackgroundTile_TreeBackgroundMiddleRight
-	STA (byte_RAM_1), Y
+	STA (z01), Y
 	JSR IncrementAreaXOffset
 
-	DEC byte_RAM_7
+	DEC z07
 	BPL CreateObject_TreeBackground_MiddleLoop
 
 	RTS
@@ -2871,23 +2598,23 @@ CreateObject_RockWallEntrance:
 	LDX #$00
 
 CreateObject_RockWallEntrance_Loop:
-	LDY byte_RAM_E7
+	LDY ze7
 	LDA #$02
-	STA byte_RAM_9
+	STA z09
 
 CreateObject_RockWallEntrance_InnerLoop:
 	LDA RockWallEntranceTiles, X
-	STA (byte_RAM_1), Y
+	STA (z01), Y
 	INX
 	INY
-	DEC byte_RAM_9
+	DEC z09
 	BPL CreateObject_RockWallEntrance_InnerLoop
 
-	LDY byte_RAM_E7
+	LDY ze7
 	TYA
 	CLC
 	ADC #$10
-	STA byte_RAM_E7
+	STA ze7
 	CPX #$1B
 	BNE CreateObject_RockWallEntrance_Loop
 
@@ -2916,36 +2643,35 @@ DoorBottomTiles:
 ; Creates a door object.
 ;
 ; ##### Input
-; - `byte_RAM_E7`: target tile placement offset
-; - `byte_RAM_50E`: type of object to create
+; - `ze7`: target tile placement offset
+; - `i50e`: type of object to create
 ;
 CreateObject_Door:
-	LDY byte_RAM_E7
-	LDA byte_RAM_50E
+	LDY ze7
+	LDA i50e
 	CMP #$09
 	BNE CreateObject_Door_Unlocked
 
 	; If we've already used the key, create an unlocked door
-	LDA KeyUsed
+	LDA iKeyUsed
 	BEQ CreateObject_Door_Unlocked
 
 	; Use the door two slots after the locked door for the unlocked version
-	INC byte_RAM_50E
-	INC byte_RAM_50E
+	INC i50e
+	INC i50e
 
 CreateObject_Door_Unlocked:
-	LDA byte_RAM_50E
+	LDA i50e
 	SEC
 	SBC #$09
 	TAX
 	LDA DoorTopTiles, X
-	STA (byte_RAM_1), Y
+	STA (z01), Y
 	JSR IncrementAreaYOffset
 
 	LDA DoorBottomTiles, X
-	STA (byte_RAM_1), Y
+	STA (z01), Y
 
-IFNDEF DISABLE_DOOR_POINTERS
 	;
 	; For Worlds 1-5, the object after a door is used as an area pointer.
 	;
@@ -2965,16 +2691,15 @@ IFNDEF DISABLE_DOOR_POINTERS
 	; level offset is $10. Having everything after a door shift down by 1 row was
 	; probably a nuisance when programming the levels.
 	;
-	LDA CurrentWorld
+	LDA iCurrentWorld
 	CMP #$05
 	BEQ CreateObject_Door_Exit
 
-	LDA CurrentWorld
+	LDA iCurrentWorld
 	CMP #$06
 	BEQ CreateObject_Door_Exit
 
 	JSR LevelParser_EatDoorPointer
-ENDIF
 
 CreateObject_Door_Exit:
 	RTS
@@ -3010,34 +2735,34 @@ MushroomHouseRightTiles:
 ; Draws a row of the mushroom house
 ;
 ; ##### Input
-; - `byte_RAM_E7`: target tile placement offset
-; - `byte_RAM_50D`: width of house
-; - `byte_RAM_50E`: offset in the tile lookup table plus $0A, for some reason
+; - `ze7`: target tile placement offset
+; - `i50d`: width of house
+; - `i50e`: offset in the tile lookup table plus $0A, for some reason
 ;
 CreateObject_MushroomHouseRow:
-	LDY byte_RAM_E7
-	LDA byte_RAM_50E
+	LDY ze7
+	LDA i50e
 	SEC
 	SBC #$0A
 	TAX
 	LDA MushroomHouseLeftTiles, X
-	STA (byte_RAM_1), Y
-	DEC byte_RAM_50D
+	STA (z01), Y
+	DEC i50d
 	BEQ CreateObject_MushroomHouseRow_Right
 
 CreateObject_MushroomHouseRow_Loop:
 	JSR IncrementAreaXOffset
 
 	LDA MushroomHouseMiddleTiles, X
-	STA (byte_RAM_1), Y
-	DEC byte_RAM_50D
+	STA (z01), Y
+	DEC i50d
 	BNE CreateObject_MushroomHouseRow_Loop
 
 CreateObject_MushroomHouseRow_Right:
 	JSR IncrementAreaXOffset
 
 	LDA MushroomHouseRightTiles, X
-	STA (byte_RAM_1), Y
+	STA (z01), Y
 	RTS
 
 
@@ -3045,35 +2770,35 @@ CreateObject_MushroomHouseRow_Right:
 ; Draws the jump-through mushroom house platforms used in World 7
 ;
 CreateObject_MushroomJumpthroughPlatform:
-	LDA byte_RAM_50D
-	STA byte_RAM_7
+	LDA i50d
+	STA z07
 	LDA #$0C
-	STA byte_RAM_50E
+	STA i50e
 	; Draw roof of mushroom house
 	JSR CreateObject_MushroomHouseRow
 
 CreateObject_MushroomJumpthroughPlatform_Loop:
-	LDA byte_RAM_E7
+	LDA ze7
 	CLC
 	ADC #$10
-	STA byte_RAM_E7
+	STA ze7
 	LDA #$0D
-	STA byte_RAM_50E
-	LDA_abs byte_RAM_7
+	STA i50e
+	LDA_abs z07
 
-	STA byte_RAM_50D
-	LDX byte_RAM_E8
+	STA i50d
+	LDX ze8
 	JSR SetAreaPageAddr_Bank6
 
-	LDY byte_RAM_E7
-	LDA (byte_RAM_1), Y
+	LDY ze7
+	LDA (z01), Y
 	CMP #BackgroundTile_Sky
 	BNE CreateObject_MushroomJumpthroughPlatform_Exit
 
 	; Draw body of mushroom house
 	JSR CreateObject_MushroomHouseRow
 
-	LDA byte_RAM_E7
+	LDA ze7
 	CMP #$E0
 	BCC CreateObject_MushroomJumpthroughPlatform_Loop
 
@@ -3107,24 +2832,24 @@ PillarBottomTiles:
 ; Draws a pillar that extends to the ground
 ;
 ; ##### Input
-; - `byte_RAM_E7`: target tile placement offset
+; - `ze7`: target tile placement offset
 ;
 CreateObject_Pillar:
-	LDX CurrentWorldTileset
-	LDY byte_RAM_E7
+	LDX iCurrentWorldTileset
+	LDY ze7
 	LDA PillarTopTiles, X
-	STA (byte_RAM_1), Y
+	STA (z01), Y
 
 CreateObject_Pillar_Loop:
 	JSR IncrementAreaYOffset
 
-	LDA (byte_RAM_1), Y
+	LDA (z01), Y
 	CMP #BackgroundTile_Sky
 	BNE CreateObject_Pillar_Exit
 
-	LDX CurrentWorldTileset
+	LDX iCurrentWorldTileset
 	LDA PillarBottomTiles, X
-	STA (byte_RAM_1), Y
+	STA (z01), Y
 
 	;
 	; Normally the pillars extend until they hit another tile, wrapping around to
@@ -3133,7 +2858,7 @@ CreateObject_Pillar_Loop:
 	; This World 5 check prevents logs from coming down from the sky in the last
 	; area before ClawGrip's boss room.
 	;
-	LDA CurrentWorldTileset
+	LDA iCurrentWorldTileset
 	CMP #$04
 	BNE CreateObject_Pillar_Loop
 
@@ -3149,24 +2874,24 @@ CreateObject_Pillar_Exit:
 ; Draws one horn of Wart's vegetable thrower
 ;
 ; ##### Input
-; - `byte_RAM_E7`: target tile placement offset
+; - `ze7`: target tile placement offset
 ;
 CreateObject_Horn:
-	LDY byte_RAM_E7
+	LDY ze7
 	LDA #BackgroundTile_HornTopLeft
-	STA (byte_RAM_1), Y
+	STA (z01), Y
 	INY
 	LDA #BackgroundTile_HornTopRight
-	STA (byte_RAM_1), Y
-	LDA byte_RAM_E7
+	STA (z01), Y
+	LDA ze7
 	CLC
 	ADC #$10
 	TAY
 	LDA #BackgroundTile_HornBottomLeft
-	STA (byte_RAM_1), Y
+	STA (z01), Y
 	INY
 	LDA #BackgroundTile_HornBottomRight
-	STA (byte_RAM_1), Y
+	STA (z01), Y
 	RTS
 
 
@@ -3174,28 +2899,26 @@ CreateObject_Horn:
 ; Draws the drawbridge chain
 ;
 ; ##### Input
-; - `byte_RAM_E7`: target tile placement offset
+; - `ze7`: target tile placement offset
 ;
 CreateObject_DrawBridgeChain:
-	LDY byte_RAM_E7
+	LDY ze7
 
 CreateObject_DrawBridgeChain_Loop:
 	LDA #BackgroundTile_DrawBridgeChain
-	STA (byte_RAM_1), Y
+	STA (z01), Y
 	TYA
 	CLC
 	ADC #$F
 	TAY
-	DEC byte_RAM_50D
+	DEC i50d
 	BNE CreateObject_DrawBridgeChain_Loop
 
 	RTS
 
 
-IFNDEF EXPAND_TABLES
 ; Unused space in the original ($9126 - $91FF)
 unusedSpace $9200, $FF
-ENDIF
 
 ;
 ; ## Ground setting data
@@ -3260,9 +2983,6 @@ HorizontalGroundSetData:
 
 	; Based on the level header parsing code, $1F seems like it may have been reserved for some
 	; special behavior at some point, but it doesn't appear to be implemented.
-IFDEF EXPAND_TABLES
-	.db %00000000,%00000000,%00000000,%00100100 ; $1F
-ENDIF
 
 ;
 ; #### Vertical ground set data
@@ -3313,39 +3033,35 @@ VerticalGroundSetData:
 	.db %00000000,%00000000,%00000000,%00001010 ; $1E
 	; Based on the level header parsing code, %00011111 seems like it may have been reserved for some
 	; special behavior at some point, but it doesn't appear to be implemented.
-IFDEF EXPAND_TABLES
-	.db %00000000,%00000000,%00000000,%00001010 ; $1F
-ENDIF
-
 
 ;
 ; Lookup tables for decoded level data by page
 ;
 DecodedLevelPageStartLo_Bank6:
-	.db <DecodedLevelData
-	.db <(DecodedLevelData+$00F0)
-	.db <(DecodedLevelData+$01E0)
-	.db <(DecodedLevelData+$02D0)
-	.db <(DecodedLevelData+$03C0)
-	.db <(DecodedLevelData+$04B0)
-	.db <(DecodedLevelData+$05A0)
-	.db <(DecodedLevelData+$0690)
-	.db <(DecodedLevelData+$0780)
-	.db <(DecodedLevelData+$0870)
-	.db <(SubAreaTileLayout)
+	.db <wLevelDataBuffer
+	.db <(wLevelDataBuffer+$00F0)
+	.db <(wLevelDataBuffer+$01E0)
+	.db <(wLevelDataBuffer+$02D0)
+	.db <(wLevelDataBuffer+$03C0)
+	.db <(wLevelDataBuffer+$04B0)
+	.db <(wLevelDataBuffer+$05A0)
+	.db <(wLevelDataBuffer+$0690)
+	.db <(wLevelDataBuffer+$0780)
+	.db <(wLevelDataBuffer+$0870)
+	.db <(iSubspaceLayout)
 
 DecodedLevelPageStartHi_Bank6:
-	.db >DecodedLevelData
-	.db >(DecodedLevelData+$00F0)
-	.db >(DecodedLevelData+$01E0)
-	.db >(DecodedLevelData+$02D0)
-	.db >(DecodedLevelData+$03C0)
-	.db >(DecodedLevelData+$04B0)
-	.db >(DecodedLevelData+$05A0)
-	.db >(DecodedLevelData+$0690)
-	.db >(DecodedLevelData+$0780)
-	.db >(DecodedLevelData+$0870)
-	.db >(SubAreaTileLayout)
+	.db >wLevelDataBuffer
+	.db >(wLevelDataBuffer+$00F0)
+	.db >(wLevelDataBuffer+$01E0)
+	.db >(wLevelDataBuffer+$02D0)
+	.db >(wLevelDataBuffer+$03C0)
+	.db >(wLevelDataBuffer+$04B0)
+	.db >(wLevelDataBuffer+$05A0)
+	.db >(wLevelDataBuffer+$0690)
+	.db >(wLevelDataBuffer+$0780)
+	.db >(wLevelDataBuffer+$0870)
+	.db >(iSubspaceLayout)
 
 
 ;
@@ -3426,37 +3142,37 @@ ENDIF
 ; render the current area's level data.
 ;
 ResetLevelData:
-	LDA #<DecodedLevelData
-	STA byte_RAM_A
-	LDY #>(DecodedLevelData+$0900)
-	STY byte_RAM_B
-	LDY #>(DecodedLevelData-$0100)
+	LDA #<wLevelDataBuffer
+	STA z0a
+	LDY #>(wLevelDataBuffer+$0900)
+	STY z0b
+	LDY #>(wLevelDataBuffer-$0100)
 
 	; Set all tiles to sky
 	LDA #BackgroundTile_Sky
 
 ResetLevelData_Loop:
-	STA (byte_RAM_A), Y
+	STA (z0a), Y
 	DEY
 	CPY #$FF
 	BNE ResetLevelData_Loop
 
-	DEC byte_RAM_B
-	LDX byte_RAM_B
-	CPX #>DecodedLevelData
+	DEC z0b
+	LDX z0b
+	CPX #>wLevelDataBuffer
 	BCS ResetLevelData_Loop
 
 	LDA #$00
-	STA PPUScrollXMirror
-	STA PPUScrollYMirror
-	STA CurrentLevelPageX
-	STA byte_RAM_D5
-	STA byte_RAM_E6
-	STA ScreenYHi
-	STA ScreenYLo
-	STA ScreenBoundaryLeftHi
-	STA ScreenBoundaryLeftLo
-	STA_abs NeedsScroll
+	STA zPPUScrollX
+	STA zPPUScrollY
+	STA iCurrentLvlPageX
+	STA zd5
+	STA ze6
+	STA zScreenYPage
+	STA zScreenY
+	STA iBoundLeftUpper
+	STA iBoundLeftLower
+	STA_abs zScrollArray
 	RTS
 
 
@@ -3471,20 +3187,20 @@ ResetLevelData_Loop:
 ;
 ReadWorldBackgroundColor:
 	; stash X and Y registers
-	STY byte_RAM_E
-	STX byte_RAM_D
+	STY z0e
+	STX z0d
 	; look up the address of the current world's palette
-	LDY CurrentWorldTileset
+	LDY iCurrentWorldTileset
 	LDA WorldBackgroundPalettePointersLo, Y
-	STA byte_RAM_7
+	STA z07
 	LDA WorldBackgroundPalettePointersHi, Y
-	STA byte_RAM_8
+	STA z08
 	; load the color
-	LDY byte_RAM_D
-	LDA (byte_RAM_7), Y
+	LDY z0d
+	LDA (z07), Y
 	; restore prior X and Y registers
-	LDY byte_RAM_E
-	LDX byte_RAM_D
+	LDY z0e
+	LDX z0d
 	RTS
 
 ;
@@ -3498,27 +3214,27 @@ ReadWorldBackgroundColor:
 ;
 ReadWorldSpriteColor:
 	; stash X and Y registers
-	STY byte_RAM_E
-	STX byte_RAM_D
+	STY z0e
+	STX z0d
 	; look up the address of the current world's palette
-	LDY CurrentWorldTileset
+	LDY iCurrentWorldTileset
 	LDA WorldSpritePalettePointersLo, Y
-	STA byte_RAM_7
+	STA z07
 	LDA WorldSpritePalettePointersHi, Y
-	STA byte_RAM_8
+	STA z08
 	; load the color
-	LDY byte_RAM_D
-	LDA (byte_RAM_7), Y
+	LDY z0d
+	LDA (z07), Y
 	; restore prior X and Y registers
-	LDY byte_RAM_E
-	LDX byte_RAM_D
+	LDY z0e
+	LDX z0d
 	RTS
 
 ;
 ; Loads the current area or jar palette
 ;
 LoadCurrentPalette:
-	LDA InSubspaceOrJar
+	LDA iSubAreaFlags
 	CMP #$01
 	BNE LoadCurrentPalette_NotJar
 
@@ -3536,7 +3252,7 @@ LoadCurrentPalette_NotJar:
 ; Read the palette offset from the area header
 LoadCurrentPalette_AreaOffset:
 	LDY #$00
-	LDA (byte_RAM_5), Y
+	LDA (z05), Y
 
 ; End of function LoadCurrentPalette
 
@@ -3548,64 +3264,64 @@ LoadCurrentPalette_AreaOffset:
 ;
 ApplyPalette:
 	; Read background palette index from area header byte
-	STA byte_RAM_F
+	STA z0f
 	AND #%00111000
 	ASL A
 	TAX
 	JSR ReadWorldBackgroundColor
 
 	; Something PPU-related. If it's not right, the colors are very wrong.
-	STA SkyColor
+	STA iSkyColor
 	LDA #$3F
-	STA PPUBuffer_301
+	STA iPPUBuffer
 	LDA #$00
-	STA PPUBuffer_301 + 1
+	STA iPPUBuffer + 1
 	LDA #$20
-	STA PPUBuffer_301 + 2
+	STA iPPUBuffer + 2
 
 	LDY #$00
 ApplyPalette_BackgroundLoop:
 	JSR ReadWorldBackgroundColor
-	STA PPUBuffer_301 + 3, Y
+	STA iPPUBuffer + 3, Y
 	INX
 	INY
 	CPY #$10
 	BCC ApplyPalette_BackgroundLoop
 
 	; Read sprite palette index from area header byte
-	LDA byte_RAM_F
+	LDA z0f
 	AND #$03
 	ASL A
-	STA byte_RAM_F
+	STA z0f
 	ASL A
-	ADC byte_RAM_F
+	ADC z0f
 	ASL A
 	TAX
 
 	LDY #$00
 ApplyPalette_SpriteLoop:
 	JSR ReadWorldSpriteColor
-	STA PPUBuffer_301 + $17, Y
+	STA iPPUBuffer + $17, Y
 	INX
 	INY
 	CPY #$0C
 	BCC ApplyPalette_SpriteLoop
 
 	LDA #$00
-	STA PPUBuffer_301 + $17, Y
+	STA iPPUBuffer + $17, Y
 	LDY #$03
 
 ApplyPalette_PlayerLoop:
-	LDA RestorePlayerPalette0, Y
-	STA PPUBuffer_301 + $13, Y
+	LDA iBackupPlayerPal, Y
+	STA iPPUBuffer + $13, Y
 	DEY
 	BPL ApplyPalette_PlayerLoop
 
 	LDX #$03
 	LDY #$10
 ApplyPalette_SkyLoop:
-	LDA SkyColor
-	STA PPUBuffer_301 + 3, Y
+	LDA iSkyColor
+	STA iPPUBuffer + 3, Y
 	INY
 	INY
 	INY
@@ -3617,49 +3333,49 @@ ApplyPalette_SkyLoop:
 
 
 GenerateSubspaceArea:
-	LDA CurrentLevelArea
-	STA CurrentLevelAreaCopy
+	LDA iCurrentLvlArea
+	STA iCurrentAreaBackup
 	LDA #$30 ; subspace palette (works like area header byte)
-	STA byte_RAM_F ; why...?
+	STA z0f; why...?
 	JSR ApplyPalette
 
-	LDA ScreenBoundaryLeftHi
-	STA byte_RAM_E8
+	LDA iBoundLeftUpper
+	STA ze8
 
-	LDA ScreenBoundaryLeftLo
+	LDA iBoundLeftLower
 	CLC
 	ADC #$08
 	BCC loc_BANK6_9439
 
-	INC byte_RAM_E8
+	INC ze8
 
 loc_BANK6_9439:
 	AND #$F0
 	PHA
 	SEC
 
-	SBC ScreenBoundaryLeftLo
-	STA MoveCameraX
+	SBC iBoundLeftLower
+	STA zXVelocity
 	PLA
 	LSR A
 	LSR A
 	LSR A
 	LSR A
-	STA byte_RAM_E5
+	STA ze5
 	LDA #$00
-	STA byte_RAM_E6
-	LDA byte_RAM_E8
-	STA byte_RAM_D
+	STA ze6
+	LDA ze8
+	STA z0d
 	JSR SetTileOffsetAndAreaPageAddr_Bank6
 
-	LDY byte_RAM_E7
+	LDY ze7
 	LDX #$0F
 
 GenerateSubspaceArea_TileRemapLoop:
-	LDA (byte_RAM_1), Y
+	LDA (z01), Y
 	JSR DoSubspaceTileRemap
 
-	STA SubAreaTileLayout, X
+	STA iSubspaceLayout, X
 	TYA
 	CLC
 	ADC #$10
@@ -3694,8 +3410,8 @@ GenerateSubspaceArea_TileRemapLoop:
 ; - `A`: output tile
 ;
 DoSubspaceTileRemap:
-	STY byte_RAM_8
-	STX byte_RAM_7
+	STY z08
+	STX z07
 	LDX #(SubspaceTilesReplace - SubspaceTilesSearch - 1)
 
 DoSubspaceTileRemap_Loop:
@@ -3717,10 +3433,10 @@ DoSubspaceTileRemap_CheckCreateMushroom:
 	SEC
 	SBC #BackgroundTile_SubspaceMushroom1
 	TAY
-	LDA Mushroom1Pulled, Y
+	LDA iMushroomFlags, Y
 	BNE DoSubspaceTileRemap_AfterCreateMushroom
 
-	LDX byte_RAM_7
+	LDX z07
 	JSR CreateSubspaceMushroomObject
 
 DoSubspaceTileRemap_AfterCreateMushroom:
@@ -3731,8 +3447,8 @@ DoSubspaceTileRemap_ReplaceTile:
 	LDA SubspaceTilesReplace, X
 
 DoSubspaceTileRemap_Exit:
-	LDX byte_RAM_7
-	LDY byte_RAM_8
+	LDX z07
+	LDY z08
 	RTS
 
 
@@ -3741,56 +3457,56 @@ DoSubspaceTileRemap_Exit:
 ;
 ClearSubAreaTileLayout:
 	LDX #$00
-	STX IsHorizontalLevel
+	STX zScrollCondition
 
 ClearSubAreaTileLayout_Loop:
 	LDA #BackgroundTile_Sky
-	STA SubAreaTileLayout, X
+	STA iSubspaceLayout, X
 	INX
 	BNE ClearSubAreaTileLayout_Loop
 
-	LDA CurrentLevelArea
-	STA CurrentLevelAreaCopy
+	LDA iCurrentLvlArea
+	STA iCurrentAreaBackup
 	LDA #$04 ; jar is always area 4
-	STA CurrentLevelArea
+	STA iCurrentLvlArea
 	LDA #$0A
 	JSR HijackLevelDataCopyAddressWithJar
 
 	LDY #$00
 	LDA #$0A
-	STA byte_RAM_E8
-	STA byte_RAM_540
-	STY byte_RAM_E6
-	STY byte_RAM_E5
-	STY GroundType
+	STA ze8
+	STA i540
+	STY ze6
+	STY ze5
+	STY iSurface
 	LDY #$03
-	STY GroundSetting
+	STY iGroundSetting
 	LDY #$04
 	JSR ReadLevelBackgroundData_Page
 
 	; object type
 	LDY #$02
-	LDA (byte_RAM_5), Y
+	LDA (z05), Y
 	AND #%00000011
-	STA ObjectType3Xthru9X
-	LDA (byte_RAM_5), Y
+	STA iSpriteTypeLo
+	LDA (z05), Y
 	LSR A
 	LSR A
 	AND #%00000011
-	STA ObjectTypeAXthruFX
+	STA iSpriteTypeHi
 	JSR HijackLevelDataCopyAddressWithJar
 
 	LDA #$0A
-	STA byte_RAM_E8
+	STA ze8
 	LDA #$00
-	STA byte_RAM_E6
-	STA byte_RAM_E5
+	STA ze6
+	STA ze5
 	LDA #$03
-	STA byte_RAM_4
+	STA z04
 	JSR ReadLevelForegroundData_NextByteObject
 
 	LDA #$01
-	STA IsHorizontalLevel
+	STA zScrollCondition
 	RTS
 
 ;
@@ -3800,18 +3516,18 @@ ClearSubAreaTileLayout_Loop:
 ;
 LoadAreaMusic:
 	LDY #$03
-	LDA (byte_RAM_5), Y
+	LDA (z05), Y
 	AND #%00000011
-	STA CompareMusicIndex
-	CMP CurrentMusicIndex
+	STA iLevelMusic
+	CMP iMusicID
 	BEQ LoadAreaMusic_Exit
 
-	LDA StarInvincibilityTimer
+	LDA iStarTimer
 	CMP #$08
 	BCS LoadAreaMusic_Exit
 
 	LDA #Music2_StopMusic
-	STA MusicQueue2
+	STA iMusic2
 
 LoadAreaMusic_Exit:
 	RTS
@@ -3829,38 +3545,38 @@ Unused_LevelMusicIndexes:
 	.db Music1_Subspace
 
 Unused_ChangeAreaMusic:
-	LDA CompareMusicIndex
-	CMP CurrentMusicIndex
+	LDA iLevelMusic
+	CMP iMusicID
 	BEQ Unused_ChangeAreaMusic_Exit
 
 	TAX
-	STX CurrentMusicIndex
-	LDA StarInvincibilityTimer
+	STX iMusicID
+	LDA iStarTimer
 	CMP #$08
 	BCS LoadAreaMusic_Exit
 
 	LDA Unused_LevelMusicIndexes, X
-	STA MusicQueue1
+	STA iMusic1
 
 Unused_ChangeAreaMusic_Exit:
 	RTS
 
 ; Unreferenced?
-	LDA CurrentLevelPage
+	LDA iCurrentLvlPage
 	ASL A
 	TAY
-	LDA AreaPointersByPage, Y
-	STA CurrentLevel
+	LDA iAreaAddresses, Y
+	STA iCurrentLvl
 	INY
-	LDA AreaPointersByPage, Y
+	LDA iAreaAddresses, Y
 	LSR A
 	LSR A
 	LSR A
 	LSR A
-	STA CurrentLevelArea
-	LDA AreaPointersByPage, Y
+	STA iCurrentLvlArea
+	LDA iAreaAddresses, Y
 	AND #$0F
-	STA CurrentLevelEntryPage
+	STA iCurrentLvlEntryPage
 	RTS
 
 
@@ -3891,88 +3607,57 @@ LoadCurrentArea:
 	; Load initial ground appearance, which determines the tiles used for the background.
 	;
 	LDY #$03
-	LDA (byte_RAM_5), Y
-IFNDEF LEVEL_ENGINE_UPGRADES
+	LDA (z05), Y
 	LSR A
 	AND #%00011100
-ELSE
-	; double available ground types
-	AND #%11110000
-	LSR A
-	LSR A
-ENDIF
 
-	STA GroundType
+	STA iSurface
 
 	; This doesn't hurt, but shouldn't be necessary.
 	JSR RestoreLevelDataCopyAddress
 
-IFDEF ENABLE_LEVEL_OBJECT_MODE
-	; Read level object mode.
-	LDA (byte_RAM_5), Y
-	LSR A
-	LSR A
-	AND #%00000011
-	STA LevelObjectMode
-ENDIF
-
 	; Determine whether this area is Horizontal or vertical.
 	LDY #$00
-	LDA (byte_RAM_5), Y
+	LDA (z05), Y
 	ASL A
 	LDA #$00
 	ROL A
-	STA IsHorizontalLevel
+	STA zScrollCondition
 
 	; Reset the area page so that we can start drawing from the beginning.
 	LDA #$00
-	STA byte_RAM_E8
+	STA ze8
 
 	; Determine the level length (in pages).
 	LDY #$02
-	LDA (byte_RAM_5), Y
+	LDA (z05), Y
 	LSR A
 	LSR A
 	LSR A
 	LSR A
-	STA CurrentLevelPages
+	STA iCurrentLvlPages
 
 	; Determine the object types, which are used to determine which horizontal and vertical blocks are
 	; used, as well as how some climbable objects appear.
-	LDA (byte_RAM_5), Y
+	LDA (z05), Y
 	AND #%00000011
-	STA ObjectType3Xthru9X
-	LDA (byte_RAM_5), Y
+	STA iSpriteTypeLo
+	LDA (z05), Y
 	LSR A
 	LSR A
 	AND #%00000011
-	STA ObjectTypeAXthruFX
+	STA iSpriteTypeHi
 	DEY
-
-IFDEF AREA_HEADER_TILESET
-	; World tileset to use for the area.
-	LDA (byte_RAM_5), Y
-	ROL A
-	ROL A
-	ROL A
-	ROL A
-	AND #%00000111
-	CMP #$07 ; only $00-06 are valid, force $07 to CurrentWorld
-	BCC LoadCurrentArea_IsValid
-	LDA CurrentWorld
-LoadCurrentArea_IsValid:
-	STA CurrentWorldTileset
-ENDIF
 
 	; Load initial ground setting, which determines the shape of the ground layout.
 	;
 	; Using `$1F` skips rendering ground settings entirely, but no areas seem to use it.
-	LDA (byte_RAM_5), Y
+	LDA (z05), Y
 	AND #%00011111
 	CMP #%00011111
 	BEQ LoadCurrentArea_ForegroundData
 
-	STA GroundSetting
+	STA iGroundSetting
 
 	;
 	; ### Process level data
@@ -3995,8 +3680,8 @@ ENDIF
 
 	; Reset the tile placement offset for the first pass.
 	LDA #$00
-	STA byte_RAM_E5
-	STA byte_RAM_E6
+	STA ze5
+	STA ze6
 
 	; Run the first pass of level rendering to apply ground settings and appearance.
 	JSR ReadLevelBackgroundData
@@ -4009,19 +3694,19 @@ ENDIF
 LoadCurrentArea_ForegroundData:
 	; Reset the tile placement offset for the second pass.
 	LDA #$00
-	STA byte_RAM_E6
+	STA ze6
 
 	; Advance to the first object in the level data.
 	LDA #$03
-	STA byte_RAM_4
+	STA z04
 
 	; Run the second pass of level rendering to place regular objects in the level.
 	JSR ReadLevelForegroundData
 
 	; Bootstrap the pseudo-random number generator.
 	LDA #$22
-	ORA byte_RAM_10
-	STA PseudoRNGSeed
+	ORA z10
+	STA iPRNGSeed
 	RTS
 
 
@@ -4029,10 +3714,10 @@ LoadCurrentArea_ForegroundData:
 ; Sets the raw level data pointer to the level data.
 ;
 RestoreLevelDataCopyAddress:
-	LDA #>RawLevelData
-	STA byte_RAM_6
-	LDA #<RawLevelData
-	STA byte_RAM_5
+	LDA #>wRawLevelData
+	STA z06
+	LDA #<wRawLevelData
+	STA z05
 	RTS
 
 
@@ -4042,10 +3727,10 @@ RestoreLevelDataCopyAddress:
 ; This is what allows jars to load so quickly.
 ;
 HijackLevelDataCopyAddressWithJar:
-	LDA #>RawJarData
-	STA byte_RAM_6
-	LDA #<RawJarData
-	STA byte_RAM_5
+	LDA #>wRawJarData
+	STA z06
+	LDA #<wRawJarData
+	STA z05
 	RTS
 
 
@@ -4055,23 +3740,23 @@ HijackLevelDataCopyAddressWithJar:
 ; Reads level data from the beginning and processes individual objects.
 ;
 ; ##### Input
-; - `byte_RAM_4`: raw data offset
+; - `z04`: raw data offset
 ;
 ReadLevelForegroundData:
 	; start at area page 0
 	LDA #$00
-	STA byte_RAM_E8
+	STA ze8
 
 	; weird? the next lines do nothing
 	LDY #$00
 	JMP ReadLevelForegroundData_NextByteObject
 
 ReadLevelForegroundData_NextByteObject:
-	LDY byte_RAM_4
+	LDY z04
 
 ReadLevelForegroundData_NextByte:
 	INY
-	LDA (byte_RAM_5), Y
+	LDA (z05), Y
 	CMP #$FF
 	BNE ReadLevelForegroundData_ProcessObject
 	; Encountering `$FF` indicates the end of the level data.
@@ -4081,21 +3766,21 @@ ReadLevelForegroundData_ProcessObject:
 	; Stash the lower nybble of the first byte.
 	; For a special object, this will be the special object type.
 	; For a regular object, this will be the X position.
-	LDA (byte_RAM_5), Y
+	LDA (z05), Y
 	AND #$0F
-	STA byte_RAM_E5
+	STA ze5
 	; If the upper nybble of the first byte is $F, this is a special object.
-	LDA (byte_RAM_5), Y
+	LDA (z05), Y
 	AND #$F0
 	CMP #$F0
 	BNE ReadLevelForegroundData_RegularObject
 
 ReadLevelForegroundData_SpecialObject:
-	LDA byte_RAM_E5
-	STY byte_RAM_F
+	LDA ze5
+	STY z0f
 	JSR ProcessSpecialObjectForeground
 
-	LDY byte_RAM_F
+	LDY z0f
 	JMP ReadLevelForegroundData_NextByte
 
 ReadLevelForegroundData_RegularObject:
@@ -4104,29 +3789,29 @@ ReadLevelForegroundData_RegularObject:
 	; check object type
 	INY
 	; upper nybble
-	LDA (byte_RAM_5), Y
+	LDA (z05), Y
 	LSR A
 	LSR A
 	LSR A
 	LSR A
-	STA byte_RAM_50E
+	STA i50e
 	CMP #$03
 	BCS ReadLevelForegroundData_RegularObjectWithSize
 
 ReadLevelForegroundData_RegularObjectNoSize:
 	PHA
-	LDA (byte_RAM_5), Y
+	LDA (z05), Y
 	AND #$0F
-	STA byte_RAM_50E
+	STA i50e
 	PLA
 	BEQ ReadLevelForegroundData_RegularObjectNoSize_00
 
 	PHA
 	JSR SetTileOffsetAndAreaPageAddr_Bank6
 
-	LDA (byte_RAM_5), Y
+	LDA (z05), Y
 	AND #$0F
-	STY byte_RAM_4
+	STY z04
 	PLA
 	CMP #$01
 	BNE ReadLevelForegroundData_RegularObjectNoSize_Not10
@@ -4147,16 +3832,16 @@ ReadLevelForegroundData_RegularObjectNoSize_Not20:
 	JMP ReadLevelForegroundData_RegularObject_Exit
 
 ReadLevelForegroundData_RegularObjectWithSize:
-	LDA (byte_RAM_5), Y
+	LDA (z05), Y
 	AND #$0F
-	STA byte_RAM_50D
-	STY byte_RAM_4
+	STA i50d
+	STY z04
 	JSR SetTileOffsetAndAreaPageAddr_Bank6
 
-	LDA byte_RAM_50E
+	LDA i50e
 	SEC
 	SBC #$03
-	STA byte_RAM_50E
+	STA i50e
 	JSR CreateObjects_30thruF0
 
 ReadLevelForegroundData_RegularObject_Exit:
@@ -4165,9 +3850,9 @@ ReadLevelForegroundData_RegularObject_Exit:
 ReadLevelForegroundData_RegularObjectNoSize_00:
 	JSR SetTileOffsetAndAreaPageAddr_Bank6
 
-	LDA (byte_RAM_5), Y
+	LDA (z05), Y
 	AND #$0F
-	STY byte_RAM_4
+	STY z04
 	JSR CreateObjects_00
 
 	JMP ReadLevelForegroundData_RegularObject_Exit
@@ -4181,7 +3866,7 @@ ReadLevelForegroundData_RegularObjectNoSize_00:
 ;
 UpdateAreaYOffset:
 	CLC
-	ADC byte_RAM_E6
+	ADC ze6
 	BCC UpdateAreaYOffset_SamePage
 
 	ADC #$0F
@@ -4194,10 +3879,10 @@ UpdateAreaYOffset_SamePage:
 	LDA #$00
 
 UpdateAreaYOffset_NextPage:
-	INC byte_RAM_E8
+	INC ze8
 
 UpdateAreaYOffset_Exit:
-	STA byte_RAM_E6
+	STA ze6
 	RTS
 
 
@@ -4220,9 +3905,6 @@ ProcessSpecialObjectForeground:
 	.dw ResetPageAndOffsetForeground ; New object layer
 	.dw SetAreaPointer ; Area pointer
 	.dw EatLevelObject1Byte ; Ground appearance
-IFDEF LEVEL_ENGINE_UPGRADES
-	.dw CreateRawTiles
-ENDIF
 
 
 ;
@@ -4238,10 +3920,6 @@ ProcessSpecialObjectBackground:
 	.dw ResetPageAndOffsetBackground ; New object layer
 	.dw SetAreaPointerNoOp ; Area pointer
 	.dw SetGroundType ; Ground appearance
-IFDEF LEVEL_ENGINE_UPGRADES
-	.dw CreateRawTilesNoOp
-ENDIF
-
 
 ;
 ; #### Special Object `$F2` / `$F3`: Skip Page (Foreground)
@@ -4250,18 +3928,18 @@ ENDIF
 ;
 ; ##### Output
 ;
-; - `byte_RAM_E8`: area page
-; - `byte_RAM_E6`: tile placement offset
+; - `ze8`: area page
+; - `ze6`: tile placement offset
 ;
 ;
 
 SkipForwardPage2Foreground:
-	INC byte_RAM_E8
+	INC ze8
 
 SkipForwardPage1Foreground:
-	INC byte_RAM_E8
+	INC ze8
 	LDA #$00
-	STA byte_RAM_E6
+	STA ze6
 	RTS
 
 
@@ -4272,19 +3950,19 @@ SkipForwardPage1Foreground:
 ;
 ; ##### Output
 ;
-; - `byte_RAM_540`: area page
-; - `byte_RAM_E`: tile placement offset
-; - `byte_RAM_9`: tile placement offset (overflow counter)
+; - `i540`: area page
+; - `z0e`: tile placement offset
+; - `z09`: tile placement offset (overflow counter)
 ;
 
 SkipForwardPage2Background:
-	INC byte_RAM_540
+	INC i540
 
 SkipForwardPage1Background:
-	INC byte_RAM_540
+	INC i540
 	LDA #$00
-	STA byte_RAM_E
-	STA byte_RAM_9
+	STA z0e
+	STA z09
 	RTS
 
 ;
@@ -4293,13 +3971,13 @@ SkipForwardPage1Background:
 ; Unreferenced?
 ;
 EatLevelObject2Bytes:
-	INC byte_RAM_F
+	INC z0f
 
 ;
 ; Advances one byte in the level data.
 ;
 EatLevelObject1Byte:
-	INC byte_RAM_F
+	INC z0f
 	RTS
 
 
@@ -4309,133 +3987,26 @@ EatLevelObject1Byte:
 ; Sets the area pointer for this page.
 ;
 ; ##### Input
-; - `byte_RAM_F`: level data byte offset
-; - `byte_RAM_E8`: area page
+; - `z0f`: level data byte offset
+; - `ze8`: area page
 ;
 ; ##### Output
-; - `byte_RAM_F`: level data byte offset
+; - `z0f`: level data byte offset
 ;
 SetAreaPointer:
-	LDY byte_RAM_F
+	LDY z0f
 	INY
-	LDA byte_RAM_E8
+	LDA ze8
 	ASL A
 	TAX
-	LDA (byte_RAM_5), Y
-	STA AreaPointersByPage, X
+	LDA (z05), Y
+	STA iAreaAddresses, X
 	INY
 	INX
-	LDA (byte_RAM_5), Y
-	STA AreaPointersByPage, X
-	STY byte_RAM_F
+	LDA (z05), Y
+	STA iAreaAddresses, X
+	STY z0f
 	RTS
-
-
-IFDEF LEVEL_ENGINE_UPGRADES
-;
-; #### Special Object `$F7`
-;
-; Creates a run of 1-16 arbitrary tiles.
-;
-; #### Usage: `$F7 $YX $WL ...`
-; - `Y`: relative Y offset on page
-; - `X`: X position on page
-; - `W`: wrap width (eg. 0 for no wrap, 2 for 2-tiles wide, etc.)
-; - `L`: run length, L+1 subsequent bytes are the raw tiles
-;
-CreateRawTiles:
-	LDY byte_RAM_F
-
-	; setting the page address allows this to be the first object of an area
-	LDX byte_RAM_E8
-	JSR SetAreaPageAddr_Bank6
-
-	INY
-	; read tile placement offset
-	LDA (byte_RAM_5), Y
-	CLC
-	ADC byte_RAM_E6 ; add current offset
-	STA byte_RAM_E7 ; target tile placement offset
-
-	; apply page Y offset
-	LDA (byte_RAM_5), Y
-	AND #$F0
-	JSR UpdateAreaYOffset
-
-	INY
-	; read run length
-	LDA (byte_RAM_5), Y
-	AND #$0F
-	STA byte_RAM_50D
-
-	; read wrap length
-	LDA (byte_RAM_5), Y
-	LSR A
-	LSR A
-	LSR A
-	LSR A
-	STA byte_RAM_50E
-
-	; start counting from 0
-	LDX #$00
-
-	; everything afterwards is raw data
-CreateRawTiles_Loop:
-	; increment and stash Y
-	INY
-	TYA
-	PHA
-
-	; write the next tile
-	LDA (byte_RAM_5), Y
-	LDY byte_RAM_E7
-	STA (byte_RAM_1), Y
-
-	; increment x-position (crossing page as necessary)
-	JSR IncrementAreaXOffset
-	STY byte_RAM_E7
-
-	; are we wrapping this run of tiles?
-	LDA byte_RAM_50E
-	BEQ CreateRawTiles_NoWrap
-
-	; increment y-position if we hit the wrap point
-	TXA
-	CLC
-	ADC #$01
-CreateRawTiles_CheckWrap:
-	SEC
-	SBC byte_RAM_50E
-	BMI CreateRawTiles_NoWrap
-	BNE CreateRawTiles_CheckWrap
-
-CreateRawTiles_Wrap:
-	TXA
-	PHA
-	JSR IncrementAreaYOffset
-	SEC
-	SBC byte_RAM_50E
-	TAY
-	STY byte_RAM_E7
-	PLA
-	TAX
-
-CreateRawTiles_NoWrap:
-	; restore Y and iterate
-	PLA
-	TAY
-
-	CPX byte_RAM_50D
-	INX
-	BCC CreateRawTiles_Loop
-
-	; update level data offset
-	STY byte_RAM_F
-
-CreateRawTilesNoOp:
-	RTS
-ENDIF
-
 
 ;
 ; Use top 3 bits for the X offset of a ground setting object
@@ -4444,9 +4015,9 @@ ENDIF
 ; - `A`: 0-7
 ;
 ReadGroundSettingOffset:
-	LDY byte_RAM_F
+	LDY z0f
 	INY
-	LDA (byte_RAM_5), Y
+	LDA (z05), Y
 	AND #%11100000
 	LSR A
 	LSR A
@@ -4465,10 +4036,10 @@ ReadGroundSettingOffset:
 ;
 ; #### Input
 ; - `A`: Relative offset (0-7)
-; - `byte_RAM_F`: level data byte offset
+; - `z0f`: level data byte offset
 ;
 ; #### Output
-; - `byte_RAM_E`: tile placement offset
+; - `z0e`: tile placement offset
 ;
 SetGroundSettingA:
 	JSR ReadGroundSettingOffset
@@ -4480,16 +4051,16 @@ SetGroundSettingB:
 	ADC #$08
 
 SetGroundSetting:
-	STA byte_RAM_E
-	LDA IsHorizontalLevel
+	STA z0e
+	LDA zScrollCondition
 	BNE SetGroundSetting_Exit
 
-	LDA byte_RAM_E
+	LDA z0e
 	ASL A
 	ASL A
 	ASL A
 	ASL A
-	STA byte_RAM_E
+	STA z0e
 
 SetGroundSetting_Exit:
 	RTS
@@ -4502,13 +4073,13 @@ SetGroundSetting_Exit:
 ;
 ; ##### Output
 ;
-; - `byte_RAM_E8`: area page
-; - `byte_RAM_E6`: tile placement offset
+; - `ze8`: area page
+; - `ze6`: tile placement offset
 ;
 ResetPageAndOffsetForeground:
 	LDA #$00
-	STA byte_RAM_E8 ; area page
-	STA byte_RAM_E6 ; tile placement offset
+	STA ze8 ; area page
+	STA ze6 ; tile placement offset
 	RTS
 
 
@@ -4519,13 +4090,13 @@ ResetPageAndOffsetForeground:
 ;
 ; ##### Output
 ;
-; - `byte_RAM_540`: area page
-; - `byte_RAM_E`: tile placement offset
+; - `i540`: area page
+; - `z0e`: tile placement offset
 ;
 ResetPageAndOffsetBackground:
 	LDA #$00
-	STA byte_RAM_540
-	STA byte_RAM_E
+	STA i540
+	STA z0e
 	RTS
 
 
@@ -4543,16 +4114,16 @@ SetAreaPointerNoOp:
 ;
 ; ##### Output
 ;
-; `GroundType`: the ground type used for drawing the background
+; `iSurface`: the ground type used for drawing the background
 ;
 SetGroundType:
-	LDY byte_RAM_F
+	LDY z0f
 	INY
-	LDA (byte_RAM_5), Y
+	LDA (z05), Y
 	AND #%00001111
 	ASL A
 	ASL A
-	STA GroundType
+	STA iSurface
 	RTS
 
 
@@ -4569,28 +4140,28 @@ SetGroundType:
 ;
 ReadLevelBackgroundData:
 	LDA #$00
-	STA byte_RAM_540
+	STA i540
 
 ReadLevelBackgroundData_Page:
 	LDA #$00
-	STA byte_RAM_9
+	STA z09
 
 ReadLevelBackgroundData_Object:
-	LDA (byte_RAM_5), Y
+	LDA (z05), Y
 	CMP #$FF
 	BNE ReadLevelBackgroundData_ProcessObject
 
 	; Encountering `$FF` indicates the end of the level data.
 	; We need to render the remaining ground setting through the end of the last page in the area.
 	LDA #$0A
-	STA byte_RAM_540
-	INC byte_RAM_540
+	STA i540
+	INC i540
 	LDA #$00
-	STA byte_RAM_E
+	STA z0e
 	JMP ReadLevelBackgroundData_RenderGround
 
 ReadLevelBackgroundData_ProcessObject:
-	LDA (byte_RAM_5), Y
+	LDA (z05), Y
 	AND #$F0
 	BEQ ReadLevelBackgroundData_ProcessObject_Advance2Bytes
 
@@ -4601,14 +4172,14 @@ ReadLevelBackgroundData_ProcessObject:
 ; First byte of `$FX` indicates a special object.
 ;
 ReadLevelBackgroundData_ProcessSpecialObject:
-	LDA (byte_RAM_5), Y
+	LDA (z05), Y
 	AND #$0F
-	STY byte_RAM_F
+	STY z0f
 	JSR ProcessSpecialObjectBackground
 
 	; Determine how many more bytes to advance after processing the special object.
-	LDY byte_RAM_F
-	LDA (byte_RAM_5), Y
+	LDY z0f
+	LDA (z05), Y
 	AND #$0F
 
 	; Ground setting `$F0` / `$F1` should render the previous ground setting
@@ -4640,11 +4211,11 @@ ReadLevelBackgroundData_ProcessObject_AdvanceByte:
 ; Processes a regular object, as indicated by a value of `$0X-$EX` in the first byte.
 ;
 ; ##### Input
-; - `byte_RAM_9`: tile placement offset (overflow counter)
+; - `z09`: tile placement offset (overflow counter)
 ;
 ; ##### Output
-; - `byte_RAM_540`: area page
-; - `byte_RAM_9`: tile placement offset (overflow counter)
+; - `i540`: area page
+; - `z09`: tile placement offset (overflow counter)
 ;
 ; Since we're only processing background objects, all this needs to do is look at the object offset
 ; and advance the tile placement cursor and current page as needed.
@@ -4660,7 +4231,7 @@ ReadLevelBackgroundData_ProcessObject_AdvanceByte:
 ;
 ReadLevelBackgroundData_ProcessRegularObject:
 	CLC
-	ADC byte_RAM_9
+	ADC z09
 	BCC ReadLevelBackgroundData_ProcessRegularObject_SamePage
 
 	; The object position overflowed to the next page.
@@ -4674,10 +4245,10 @@ ReadLevelBackgroundData_ProcessRegularObject_SamePage:
 	LDA #$00
 
 ReadLevelBackgroundData_ProcessRegularObject_NextPage:
-	INC byte_RAM_540
+	INC i540
 
 ReadLevelBackgroundData_ProcessRegularObject_Exit:
-	STA byte_RAM_9
+	STA z09
 	JMP ReadLevelBackgroundData_ProcessObject_Advance2Bytes
 
 
@@ -4689,11 +4260,11 @@ ReadLevelBackgroundData_ProcessRegularObject_Exit:
 ; render the current ground setting through the end of the area.
 ;
 ; #### Input
-; - `byte_RAM_E8`: area page
-; - `byte_RAM_E5`: tile placement offset shift
-; - `byte_RAM_E6`: previous tile placement offset
-; - `byte_RAM_540`: area page (end)
-; - `byte_RAM_E`: tile placement offset (end)
+; - `ze8`: area page
+; - `ze5`: tile placement offset shift
+; - `ze6`: previous tile placement offset
+; - `i540`: area page (end)
+; - `z0e`: tile placement offset (end)
 ;
 ; #### Output
 ;
@@ -4702,20 +4273,20 @@ ReadLevelBackgroundData_RenderGround:
 
 	JSR LoadGroundSetData
 
-	LDA IsHorizontalLevel
+	LDA zScrollCondition
 	BEQ ReadLevelBackgroundData_RenderGround_Vertical
 
 ReadLevelBackgroundData_RenderGround_Horizontal:
 	; Increment the column.
-	INC byte_RAM_E5
-	LDA byte_RAM_E5
+	INC ze5
+	LDA ze5
 	CMP #$10
 	BNE ReadLevelBackgroundData_RenderGround_CheckComplete
 
 	; Increment the page and reset to the first column.
-	INC byte_RAM_E8
+	INC ze8
 	LDA #$00
-	STA byte_RAM_E5
+	STA ze5
 	JMP ReadLevelBackgroundData_RenderGround_CheckComplete
 
 
@@ -4726,39 +4297,39 @@ ReadLevelBackgroundData_RenderGround_Vertical:
 
 ReadLevelBackgroundData_RenderGround_CheckComplete:
 	; If there are more pages to render with this ground setting, keep going.
-	LDA byte_RAM_E8
-	CMP byte_RAM_540
+	LDA ze8
+	CMP i540
 	BNE ReadLevelBackgroundData_RenderGround
 
-	LDA IsHorizontalLevel
+	LDA zScrollCondition
 	BEQ ReadLevelBackgroundData_RenderGround_CheckComplete_Vertical
 
 ReadLevelBackgroundData_RenderGround_CheckComplete_Horizontal:
 	; If there is more to render with this ground setting, keep going.
-	LDA byte_RAM_E5
-	CMP byte_RAM_E
+	LDA ze5
+	CMP z0e
 	BCC ReadLevelBackgroundData_RenderGround
 
 	; Otherwise, move on and process the next object.
 	BCS ReadLevelBackgroundData_RenderGround_Exit
 
 ReadLevelBackgroundData_RenderGround_CheckComplete_Vertical:
-	LDA byte_RAM_E6
-	CMP byte_RAM_E
+	LDA ze6
+	CMP z0e
 	BCC ReadLevelBackgroundData_RenderGround
 
 ReadLevelBackgroundData_RenderGround_Exit:
-	LDA (byte_RAM_5), Y
+	LDA (z05), Y
 	; Encountering `$FF` indicates the end of the level data.
 	CMP #$FF
 	BEQ ReadGroundSetByte_Exit
 
-	; Otherwise this was triggered because we encountered a ground setting object, so `GroundSetting`
+	; Otherwise this was triggered because we encountered a ground setting object, so `iGroundSetting`
 	; for the next time we need to render the ground.
 	INY
-	LDA (byte_RAM_5), Y
+	LDA (z05), Y
 	AND #$1F
-	STA GroundSetting
+	STA iGroundSetting
 	JMP ReadLevelBackgroundData_ProcessObject_AdvanceByte
 
 ; -----
@@ -4774,7 +4345,7 @@ ReadLevelBackgroundData_RenderGround_Exit:
 ; - `A`: Byte containing the 4 ground appearance bit pairs for the offset
 ;
 ReadGroundSetByte:
-	LDA IsHorizontalLevel
+	LDA zScrollCondition
 	BNE ReadGroundSetByte_Vertical
 
 	LDA VerticalGroundSetData, X
@@ -4791,17 +4362,17 @@ ReadGroundSetByte_Exit:
 ; Draws the current ground setting and type to the raw tile buffer.
 ;
 ; ##### Input
-; - `GroundSetting`: current ground setting
-; - `GroundType`: current ground appearance
-; - `byte_RAM_E7`: tile placement offset
+; - `iGroundSetting`: current ground setting
+; - `iSurface`: current ground appearance
+; - `ze7`: tile placement offset
 ;
 LoadGroundSetData:
-	STY byte_RAM_4
-	LDA GroundSetting
+	STY z04
+	LDA iGroundSetting
 	ASL A
 	ASL A
 	TAX
-	LDY byte_RAM_E7
+	LDY ze7
 
 LoadGroundSetData_Loop:
 	JSR ReadGroundSetByte
@@ -4820,7 +4391,7 @@ LoadGroundSetData_Loop:
 
 	JSR WriteGroundSetTiles4
 
-	LDA IsHorizontalLevel
+	LDA zScrollCondition
 	BEQ LoadGroundSetData_Horizontal
 
 	INX
@@ -4835,7 +4406,7 @@ LoadGroundSetData_Horizontal:
 	BNE LoadGroundSetData_Loop
 
 LoadGroundSetData_Exit:
-	LDY byte_RAM_4
+	LDY z04
 	RTS
 
 ;
@@ -4856,14 +4427,14 @@ WriteGroundSetTiles3:
 
 WriteGroundSetTiles4:
 	AND #$03
-	STX byte_RAM_3
+	STX z03
 	; This `BEQ` is what effectively ignores the first index of the groundset tiles lookup tables.
 	BEQ WriteGroundSetTiles_AfterWriteTile
 
 	CLC
-	ADC GroundType
+	ADC iSurface
 	TAX
-	LDA IsHorizontalLevel
+	LDA zScrollCondition
 	BNE WriteGroundSetTiles_Horizontal
 
 	JSR ReadGroundTileVertical
@@ -4874,11 +4445,11 @@ WriteGroundSetTiles_Horizontal:
 	JSR ReadGroundTileHorizontal
 
 WriteGroundSetTiles_WriteTile:
-	STA (byte_RAM_1), Y
+	STA (z01), Y
 
 WriteGroundSetTiles_AfterWriteTile:
-	LDX byte_RAM_3
-	LDA IsHorizontalLevel
+	LDX z03
+	LDA zScrollCondition
 	BNE WriteGroundSetTiles_IncrementYOffset
 
 	INY
@@ -4893,32 +4464,32 @@ WriteGroundSetTiles_IncrementYOffset:
 
 
 ReadGroundTileHorizontal:
-	STX byte_RAM_C
-	STY byte_RAM_D
-	LDX CurrentWorldTileset
+	STX z0c
+	STY z0d
+	LDX iCurrentWorldTileset
 	LDA GroundTilesHorizontalLo, X
-	STA byte_RAM_7
+	STA z07
 	LDA GroundTilesHorizontalHi, X
-	STA byte_RAM_8
-	LDY byte_RAM_C
-	LDA (byte_RAM_7), Y
-	LDX byte_RAM_C
-	LDY byte_RAM_D
+	STA z08
+	LDY z0c
+	LDA (z07), Y
+	LDX z0c
+	LDY z0d
 	RTS
 
 
 ReadGroundTileVertical:
-	STX byte_RAM_C
-	STY byte_RAM_D
-	LDX CurrentWorldTileset
+	STX z0c
+	STY z0d
+	LDX iCurrentWorldTileset
 	LDA GroundTilesVerticalLo, X
-	STA byte_RAM_7
+	STA z07
 	LDA GroundTilesVerticalHi, X
-	STA byte_RAM_8
-	LDY byte_RAM_C
-	LDA (byte_RAM_7), Y
-	LDX byte_RAM_C
-	LDY byte_RAM_D
+	STA z08
+	LDY z0c
+	LDA (z07), Y
+	LDX z0c
+	LDY z0d
 	RTS
 
 
@@ -4926,23 +4497,23 @@ ReadGroundTileVertical:
 ; Updates the area page and tile placement offset
 ;
 ; ##### Input
-; - `byte_RAM_E8`: area page
-; - `byte_RAM_E5`: tile placement offset shift
-; - `byte_RAM_E6`: previous tile placement offset
+; - `ze8`: area page
+; - `ze5`: tile placement offset shift
+; - `ze6`: previous tile placement offset
 ;
 ; ##### Output
-; - `byte_RAM_1`: low byte of decoded level data RAM
-; - `byte_RAM_2`: high byte of decoded level data RAM
-; - `byte_RAM_E7`: target tile placement offset
+; - `z01`: low byte of decoded level data RAM
+; - `z02`: high byte of decoded level data RAM
+; - `ze7`: target tile placement offset
 ;
 SetTileOffsetAndAreaPageAddr_Bank6:
-	LDX byte_RAM_E8
+	LDX ze8
 	JSR SetAreaPageAddr_Bank6
 
-	LDA byte_RAM_E6
+	LDA ze6
 	CLC
-	ADC byte_RAM_E5
-	STA byte_RAM_E7
+	ADC ze5
+	STA ze7
 	RTS
 
 ;
@@ -4952,14 +4523,14 @@ SetTileOffsetAndAreaPageAddr_Bank6:
 ; - `X`: area page
 ;
 ; ##### Output
-; - `byte_RAM_1`: low byte of decoded level data RAM
-; - `byte_RAM_2`: high byte of decoded level data RAM
+; - `z01`: low byte of decoded level data RAM
+; - `z02`: high byte of decoded level data RAM
 ;
 SetAreaPageAddr_Bank6:
 	LDA DecodedLevelPageStartLo_Bank6, X
-	STA byte_RAM_1
+	STA z01
 	LDA DecodedLevelPageStartHi_Bank6, X
-	STA byte_RAM_2
+	STA z02
 	RTS
 
 
@@ -4973,12 +4544,12 @@ IncrementAreaXOffset:
 	SEC
 	SBC #$10
 	TAY
-	STX byte_RAM_B
-	LDX byte_RAM_E8
+	STX z0b
+	LDX ze8
 	INX
-	STX byte_RAM_D
+	STX z0d
 	JSR SetAreaPageAddr_Bank6
-	LDX byte_RAM_B
+	LDX z0b
 
 IncrementAreaXOffset_Exit:
 	RTS
@@ -4994,7 +4565,7 @@ IncrementAreaYOffset:
 	BCC IncrementAreaYOffset_Exit
 
 	; increment the area page
-	LDX byte_RAM_E8
+	LDX ze8
 	INX
 	JSR SetAreaPageAddr_Bank6
 
@@ -5006,30 +4577,28 @@ IncrementAreaYOffset_Exit:
 	RTS
 
 
-IFNDEF DISABLE_DOOR_POINTERS
 ;
 ; Consume the object as an area pointer. This overwrites any existing area
 ; pointer for this page.
 ;
 LevelParser_EatDoorPointer:
-	LDY byte_RAM_4
+	LDY z04
 	INY
-	LDA (byte_RAM_5), Y
-	STA byte_RAM_7
+	LDA (z05), Y
+	STA z07
 	INY
-	LDA (byte_RAM_5), Y
-	STA byte_RAM_8
-	STY byte_RAM_4
-	LDA byte_RAM_E8
+	LDA (z05), Y
+	STA z08
+	STY z04
+	LDA ze8
 	ASL A
 	TAY
-	LDA byte_RAM_7
-	STA AreaPointersByPage, Y
+	LDA z07
+	STA iAreaAddresses, Y
 	INY
-	LDA byte_RAM_8
-	STA AreaPointersByPage, Y
+	LDA z08
+	STA iAreaAddresses, Y
 	RTS
-ENDIF
 
 ;
 ; High byte of the PPU scroll offset for nametable B.
@@ -5051,9 +4620,9 @@ PPUScrollHiOffsets_Bank6:
 ; - `Y`: 0 = vertical, 1 = horizontal
 ;
 ; ##### Output
-; - `PPUScrollYHiMirror`
-; - `PPUScrollXHiMirror`
-; - `PPUScrollCheckHi`: PPU scroll offset high byte
+; - `zYScrollPage`
+; - `zXScrollPage`
+; - `iPPUBigScrollCheck`: PPU scroll offset high byte
 ;
 ResetPPUScrollHi_Bank6:
 	LSR A
@@ -5061,20 +4630,20 @@ ResetPPUScrollHi_Bank6:
 
 ResetPPUScrollHi_NametableA_Bank6:
 	LDA #$01
-	STA PPUScrollXHiMirror
+	STA zXScrollPage
 	ASL A
-	STA PPUScrollYHiMirror
+	STA zYScrollPage
 	LDA #$20
 	BNE ResetPPUScrollHi_Exit_Bank6
 
 ResetPPUScrollHi_NametableB_Bank6:
 	LDA #$00
-	STA PPUScrollXHiMirror
-	STA PPUScrollYHiMirror
+	STA zXScrollPage
+	STA zYScrollPage
 	LDA PPUScrollHiOffsets_Bank6, Y
 
 ResetPPUScrollHi_Exit_Bank6:
-	STA PPUScrollCheckHi
+	STA iPPUBigScrollCheck
 	RTS
 
 
@@ -5089,58 +4658,58 @@ CreateSubspaceMushroomObject:
 	TXA
 	PHA
 	AND #$F0
-	STA ObjectYLo
+	STA zObjectYLo
 	TXA
 	ASL A
 	ASL A
 	ASL A
 	ASL A
-	STA ObjectXLo
+	STA zObjectXLo
 
 	; Subspace is page `$0A`.
 	LDA #$0A
-	STA ObjectXHi
+	STA zObjectXHi
 	LDX #$00
-	STX byte_RAM_12
-	STX ObjectYHi
+	STX z12
+	STX zObjectYHi
 
 	; Create a living fungus.
 	; Even most of this routine uses an enemy slot offset, the next few lines assume slot 0.
 	; We just set `X` to 0, so this is a safe enough assumption.
 	LDA #Enemy_Mushroom
-	STA ObjectType
+	STA zObjectType
 	LDA #EnemyState_Alive
-	STA EnemyState
+	STA zEnemyState
 	; Keep track of which mushroom so that you can't collect it twice.
-	STY EnemyVariable
+	STY zObjectVariables
 
 	; Reset various object timers and attributes
 	LDA #$00
-	STA ObjectTimer1, X
-	STA EnemyArray_B1, X
-	STA ObjectBeingCarriedTimer, X
-	STA ObjectAnimationTimer, X
-	STA ObjectShakeTimer, X
-	STA EnemyCollision, X
-	STA ObjectStunTimer, X
-	STA ObjectTimer2, X
-	STA ObjectFlashTimer, X
-	STA ObjectYVelocity, X
-	STA ObjectXVelocity, X
+	STA zSpriteTimer, X
+	STA zEnemyArray, X
+	STA zHeldObjectTimer, X
+	STA zObjectAnimTimer, X
+	STA iObjectShakeTimer, X
+	STA zEnemyCollision, X
+	STA iObjectStunTimer, X
+	STA iSpriteTimer, X
+	STA iObjectFlashTimer, X
+	STA zObjectYVelocity, X
+	STA zObjectXVelocity, X
 
 	; Load various object attributes for a mushroom
-	LDY ObjectType, X
+	LDY zObjectType, X
 	LDA ObjectAttributeTable, Y
 	AND #$7F
-	STA ObjectAttributes, X
+	STA zObjectAttributes, X
 	LDA EnemyArray_46E_Data, Y
-	STA EnemyArray_46E, X
+	STA i46e, X
 	LDA ObjectHitbox_Data, Y
-	STA ObjectHitbox, X
+	STA iObjectHitbox, X
 	LDA EnemyArray_492_Data, Y
-	STA EnemyArray_492, X
+	STA i492, X
 	LDA #$FF
-	STA EnemyRawDataOffset, X
+	STA iEnemyRawDataOffset, X
 
 	; Restore X to its previous value
 	PLA

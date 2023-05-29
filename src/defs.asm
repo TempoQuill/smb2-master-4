@@ -58,46 +58,25 @@ APUOffset_Triangle = $08
 APUOffset_Noise = $0C
 
 ; enum Music1
-IFNDEF EXPAND_MUSIC
-  Music1_Overworld = $01
-  Music1_CharacterSelect = $02
-  Music1_Inside = $04
-  Music1_Boss = $08
-  Music1_Invincible = $10
-  Music1_Subspace = $20
-  Music1_Wart = $40
-  Music1_Title = $80
-ELSE
-  Music1_Overworld = $01
-  Music1_CharacterSelect = $02
-  Music1_Inside = $03
-  Music1_Boss = $04
-  Music1_Invincible = $05
-  Music1_Subspace = $06
-  Music1_Wart = $07
-  Music1_Title = $08
-ENDIF
+Music1_Overworld = $01
+Music1_CharacterSelect = $02
+Music1_Inside = $04
+Music1_Boss = $08
+Music1_Invincible = $10
+Music1_Subspace = $20
+Music1_Wart = $40
+Music1_Title = $80
 
 ; ---------------------------------------------------------------------------
 
 ; enum Music2
-IFNDEF EXPAND_MUSIC
-  Music2_MushroomGetJingle = $01
-  Music2_BossClearFanfare = $02
-  Music2_EndingAndCast = $04
-  Music2_DeathJingle = $08
-  Music2_GameOver = $10
-  Music2_CrystalGetFanfare = $20
-  Music2_SlotWarpFanfare = $40
-ELSE
-  Music2_MushroomGetJingle = $01
-  Music2_BossClearFanfare = $02
-  Music2_EndingAndCast = $03
-  Music2_DeathJingle = $04
-  Music2_GameOver = $05
-  Music2_CrystalGetFanfare = $06
-  Music2_SlotWarpFanfare = $07
-ENDIF
+Music2_MushroomGetJingle = $01
+Music2_BossClearFanfare = $02
+Music2_EndingAndCast = $04
+Music2_DeathJingle = $08
+Music2_GameOver = $10
+Music2_CrystalGetFanfare = $20
+Music2_SlotWarpFanfare = $40
 Music2_StopMusic = $80
 
 ; ---------------------------------------------------------------------------
@@ -115,25 +94,14 @@ ControllerInput_A = %10000000
 ; ---------------------------------------------------------------------------
 
 ; enum DPCM (width 1 byte)
-IFNDEF EXPAND_MUSIC
-  DPCM_DoorOpenBombBom = $01
-  DPCM_DrumSample_A = $02
-  DPCM_PlayerHurt = $04
-  DPCM_ItemPull = $08
-  DPCM_BossDeath = $10
-  DPCM_DrumSample_B = $20
-  DPCM_BossHurt = $40
-  DPCM_PlayerDeath = $80
-ELSE
-  DPCM_DoorOpenBombBom = $01
-  DPCM_DrumSample_A = $02
-  DPCM_PlayerHurt = $03
-  DPCM_ItemPull = $04
-  DPCM_BossDeath = $05
-  DPCM_DrumSample_B = $06
-  DPCM_BossHurt = $07
-  DPCM_PlayerDeath = $08
-ENDIF
+DPCM_DoorOpenBombBom = $01
+DPCM_DrumSample_A = $02
+DPCM_PlayerHurt = $04
+DPCM_ItemPull = $08
+DPCM_BossDeath = $10
+DPCM_DrumSample_B = $20
+DPCM_BossHurt = $40
+DPCM_PlayerDeath = $80
 
 ; ---------------------------------------------------------------------------
 
@@ -253,11 +221,11 @@ SpriteAnimation_Climbing = $0A
 
 ; ---------------------------------------------------------------------------
 
-; enum PlayerHealthValues
-PlayerHealth_1_HP = $0F
-PlayerHealth_2_HP = $1F
-PlayerHealth_3_HP = $2F
-PlayerHealth_4_HP = $3F
+; enum iPlayerHPValues
+iPlayerHP_1_HP = $0F
+iPlayerHP_2_HP = $1F
+iPlayerHP_3_HP = $2F
+iPlayerHP_4_HP = $3F
 
 ; ---------------------------------------------------------------------------
 

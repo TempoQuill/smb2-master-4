@@ -12,7 +12,7 @@
 ;
 ; Table to determine what "total" index a given
 ; level + area is. Get the starting area from this
-; table (based on CurrentLevel) and add the area to it
+; table (based on iCurrentLvl) and add the area to it
 ;
 LevelAreaStartIndexes:
 	.db $00 ; Level 1-1
@@ -48,7 +48,7 @@ include "src/levels/level-data.asm"
 
 
 ; Pad out any remaining space
-; @TODO Verify that this is OK if unused space is reclaimed
+; Unused space in the original ($A420 - $A4FF)
 LevelData_Unused:
 unusedSpace $A500,$FF
 

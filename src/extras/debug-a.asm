@@ -43,19 +43,19 @@ DebugMenu_Init:
 	STA Debug_CurrentMenuOption
 
 	; Copy current stats
-	LDA CurrentCharacter
+	LDA zCurrentCharacter
 	STA Debug_Character
-	LDA ExtraLives
+	LDA iExtraMen
 	STA Debug_Lives
-	LDA Continues
+	LDA iNumContinues
 	STA Debug_Continues
-	LDA PlayerHealth
+	LDA iPlayerHP
 	LSR A
 	LSR A
 	LSR A
 	LSR A
 	STA Debug_Health
-	LDA PlayerMaxHealth
+	LDA iPlayerMaxHP
 	CLC
 	ADC #$01
 	CMP #$03
@@ -65,13 +65,13 @@ DebugMenu_Init:
 	STA Debug_MaxHealth
 
 	; Set current level
-	LDA CurrentLevel
+	LDA iCurrentLvl
 	STA Debug_Level
 	; Set current area
-	LDA CurrentLevelArea
-	LDY InSubspaceOrJar
+	LDA iCurrentLvlArea
+	LDY iSubAreaFlags
 	BEQ +
-	LDA CurrentLevelArea_Init
+	LDA iCurrentLevelArea_Init
 	BPL +
 	+
 	STA Debug_Area
@@ -80,7 +80,7 @@ DebugMenu_Init:
 
 	; Turn off the PPU immediately (avoids a glitched frame)
 	LDA #$00
-	STA PPUMaskMirror
+	STA zPPUMask
 	STA PPUMASK
 
 	JSR WaitForNMI
@@ -95,17 +95,17 @@ DebugMenu_Init:
 	JSR ClearNametablesAndSprites
 
 	LDA #CHRBank_EnemiesIce
-	STA BackgroundCHR1
+	STA iBGCHR1
 	LDA #CHRBank_TitleScreenBG2
-	STA BackgroundCHR2
+	STA iBGCHR2
 	LDA #CHRBank_EnemiesGrass
-	STA SpriteCHR1
+	STA iObjCHR1
 	LDA #CHRBank_EnemiesDesert
-	STA SpriteCHR2
+	STA iObjCHR2
 	LDA #CHRBank_CharacterSelectSprites
-	STA SpriteCHR3
+	STA iObjCHR3
 	LDA #CHRBank_Animated1 + 1
-	STA SpriteCHR4
+	STA iObjCHR4
 
 	JSR EnableNMI
 
@@ -145,7 +145,7 @@ DebugMenu_MenuLoop:
 	JSR DebugMenu_UpdateCursor
 	JSR DebugMenu_UpdateCharacterSprite
 
-	LDA Player1JoypadPress ; Check if we should abort
+	LDA zInputBottleneck ; Check if we should abort
 	CMP #ControllerInput_B
 	BEQ DebugMenu_DoReturn
 
@@ -213,7 +213,7 @@ DebugMenu_WorldTileOffset:
 
 
 DebugMenu_Return:
-	LDA Player1JoypadPress
+	LDA zInputBottleneck
 	CMP #ControllerInput_Start
 	BEQ DebugMenu_DoReturn
 DebugMenu_JumpMenuLoop:
@@ -229,7 +229,7 @@ DebugMenu_DoReturn:
 
 
 DebugMenu_RestartArea:
-	LDA Player1JoypadPress
+	LDA zInputBottleneck
 	CMP #ControllerInput_Start
 	BNE DebugMenu_JumpMenuLoop
 
@@ -244,13 +244,13 @@ DebugMenu_DoRestartArea:
 
 
 DebugMenu_StartLevel:
-	LDA Player1JoypadPress
+	LDA zInputBottleneck
 	CMP #ControllerInput_Start
 	BNE DebugMenu_JumpMenuLoop
 
 DebugMenu_DoStartLevel:
 	LDA #Music2_StopMusic
-	STA MusicQueue2
+	STA iMusic2
 
 	JSR WaitForNMI
 
@@ -262,24 +262,24 @@ DebugMenu_DoStartLevel:
 
 	; Set the current character
 	LDA Debug_Character
-	STA CurrentCharacter
+	STA zCurrentCharacter
 
 	; Set the current level/area
 	LDA Debug_Level
-	STA CurrentLevel
-	STA CurrentLevel_Init
+	STA iCurrentLvl
+	STA iCurrentLevel_Init
 	LDA Debug_Area
-	STA CurrentLevelArea
-	STA CurrentLevelArea_Init
+	STA iCurrentLvlArea
+	STA iCurrentLevelArea_Init
 	LDA #$00
-	STA CurrentLevelPage
-	STA CurrentLevelEntryPage
-	STA CurrentLevelEntryPage_Init
+	STA iCurrentLvlPage
+	STA iCurrentLvlEntryPage
+	STA iCurrentLevelEntryPage_Init
 
 	; Determine the world the level is in
 	LDA Debug_Level
 	JSR DebugMenu_GetWorld
-	STY CurrentWorld
+	STY iCurrentWorld
 
 	LDY #GameMode_TitleCard
 	JSR DebugHook_ExitToAddressAfterJump
@@ -297,11 +297,11 @@ DebugMenu_CursorStartLevel:
 	JMP DebugMenu_MenuLoop
 
 DebugMenu_Level:
-	LDA Player1JoypadPress
+	LDA zInputBottleneck
 	CMP #ControllerInput_Start
 	BEQ DebugMenu_CursorStartLevel
 
-	LDA Player1JoypadPress
+	LDA zInputBottleneck
 	CMP #ControllerInput_Left ; If left, decrease
 	BEQ +l
 	CMP #ControllerInput_Right ; If right, increase
@@ -341,11 +341,11 @@ DebugMenu_Level:
 
 
 DebugMenu_Area:
-	LDA Player1JoypadPress
+	LDA zInputBottleneck
 	CMP #ControllerInput_Start
 	BEQ DebugMenu_CursorStartLevel
 
-	LDA Player1JoypadPress
+	LDA zInputBottleneck
 	CMP #ControllerInput_Left ; If left, decrease
 	BEQ +l
 	CMP #ControllerInput_Right ; If right, increase
@@ -369,7 +369,7 @@ DebugMenu_Area:
 
 
 DebugMenu_Character:
-	LDA Player1JoypadPress
+	LDA zInputBottleneck
 	CMP #ControllerInput_Left ; If left, decrease
 	BEQ +l
 	CMP #ControllerInput_Right ; If right, increase
@@ -391,7 +391,7 @@ DebugMenu_Character:
 	JMP DebugMenu_MenuLoop
 
 DebugMenu_Lives:
-	LDA Player1JoypadPress
+	LDA zInputBottleneck
 	CMP #ControllerInput_Left ; If left, decrease
 	BEQ +l
 	CMP #ControllerInput_Right ; If right, increase
@@ -415,7 +415,7 @@ DebugMenu_Lives:
 	JMP DebugMenu_MenuLoop
 
 DebugMenu_Continues:
-	LDA Player1JoypadPress
+	LDA zInputBottleneck
 	CMP #ControllerInput_Left ; If left, decrease
 	BEQ +l
 	CMP #ControllerInput_Right ; If right, increase
@@ -439,7 +439,7 @@ DebugMenu_Continues:
 	JMP DebugMenu_MenuLoop
 
 DebugMenu_Health:
-	LDA Player1JoypadPress
+	LDA zInputBottleneck
 	CMP #ControllerInput_Left ; If left, increase
 	BEQ +l
 	CMP #ControllerInput_Right ; If right, decrease
@@ -487,23 +487,23 @@ DebugMenu_Health:
 
 DebugMenu_MenuStart:
 	LDA #DPCM_PlayerDeath
-	STA DPCMQueue
+	STA iDPCMSFX
 	RTS
 
 DebugMenu_MenuMove:
 DebugMenu_MenuChange:
 	LDA #SoundEffect1_CherryGet
-	STA SoundEffectQueue1
+	STA iPulse2SFX
 	RTS
 
 DebugMenu_MenuConfirm:
 	LDA #SoundEffect2_CoinGet
-	STA SoundEffectQueue2
+	STA iPulse1SFX
 	RTS
 
 DebugMenu_MenuError:
 	LDA #DPCM_PlayerHurt
-	STA DPCMQueue
+	STA iDPCMSFX
 	RTS
 
 
@@ -512,9 +512,9 @@ DebugMenu_MenuError:
 ;
 DebugMenu_ApplyOptions:
 	LDA Debug_Lives
-	STA ExtraLives
+	STA iExtraMen
 	LDA Debug_Continues
-	STA Continues
+	STA iNumContinues
 
 	LDA #PlayerHealth_2_HP
 	LDA Debug_Health
@@ -523,11 +523,11 @@ DebugMenu_ApplyOptions:
 	ASL A
 	ASL A
 	ORA #$0F
-	STA PlayerHealth
+	STA iPlayerHP
 	LDA Debug_MaxHealth
 	SEC
 	SBC #$01
-	STA PlayerMaxHealth
+	STA iPlayerMaxHP
 
 	RTS
 
@@ -537,10 +537,10 @@ DebugMenu_ApplyOptions:
 ;
 DebugMenu_LoadCharacter:
 	LDA Debug_Character
-	CMP CurrentCharacter
+	CMP zCurrentCharacter
 	BEQ +
 
-	STA CurrentCharacter
+	STA zCurrentCharacter
 	JSR CopyCharacterStatsAndStuff
 
 +
@@ -554,30 +554,30 @@ DebugMenu_LoadCharacter:
 DebugMenu_ResetArea:
 	JSR LoadWorldCHRBanks
 
-	LDA CurrentLevel_Init
-	STA CurrentLevel
-	LDA CurrentLevelArea_Init
-	STA CurrentLevelArea
-	LDA CurrentLevelEntryPage_Init
-	STA CurrentLevelEntryPage
-	LDA TransitionType_Init
-	STA TransitionType
+	LDA iCurrentLevel_Init
+	STA iCurrentLvl
+	LDA iCurrentLevelArea_Init
+	STA iCurrentLvlArea
+	LDA iCurrentLevelEntryPage_Init
+	STA iCurrentLvlEntryPage
+	LDA iTransitionType_Init
+	STA iTransitionType
 
-	LDA PlayerXLo_Init
-	STA PlayerXLo
-	LDA PlayerYLo_Init
-	STA PlayerYLo
-	LDA PlayerScreenX_Init
-	STA PlayerScreenX
-	LDA PlayerScreenYLo_Init
-	STA PlayerScreenYLo
-	LDA PlayerYVelocity_Init
-	STA PlayerYVelocity
-	LDA PlayerState_Init
-	STA PlayerState
+	LDA iPlayer_X_Lo_Init
+	STA zPlayerXLo
+	LDA iPlayer_Y_Lo_Init
+	STA zPlayerYLo
+	LDA iPlayerScreenX_Init
+	STA iPlayerScreenX
+	LDA iPlayerScreenY_Init
+	STA iPlayerScreenY
+	LDA iPlayer_Y_Velocity_Init
+	STA zPlayerYVelocity
+	LDA iPlayer_State_Init
+	STA zPlayerState
 
 	LDA #$00
-	STA PlayerXVelocity
+	STA zPlayerXVelocity
 
 	JSR DoAreaReset
 
@@ -587,30 +587,30 @@ DebugMenu_ResetArea:
 DebugMenu_FullReset:
 	; Reset a bunch of level flags
 	LDA #$00
-	STA KeyUsed
-	STA Mushroom1upPulled
-	STA Mushroom1Pulled
-	STA Mushroom2Pulled
-	STA SubspaceVisits
-	STA EnemiesKilledForHeart
+	STA iKeyUsed
+	STA iLifeUpEventFlag
+	STA iMushroomFlags
+	STA iMushroomFlags + 1
+	STA iSubspaceVisitCount
+	STA iKills
 
 DebugMenu_Reset:
 	; Reset (mainly) player-related flags
 	LDA #$00
-	STA InSubspaceOrJar
-	STA InJarType
-	STA PlayerLock
-	STA PlayerState
-	STA PlayerStateTimer
-	STA ObjectBeingCarriedIndex
-	STA HoldingItem
-	STA PlayerRidingCarpet
-	STA PlayerAnimationFrame
+	STA iSubAreaFlags
+	STA iInJarType
+	STA iPlayerLock
+	STA zPlayerState
+	STA zPlayerStateTimer
+	STA iHeldItemIndex
+	STA zHeldItem
+	STA iIsRidingCarpet
+	STA zPlayerAnimFrame
 
 	; Destroy the enemies
 	LDX #$08
 -
-	STA EnemyState, X
+	STA zEnemyState, X
 	DEX
 	BPL -
 
@@ -628,7 +628,7 @@ DebugMenu_Reset:
 	PLA ; Pull the value to update...
 	CLC
 	ADC #$D0 ; Move to character offset
-	STA PPUBuffer_301 + 3
+	STA iPPUBuffer + 3
 	RTS
 
 DebugMenu_UpdateArea:
@@ -651,8 +651,8 @@ DebugMenu_UpdateLives:
 	SEC
 	SBC #$01
 	JSR GetTwoDigitNumberTiles
-	STY PPUBuffer_301 + 3
-	STA PPUBuffer_301 + 4
+	STY iPPUBuffer + 3
+	STA iPPUBuffer + 4
 	RTS
 
 DebugMenu_UpdateContinues:
@@ -661,7 +661,7 @@ DebugMenu_UpdateContinues:
 	LDA Debug_Continues
 	CLC
 	ADC #$D0
-	STA PPUBuffer_301 + 3
+	STA iPPUBuffer + 3
 	RTS
 
 
@@ -681,7 +681,7 @@ DebugMenu_UpdateHealth:
 	BCC +
 	LDA #$CF
 	+
-	STA PPUBuffer_301 + 3, X
+	STA iPPUBuffer + 3, X
 	INY
 	DEX
 	DEX
@@ -713,16 +713,16 @@ DebugMenu_UpdateLevel:
 	PLA ; Then draw the level number...
 	CLC
 	ADC #$D1
-	STA PPUBuffer_301 + 5
+	STA iPPUBuffer + 5
 	PLA ; ...and the world number...
 	CLC
 	ADC #$D1
-	STA PPUBuffer_301 + 3
+	STA iPPUBuffer + 3
 
 	LDA Debug_Area ; Load current area
 	CLC
 	ADC #$D0
-	STA PPUBuffer_301 + 9
+	STA iPPUBuffer + 9
 
 	RTS
 
@@ -731,15 +731,15 @@ DebugMenu_BufferText:
 	ASL A ; Rotate A left one
 	TAX ; A->X
 	LDA DebugPPU_TextPointers, X ; Load low pointer
-	STA byte_RAM_0 ; Store one byte to low address
+	STA z00 ; Store one byte to low address
 	LDA DebugPPU_TextPointers + 1, X ; Store high pointer
-	STA byte_RAM_1 ; Store one byte to low address
+	STA z01 ; Store one byte to low address
 	LDY #$00
-	LDA (byte_RAM_0), Y ; Load the length of data to copy
+	LDA (z00), Y ; Load the length of data to copy
 	TAY
 -
-	LDA (byte_RAM_0), Y ; Load our PPU data...
-	STA PPUBuffer_301 - 1, Y ; ...and store it in the buffer
+	LDA (z00), Y ; Load our PPU data...
+	STA iPPUBuffer - 1, Y ; ...and store it in the buffer
 	DEY
 	BNE -
 	RTS
@@ -790,41 +790,41 @@ DebugMenu_UpdateCursorWithTileOffset:
 	; x-position
 	TAX
 	LDA DebugMenu_CursorPosition, X
-	STA SpriteDMAArea + 3
+	STA iVirtualOAM + 3
 	CLC
 	ADC #$08
-	STA SpriteDMAArea + 7
+	STA iVirtualOAM + 7
 
 	; y-position
 	INX
 	LDA DebugMenu_CursorPosition, X
-	STA SpriteDMAArea
-	STA SpriteDMAArea + 4
+	STA iVirtualOAM
+	STA iVirtualOAM + 4
 
 	; tile
 	INX
 	LDA DebugMenu_CursorPosition, X
 	CLC
 	ADC Debug_CursorTileOffset
-	STA SpriteDMAArea + 1
+	STA iVirtualOAM + 1
 	INX
 	LDA DebugMenu_CursorPosition, X
 	CLC
 	ADC Debug_CursorTileOffset
-	STA SpriteDMAArea + 5
+	STA iVirtualOAM + 5
 
 	; attributes
 	INX
 	LDA DebugMenu_CursorPosition, X
 	AND #%11100011
 	STA Debug_Temp
-	STA SpriteDMAArea + 2
+	STA iVirtualOAM + 2
 	LDA DebugMenu_CursorPosition, X
 	ASL A
 	ASL A
 	ASL A
 	EOR Debug_Temp
-	STA SpriteDMAArea + 6
+	STA iVirtualOAM + 6
 
 	RTS
 
@@ -848,38 +848,38 @@ DebugMenu_SetPalette:
 DebugMenu_InitCharacterSprite:
 	; x-position
 	LDA #$D8
-	STA SpriteDMAArea + 11
-	STA SpriteDMAArea + 19
+	STA iVirtualOAM + 11
+	STA iVirtualOAM + 19
 	CLC
 	ADC #$08
-	STA SpriteDMAArea + 15
-	STA SpriteDMAArea + 23
+	STA iVirtualOAM + 15
+	STA iVirtualOAM + 23
 
 	; y-position
 	LDA #$28
-	STA SpriteDMAArea + 8
-	STA SpriteDMAArea + 12
+	STA iVirtualOAM + 8
+	STA iVirtualOAM + 12
 	CLC
 	ADC #$10
-	STA SpriteDMAArea + 16
-	STA SpriteDMAArea + 20
+	STA iVirtualOAM + 16
+	STA iVirtualOAM + 20
 
 	; attributes
 	LDA #%00000000
-	STA SpriteDMAArea + 10
-	STA SpriteDMAArea + 18
+	STA iVirtualOAM + 10
+	STA iVirtualOAM + 18
 	ORA #%01000000
-	STA SpriteDMAArea + 14
-	STA SpriteDMAArea + 22
+	STA iVirtualOAM + 14
+	STA iVirtualOAM + 22
 
 	; tile
 	LDX #$80
-	STX SpriteDMAArea + 9
-	STX SpriteDMAArea + 13
+	STX iVirtualOAM + 9
+	STX iVirtualOAM + 13
 	INX
 	INX
-	STX SpriteDMAArea + 17
-	STX SpriteDMAArea + 21
+	STX iVirtualOAM + 17
+	STX iVirtualOAM + 21
 
 	RTS
 
@@ -888,12 +888,12 @@ DebugMenu_UpdateCharacterSprite:
 	LDX Debug_Character
 	LDA DebugMenu_CharacterStartTile, X
 	TAX
-	STX SpriteDMAArea + 9
-	STX SpriteDMAArea + 13
+	STX iVirtualOAM + 9
+	STX iVirtualOAM + 13
 	INX
 	INX
-	STX SpriteDMAArea + 17
-	STX SpriteDMAArea + 21
+	STX iVirtualOAM + 17
+	STX iVirtualOAM + 21
 
 	RTS
 

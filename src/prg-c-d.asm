@@ -8,7 +8,7 @@
 ;
 
 MarioDream_Pointers:
-	.dw PPUBuffer_301
+	.dw iPPUBuffer
 	.dw MarioDream_Bed
 	.dw MarioDream_Bubble
 	.dw MarioDream_DoNothing
@@ -33,25 +33,25 @@ sub_BANKC_8018:
 	LDA #PPUMask_ShowLeft8Pixels_BG | PPUMask_ShowLeft8Pixels_SPR | PPUMask_ShowBackground | PPUMask_ShowSprites
 
 loc_BANKC_801A:
-	STA PPUMaskMirror
+	STA zPPUMask
 
 ; End of function sub_BANKC_8018
 
 ; =============== S U B R O U T I N E =======================================
 
 sub_BANKC_801C:
-	LDA ScreenUpdateIndex
+	LDA zScreenUpdateIndex
 	ASL A
 	TAX
 	LDA MarioDream_Pointers, X
-	STA RAM_PPUDataBufferPointer
+	STA zPPUDataBufferPointer
 	LDA MarioDream_Pointers + 1, X
-	STA RAM_PPUDataBufferPointer + 1
+	STA zPPUDataBufferPointer + 1
 
 	LDA #$00
-	STA NMIWaitFlag
+	STA zNMIOccurred
 loc_BANKC_802E:
-	LDA NMIWaitFlag
+	LDA zNMIOccurred
 	BPL loc_BANKC_802E
 
 	RTS
@@ -61,7 +61,7 @@ loc_BANKC_802E:
 
 EnableNMI_BankC:
 	LDA #PPUCtrl_Base2000 | PPUCtrl_WriteHorizontal | PPUCtrl_Sprite0000 | PPUCtrl_Background1000 | PPUCtrl_SpriteSize8x16 | PPUCtrl_NMIEnabled
-	STA PPUCtrlMirror
+	STA zPPUControl
 	STA PPUCTRL
 	RTS
 
@@ -69,7 +69,7 @@ EnableNMI_BankC:
 DisableNMI_BankC:
 	LDA #PPUCtrl_Base2000 | PPUCtrl_WriteHorizontal | PPUCtrl_Sprite0000 | PPUCtrl_Background1000 | PPUCtrl_SpriteSize8x16 | PPUCtrl_NMIDisabled
 	STA PPUCTRL
-	STA PPUCtrlMirror
+	STA zPPUControl
 	RTS
 
 
@@ -285,69 +285,69 @@ MarioSleepingScene:
 	JSR ClearNametablesAndSprites
 
 	LDA #Stack100_Menu
-	STA StackArea
+	STA iStack
 	JSR EnableNMI_BankC
 
 	JSR sub_BANKC_801C
 
 	LDA #9
-	STA ScreenUpdateIndex
+	STA zScreenUpdateIndex
 	JSR sub_BANKC_801C
 
 	LDA #1
-	STA ScreenUpdateIndex
+	STA zScreenUpdateIndex
 	JSR sub_BANKC_801C
 
 	LDA #2
-	STA ScreenUpdateIndex
+	STA zScreenUpdateIndex
 	JSR sub_BANKC_801C
 
 	LDA #$10
-	STA ObjectXHi + 3
+	STA zObjectXHi + 3
 	LDA #4
-	STA PlayerXHi
+	STA zPlayerXHi
 
 loc_BANKC_8375:
 	LDA #0
-	STA ObjectXHi
+	STA zObjectXHi
 	LDA #$D
-	STA ObjectXHi + 1
+	STA zObjectXHi + 1
 	LDA #0
-	STA ObjectXHi + 2
+	STA zObjectXHi + 2
 	JSR sub_BANKC_8493
 
 	JSR sub_BANKC_8018
 
 loc_BANKC_8387:
-	LDY ObjectXHi
+	LDY zObjectXHi
 	LDA MarioDream_SnoringFrames, Y
-	STA BackgroundCHR1
+	STA iBGCHR1
 	CLC
 	ADC #$02
-	STA BackgroundCHR2
+	STA iBGCHR2
 	LDA MarioDream_SnoringFrameCounts, Y
-	STA byte_RAM_10
+	STA z10
 
 loc_BANKC_839A:
-	DEC ObjectXHi + 3
+	DEC zObjectXHi + 3
 	BPL loc_BANKC_83A7
 
 	LDA #$10
-	STA ObjectXHi + 3
-	INC ObjectXHi + 2
+	STA zObjectXHi + 3
+	INC zObjectXHi + 2
 	JSR sub_BANKC_8493
 
 loc_BANKC_83A7:
 	JSR sub_BANKC_801C
 
-	DEC byte_RAM_10
+	DEC z10
 	BPL loc_BANKC_839A
 
-	INC ObjectXHi
-	DEC ObjectXHi + 1
+	INC zObjectXHi
+	DEC zObjectXHi + 1
 	BPL loc_BANKC_8387
 
-	DEC PlayerXHi
+	DEC zPlayerXHi
 	BMI loc_BANKC_83BB
 
 	JMP loc_BANKC_8375
@@ -356,97 +356,97 @@ loc_BANKC_83A7:
 
 loc_BANKC_83BB:
 	LDA #3
-	STA ScreenUpdateIndex
+	STA zScreenUpdateIndex
 	LDA #$F8
-	STA SpriteDMAArea
-	STA SpriteDMAArea + 4
-	STA SpriteDMAArea + 8
-	STA SpriteDMAArea + $C
+	STA iVirtualOAM
+	STA iVirtualOAM + 4
+	STA iVirtualOAM + 8
+	STA iVirtualOAM + $C
 	JSR sub_BANKC_801C
 
 	LDA #4
-	STA ScreenUpdateIndex
+	STA zScreenUpdateIndex
 	JSR sub_BANKC_801C
 
 	LDA #5
-	STA ScreenUpdateIndex
+	STA zScreenUpdateIndex
 	JSR sub_BANKC_801C
 
 	LDA #6
-	STA ScreenUpdateIndex
+	STA zScreenUpdateIndex
 	JSR sub_BANKC_801C
 
 	LDA #7
-	STA ScreenUpdateIndex
+	STA zScreenUpdateIndex
 	JSR sub_BANKC_801C
 
 	LDA #8
-	STA ScreenUpdateIndex
+	STA zScreenUpdateIndex
 	JSR sub_BANKC_801C
 
 	LDA #0
-	STA ObjectXHi
+	STA zObjectXHi
 	LDA #6
-	STA ObjectXHi + 1
+	STA zObjectXHi + 1
 	LDA #0
-	STA PlayerXHi
+	STA zPlayerXHi
 	JSR sub_BANKC_8018
 
 loc_BANKC_8402:
-	LDY ObjectXHi
+	LDY zObjectXHi
 	LDA MarioDream_WakingFrames, Y
-	STA BackgroundCHR1
+	STA iBGCHR1
 	CLC
 	ADC #$02
-	STA BackgroundCHR2
+	STA iBGCHR2
 	LDA MarioDream_WakingFrameCounts, Y
-	STA byte_RAM_10
+	STA z10
 
 loc_BANKC_8415:
 	JSR sub_BANKC_801C
 
-	DEC byte_RAM_10
+	DEC z10
 	BPL loc_BANKC_8415
 
-	INC ObjectXHi
-	DEC ObjectXHi + 1
+	INC zObjectXHi
+	DEC zObjectXHi + 1
 	BPL loc_BANKC_8402
 
 	LDA #$10
-	STA ObjectXHi + 3
+	STA zObjectXHi + 3
 	LDA #1
-	STA PlayerXHi
+	STA zPlayerXHi
 
 loc_BANKC_842A:
 	LDA #0
-	STA ObjectXHi
+	STA zObjectXHi
 	LDA #$D
-	STA ObjectXHi + 1
+	STA zObjectXHi + 1
 	JSR sub_BANKC_8018
 
 loc_BANKC_8435:
-	LDY ObjectXHi
+	LDY zObjectXHi
 	LDA MarioDream_SnoringFrames, Y
-	STA BackgroundCHR1
+	STA iBGCHR1
 	CLC
 	ADC #$02
-	STA BackgroundCHR2
+	STA iBGCHR2
 	LDA MarioDream_SnoringFrameCounts, Y
-	STA byte_RAM_10
+	STA z10
 
 loc_BANKC_8448:
 	JSR sub_BANKC_801C
 
-	DEC byte_RAM_10
+	DEC z10
 	BPL loc_BANKC_8448
 
-	INC ObjectXHi
+	INC zObjectXHi
 
 loc_BANKC_8451:
-	DEC ObjectXHi + 1
+	DEC zObjectXHi + 1
 	BPL loc_BANKC_8435
 
-	DEC PlayerXHi
+	DEC zPlayerXHi
 	BMI loc_BANKC_845C
 
 	JMP loc_BANKC_842A
@@ -460,31 +460,31 @@ loc_BANKC_845C:
 
 loc_BANKC_8462:
 	LDA #0
-	STA ObjectXHi
+	STA zObjectXHi
 	LDA #$D
-	STA ObjectXHi + 1
+	STA zObjectXHi + 1
 	JSR sub_BANKC_8018
 
 loc_BANKC_846D:
-	LDY ObjectXHi
+	LDY zObjectXHi
 	LDA MarioDream_SnoringFrames, Y
-	STA BackgroundCHR1
+	STA iBGCHR1
 	CLC
 	ADC #$02
-	STA BackgroundCHR2
+	STA iBGCHR2
 	LDA MarioDream_SnoringFrameCounts, Y
-	STA byte_RAM_10
+	STA z10
 
 loc_BANKC_8480:
 	JSR loc_BANKC_84B2
 
 	JSR sub_BANKC_801C
 
-	DEC byte_RAM_10
+	DEC z10
 	BPL loc_BANKC_8480
 
-	INC ObjectXHi
-	DEC ObjectXHi + 1
+	INC zObjectXHi
+	DEC zObjectXHi + 1
 
 loc_BANKC_848E:
 	BPL loc_BANKC_846D
@@ -496,13 +496,13 @@ loc_BANKC_8490:
 
 sub_BANKC_8493:
 	LDY #$F
-	LDA ObjectXHi + 2
+	LDA zObjectXHi + 2
 	AND #1
 	BNE loc_BANKC_84A5
 
 loc_BANKC_849B:
 	LDA MarioDream_BubbleSprites, Y
-	STA SpriteDMAArea, Y
+	STA iVirtualOAM, Y
 	DEY
 	BPL loc_BANKC_849B
 
@@ -512,7 +512,7 @@ loc_BANKC_849B:
 
 loc_BANKC_84A5:
 	LDA byte_BANKC_8308, Y
-	STA SpriteDMAArea, Y
+	STA iVirtualOAM, Y
 	DEY
 	BPL loc_BANKC_84A5
 
@@ -529,17 +529,17 @@ CastRoll_PaletteFadeIn:
 ; ---------------------------------------------------------------------------
 
 loc_BANKC_84B2:
-	INC ObjectXLo + 5
-	LDA ObjectXLo + 5
+	INC zObjectXLo + 5
+	LDA zObjectXLo + 5
 	AND #1
 	BNE loc_BANKC_84C0
 
-	DEC ObjectYLo + 6
-	DEC ObjectYLo + 7
-	DEC ObjectYLo + 8
+	DEC zObjectYLo + 6
+	DEC zObjectYLo + 7
+	DEC zObjectYLo + 8
 
 loc_BANKC_84C0:
-	LDA ObjectXLo
+	LDA zObjectXLo
 	JSR JumpToTableAfterJump
 
 ; ---------------------------------------------------------------------------
@@ -567,12 +567,12 @@ CastRoll_CASTText:
 ; =============== S U B R O U T I N E =======================================
 
 sub_BANKC_84EC:
-	LDY ObjectXLo + 2
+	LDY zObjectXLo + 2
 	LDA CastRoll_SpritePointersLo, Y
-	STA ObjectXLo + 6
+	STA zObjectXLo + 6
 	LDA CastRoll_SpritePointersHi, Y
-	STA ObjectXLo + 7
-	INC ObjectXLo + 2
+	STA zObjectXLo + 7
+	INC zObjectXLo + 2
 	RTS
 
 ; End of function sub_BANKC_84EC
@@ -581,59 +581,59 @@ sub_BANKC_84EC:
 
 sub_BANKC_84FB:
 	LDY #CHRBank_EndingCast1
-	STY SpriteCHR1
+	STY iObjCHR1
 
 loc_BANKC_8500:
 	INY
-	STY SpriteCHR2
+	STY iObjCHR2
 	INY
-	STY SpriteCHR3
+	STY iObjCHR3
 	INY
-	STY SpriteCHR4
+	STY iObjCHR4
 	LDX #$07
 	LDA #$20
-	STA PlayerYHi
+	STA zPlayerYHi
 	LDY #$00
 
 loc_BANKC_8514:
 	LDA #$0F
-	STA SpriteDMAArea, Y
+	STA iVirtualOAM, Y
 	INY
 	LDA #$3E
-	STA SpriteDMAArea, Y
+	STA iVirtualOAM, Y
 	INY
 	LDA #$00
-	STA SpriteDMAArea, Y
+	STA iVirtualOAM, Y
 	INY
-	LDA PlayerYHi
-	STA SpriteDMAArea, Y
+	LDA zPlayerYHi
+	STA iVirtualOAM, Y
 	INY
 	CLC
 	ADC #$08
-	STA PlayerYHi
+	STA zPlayerYHi
 	DEX
 	BPL loc_BANKC_8514
 
 	LDX #$07
 	LDA #$20
-	STA PlayerYHi
+	STA zPlayerYHi
 
 loc_BANKC_853A:
 	LDA #$D0
-	STA SpriteDMAArea, Y
+	STA iVirtualOAM, Y
 	INY
 	LDA #$3E
-	STA SpriteDMAArea, Y
+	STA iVirtualOAM, Y
 	INY
 	LDA #$00
-	STA SpriteDMAArea, Y
+	STA iVirtualOAM, Y
 	INY
-	LDA PlayerYHi
-	STA SpriteDMAArea, Y
+	LDA zPlayerYHi
+	STA iVirtualOAM, Y
 	INY
 	CLC
 	ADC #$08
-	STA PlayerYHi
+	STA zPlayerYHi
 	DEX
 	BPL loc_BANKC_853A
 
@@ -641,30 +641,30 @@ loc_BANKC_853A:
 
 loc_BANKC_855C:
 	LDA CastRoll_CASTText, X
-	STA SpriteDMAArea + $40, X
+	STA iVirtualOAM + $40, X
 	DEX
 	BPL loc_BANKC_855C
 
 	LDA #$3F
-	STA PPUBuffer_301
+	STA iPPUBuffer
 	LDA #$11
-	STA PPUBuffer_301 + 1
+	STA iPPUBuffer + 1
 	LDA #$01
-	STA PPUBuffer_301 + 2
+	STA iPPUBuffer + 2
 	LDA #$12
-	STA PPUBuffer_301 + 3
+	STA iPPUBuffer + 3
 	LDA #$00
-	STA PPUBuffer_301 + 4
+	STA iPPUBuffer + 4
 	LDA #$10
-	STA PlayerXLo
+	STA zPlayerXLo
 	LDA #$00
-	STA ObjectXLo
-	STA ObjectXLo + 1
+	STA zObjectXLo
+	STA zObjectXLo + 1
 	LDY #$40
 
 loc_BANKC_858A:
 	LDA #EnemyState_27 ; @TODO what is this
-	STA EnemyState - 1, Y
+	STA zEnemyState - 1, Y
 	DEY
 	BPL loc_BANKC_858A
 
@@ -675,40 +675,40 @@ loc_BANKC_858A:
 ; ---------------------------------------------------------------------------
 
 loc_BANKC_8593:
-	DEC PlayerXLo
+	DEC zPlayerXLo
 	BPL locret_BANKC_85D5
 
 	LDA #$10
-	STA PlayerXLo
+	STA zPlayerXLo
 	LDA #$3F
-	STA PPUBuffer_301
+	STA iPPUBuffer
 	LDA #$11
-	STA PPUBuffer_301 + 1
+	STA iPPUBuffer + 1
 	LDA #$01
-	STA PPUBuffer_301 + 2
-	LDY ObjectXLo + 1
+	STA iPPUBuffer + 2
+	LDY zObjectXLo + 1
 	LDA CastRoll_PaletteFadeIn, Y
-	STA PPUBuffer_301 + 3
+	STA iPPUBuffer + 3
 
 loc_BANKC_85B2:
 	LDA #$00
-	STA PPUBuffer_301 + 4
-	INC ObjectXLo + 1
-	LDA ObjectXLo + 1
+	STA iPPUBuffer + 4
+	INC zObjectXLo + 1
+	LDA zObjectXLo + 1
 	CMP #$03
 	BNE locret_BANKC_85D5
 
-	INC ObjectXLo
+	INC zObjectXLo
 	LDA #$80
-	STA PlayerXLo
+	STA zPlayerXLo
 	LDA #$60
-	STA ObjectYHi
+	STA zObjectYHi
 	LDA #$01
-	STA ObjectYLo + 2
-	STA ObjectYLo + 5
+	STA zObjectYLo + 2
+	STA zObjectYLo + 5
 	LDA #$00
-	STA ObjectYLo + 3
-	STA ObjectYLo + 4
+	STA zObjectYLo + 3
+	STA zObjectYLo + 4
 
 locret_BANKC_85D5:
 	RTS
@@ -716,15 +716,15 @@ locret_BANKC_85D5:
 ; ---------------------------------------------------------------------------
 
 loc_BANKC_85D6:
-	DEC PlayerXLo
+	DEC zPlayerXLo
 	BPL locret_BANKC_85E6
 
-	INC ObjectXLo
+	INC zObjectXLo
 	LDA #0
-	STA ObjectXLo + 2
-	STA ObjectXVelocity + 2
+	STA zObjectXLo + 2
+	STA zObjectXVelocity + 2
 	LDA #1
-	STA ObjectYLo + 7
+	STA zObjectYLo + 7
 
 locret_BANKC_85E6:
 	RTS
@@ -732,39 +732,39 @@ locret_BANKC_85E6:
 ; ---------------------------------------------------------------------------
 
 loc_BANKC_85E7:
-	LDA ObjectXLo + 5
+	LDA zObjectXLo + 5
 	AND #1
 
 loc_BANKC_85EB:
 	BEQ loc_BANKC_861C
 
-	LDA ObjectYHi
+	LDA zObjectYHi
 	SEC
 	SBC #1
-	STA ObjectYHi
-	STA SpriteDMAArea + $40
-	STA SpriteDMAArea + $44
-	STA SpriteDMAArea + $48
-	STA SpriteDMAArea + $4C
-	LDA ObjectYHi
+	STA zObjectYHi
+	STA iVirtualOAM + $40
+	STA iVirtualOAM + $44
+	STA iVirtualOAM + $48
+	STA iVirtualOAM + $4C
+	LDA zObjectYHi
 	CMP #$10
 	BNE loc_BANKC_861C
 
 	LDA #$F8
-	STA SpriteDMAArea + $40
-	STA SpriteDMAArea + $44
-	STA SpriteDMAArea + $48
-	STA SpriteDMAArea + $4A
-	INC ObjectXLo
+	STA iVirtualOAM + $40
+	STA iVirtualOAM + $44
+	STA iVirtualOAM + $48
+	STA iVirtualOAM + $4A
+	INC zObjectXLo
 	LDA #0
-	STA ObjectYLo + 5
-	STA ObjectYLo + 2
+	STA zObjectYLo + 5
+	STA zObjectYLo + 2
 
 loc_BANKC_861C:
-	LDA ObjectYLo + 2
+	LDA zObjectYLo + 2
 	BNE loc_BANKC_8641
 
-	LDA ObjectYLo + 6
+	LDA zObjectYLo + 6
 	BNE loc_BANKC_8641
 
 	JSR sub_BANKC_84EC
@@ -772,25 +772,25 @@ loc_BANKC_861C:
 	LDY #$3F
 
 loc_BANKC_8629:
-	LDA (ObjectXLo+6), Y
-	STA SpriteDMAArea + $40, Y
+	LDA (zObjectXLo+6), Y
+	STA iVirtualOAM + $40, Y
 	DEY
 	BPL loc_BANKC_8629
 
 	LDA #1
-	STA ObjectYLo + 2
+	STA zObjectYLo + 2
 	LDA #$D0
-	STA ObjectYHi
+	STA zObjectYHi
 	LDA #$E0
-	STA ObjectYHi + 1
+	STA zObjectYHi + 1
 	LDA #$F8
-	STA ObjectYHi + 2
+	STA zObjectYHi + 2
 
 loc_BANKC_8641:
-	LDA ObjectYLo + 3
+	LDA zObjectYLo + 3
 	BNE loc_BANKC_8666
 
-	LDA ObjectYLo + 7
+	LDA zObjectYLo + 7
 	BNE loc_BANKC_8666
 
 	JSR sub_BANKC_84EC
@@ -798,25 +798,25 @@ loc_BANKC_8641:
 	LDY #$3F
 
 loc_BANKC_864E:
-	LDA (ObjectXLo+6), Y
-	STA SpriteDMAArea + $80, Y
+	LDA (zObjectXLo+6), Y
+	STA iVirtualOAM + $80, Y
 	DEY
 	BPL loc_BANKC_864E
 
 	LDA #1
-	STA ObjectYLo + 3
+	STA zObjectYLo + 3
 	LDA #$D0
-	STA ObjectYHi + 3
+	STA zObjectYHi + 3
 	LDA #$E0
-	STA ObjectYHi + 4
+	STA zObjectYHi + 4
 	LDA #$F8
-	STA ObjectYHi + 5
+	STA zObjectYHi + 5
 
 loc_BANKC_8666:
-	LDA ObjectYLo + 4
+	LDA zObjectYLo + 4
 	BNE loc_BANKC_8693
 
-	LDA ObjectYLo + 8
+	LDA zObjectYLo + 8
 	BNE loc_BANKC_8693
 
 	JSR sub_BANKC_84EC
@@ -824,29 +824,29 @@ loc_BANKC_8666:
 	LDY #$3F
 
 loc_BANKC_8673:
-	LDA (ObjectXLo+6), Y
-	STA SpriteDMAArea + $C0, Y
+	LDA (zObjectXLo+6), Y
+	STA iVirtualOAM + $C0, Y
 	DEY
 	BPL loc_BANKC_8673
 
 	LDA #1
-	STA ObjectYLo + 4
+	STA zObjectYLo + 4
 	LDA #$D0
-	STA ObjectYHi + 6
+	STA zObjectYHi + 6
 	LDA #$E0
-	STA ObjectYHi + 7
+	STA zObjectYHi + 7
 	LDY #$F8
-	LDA ObjectXLo + 2
+	LDA zObjectXLo + 2
 	CMP #$1D
 	BNE loc_BANKC_8691
 
 	LDY #$F0
 
 loc_BANKC_8691:
-	STY ObjectYHi + 8
+	STY zObjectYHi + 8
 
 loc_BANKC_8693:
-	LDA ObjectYLo + 5
+	LDA zObjectYLo + 5
 	BEQ loc_BANKC_869A
 
 	JMP loc_BANKC_873A
@@ -854,7 +854,7 @@ loc_BANKC_8693:
 ; ---------------------------------------------------------------------------
 
 loc_BANKC_869A:
-	LDA ObjectXLo + 5
+	LDA zObjectXLo + 5
 	AND #1
 	BNE loc_BANKC_86A3
 
@@ -863,11 +863,11 @@ loc_BANKC_869A:
 ; ---------------------------------------------------------------------------
 
 loc_BANKC_86A3:
-	LDA SpriteDMAArea + $40
+	LDA iVirtualOAM + $40
 	CMP #$F8
 	BEQ loc_BANKC_86C3
 
-	LDA ObjectYHi
+	LDA zObjectYHi
 	SEC
 	SBC #1
 	CMP #$10
@@ -876,91 +876,91 @@ loc_BANKC_86A3:
 	LDA #$F8
 
 loc_BANKC_86B5:
-	STA ObjectYHi
-	STA SpriteDMAArea + $40
-	STA SpriteDMAArea + $44
-	STA SpriteDMAArea + $48
-	STA SpriteDMAArea + $4C
+	STA zObjectYHi
+	STA iVirtualOAM + $40
+	STA iVirtualOAM + $44
+	STA iVirtualOAM + $48
+	STA iVirtualOAM + $4C
 
 loc_BANKC_86C3:
-	LDA SpriteDMAArea + $50
+	LDA iVirtualOAM + $50
 	CMP #$F8
 	BEQ loc_BANKC_86F2
 
-	DEC ObjectYHi + 1
+	DEC zObjectYHi + 1
 	CMP #$F9
 	BNE loc_BANKC_86D6
 
-	LDA ObjectYHi + 1
+	LDA zObjectYHi + 1
 	CMP #$D0
 	BNE loc_BANKC_86F2
 
 loc_BANKC_86D6:
-	LDA ObjectYHi + 1
+	LDA zObjectYHi + 1
 	CMP #$10
 	BNE loc_BANKC_86E6
 
-	LDA ObjectXLo + 2
+	LDA zObjectXLo + 2
 	CMP #$FF
 	BNE loc_BANKC_86E4
 
-	INC ObjectXLo
+	INC zObjectXLo
 
 loc_BANKC_86E4:
 	LDA #$F8
 
 loc_BANKC_86E6:
-	STA SpriteDMAArea + $50
-	STA SpriteDMAArea + $54
-	STA SpriteDMAArea + $58
-	STA SpriteDMAArea + $5C
+	STA iVirtualOAM + $50
+	STA iVirtualOAM + $54
+	STA iVirtualOAM + $58
+	STA iVirtualOAM + $5C
 
 loc_BANKC_86F2:
-	LDA SpriteDMAArea + $60
+	LDA iVirtualOAM + $60
 	CMP #$F8
 	BEQ loc_BANKC_873A
 
-	DEC ObjectYHi + 2
+	DEC zObjectYHi + 2
 	CMP #$F9
 	BNE loc_BANKC_870C
 
-	LDA ObjectYHi + 2
+	LDA zObjectYHi + 2
 	CMP #$D0
 	BNE loc_BANKC_873A
 
-	LDY ObjectXLo + 2
-	LDA EnemyState - 1, Y
-	STA ObjectYLo + 7
+	LDY zObjectXLo + 2
+	LDA zEnemyState - 1, Y
+	STA zObjectYLo + 7
 
 loc_BANKC_870C:
-	LDA ObjectYHi + 2
+	LDA zObjectYHi + 2
 	CMP #$10
 	BNE loc_BANKC_8722
 
 	LDA #0
-	STA ObjectYLo + 2
-	LDA ObjectXLo + 2
+	STA zObjectYLo + 2
+	LDA zObjectXLo + 2
 	CMP #$FF
 	BNE loc_BANKC_8720
 
 	LDA #$FF
-	STA ObjectYLo + 2
+	STA zObjectYLo + 2
 
 loc_BANKC_8720:
 	LDA #$F8
 
 loc_BANKC_8722:
-	STA SpriteDMAArea + $60
-	STA SpriteDMAArea + $64
-	STA SpriteDMAArea + $68
-	STA SpriteDMAArea + $6C
-	STA SpriteDMAArea + $70
-	STA SpriteDMAArea + $74
-	STA SpriteDMAArea + $78
-	STA SpriteDMAArea + $7C
+	STA iVirtualOAM + $60
+	STA iVirtualOAM + $64
+	STA iVirtualOAM + $68
+	STA iVirtualOAM + $6C
+	STA iVirtualOAM + $70
+	STA iVirtualOAM + $74
+	STA iVirtualOAM + $78
+	STA iVirtualOAM + $7C
 
 loc_BANKC_873A:
-	LDA ObjectXLo + 5
+	LDA zObjectXLo + 5
 	AND #1
 	BNE loc_BANKC_8743
 
@@ -969,11 +969,11 @@ loc_BANKC_873A:
 ; ---------------------------------------------------------------------------
 
 loc_BANKC_8743:
-	LDA SpriteDMAArea + $80
+	LDA iVirtualOAM + $80
 	CMP #$F8
 	BEQ loc_BANKC_8763
 
-	LDA ObjectYHi + 3
+	LDA zObjectYHi + 3
 
 loc_BANKC_874C:
 	SEC
@@ -984,87 +984,87 @@ loc_BANKC_874C:
 	LDA #$F8
 
 loc_BANKC_8755:
-	STA ObjectYHi + 3
-	STA SpriteDMAArea + $80
-	STA SpriteDMAArea + $84
-	STA SpriteDMAArea + $88
-	STA SpriteDMAArea + $8C
+	STA zObjectYHi + 3
+	STA iVirtualOAM + $80
+	STA iVirtualOAM + $84
+	STA iVirtualOAM + $88
+	STA iVirtualOAM + $8C
 
 loc_BANKC_8763:
-	LDA SpriteDMAArea + $90
+	LDA iVirtualOAM + $90
 	CMP #$F8
 	BEQ loc_BANKC_878A
 
-	DEC ObjectYHi + 4
+	DEC zObjectYHi + 4
 	CMP #$F9
 	BNE loc_BANKC_8776
 
-	LDA ObjectYHi + 4
+	LDA zObjectYHi + 4
 	CMP #$D0
 	BNE loc_BANKC_878A
 
 loc_BANKC_8776:
-	LDA ObjectYHi + 4
+	LDA zObjectYHi + 4
 	CMP #$10
 	BNE loc_BANKC_877E
 
 	LDA #$F8
 
 loc_BANKC_877E:
-	STA SpriteDMAArea + $90
-	STA SpriteDMAArea + $94
+	STA iVirtualOAM + $90
+	STA iVirtualOAM + $94
 
 loc_BANKC_8784:
-	STA SpriteDMAArea + $98
-	STA SpriteDMAArea + $9C
+	STA iVirtualOAM + $98
+	STA iVirtualOAM + $9C
 
 loc_BANKC_878A:
-	LDA SpriteDMAArea + $A0
+	LDA iVirtualOAM + $A0
 	CMP #$F8
 	BEQ loc_BANKC_87D2
 
-	DEC ObjectYHi + 5
+	DEC zObjectYHi + 5
 	CMP #$F9
 	BNE loc_BANKC_87A4
 
-	LDA ObjectYHi + 5
+	LDA zObjectYHi + 5
 	CMP #$D0
 	BNE loc_BANKC_87D2
 
-	LDY ObjectXLo + 2
-	LDA EnemyState - 1, Y
-	STA ObjectYLo + 8
+	LDY zObjectXLo + 2
+	LDA zEnemyState - 1, Y
+	STA zObjectYLo + 8
 
 loc_BANKC_87A4:
-	LDA ObjectYHi + 5
+	LDA zObjectYHi + 5
 	CMP #$10
 	BNE loc_BANKC_87BA
 
 loc_BANKC_87AA:
 	LDA #0
-	STA ObjectYLo + 3
-	LDA ObjectXLo + 2
+	STA zObjectYLo + 3
+	LDA zObjectXLo + 2
 	CMP #$FF
 	BNE loc_BANKC_87B8
 
 	LDA #$FF
-	STA ObjectYLo + 3
+	STA zObjectYLo + 3
 
 loc_BANKC_87B8:
 	LDA #$F8
 
 loc_BANKC_87BA:
-	STA SpriteDMAArea + $A0
-	STA SpriteDMAArea + $A4
-	STA SpriteDMAArea + $A8
-	STA SpriteDMAArea + $AC
-	STA SpriteDMAArea + $B0
-	STA SpriteDMAArea + $B4
-	STA SpriteDMAArea + $B8
-	STA SpriteDMAArea + $BC
+	STA iVirtualOAM + $A0
+	STA iVirtualOAM + $A4
+	STA iVirtualOAM + $A8
+	STA iVirtualOAM + $AC
+	STA iVirtualOAM + $B0
+	STA iVirtualOAM + $B4
+	STA iVirtualOAM + $B8
+	STA iVirtualOAM + $BC
 
 loc_BANKC_87D2:
-	LDA ObjectXLo + 5
+	LDA zObjectXLo + 5
 	AND #1
 	BNE loc_BANKC_87DB
 
@@ -1073,11 +1073,11 @@ loc_BANKC_87D2:
 ; ---------------------------------------------------------------------------
 
 loc_BANKC_87DB:
-	LDA SpriteDMAArea + $C0
+	LDA iVirtualOAM + $C0
 	CMP #$F8
 	BEQ loc_BANKC_87FB
 
-	LDA ObjectYHi + 6
+	LDA zObjectYHi + 6
 	SEC
 	SBC #1
 	CMP #$10
@@ -1086,113 +1086,113 @@ loc_BANKC_87DB:
 	LDA #$F8
 
 loc_BANKC_87ED:
-	STA ObjectYHi + 6
-	STA SpriteDMAArea + $C0
-	STA SpriteDMAArea + $C4
-	STA SpriteDMAArea + $C8
-	STA SpriteDMAArea + $CC
+	STA zObjectYHi + 6
+	STA iVirtualOAM + $C0
+	STA iVirtualOAM + $C4
+	STA iVirtualOAM + $C8
+	STA iVirtualOAM + $CC
 
 loc_BANKC_87FB:
-	LDA SpriteDMAArea + $D0
+	LDA iVirtualOAM + $D0
 	CMP #$F8
 	BEQ loc_BANKC_8822
 
-	DEC ObjectYHi + 7
+	DEC zObjectYHi + 7
 	CMP #$F9
 	BNE loc_BANKC_880E
 
-	LDA ObjectYHi + 7
+	LDA zObjectYHi + 7
 	CMP #$D0
 	BNE loc_BANKC_8822
 
 loc_BANKC_880E:
-	LDA ObjectYHi + 7
+	LDA zObjectYHi + 7
 	CMP #$10
 	BNE loc_BANKC_8816
 
 	LDA #$F8
 
 loc_BANKC_8816:
-	STA SpriteDMAArea + $D0
-	STA SpriteDMAArea + $D4
-	STA SpriteDMAArea + $D8
-	STA SpriteDMAArea + $DC
+	STA iVirtualOAM + $D0
+	STA iVirtualOAM + $D4
+	STA iVirtualOAM + $D8
+	STA iVirtualOAM + $DC
 
 loc_BANKC_8822:
-	LDA SpriteDMAArea + $E0
+	LDA iVirtualOAM + $E0
 	CMP #$F8
 	BEQ locret_BANKC_8897
 
-	DEC ObjectYHi + 8
+	DEC zObjectYHi + 8
 	CMP #$F9
 	BNE loc_BANKC_883C
 
-	LDA ObjectYHi + 8
+	LDA zObjectYHi + 8
 	CMP #$D0
 	BNE locret_BANKC_8897
 
-	LDY ObjectXLo + 2
-	LDA EnemyState - 1, Y
-	STA ObjectYLo + 6
+	LDY zObjectXLo + 2
+	LDA zEnemyState - 1, Y
+	STA zObjectYLo + 6
 
 loc_BANKC_883C:
-	LDA ObjectXLo + 2
+	LDA zObjectXLo + 2
 	CMP #$1D
 	BNE loc_BANKC_884C
 
-	LDA ObjectYHi + 8
+	LDA zObjectYHi + 8
 	CMP #$B8
 	BNE loc_BANKC_884C
 
 	LDA #1
-	STA ObjectXVelocity + 2
+	STA zObjectXVelocity + 2
 
 loc_BANKC_884C:
-	LDA ObjectYHi + 8
+	LDA zObjectYHi + 8
 	CMP #$10
 	BNE loc_BANKC_8862
 
 	LDA #0
-	STA ObjectYLo + 4
-	LDA ObjectXLo + 2
+	STA zObjectYLo + 4
+	LDA zObjectXLo + 2
 	CMP #$FF
 	BNE loc_BANKC_8860
 
 	LDA #$FF
-	STA ObjectYLo + 4
+	STA zObjectYLo + 4
 
 loc_BANKC_8860:
 	LDA #$F8
 
 loc_BANKC_8862:
-	STA SpriteDMAArea + $E0
-	STA SpriteDMAArea + $E4
-	STA SpriteDMAArea + $E8
-	STA SpriteDMAArea + $EC
-	STA SpriteDMAArea + $F0
-	STA SpriteDMAArea + $F4
-	STA SpriteDMAArea + $F8
-	STA SpriteDMAArea + $FC
-	LDA ObjectXVelocity + 2
+	STA iVirtualOAM + $E0
+	STA iVirtualOAM + $E4
+	STA iVirtualOAM + $E8
+	STA iVirtualOAM + $EC
+	STA iVirtualOAM + $F0
+	STA iVirtualOAM + $F4
+	STA iVirtualOAM + $F8
+	STA iVirtualOAM + $FC
+	LDA zObjectXVelocity + 2
 	BEQ locret_BANKC_8897
 
 	LDY #$1F
 
 loc_BANKC_8880:
 	LDA CastRoll_TriclydeText, Y
-	STA SpriteDMAArea + $40, Y
+	STA iVirtualOAM + $40, Y
 	DEY
 	BPL loc_BANKC_8880
 
 	LDA #$D0
-	STA ObjectYHi
-	STA ObjectYHi + 1
+	STA zObjectYHi
+	STA zObjectYHi + 1
 	LDA #0
-	STA ObjectXVelocity + 2
+	STA zObjectXVelocity + 2
 
 loc_BANKC_8893:
 	LDA #$FF
-	STA ObjectXLo + 2
+	STA zObjectXLo + 2
 
 locret_BANKC_8897:
 	RTS
@@ -1201,28 +1201,28 @@ locret_BANKC_8897:
 
 loc_BANKC_8898:
 	LDY #$48
-	STY SpriteCHR1
+	STY iObjCHR1
 	INY
-	STY SpriteCHR2
+	STY iObjCHR2
 	INY
-	STY SpriteCHR3
+	STY iObjCHR3
 	INY
-	STY SpriteCHR4
+	STY iObjCHR4
 	LDY #$5B
 
 loc_BANKC_88AB:
 	LDA CastRoll_Wart, Y
-	STA SpriteDMAArea + $40, Y
+	STA iVirtualOAM + $40, Y
 	DEY
 	BPL loc_BANKC_88AB
 
-	INC ObjectXLo
+	INC zObjectXLo
 	LDY #0
 	LDX #$F
 	LDA #$C0
 
 loc_BANKC_88BC:
-	STA SpriteDMAArea + 1, Y
+	STA iVirtualOAM + 1, Y
 	INY
 	INY
 	INY
@@ -1231,19 +1231,19 @@ loc_BANKC_88BC:
 	BPL loc_BANKC_88BC
 
 	LDA #$D0
-	STA ObjectYHi
+	STA zObjectYHi
 	LDA #$E0
-	STA ObjectYHi + 1
+	STA zObjectYHi + 1
 	LDA #$F0
-	STA ObjectYHi + 2
+	STA zObjectYHi + 2
 	LDA #8
-	STA ObjectYHi + 3
+	STA zObjectYHi + 3
 	RTS
 
 ; ---------------------------------------------------------------------------
 
 loc_BANKC_88D7:
-	LDA ObjectXLo + 5
+	LDA zObjectXLo + 5
 	AND #1
 	BNE loc_BANKC_88E0
 
@@ -1252,119 +1252,119 @@ loc_BANKC_88D7:
 ; ---------------------------------------------------------------------------
 
 loc_BANKC_88E0:
-	LDA SpriteDMAArea + $40
+	LDA iVirtualOAM + $40
 	CMP #$F8
 	BEQ loc_BANKC_8906
 
-	LDA ObjectYHi
+	LDA zObjectYHi
 	SEC
 	SBC #1
 	CMP #$50
 	BNE loc_BANKC_88F5
 
-	INC ObjectXLo
+	INC zObjectXLo
 	JMP loc_BANKC_898D
 
 ; ---------------------------------------------------------------------------
 
 loc_BANKC_88F5:
-	STA ObjectYHi
-	STA SpriteDMAArea + $40
-	STA SpriteDMAArea + $44
-	STA SpriteDMAArea + $48
-	STA SpriteDMAArea + $4C
-	STA SpriteDMAArea + $50
+	STA zObjectYHi
+	STA iVirtualOAM + $40
+	STA iVirtualOAM + $44
+	STA iVirtualOAM + $48
+	STA iVirtualOAM + $4C
+	STA iVirtualOAM + $50
 
 loc_BANKC_8906:
-	LDA SpriteDMAArea + $54
+	LDA iVirtualOAM + $54
 	CMP #$F8
 	BEQ loc_BANKC_8930
 
-	DEC ObjectYHi + 1
+	DEC zObjectYHi + 1
 	CMP #$F9
 	BNE loc_BANKC_8919
 
-	LDA ObjectYHi + 1
+	LDA zObjectYHi + 1
 	CMP #$D0
 	BNE loc_BANKC_8930
 
 loc_BANKC_8919:
-	LDA ObjectYHi + 1
+	LDA zObjectYHi + 1
 	CMP #$10
 	BNE loc_BANKC_8921
 
 	LDA #$F8
 
 loc_BANKC_8921:
-	STA SpriteDMAArea + $54
-	STA SpriteDMAArea + $58
-	STA SpriteDMAArea + $5C
-	STA SpriteDMAArea + $60
-	STA SpriteDMAArea + $64
+	STA iVirtualOAM + $54
+	STA iVirtualOAM + $58
+	STA iVirtualOAM + $5C
+	STA iVirtualOAM + $60
+	STA iVirtualOAM + $64
 
 loc_BANKC_8930:
-	LDA SpriteDMAArea + $68
+	LDA iVirtualOAM + $68
 	CMP #$F8
 	BEQ loc_BANKC_895A
 
-	DEC ObjectYHi + 2
+	DEC zObjectYHi + 2
 	CMP #$F9
 	BNE loc_BANKC_8943
 
-	LDA ObjectYHi + 2
+	LDA zObjectYHi + 2
 	CMP #$D0
 	BNE loc_BANKC_895A
 
 loc_BANKC_8943:
-	LDA ObjectYHi + 2
+	LDA zObjectYHi + 2
 	CMP #$10
 	BNE loc_BANKC_894B
 
 	LDA #$F8
 
 loc_BANKC_894B:
-	STA SpriteDMAArea + $68
-	STA SpriteDMAArea + $6C
-	STA SpriteDMAArea + $70
-	STA SpriteDMAArea + $74
-	STA SpriteDMAArea + $78
+	STA iVirtualOAM + $68
+	STA iVirtualOAM + $6C
+	STA iVirtualOAM + $70
+	STA iVirtualOAM + $74
+	STA iVirtualOAM + $78
 
 loc_BANKC_895A:
-	LDA SpriteDMAArea + $7C
+	LDA iVirtualOAM + $7C
 	CMP #$F8
 	BEQ loc_BANKC_898D
 
-	DEC ObjectYHi + 3
+	DEC zObjectYHi + 3
 	CMP #$F9
 	BNE loc_BANKC_896D
 
-	LDA ObjectYHi + 3
+	LDA zObjectYHi + 3
 	CMP #$D0
 	BNE loc_BANKC_898D
 
 loc_BANKC_896D:
-	LDA ObjectYHi + 3
+	LDA zObjectYHi + 3
 	CMP #$10
 	BNE loc_BANKC_8975
 
 	LDA #$F8
 
 loc_BANKC_8975:
-	STA SpriteDMAArea + $7C
-	STA SpriteDMAArea + $80
-	STA SpriteDMAArea + $84
-	STA SpriteDMAArea + $88
-	STA SpriteDMAArea + $8C
-	STA SpriteDMAArea + $90
-	STA SpriteDMAArea + $94
-	STA SpriteDMAArea + $98
+	STA iVirtualOAM + $7C
+	STA iVirtualOAM + $80
+	STA iVirtualOAM + $84
+	STA iVirtualOAM + $88
+	STA iVirtualOAM + $8C
+	STA iVirtualOAM + $90
+	STA iVirtualOAM + $94
+	STA iVirtualOAM + $98
 
 loc_BANKC_898D:
 	LDA #0
-	STA ObjectXVelocity
-	STA PlayerXVelocity
+	STA zObjectXVelocity
+	STA zPlayerXVelocity
 	LDA #$C
-	STA ObjectXVelocity + 1
+	STA zObjectXVelocity + 1
 	RTS
 
 ; ---------------------------------------------------------------------------
@@ -1406,24 +1406,24 @@ byte_BANKC_89A9:
 ; ---------------------------------------------------------------------------
 
 loc_BANKC_89B6:
-	DEC PlayerXVelocity
+	DEC zPlayerXVelocity
 	BPL locret_BANKC_8A00
 
 	LDA #8
-	STA PlayerXVelocity
-	DEC ObjectXVelocity + 1
+	STA zPlayerXVelocity
+	DEC zObjectXVelocity + 1
 	BPL loc_BANKC_89CD
 
-	INC ObjectXLo
+	INC zObjectXLo
 	LDA #0
-	STA PlayerXLo
-	STA ObjectXLo + 1
+	STA zPlayerXLo
+	STA zObjectXLo + 1
 	JMP locret_BANKC_8A00
 
 ; ---------------------------------------------------------------------------
 
 loc_BANKC_89CD:
-	LDA ObjectXVelocity
+	LDA zObjectXVelocity
 	AND #1
 	BNE loc_BANKC_89EB
 
@@ -1431,9 +1431,9 @@ loc_BANKC_89CD:
 	LDX #0
 
 loc_BANKC_89D7:
-	INC ObjectXVelocity
+	INC zObjectXVelocity
 	LDA byte_BANKC_8998, X
-	STA SpriteDMAArea + $41, Y
+	STA iVirtualOAM + $41, Y
 	INY
 	INY
 	INY
@@ -1447,13 +1447,13 @@ loc_BANKC_89D7:
 ; ---------------------------------------------------------------------------
 
 loc_BANKC_89EB:
-	INC ObjectXVelocity
+	INC zObjectXVelocity
 	LDX #0
 	LDY #0
 
 loc_BANKC_89F1:
 	LDA byte_BANKC_89A7, X
-	STA SpriteDMAArea + $41, Y
+	STA iVirtualOAM + $41, Y
 	INY
 	INY
 	INY
@@ -1475,30 +1475,30 @@ byte_BANKC_8A02:
 ; ---------------------------------------------------------------------------
 
 loc_BANKC_8A04:
-	DEC PlayerXLo
+	DEC zPlayerXLo
 	BPL locret_BANKC_8A36
 
 	LDA #$10
-	STA PlayerXLo
+	STA zPlayerXLo
 	LDA #$3F
-	STA PPUBuffer_301
+	STA iPPUBuffer
 	LDA #$11
-	STA PPUBuffer_301 + 1
+	STA iPPUBuffer + 1
 	LDA #$01
-	STA PPUBuffer_301 + 2
-	LDY ObjectXLo + 1
+	STA iPPUBuffer + 2
+	LDY zObjectXLo + 1
 	LDA CastRoll_PaletteFadeOut, Y
-	STA PPUBuffer_301 + 3
+	STA iPPUBuffer + 3
 	LDA #$00
-	STA PPUBuffer_301 + 4
-	INC ObjectXLo + 1
-	LDA ObjectXLo + 1
+	STA iPPUBuffer + 4
+	INC zObjectXLo + 1
+	LDA zObjectXLo + 1
 	CMP #$03
 	BNE locret_BANKC_8A36
 
-	INC ObjectXLo
+	INC zObjectXLo
 	LDA #$16
-	STA PlayerXLo
+	STA zPlayerXLo
 
 locret_BANKC_8A36:
 	RTS
@@ -1506,7 +1506,7 @@ locret_BANKC_8A36:
 ; ---------------------------------------------------------------------------
 
 loc_BANKC_8A37:
-	DEC PlayerXLo
+	DEC zPlayerXLo
 	BPL locret_BANKC_8A51
 
 	LDX #$16
@@ -1514,7 +1514,7 @@ loc_BANKC_8A37:
 	LDA #$F8
 
 loc_BANKC_8A41:
-	STA SpriteDMAArea + $40, Y
+	STA iVirtualOAM + $40, Y
 	INY
 	INY
 	INY
@@ -1523,10 +1523,10 @@ loc_BANKC_8A41:
 	BPL loc_BANKC_8A41
 
 	LDA #$30
-	STA PlayerXLo
+	STA zPlayerXLo
 
 loc_BANKC_8A4F:
-	INC ObjectXLo
+	INC zObjectXLo
 
 locret_BANKC_8A51:
 	RTS
@@ -1534,30 +1534,30 @@ locret_BANKC_8A51:
 ; ---------------------------------------------------------------------------
 
 loc_BANKC_8A52:
-	DEC PlayerXLo
+	DEC zPlayerXLo
 	BPL locret_BANKC_8A81
 
 	LDA #$00
-	STA ObjectXHi + 4
-	STA ObjectXHi + 5
+	STA zObjectXHi + 4
+	STA zObjectXHi + 5
 
 loc_BANKC_8A5C:
-	STA ObjectXHi + 6
+	STA zObjectXHi + 6
 	LDA #$05
-	STA ObjectXHi + 7
+	STA zObjectXHi + 7
 	LDA #$14
-	STA ObjectXHi + 8
+	STA zObjectXHi + 8
 	LDA #$3F
-	STA PPUBuffer_301
+	STA iPPUBuffer
 	LDA #$11
-	STA PPUBuffer_301 + 1
+	STA iPPUBuffer + 1
 	LDA #$01
-	STA PPUBuffer_301 + 2
+	STA iPPUBuffer + 2
 	LDA #$30
-	STA PPUBuffer_301 + 3
+	STA iPPUBuffer + 3
 	LDA #$00
-	STA PPUBuffer_301 + 4
-	INC ObjectXLo
+	STA iPPUBuffer + 4
+	INC zObjectXLo
 
 locret_BANKC_8A81:
 	RTS
@@ -1565,50 +1565,50 @@ locret_BANKC_8A81:
 ; ---------------------------------------------------------------------------
 
 loc_BANKC_8A82:
-	LDA ObjectXHi + 5
+	LDA zObjectXHi + 5
 	AND #$80
 	BNE locret_BANKC_8ACC
 
-	LDA ObjectXHi + 5
+	LDA zObjectXHi + 5
 	BNE loc_BANKC_8ACD
 
-	DEC ObjectXHi + 7
+	DEC zObjectXHi + 7
 	BPL locret_BANKC_8ACC
 
 	LDA #5
-	STA ObjectXHi + 7
+	STA zObjectXHi + 7
 	LDA #3
-	STA ObjectXHi + 6
+	STA zObjectXHi + 6
 	LDX #0
-	LDY ObjectXHi + 4
+	LDY zObjectXHi + 4
 
 loc_BANKC_8A9C:
 	LDA #$40
-	STA SpriteDMAArea, X
+	STA iVirtualOAM, X
 	INX
 	LDA byte_BANKC_92FE, Y
-	STA SpriteDMAArea, X
+	STA iVirtualOAM, X
 	INY
 	INX
 	LDA #0
-	STA SpriteDMAArea, X
+	STA iVirtualOAM, X
 	INX
 	LDA byte_BANKC_92FE, Y
-	STA SpriteDMAArea, X
+	STA iVirtualOAM, X
 	INY
 	INX
-	DEC ObjectXHi + 6
+	DEC zObjectXHi + 6
 	BPL loc_BANKC_8A9C
 
-	STY ObjectXHi + 4
-	DEC ObjectXHi + 8
+	STY zObjectXHi + 4
+	DEC zObjectXHi + 8
 	BPL locret_BANKC_8ACC
 
-	INC ObjectXHi + 5
+	INC zObjectXHi + 5
 	LDA #$12
-	STA ObjectXHi + 8
+	STA zObjectXHi + 8
 	LDA #0
-	STA ObjectXHi + 4
+	STA zObjectXHi + 4
 
 locret_BANKC_8ACC:
 	RTS
@@ -1616,40 +1616,40 @@ locret_BANKC_8ACC:
 ; ---------------------------------------------------------------------------
 
 loc_BANKC_8ACD:
-	DEC ObjectXHi + 7
+	DEC zObjectXHi + 7
 	BPL locret_BANKC_8B07
 
 	LDA #5
-	STA ObjectXHi + 7
+	STA zObjectXHi + 7
 	LDA #3
-	STA ObjectXHi + 6
+	STA zObjectXHi + 6
 	LDX #0
-	LDY ObjectXHi + 4
+	LDY zObjectXHi + 4
 
 loc_BANKC_8ADD:
 	LDA #$40
-	STA SpriteDMAArea + $10, X
+	STA iVirtualOAM + $10, X
 	INX
 	LDA byte_BANKC_93A6, Y
-	STA SpriteDMAArea + $10, X
+	STA iVirtualOAM + $10, X
 	INY
 	INX
 	LDA #0
-	STA SpriteDMAArea + $10, X
+	STA iVirtualOAM + $10, X
 	INX
 	LDA byte_BANKC_93A6, Y
-	STA SpriteDMAArea + $10, X
+	STA iVirtualOAM + $10, X
 	INY
 	INX
-	DEC ObjectXHi + 6
+	DEC zObjectXHi + 6
 	BPL loc_BANKC_8ADD
 
-	STY ObjectXHi + 4
-	DEC ObjectXHi + 8
+	STY zObjectXHi + 4
+	DEC zObjectXHi + 8
 	BPL locret_BANKC_8B07
 
 	LDA #$FF
-	STA ObjectXHi + 5
+	STA zObjectXHi + 5
 
 locret_BANKC_8B07:
 	RTS

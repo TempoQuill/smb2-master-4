@@ -6,12 +6,12 @@ DoSoundProcessingAndCheckDebug:
 	JSR DoSoundProcessing
 
 	; Are you pressing select?
-	LDA Player1JoypadPress
+	LDA zInputBottleneck
 	CMP #ControllerInput_Select
 	BNE DebugHook_Exit
 
 	; And you're not holding start?
-	LDA Player1JoypadHeld
+	LDA zInputCurrentState
 	AND #ControllerInput_Start
 	BNE DebugHook_Exit
 
@@ -29,7 +29,7 @@ DoSoundProcessingAndCheckDebug:
 
 DebugHook_Hijack:
 	; Stash the current bank
-	LDA MMC3PRGBankTemp
+	LDA iCurrentROMBank
 	PHA
 
 	; Enable the debug menu flag
@@ -61,16 +61,16 @@ DebugHook_ExitToAddressAfterJump:
 
 	; Save the source address
 	PLA
-	STA byte_RAM_A
+	STA z0a
 	PLA
-	STA byte_RAM_B
+	STA z0b
 
 	; Determine the jump address
 	LDY #$01
-	LDA (byte_RAM_A), Y
+	LDA (z0a), Y
 	STA Debug_JumpAddressLo
 	INY
-	LDA (byte_RAM_A), Y
+	LDA (z0a), Y
 	STA Debug_JumpAddressHi
 
 DebugHook_ExitToJumpAddress:
@@ -122,25 +122,25 @@ DebugHook_CheckEligibility:
 	BNE +f
 
 	; Require current mode to be normal gameplay
-	LDA StackArea
+	LDA iStack
 	CMP #Stack100_Gameplay
 	BNE +f
 
 	; Disable while scrolling
-	LDA NeedsScroll
+	LDA zScrollArray
 	AND #%00000100
 	BNE +f
 
 	; Disable the background is drawing
-	LDA byte_RAM_537
+	LDA i537
 	BEQ +f
 
 	; Disable while in subspace/jar
-	LDA InSubspaceOrJar
+	LDA iSubAreaFlags
 	BNE +f
 
 	; Disable while player is busy
-	LDA PlayerState
+	LDA zPlayerState
 	CMP #PlayerState_ClimbingAreaTransition
 	BCS +f
 
@@ -159,22 +159,22 @@ DebugHook_CheckEligibility:
 ; the current PPU scroll position.
 ;
 DebugHook_BackupScroll:
-	LDA PPUScrollYMirror
-	STA PPUScrollYMirror_Backup
-	LDA PPUScrollXMirror
-	STA PPUScrollXMirror_Backup
-	LDA PPUScrollYHiMirror
-	STA PPUScrollYHiMirror_Backup
-	LDA PPUScrollXHiMirror
-	STA PPUScrollXHiMirror_Backup
-	LDA ScreenYHi
-	STA ScreenYHi_Backup
-	LDA ScreenYLo
-	STA ScreenYLo_Backup
-	LDA ScreenBoundaryLeftHi
-	STA ScreenBoundaryLeftHi_Backup
-	LDA byte_RAM_E1
-	STA byte_RAM_517
+	LDA zPPUScrollY
+	STA iPPUScrollY
+	LDA zPPUScrollX
+	STA iPPUScrollX
+	LDA zYScrollPage
+	STA iYScrollPage
+	LDA zXScrollPage
+	STA iXScrollPage
+	LDA zScreenYPage
+	STA iScreenYPage
+	LDA zScreenY
+	STA iScreenY
+	LDA iBoundLeftUpper
+	STA iBoundLeftUpper_Backup
+	LDA ze1
+	STA i517
 	RTS
 
 
@@ -183,8 +183,8 @@ DebugHook_BackupScroll:
 ; entering and exiting the debug menu.
 ;
 DebugPreserveAddresses:
-	.dw MMC3PRGBankTemp
-	; .dw MusicPlaying1
+	.dw iCurrentROMBank
+	; .dw iCurrentMusic1
 DebugPreserveAddresses_End:
 
 
@@ -196,12 +196,12 @@ DebugHook_BackupRAM:
 	ASL
 	TAY
 	LDA DebugPreserveAddresses, Y
-	STA byte_RAM_0
+	STA z00
 	LDA DebugPreserveAddresses + 1, Y
-	STA byte_RAM_1
+	STA z01
 	; Stash the value
 	LDY #$00
-	LDA (byte_RAM_0), Y
+	LDA (z00), Y
 	STA Debug_Stash, X
 	; Next
 	INX
@@ -218,13 +218,13 @@ DebugHook_RestoreRAM:
 	ASL
 	TAY
 	LDA DebugPreserveAddresses, Y
-	STA byte_RAM_0
+	STA z00
 	LDA DebugPreserveAddresses + 1, Y
-	STA byte_RAM_1
+	STA z01
 	; Stash the value
 	LDY #$00
 	LDA Debug_Stash, X
-	STA (byte_RAM_0), Y
+	STA (z00), Y
 	; Next
 	INX
 	CPX #((DebugPreserveAddresses_End - DebugPreserveAddresses) / 2)

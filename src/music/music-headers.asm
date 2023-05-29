@@ -63,46 +63,23 @@ MusicHeaderOverworld6:
 
 ; ----------------------------------------
 ; Underground music
-IFNDEF PROTOTYPE_MUSIC_UNDERGROUND
 MusicHeaderUnderground:
 	musicHeader NoteLengthTable_129bpm, MusicDataUnderground, MusicDataUnderground_Triangle, MusicDataUnderground_Square1, -1, MusicDataUnderground_DPCM
-ENDIF
 
 ; ----------------------------------------
 ; Boss and boss area music
 MusicHeaderBoss:
-IFNDEF PROTOTYPE_MUSIC_ENDING
 	musicHeader NoteLengthTable_200bpm, MusicDataBoss, MusicDataBoss_Triangle, MusicDataBoss_Square1, $00, -1
-ELSE
-	; sharing $00 with NoteLengthTable_300bpm from the segment below
-	; (we're scrounging for bytes to avoid overflowing the music header table)
-	musicHeader NoteLengthTable_200bpm, MusicDataBoss, MusicDataBoss_Triangle, MusicDataBoss_Square1, -1, -1
-ENDIF
 
 ; ----------------------------------------
 ; Starman music
 MusicHeaderStar:
-IFNDEF PROTOTYPE_MUSIC_STARMAN
-	IFNDEF PROTOTYPE_MUSIC_UNDERGROUND
-		musicHeader NoteLengthTable_300bpm, MusicDataStar, MusicDataStar_Triangle, MusicDataStar_Square1, -1, MusicDataStar_DPCM
-	ELSE
-		musicHeader NoteLengthTable_300bpm, MusicDataStar, MusicDataStar_Triangle, MusicDataStar_Square1, $00, MusicDataStar_DPCM
-	ENDIF
-ENDIF
-IFDEF PROTOTYPE_MUSIC_STARMAN
-	musicHeader NoteLengthTable_300bpm, MusicDataStar, MusicDataStar_Triangle, MusicDataStar_Square1, MusicDataStar_Noise, -1
-ENDIF
+	musicHeader NoteLengthTable_300bpm, MusicDataStar, MusicDataStar_Triangle, MusicDataStar_Square1, -1, MusicDataStar_DPCM
 
 ; ----------------------------------------
 ; Wart's final boss music
 MusicHeaderWart:
-IFNDEF PROTOTYPE_MUSIC_ENDING
 	musicHeader NoteLengthTable_200bpm, MusicDataWart, MusicDataWart_Triangle, MusicDataWart_Square1, $00, -1
-ELSE
-	; sharing $00 with NoteLengthTable_300bpm from the segment below
-	; (we're scrounging for bytes to avoid overflowing the music header table)
-	musicHeader NoteLengthTable_200bpm, MusicDataWart, MusicDataWart_Triangle, MusicDataWart_Square1, -1, -1
-ENDIF
 
 ; ----------------------------------------
 ; Various shorter jingles, extra character select segments (8, 7, 6), and other potpourri
@@ -179,16 +156,5 @@ MusicHeaderEnding5:
 MusicHeaderEnding4:
 	musicHeader NoteLengthTable_129bpm, MusicDataEnding4, MusicDataEnding4_Triangle, MusicDataEnding4_Square1, MusicDataEnding4_Noise, -1
 
-IFNDEF PROTOTYPE_MUSIC_ENDING
 MusicHeaderEnding6:
 	musicHeader NoteLengthTable_129bpm, MusicDataEnding6, $00, MusicDataEnding6_Square1, $00, -1
-ENDIF
-
-IFDEF PROTOTYPE_MUSIC_UNDERGROUND
-; Much cooler SMB3-esque underground music...
-; apparently using /both/ noise and DPCM (!)
-MusicHeaderUndergroundBeta1:
-	musicHeader NoteLengthTable_200bpm, MusicDataUndergroundBeta1, MusicDataUndergroundBeta1_Triangle, MusicDataUndergroundBeta1_Square1, MusicDataUndergroundBeta1_Noise, MusicDataUndergroundBeta1_DPCM
-MusicHeaderUndergroundBeta2:
-	musicHeader NoteLengthTable_200bpm, MusicDataUndergroundBeta2, MusicDataUndergroundBeta2_Triangle, MusicDataUndergroundBeta2_Square1, MusicDataUndergroundBeta2_Noise, MusicDataUndergroundBeta2_DPCM
-ENDIF

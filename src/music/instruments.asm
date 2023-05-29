@@ -94,7 +94,6 @@ InstrumentDVE_D0_Short: ; $A381
 	.db $50, $51, $51, $51, $51, $51, $51, $51, $51, $51, $51, $51, $51, $52, $53, $54
 	.db $55, $56, $57, $58, $19, $DA, $9B
 
-IFNDEF PROTOTYPE_INSTRUMENTS
 ; Soft pluck
 ; 25% duty cycle with pronounced decay
 InstrumentDVE_F0_Short: ; $A398
@@ -108,21 +107,3 @@ InstrumentDVE_F0: ; $A3AF
 	.db $50, $50, $50, $50, $50, $50, $50, $50, $50, $50, $50, $50, $50, $50, $50, $50
 	.db $50, $50, $50, $50, $50, $50, $50, $50, $50, $50, $50, $50, $50, $50, $50, $50
 	.db $50, $50, $50, $50, $50, $51, $51, $51, $51, $52, $52, $52, $53, $53, $54, $55
-
-ENDIF
-IFDEF PROTOTYPE_INSTRUMENTS
-; Soft pluck
-; 25% duty cycle with pronounced decay
-InstrumentDVE_F0_Short:
-	.db $54, $54, $55, $56, $56, $57, $58, $59, $5A, $5B, $5B, $5B, $5B, $5B, $5B, $5B
-	.db $5B, $5B, $5B, $5D
-
-; Soft pluck
-; 25% duty cycle with pronounced decay
-InstrumentDVE_F0:
-	.db $51, $51, $51, $51, $52, $52, $52, $53, $53, $53, $53, $53, $53, $54, $54, $54
-	.db $54, $54, $54, $55, $55, $55, $55, $55, $56, $56, $56, $57, $57, $57, $57, $57
-	.db $58, $58, $58, $58, $58, $58, $58, $58, $58, $58, $59, $59, $59, $59, $5A, $5A
-	.db $5A, $5A, $5A, $5B, $5B, $5B, $5B, $5B, $5B, $5B, $5B, $5B, $5C, $5C, $5C, $5D
-
-ENDIF

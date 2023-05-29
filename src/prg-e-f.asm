@@ -22,34 +22,38 @@
 ;
 
 ; Include DPCM samples
-.include "src/music/dpcm-samples.asm"
+.incbin "src/music/default-sample-area.bin"
+
+IFDEF EVEN_UPPER_ROM_AREA
+	.pad $e000, $ff
+ENDIF
 
 ; PPU update buffers used to update the screen
 ScreenUpdateBufferPointers:
-	.dw PPUBuffer_301 ; Default screen update buffer
-	.dw PPUBuffer_BonusChanceCoinsExtraLife
-	.dw PPUBuffer_TitleCardPalette
+	.dw iPPUBuffer ; Default screen update buffer
+	.dw iBonusNotes
+	.dw iStartingPalettes
 	.dw PPUBuffer_CharacterSelect
 	.dw PPUBuffer_TitleCard
 	.dw PPUBuffer_Text_Game_Over
-	.dw PPUBuffer_ContinueRetryText
+	.dw iContinueScreenBuffer
 	.dw PPUBuffer_Text_Retry
-	.dw PPUBuffer_TitleCardText
-	.dw PPUBuffer_BonusChanceUnusedText ; Doki Doki Panic leftover
-	.dw PPUBuffer_NoBonusText
-	.dw PPUBuffer_PushAButtonText
-	.dw PPUBuffer_Player1UpText
-	.dw PPUBuffer_PauseText
-	.dw PPUBuffer_ErasePauseText
-	.dw PPUBuffer_EraseBonusMessageText
-	.dw PPUBuffer_ErasePushAButton
-	.dw PPUBuffer_EraseBonusMessageTextUnused
-	.dw PPUBuffer_WarpToWorld
-	.dw PPUBuffer_ContinueRetryBullets
-	.dw PPUBuffer_EndOfLevelDoor
+	.dw wTitleCardBuffer
+	.dw iLDPBonusChanceBuffer ; Doki Doki Panic leftover
+	.dw iLDPBonucChanceNA
+	.dw iLDPBonucChanceABtn
+	.dw iLDPBonucChanceLifeDisplay
+	.dw iPauseBuffer
+	.dw iTextDeletionPause
+	.dw iTextDeletionBonus
+	.dw iTextDeletionABtn
+	.dw iTextDeletionBonusUnused
+	.dw wWorldWarpDestination
+	.dw wContinueScreenBullets
+	.dw wHawkDoorBuffer
 	.dw PPUBuffer_TitleCardLeftover
 	.dw PPUBuffer_PauseExtraLife
-	.dw PPUBuffer_BonusChanceLayout
+	.dw wBonusLayoutBuffer
 
 PPUBuffer_CharacterSelect:
 	.db $21, $49, $06, $E9, $E5, $DE, $DA, $EC, $DE ; PLEASE
@@ -338,16 +342,16 @@ JumpToTableAfterJump:
 	ASL A
 	TAY
 	PLA
-	STA byte_RAM_A
+	STA z0a
 	PLA
-	STA byte_RAM_B
+	STA z0b
 	INY
-	LDA (byte_RAM_A), Y
-	STA byte_RAM_C
+	LDA (z0a), Y
+	STA z0c
 	INY
-	LDA (byte_RAM_A), Y
-	STA byte_RAM_D
-	JMP (byte_RAM_C)
+	LDA (z0a), Y
+	STA z0d
+	JMP (z0c)
 
 
 BlackAndWhitePalette:
@@ -376,10 +380,10 @@ SetBlackAndWhitePalette_Loop:
 
 SetScrollXYTo0:
 	LDA #$00
-	STA PPUScrollYMirror
-	STA PPUScrollXMirror
-	STA PPUScrollYHiMirror
-	STA PPUScrollXHiMirror
+	STA zPPUScrollY
+	STA zPPUScrollX
+	STA zYScrollPage
+	STA zXScrollPage
 	RTS
 
 
@@ -397,7 +401,7 @@ ResetScreenForTitleCard:
 	JSR SetScrollXYTo0
 
 	LDA #ScreenUpdateBuffer_RAM_TitleCardPalette
-	STA ScreenUpdateIndex
+	STA zScreenUpdateIndex
 	JSR WaitForNMI
 
 	LDA #VMirror
@@ -417,13 +421,13 @@ EnableNMI_PauseTitleCard:
 	JSR WaitForNMI_TurnOffPPU
 
 	LDA #Stack100_Menu
-	STA StackArea
+	STA iStack
 	LDA #ScreenUpdateBuffer_CharacterSelect
-	STA ScreenUpdateIndex
+	STA zScreenUpdateIndex
 	JSR WaitForNMI
 
 	LDA #ScreenUpdateBuffer_TitleCard
-	STA ScreenUpdateIndex
+	STA zScreenUpdateIndex
 
 	JMP WaitForNMI
 
@@ -432,8 +436,8 @@ EnableNMI_PauseTitleCard:
 ; Draws world info for the title card and pause screens
 ;
 ; ##### Input
-; - `X`: CurrentWorld
-; - `Y`: CurrentLevel (not actually used)
+; - `X`: iCurrentWorld
+; - `Y`: iCurrentLvl (not actually used)
 ;
 DisplayLevelTitleCardText:
 	; Level number (unused)
@@ -447,62 +451,62 @@ DisplayLevelTitleCardText:
 	INX
 	TXA
 	ORA #$D0
-	STA TitleCard_World
+	STA wTitleCardWorld
 
 	; Extra Life number
-	LDY ExtraLives
+	LDY iExtraMen
 	DEY
 	TYA
 	JSR GetTwoDigitNumberTiles
-	STY TitleCard_Lives
-	STA TitleCard_Lives + 1
+	STY wExtraLifeCounter
+	STA wExtraLifeCounter + 1
 
 	; Reset level dots
 	LDY #$06
 	LDA #$FB
 DisplayLevelTitleCardText_ResetLevelDotsLoop:
-	STA TitleCard_LevelDots, Y ; writes to $7171
+	STA wTitleCardDots, Y ; writes to $7171
 	DEY
 	BPL DisplayLevelTitleCardText_ResetLevelDotsLoop
 
 	; Level number
-	LDY CurrentWorld
-	LDA CurrentLevel
+	LDY iCurrentWorld
+	LDA iCurrentLvl
 	SEC
 	SBC WorldStartingLevel, Y
-	STA CurrentLevelRelative
+	STA iCurrentLvlRelative
 	CLC
 	ADC #$D1
-	STA TitleCard_Level
+	STA wTitleCardLevel
 
 	; Use the difference between the starting level of the next world and this
 	; world to determine how many dots to show for the levels in the world.
 	LDA WorldStartingLevel + 1, Y
 	SEC
 	SBC WorldStartingLevel, Y
-	STA byte_RAM_3
+	STA z03
 
 	; Level dots
 	LDX #$00
 	LDY #$00
 DisplayLevelTitleCardText_DrawLevelDotsLoop:
 	LDA #$FD ; other level
-	CPX CurrentLevelRelative
+	CPX iCurrentLvlRelative
 	BNE DisplayLevelTitleCardText_DrawLevelDot
 
 	LDA #$F6 ; current level
 
 DisplayLevelTitleCardText_DrawLevelDot:
-	STA TitleCard_LevelDots, Y
+	STA wTitleCardDots, Y
 	INY
 	INY
 	INX
-	CPX byte_RAM_3
+	CPX z03
 	BCC DisplayLevelTitleCardText_DrawLevelDotsLoop
 
 	; Draw the card
 	LDA #ScreenUpdateBuffer_RAM_TitleCardText
-	STA ScreenUpdateIndex
+	STA zScreenUpdateIndex
 	RTS
 
 
@@ -511,7 +515,7 @@ DisplayLevelTitleCardText_DrawLevelDot:
 ;
 SetStack100Gameplay:
 	LDA #Stack100_Gameplay
-	STA StackArea
+	STA iStack
 	RTS
 
 
@@ -520,18 +524,18 @@ SetStack100Gameplay:
 ;
 InitializeSomeLevelStuff:
 	LDA #$00
-	STA CurrentLevelArea
-	STA CurrentLevelArea_Init
-	STA CurrentLevelEntryPage
-	STA CurrentLevelEntryPage_Init
-	STA TransitionType
-	STA TransitionType_Init
-	STA PlayerState
-	STA PlayerState_Init
-	STA InSubspaceOrJar
-	STA InJarType
-	STA StopwatchTimer
-	STA PlayerCurrentSize
+	STA iCurrentLvlArea
+	STA iCurrentLevelArea_Init
+	STA iCurrentLvlEntryPage
+	STA iCurrentLevelEntryPage_Init
+	STA iTransitionType
+	STA iTransitionType_Init
+	STA zPlayerState
+	STA iPlayer_State_Init
+	STA iSubAreaFlags
+	STA iInJarType
+	STA iWatchTimer
+	STA iCurrentPlayerSize
 	RTS
 
 
@@ -561,7 +565,7 @@ DisplayLevelTitleCardAndMore:
 	; crud to show on the very left pixel -- residue
 	; from the character select screen
 	LDA #$FF
-	STA PPUScrollXMirror
+	STA zPPUScrollX
 	JSR ChangeTitleCardCHR
 
 	LDA #PRGBank_A_B
@@ -576,16 +580,16 @@ DisplayLevelTitleCardAndMore:
 	LDY #$23
 DisplayLevelTitleCardAndMore_TitleCardPaletteLoop:
 	LDA TitleCardPalettes, Y
-	STA PPUBuffer_TitleCardPalette, Y
+	STA iStartingPalettes, Y
 	DEY
 	BPL DisplayLevelTitleCardAndMore_TitleCardPaletteLoop
 
 	LDA #ScreenUpdateBuffer_RAM_TitleCardPalette ; Then tell it to dump that into the PPU
-	STA ScreenUpdateIndex
+	STA zScreenUpdateIndex
 	JSR WaitForNMI
 
 	LDA #ScreenUpdateBuffer_TitleCardLeftover
-	STA ScreenUpdateIndex
+	STA zScreenUpdateIndex
 	JSR WaitForNMI
 
 	JSR DrawTitleCardWorldImage
@@ -596,10 +600,10 @@ DisplayLevelTitleCardAndMore_TitleCardPaletteLoop:
 
 	; Pause for the title card
 	LDA #$50
-	STA byte_RAM_2
+	STA z02
 PreLevelTitleCard_PauseLoop:
 	JSR WaitForNMI
-	DEC byte_RAM_2
+	DEC z02
 	BPL PreLevelTitleCard_PauseLoop
 
 PreStartLevel:
@@ -640,7 +644,7 @@ DoCharacterSelectMenu:
 
 	JSR ResetScreenForTitleCard
 
-	LDA CharacterSelectBankSwitch
+	LDA iCHR_A5
 	CMP #$A5
 	BEQ loc_BANKF_E2B2
 
@@ -648,7 +652,7 @@ DoCharacterSelectMenu:
 	JSR ChangeMappedPRGBank
 
 	LDA #$A5
-	STA CharacterSelectBankSwitch
+	STA iCHR_A5
 
 loc_BANKF_E2B2:
 	JSR EnableNMI_PauseTitleCard
@@ -656,16 +660,16 @@ loc_BANKF_E2B2:
 	JSR DisableNMI
 
 	LDA #Music1_CharacterSelect
-	STA MusicQueue1
-	LDA CurrentCharacter
-	STA PreviousCharacter
-	LDA CurrentWorld
-	STA PreviousWorld
+	STA iMusic1
+	LDA zCurrentCharacter
+	STA iCHRBackup
+	LDA iCurrentWorld
+	STA iWorldBackup
 
 	LDY #$3F
 loc_BANKF_E2CA:
 	LDA PlayerSelectMarioSprites1, Y
-	STA SpriteDMAArea + $10, Y
+	STA iVirtualOAM + $10, Y
 	DEY
 	BPL loc_BANKF_E2CA
 
@@ -673,8 +677,8 @@ loc_BANKF_E2CA:
 
 	JSR WaitForNMI
 
-	LDX CurrentWorld
-	LDY CurrentLevel
+	LDX iCurrentWorld
+	LDY iCurrentLvl
 	JSR DisplayLevelTitleCardText
 
 	JSR WaitForNMI
@@ -684,7 +688,7 @@ loc_BANKF_E2CA:
 ; ---------------------------------------------------------------------------
 
 loc_BANKF_E2E8:
-	LDA Player1JoypadPress
+	LDA zInputBottleneck
 	AND #ControllerInput_Right | ControllerInput_Left
 	BNE CharacterSelect_ChangeCharacter
 
@@ -693,69 +697,69 @@ loc_BANKF_E2E8:
 ; ---------------------------------------------------------------------------
 
 CharacterSelect_ChangeCharacter:
-	LDA Player1JoypadPress
+	LDA zInputBottleneck
 	AND #ControllerInput_Right
 	BEQ loc_BANKF_E2FE
 
-	DEC CurrentCharacter
+	DEC zCurrentCharacter
 	LDA #SoundEffect1_CherryGet
-	STA SoundEffectQueue1
+	STA iPulse2SFX
 
 loc_BANKF_E2FE:
-	LDA Player1JoypadPress
+	LDA zInputBottleneck
 	AND #ControllerInput_Left
 	BEQ loc_BANKF_E30B
 
-	INC CurrentCharacter
+	INC zCurrentCharacter
 	LDA #SoundEffect1_CherryGet
-	STA SoundEffectQueue1
+	STA iPulse2SFX
 
 loc_BANKF_E30B:
-	LDA CurrentCharacter
+	LDA zCurrentCharacter
 	AND #$03
-	STA CurrentCharacter
+	STA zCurrentCharacter
 
 loc_BANKF_E311:
 	LDY #$00
 	LDA #$21
-	STA PPUBuffer_301
+	STA iPPUBuffer
 	LDA #$C9
-	STA PPUBuffer_301 + 1
+	STA iPPUBuffer + 1
 	LDA #$4F
-	STA PPUBuffer_301 + 2
+	STA iPPUBuffer + 2
 	LDA #$FB
-	STA PPUBuffer_301 + 3
+	STA iPPUBuffer + 3
 	LDA #$21
-	STA PPUBuffer_301 + 4
+	STA iPPUBuffer + 4
 	LDA #$E9
-	STA PPUBuffer_301 + 5
+	STA iPPUBuffer + 5
 	LDA #$4F
-	STA PPUBuffer_301 + 6
+	STA iPPUBuffer + 6
 	LDA #$FB
-	STA PPUBuffer_301 + 7
-	LDY CurrentCharacter
+	STA iPPUBuffer + 7
+	LDY zCurrentCharacter
 	LDA #$21
-	STA PPUBuffer_301 + 8
+	STA iPPUBuffer + 8
 	LDA PlayerSelectArrowTop, Y
-	STA PPUBuffer_301 + 9
+	STA iPPUBuffer + 9
 	LDA #$02
-	STA PPUBuffer_301 + 10
+	STA iPPUBuffer + 10
 	LDA #$BE
-	STA PPUBuffer_301 + 11
+	STA iPPUBuffer + 11
 	LDA #$C0
-	STA PPUBuffer_301 + 12
+	STA iPPUBuffer + 12
 	LDA #$21
-	STA PPUBuffer_301 + 13
+	STA iPPUBuffer + 13
 	LDA PlayerSelectArrowBottom, Y
-	STA PPUBuffer_301 + 14
+	STA iPPUBuffer + 14
 	LDA #$02
-	STA PPUBuffer_301 + 15
+	STA iPPUBuffer + 15
 	LDA #$BF
-	STA PPUBuffer_301 + 16
+	STA iPPUBuffer + 16
 	LDA #$C1
-	STA PPUBuffer_301 + 17
+	STA iPPUBuffer + 17
 	LDA #$00
-	STA PPUBuffer_301 + 18
+	STA iPPUBuffer + 18
 	JSR WaitForNMI_TurnOnPPU
 
 	LDX #$12
@@ -763,32 +767,32 @@ loc_BANKF_E311:
 
 loc_BANKF_E37D:
 	LDA PlayerSelectSpritePalettesDark, Y
-	STA PPUBuffer_301, Y
+	STA iPPUBuffer, Y
 	INY
 	DEX
 	BPL loc_BANKF_E37D
 
 	LDA #$06
-	STA byte_RAM_A
-	LDX CurrentCharacter
+	STA z0a
+	LDX zCurrentCharacter
 	LDA PlayerSelectPaletteOffsets, X
 	TAX
 
 loc_BANKF_E391:
 	LDA PlayerSelectSpritePalettes, X
-	STA PPUBuffer_301, Y
+	STA iPPUBuffer, Y
 	INY
 	INX
-	DEC byte_RAM_A
+	DEC z0a
 	BPL loc_BANKF_E391
 
 	LDA #$00
-	STA PPUBuffer_301, Y
+	STA iPPUBuffer, Y
 
 CharacterSelectMenuLoop:
 	JSR WaitForNMI_TurnOnPPU
 
-	LDA Player1JoypadPress
+	LDA zInputBottleneck
 	AND #ControllerInput_A
 	BNE loc_BANKF_E3AE
 
@@ -798,24 +802,24 @@ CharacterSelectMenuLoop:
 
 loc_BANKF_E3AE:
 	LDA #SoundEffect1_CherryGet
-	STA SoundEffectQueue1
-	LDX CurrentWorld
-	LDY CurrentLevel
+	STA iPulse2SFX
+	LDX iCurrentWorld
+	LDY iCurrentLvl
 	JSR DisplayLevelTitleCardText
 
 	LDA #$40
-	STA byte_RAM_10
+	STA z10
 	JSR WaitForNMI
 
 	LDX #$F
-	LDA CurrentCharacter
+	LDA zCurrentCharacter
 	TAY
 	LDA PlayerSelectSpriteIndexes, Y
 	TAY
 
 loc_BANKF_E3CC:
 	LDA PlayerSelectMarioSprites2, Y
-	STA SpriteDMAArea + $10, Y
+	STA iVirtualOAM + $10, Y
 	INY
 	DEX
 	BPL loc_BANKF_E3CC
@@ -823,28 +827,28 @@ loc_BANKF_E3CC:
 loc_BANKF_E3D6:
 	JSR WaitForNMI
 
-	DEC byte_RAM_10
+	DEC z10
 	BPL loc_BANKF_E3D6
 
 	LDY #$3F
 
 loc_BANKF_E3DF:
 	LDA PlayerSelectMarioSprites1, Y
-	STA SpriteDMAArea + $10, Y
+	STA iVirtualOAM + $10, Y
 	DEY
 	BPL loc_BANKF_E3DF
 
 	LDA #$40
-	STA byte_RAM_10
+	STA z10
 
 loc_BANKF_E3EC:
 	JSR WaitForNMI
 
-	DEC byte_RAM_10
+	DEC z10
 	BPL loc_BANKF_E3EC
 
 	LDA #Music2_StopMusic
-	STA MusicQueue2
+	STA iMusic2
 	RTS
 
 
@@ -858,26 +862,26 @@ StartGame:
 	JSR DisableNMI
 
 	LDA #PRGBank_0_1
-	STA GameMilestoneCounter
+	STA iMainGameState
 	JSR ChangeMappedPRGBank
 
 	JSR TitleScreen ; The whole title screen is a subroutine, lol
 
-	INC GameMilestoneCounter
+	INC iMainGameState
 SetNumContinues:
 	LDA #$02 ; Number of continues on start
-	STA Continues
+	STA iNumContinues
 
 ; We return here after picking "CONTINUE" from the game over menu.
 ContinueGame:
 	LDA #$03 ; Number of lives to start
-	STA ExtraLives
+	STA iExtraMen
 
 GoToWorldStartingLevel:
-	LDX CurrentWorld
+	LDX iCurrentWorld
 	LDY WorldStartingLevel, X
-	STY CurrentLevel
-	STY CurrentLevel_Init
+	STY iCurrentLvl
+	STY iCurrentLevel_Init
 	JSR DoCharacterSelectMenu
 
 	JSR InitializeSomeLevelStuff
@@ -885,7 +889,7 @@ GoToWorldStartingLevel:
 	JSR DisplayLevelTitleCardAndMore
 
 	LDA #$FF
-	STA CurrentMusicIndex
+	STA iMusicID
 	BNE StartLevel ; Branch always
 
 CharacterSelectMenu:
@@ -898,18 +902,18 @@ StartLevel:
 	JSR WaitForNMI_TurnOffPPU
 
 	LDA #$B0
-	ORA PPUScrollXHiMirror
-	LDY IsHorizontalLevel
+	ORA zXScrollPage
+	LDY zScrollCondition
 	BNE StartLevel_SetPPUCtrlMirror
 
 	AND #$FE
-	ORA PPUScrollYHiMirror
+	ORA zYScrollPage
 
 StartLevel_SetPPUCtrlMirror:
-	STA PPUCtrlMirror
+	STA zPPUControl
 	STA PPUCTRL
 	LDA #Stack100_Transition
-	STA StackArea
+	STA iStack
 	LDA #PRGBank_8_9
 	JSR ChangeMappedPRGBank
 
@@ -922,10 +926,6 @@ StartLevel_SetPPUCtrlMirror:
 
 	JSR LoadCurrentPalette
 
-IFDEF AREA_HEADER_TILESET
-	JSR LoadWorldCHRBanks
-ENDIF
-
 	JSR HideAllSprites
 
 	JSR WaitForNMI
@@ -933,9 +933,9 @@ ENDIF
 	JSR SetStack100Gameplay
 
 	LDA #PPUCtrl_Base2000 | PPUCtrl_WriteHorizontal | PPUCtrl_Sprite0000 | PPUCtrl_Background1000 | PPUCtrl_SpriteSize8x16 | PPUCtrl_NMIEnabled
-	STA PPUCtrlMirror
+	STA zPPUControl
 
-	LDA IsHorizontalLevel
+	LDA zScrollCondition
 	BEQ VerticalLevel_Loop
 
 HorizontalLevel_Loop:
@@ -948,29 +948,29 @@ HorizontalLevel_Loop:
 
 	JSR EnsureCorrectMusic
 
-	LDA BreakStartLevelLoop
+	LDA zBreakStartLevelLoop
 	BEQ HorizontalLevel_Loop
 
 	LDA #$00
-	STA BreakStartLevelLoop
+	STA zBreakStartLevelLoop
 	JSR WaitForNMI_TurnOnPPU
 
 HorizontalLevel_CheckScroll:
 	JSR WaitForNMI
 
 	; Disable pause detection while scrolling
-	LDA NeedsScroll
+	LDA zScrollArray
 	AND #%00000100
 	BNE HorizontalLevel_CheckSubArea
 
-	LDA Player1JoypadPress
+	LDA zInputBottleneck
 	AND #ControllerInput_Start
 	BEQ HorizontalLevel_CheckSubArea
 
 	JMP ShowPauseScreen
 
 HorizontalLevel_CheckSubArea:
-	LDA InSubspaceOrJar
+	LDA iSubAreaFlags
 	BEQ HorizontalLevel_ProcessFrame
 
 	JMP InitializeSubArea
@@ -980,13 +980,13 @@ HorizontalLevel_ProcessFrame:
 
 	JSR RunFrame_Horizontal
 
-	LDY GameMode
+	LDY iGameMode
 	BEQ HorizontalLevel_CheckTransition
 
 	JMP ResetAreaAndProcessGameMode
 
 HorizontalLevel_CheckTransition:
-	LDA DoAreaTransition
+	LDA iAreaTransitionID
 	BEQ HorizontalLevel_CheckScroll
 
 	JSR FollowCurrentAreaPointer
@@ -994,7 +994,7 @@ HorizontalLevel_CheckTransition:
 	JSR RememberAreaInitialState
 
 	LDA #$00
-	STA DoAreaTransition
+	STA iAreaTransitionID
 	JMP StartLevel
 
 
@@ -1008,11 +1008,11 @@ VerticalLevel_Loop:
 
 	JSR EnsureCorrectMusic
 
-	LDA BreakStartLevelLoop
+	LDA zBreakStartLevelLoop
 	BEQ VerticalLevel_Loop
 
 	LDA #$00
-	STA BreakStartLevelLoop
+	STA zBreakStartLevelLoop
 	JSR WaitForNMI_TurnOnPPU
 
 VerticalLevel_CheckScroll:
@@ -1022,11 +1022,11 @@ VerticalLevel_CheckScroll:
 	; This is likely a work-around to avoid getting the PPU into a weird state
 	; due to conflicts between the pause screen and attempting to draw the part
 	; of the area scrolling into view.
-	LDA NeedsScroll
+	LDA zScrollArray
 	AND #%00000100
 	BNE VerticalLevel_ProcessFrame
 
-	LDA Player1JoypadPress
+	LDA zInputBottleneck
 	AND #ControllerInput_Start
 	BNE ShowPauseScreen
 
@@ -1035,13 +1035,13 @@ VerticalLevel_ProcessFrame:
 
 	JSR RunFrame_Vertical
 
-	LDY GameMode
+	LDY iGameMode
 	BEQ VerticalLevel_CheckTransition
 
 	JMP ResetAreaAndProcessGameMode
 
 VerticalLevel_CheckTransition:
-	LDA DoAreaTransition
+	LDA iAreaTransitionID
 	BEQ VerticalLevel_CheckScroll
 
 	JSR FollowCurrentAreaPointer
@@ -1049,7 +1049,7 @@ VerticalLevel_CheckTransition:
 	JSR RememberAreaInitialState
 
 	LDA #$00
-	STA DoAreaTransition
+	STA iAreaTransitionID
 	JMP StartLevel
 
 
@@ -1061,39 +1061,39 @@ ShowPauseScreen:
 
 	; used when running sound queues
 	LDA #Stack100_Pause
-	STA StackArea
+	STA iStack
 
 PauseScreenLoop:
 	LDA #$0E
-	STA byte_RAM_6
+	STA z06
 
 DoSuicideCheatCheck:
 	JSR WaitForNMI_TurnOnPPU
 
-	LDA PlayerState ; Check if the player is already dying
+	LDA zPlayerState ; Check if the player is already dying
 	CMP #PlayerState_Dying
 	BEQ PauseScreenExitCheck ; If so, skip the suicide code check
 
-	LDA Player2JoypadHeld ; Check for suicide code
+	LDA zInputCurrentState + 1 ; Check for suicide code
 	CMP #ControllerInput_Up | ControllerInput_B | ControllerInput_A ; Up + A + B
 	BNE PauseScreenExitCheck ; Not being held! Nothing to see here
 
 	JSR KillPlayer ; KILL THYSELF
 
 PauseScreenExitCheck:
-	LDA Player1JoypadPress
+	LDA zInputBottleneck
 	AND #ControllerInput_Start
 	BNE HidePauseScreen
 
-	DEC byte_RAM_6
+	DEC z06
 	BPL DoSuicideCheatCheck
 
-	INC byte_RAM_7
-	LDA byte_RAM_7
+	INC z07
+	LDA z07
 	AND #$01
 	CLC
 	ADC #$0D ; Will use either $0D or $0E from the update index pointers
-	STA ScreenUpdateIndex ; @TODO I assume this is what blinks "PAUSE"
+	STA zScreenUpdateIndex ; @TODO I assume this is what blinks "PAUSE"
 	JMP PauseScreenLoop
 
 ;
@@ -1101,11 +1101,6 @@ PauseScreenExitCheck:
 ;
 HidePauseScreen:
 	JSR WaitForNMI_TurnOffPPU
-
-IFDEF RESET_CHR_LATCH
-	LDA #$00
-	STA ResetCHRLatch
-ENDIF
 
 	JSR LoadWorldCHRBanks
 
@@ -1125,7 +1120,7 @@ ENDIF
 
 	JSR RestoreScreenScrollPosition
 
-	LDA IsHorizontalLevel
+	LDA zScrollCondition
 	BNE HidePauseScreen_Horizontal
 
 HidePauseScreen_Vertical:
@@ -1139,7 +1134,7 @@ HidePauseScreen_Vertical_Loop:
 
 	JSR sub_BANK0_823D
 
-	LDA byte_RAM_537
+	LDA i537
 	BEQ HidePauseScreen_Vertical_Loop
 
 	JSR WaitForNMI_TurnOnPPU
@@ -1157,7 +1152,7 @@ HidePauseScreen_Horizontal_Loop:
 
 	JSR sub_BANK0_87AA
 
-	LDA byte_RAM_537
+	LDA i537
 	BEQ HidePauseScreen_Horizontal_Loop
 
 	JSR WaitForNMI_TurnOnPPU
@@ -1172,8 +1167,8 @@ InitializeSubArea:
 	JSR ChangeMappedPRGBank
 
 	LDA #$00
-	STA SubspaceCoins
-	LDA InSubspaceOrJar
+	STA iSubspaceCoinCount
+	LDA iSubAreaFlags
 	CMP #$02
 	BEQ InitializeSubspace
 
@@ -1191,9 +1186,9 @@ InitializeJar:
 	JSR ClearSubAreaTileLayout
 
 	LDA #Music1_Inside
-	STA MusicQueue1
+	STA iMusic1
 	LDA #$01
-	STA CurrentMusicIndex
+	STA iMusicID
 	JMP loc_BANKF_E5E1
 
 
@@ -1201,9 +1196,9 @@ InitializeSubspace:
 	JSR GenerateSubspaceArea
 
 	LDA #Music1_Subspace
-	STA MusicQueue1
+	STA iMusic1
 	LDA #$04
-	STA CurrentMusicIndex
+	STA iMusicID
 
 loc_BANKF_E5E1:
 	LDA #PRGBank_0_1
@@ -1218,10 +1213,10 @@ SubArea_Loop:
 
 	JSR sub_BANK0_87AA
 
-	LDA byte_RAM_537
+	LDA i537
 	BEQ SubArea_Loop
 
-	LDA InSubspaceOrJar
+	LDA iSubAreaFlags
 	CMP #$02
 	BEQ loc_BANKF_E606
 
@@ -1241,7 +1236,7 @@ loc_BANKF_E609:
 
 	JSR sub_BANKF_F0F9
 
-	LDY GameMode
+	LDY iGameMode
 	BEQ loc_BANKF_E61A
 
 	JMP ResetAreaAndProcessGameMode
@@ -1249,17 +1244,17 @@ loc_BANKF_E609:
 ; ---------------------------------------------------------------------------
 
 loc_BANKF_E61A:
-	LDA InSubspaceOrJar
+	LDA iSubAreaFlags
 	BNE loc_BANKF_E609
 
-	LDA SubspaceCoins
+	LDA iSubspaceCoinCount
 	BEQ loc_BANKF_E627
 
-	INC SubspaceVisits
+	INC iSubspaceVisitCount
 
 loc_BANKF_E627:
-	LDA CurrentLevelAreaCopy
-	STA CurrentLevelArea
+	LDA iCurrentAreaBackup
+	STA iCurrentLvlArea
 	LDA #PRGBank_6_7
 	JSR ChangeMappedPRGBank
 
@@ -1269,13 +1264,13 @@ loc_BANKF_E627:
 
 	JSR HideAllSprites
 
-	LDY CompareMusicIndex
-	STY CurrentMusicIndex
-	LDA StarInvincibilityTimer
+	LDY iLevelMusic
+	STY iMusicID
+	LDA iStarTimer
 	BNE loc_BANKF_E64C
 
 	LDA LevelMusicIndexes, Y
-	STA MusicQueue1
+	STA iMusic1
 
 loc_BANKF_E64C:
 	LDA #PRGBank_0_1
@@ -1288,7 +1283,7 @@ ExitSubArea_Loop:
 
 	JSR sub_BANK0_87AA
 
-	LDA byte_RAM_537
+	LDA i537
 	BEQ ExitSubArea_Loop
 
 	JSR WaitForNMI_TurnOnPPU
@@ -1298,36 +1293,36 @@ ExitSubArea_Loop:
 
 ;
 ; This code resets the level and does whatever else is needed to transition from
-; the current `GameMode` to `GameMode_InGame`.
+; the current `iGameMode` to `GameMode_InGame`.
 ;
 ResetAreaAndProcessGameMode:
 	JSR DoAreaReset
 
-	LDY GameMode
+	LDY iGameMode
 ShowCardAfterTransition:
 	LDA #GameMode_InGame
-	STA GameMode
-	STA StarInvincibilityTimer
-	STA BigVeggiesPulled
-	STA CherryCount
-	STA StopwatchTimer
-	DEY ; Initial `GameMode` minus 1
+	STA iGameMode
+	STA iStarTimer
+	STA iLargeVeggieAmount
+	STA iCherryAmount
+	STA iWatchTimer
+	DEY ; Initial `iGameMode` minus 1
 	BNE ResetAreaAndProcessGameMode_NotTitleCard
 
-  ; `GameMode` was `$01`
+  ; `iGameMode` was `$01`
 	; Reset from a title card
-	STY PlayerCurrentSize
+	STY iCurrentPlayerSize
 	JSR LevelInitialization
 
 	LDA #$FF
-	STA CurrentMusicIndex
+	STA iMusicID
 	; Draw EXTRA LIFE text near top of card
 	LDA #$25
-	STA TitleCard_ExtraLife_DrawAddress
+	STA wExtraLifeDrawPointer
 	LDA #$48
-	STA TitleCard_ExtraLife_DrawAddress + 1
+	STA wExtraLifeDrawPointer + 1
 	LDA #ScreenUpdateBuffer_TitleCardLeftover
-	STA CardScreenUpdateIndex
+	STA iCardScreenID
 	JSR PauseScreen_Card
 
 AfterDeathJump:
@@ -1340,25 +1335,25 @@ ENDIF
 
 ResetAreaAndProcessGameMode_NotTitleCard:
 	LDA #PlayerHealth_2_HP
-	STA PlayerHealth
+	STA iPlayerHP
 	LDA #$00
-	STA PlayerMaxHealth
-	STA KeyUsed
-	STA Mushroom1upPulled
-	STA Mushroom1Pulled
-	STA Mushroom2Pulled
-	STA SubspaceVisits
-	STA EnemiesKilledForHeart
-	DEY ; Initial `GameMode` minus 2
+	STA iPlayerMaxHP
+	STA iKeyUsed
+	STA iLifeUpEventFlag
+	STA iMushroomFlags
+	STA iMushroomFlags + 1
+	STA iSubspaceVisitCount
+	STA iKills
+	DEY ; Initial `iGameMode` minus 2
 	BEQ DoGameOverStuff
 
 	JMP ResetAreaAndProcessGameMode_NotGameOver
 
 
 DoGameOverStuff:
-	STY PlayerCurrentSize
+	STY iCurrentPlayerSize
 	LDA #Music2_GameOver
-	STA MusicQueue2
+	STA iMusic2
 	JSR WaitForNMI_TurnOffPPU
 
 	JSR ChangeTitleCardCHR
@@ -1374,82 +1369,82 @@ DoGameOverStuff:
 	JSR WaitForNMI_TurnOnPPU
 
 	LDA #ScreenUpdateBuffer_Text_Game_Over
-	STA ScreenUpdateIndex
+	STA zScreenUpdateIndex
 	LDA #$C0
-	STA byte_RAM_6
+	STA z06
 
 loc_BANKF_E6E6:
 	JSR WaitForNMI
 
-	DEC byte_RAM_6
+	DEC z06
 	BNE loc_BANKF_E6E6
 
 	LDY #(BonusChanceUpdateBuffer_BONUS_CHANCE_Unused - PPUBuffer_Text_Continue - 1)
 loc_BANKF_E6EF:
 	LDA PPUBuffer_Text_Continue, Y
-	STA PPUBuffer_ContinueRetryText, Y
+	STA iContinueScreenBuffer, Y
 	DEY
 	BPL loc_BANKF_E6EF
 
 	; Hide the bullet for RETRY
 	LDA #$FB
-	STA PPUBuffer_ContinueRetryText + 20
+	STA iContinueScreenRetry
 	; Update the number of continues
-	LDA Continues
+	LDA iNumContinues
 	CLC
 	ADC #$D0
-	STA PPUBuffer_ContinueRetryText + 3
+	STA iContinueScreenContNo
 	LDA #$00
-	STA byte_RAM_8
+	STA z08
 	LDA #ScreenUpdateBuffer_RAM_ContinueRetryText
-	DEC Continues
+	DEC iNumContinues
 	BPL loc_BANKF_E717
 
 	LDA #$01
-	STA byte_RAM_8
+	STA z08
 	LDA #ScreenUpdateBuffer_Text_Retry
 
 loc_BANKF_E717:
-	STA ScreenUpdateIndex
+	STA zScreenUpdateIndex
 
 loc_BANKF_E719:
 	JSR WaitForNMI
 
-	LDA Player1JoypadPress
+	LDA zInputBottleneck
 	AND #ControllerInput_Select
 	BEQ loc_BANKF_E747
 
-	LDA byte_RAM_8
+	LDA z08
 	EOR #$01
-	STA byte_RAM_8
-	LDY Continues
+	STA z08
+	LDY iNumContinues
 	CPY #$FF
 	BNE loc_BANKF_E733
 
 	LDA #$01
-	STA byte_RAM_8
+	STA z08
 
 loc_BANKF_E733:
 	ASL A
 	ASL A
 	TAY
 	LDA #$FB
-	STA PPUBuffer_ContinueRetryBullets + 3
-	STA PPUBuffer_ContinueRetryBullets + 7
+	STA wContinueScreenBullets + 3
+	STA wContinueScreenBullets + 7
 	LDA #$F6
-	STA PPUBuffer_ContinueRetryBullets + 3, Y
+	STA wContinueScreenBullets + 3, Y
 	LDA #ScreenUpdateBuffer_RAM_ContinueRetryBullets
-	STA ScreenUpdateIndex
+	STA zScreenUpdateIndex
 
 loc_BANKF_E747:
-	LDA Player1JoypadPress
+	LDA zInputBottleneck
 	AND #ControllerInput_Start
 	BEQ loc_BANKF_E719
 
-	LDA byte_RAM_8
+	LDA z08
 	BNE GameOver_Retry
 
-	STA SlotMachineCoins
+	STA iTotalCoins
 	JMP ContinueGame
 
 ; ---------------------------------------------------------------------------
@@ -1459,26 +1454,26 @@ GameOver_Retry:
 
 
 ResetAreaAndProcessGameMode_NotGameOver:
-	DEY ; Initial `GameMode` minus 3
+	DEY ; Initial `iGameMode` minus 3
 	BEQ EndOfLevel
 
 DoWorldWarp:
 	; Show warp screen
-	LDY CurrentWorld
-	STY PreviousWorld
+	LDY iCurrentWorld
+	STY iWorldBackup
 	LDA WarpDestinations, Y
-	STA CurrentWorld
+	STA iCurrentWorld
 	TAY
-	LDX CurrentCharacter
+	LDX zCurrentCharacter
 	LDA WorldStartingLevel, Y
-	STA CurrentLevel
-	STA CurrentLevel_Init
+	STA iCurrentLvl
+	STA iCurrentLevel_Init
 
 	; Set world number
 	INY
 	TYA
 	ORA #$D0
-	STA WarpToWorld_World
+	STA wWorldWarpDestinationNo
 
 	JSR WaitForNMI_TurnOffPPU
 
@@ -1491,9 +1486,9 @@ DoWorldWarp:
 	JSR ChangeTitleCardCHR
 
 	LDA #ScreenUpdateBuffer_WarpToWorld
-	STA ScreenUpdateIndex
+	STA zScreenUpdateIndex
 	LDA #Music2_SlotWarpFanfare
-	STA MusicQueue2
+	STA iMusic2
 	JSR Delay160Frames
 
 	JSR InitializeSomeLevelStuff
@@ -1505,14 +1500,14 @@ DoWorldWarp:
 EndOfLevel:
 	; Stop the music
 	LDA #Music2_StopMusic ; Stop music
-	STA MusicQueue2
+	STA iMusic2
 
 	; Increase current characters "contribution" counter
-	LDX CurrentCharacter
-	INC CharacterLevelsCompleted, X
+	LDX zCurrentCharacter
+	INC iCharacterLevelCount, X
 
 	; Check if we've completed the final level
-	LDA CurrentLevel
+	LDA iCurrentLvl
 	CMP #$13
 IFNDEF DISABLE_BONUS_CHANCE
 	; If not, go to bonus chance and proceed to the next level
@@ -1520,7 +1515,7 @@ EndOfLevelJump:
 	BNE EndOfLevelSlotMachine
 ENDIF
 IFDEF DISABLE_BONUS_CHANCE
-	STY PlayerCurrentSize
+	STY iCurrentPlayerSize
 EndOfLevelJump:
 	BNE GoToNextLevel
 ENDIF
@@ -1528,7 +1523,7 @@ ENDIF
 	JMP EndingSceneRoutine
 
 EndOfLevelSlotMachine:
-	STY PlayerCurrentSize
+	STY iCurrentPlayerSize
 	JSR WaitForNMI_TurnOffPPU
 
 	JSR ClearNametablesAndSprites
@@ -1550,22 +1545,22 @@ ENDIF
 	JSR CopyBonusChanceLayoutToRAM
 
 	LDA #ScreenUpdateBuffer_RAM_BonusChanceLayout
-	STA ScreenUpdateIndex
+	STA zScreenUpdateIndex
 	LDA #Stack100_Menu
-	STA StackArea
+	STA iStack
 	JSR EnableNMI
 
 	JSR WaitForNMI
 
 	LDA #Stack100_Gameplay
-	STA StackArea
+	STA iStack
 	JSR DisableNMI
 
 	JSR sub_BANKF_EA33
 
 	LDA #Music2_SlotWarpFanfare
-	STA MusicQueue2
-	LDA SlotMachineCoins
+	STA iMusic2
+	LDA iTotalCoins
 	BNE loc_BANKF_E7F2
 
 	JMP NoCoinsForSlotMachine
@@ -1574,29 +1569,29 @@ ENDIF
 
 loc_BANKF_E7F2:
 	LDA #$03
-	STA ObjectXLo + 3
-	STA ObjectXLo + 4
-	STA ObjectXLo + 5
+	STA zObjectXLo + 3
+	STA zObjectXLo + 4
+	STA zObjectXLo + 5
 	JSR WaitForNMI_TurnOnPPU
 
 loc_BANKF_E7FD:
-	LDA SlotMachineCoins
+	LDA iTotalCoins
 	BNE StartSlotMachine
 
 GoToNextLevel:
 	; Check if this is the last level before the next world
-	LDY CurrentWorld
+	LDY iCurrentWorld
 	LDA WorldStartingLevel + 1, Y
 	SEC
 	SBC #$01
-	CMP CurrentLevel
+	CMP iCurrentLvl
 	BNE GoToNextLevel_SameWorld
 
 	JSR SetStack100Gameplay
 
 	LDA #$FF
-	STA CurrentMusicIndex
-	INC CurrentWorld
+	STA iMusicID
+	INC iCurrentWorld
 	JMP GoToWorldStartingLevel
 
 GoToNextLevel_SameWorld:
@@ -1606,7 +1601,7 @@ GoToNextLevel_SameWorld:
 	; Without this, an area pointer at the end of a level that points to a
 	; a different world would load incorrectly (eg. 2-1 would load as 1-4).
 	; This scenario may not actually occur during normal gameplay.
-	LDA CurrentLevel
+	LDA iCurrentLvl
 	LDY #$00
 EnsureCorrectWorld_Loop:
 	INY
@@ -1614,52 +1609,52 @@ EnsureCorrectWorld_Loop:
 	BCS EnsureCorrectWorld_Loop
 
 	DEY
-	STY CurrentWorld
+	STY iCurrentWorld
 
 	; Initialize the current area and then go to the character select menu
-	LDY CurrentWorld
-	LDA CurrentLevel
+	LDY iCurrentWorld
+	LDA iCurrentLvl
 	SEC
 	SBC WorldStartingLevel, Y
-	STA CurrentLevelRelative
-	LDA CurrentLevel
-	STA CurrentLevel_Init
-	LDA CurrentLevelArea
-	STA CurrentLevelArea_Init
-	LDA CurrentLevelEntryPage
-	STA CurrentLevelEntryPage_Init
+	STA iCurrentLvlRelative
+	LDA iCurrentLvl
+	STA iCurrentLevel_Init
+	LDA iCurrentLvlArea
+	STA iCurrentLevelArea_Init
+	LDA iCurrentLvlEntryPage
+	STA iCurrentLevelEntryPage_Init
 	LDY #$00
-	STY PlayerState_Init
-	STY TransitionType
-	STY TransitionType_Init
+	STY iPlayer_State_Init
+	STY iTransitionType
+	STY iTransitionType_Init
 	DEY
-	STY CurrentMusicIndex
+	STY iMusicID
 	JSR SetStack100Gameplay
 
 	JMP CharacterSelectMenu
 
 
 StartSlotMachine:
-	DEC SlotMachineCoins
+	DEC iTotalCoins
 	JSR WaitForNMI
 
 	JSR sub_BANKF_EA68
 
 	LDA #$01 ; Set all reel timers
-	STA ObjectXLo
-	STA ObjectXLo + 1
-	STA ObjectXLo + 2
+	STA zObjectXLo
+	STA zObjectXLo + 1
+	STA zObjectXLo + 2
 	LSR A ; Set all reels to the first position
-	STA ObjectXLo + 6
-	STA ObjectXLo + 7
-	STA ObjectXLo + 8
+	STA zObjectXLo + 6
+	STA zObjectXLo + 7
+	STA zObjectXLo + 8
 
-DoSlotMachineSpinnyShit:
+SpinSlots:
 	JSR WaitForNMI ; $2C-$2E: Reel change timer
 	; $2F-$31: Current reel icon
 
 	LDA #SoundEffect2_Climbing ; Play "reel sound" sound effect
-	STA SoundEffectQueue2
+	STA iPulse1SFX
 	JSR sub_BANKF_EAC2
 
 	JSR sub_BANKF_EADC
@@ -1669,27 +1664,27 @@ DoSlotMachineSpinnyShit:
 	JSR SlotMachineTextFlashIndex
 
 	LDA BonusChanceUpdateBuffer_PUSH_A_BUTTON, Y
-	STA ScreenUpdateIndex
-	INC byte_RAM_6
-	LDA ObjectXLo ; Reel 1 still active?
-	ORA ObjectXLo + 1 ; Reel 2 still active?
-	ORA ObjectXLo + 2 ; Reel 3 still active?
-	BNE DoSlotMachineSpinnyShit ; If any are still active, go back to waiting
+	STA zScreenUpdateIndex
+	INC z06
+	LDA zObjectXLo ; Reel 1 still active?
+	ORA zObjectXLo + 1 ; Reel 2 still active?
+	ORA zObjectXLo + 2 ; Reel 3 still active?
+	BNE SpinSlots ; If any are still active, go back to waiting
 
 	LDA #ScreenUpdateBuffer_RAM_ErasePushAButtonText
-	STA ScreenUpdateIndex
+	STA zScreenUpdateIndex
 	JSR WaitForNMI
 
 	LDY #$00
-	LDX ObjectXLo + 6 ; Load reel 1
-	LDA SlotMachineReelOrder1RAM, X
+	LDX zObjectXLo + 6 ; Load reel 1
+	LDA iReelBuffer, X
 	BNE CheckReel2Symbol ; Is this reel a cherry?
 
 	INY ; Yes; add one life
 
 CheckReel2Symbol:
-	LDX ObjectXLo + 7 ; Load reel 2
-	CMP SlotMachineReelOrder2RAM, X
+	LDX zObjectXLo + 7 ; Load reel 2
+	CMP iReelBuffer + 8, X
 	BNE AddSlotMachineExtraLives ; Does this match the previous symbol?
 
 	CMP #$00 ; Yes; are they both cherries?
@@ -1698,9 +1693,9 @@ CheckReel2Symbol:
 	INY ; They are both cherries, add another life or something
 
 CheckReel3Symbol:
-	LDX ObjectXLo + 8 ; Load reel 3
-	CMP SlotMachineReelOrder3RAM, X ; Does reel 3 match the previous two?
-	BNE AddSlotMachineExtraLives ; No, fuck you
+	LDX zObjectXLo + 8 ; Load reel 3
+	CMP iReelBuffer + 16, X ; Does reel 3 match the previous two?
+	BNE AddSlotMachineExtraLives ; HEHE, NNNOPE
 
 	INY ; They all match! Yay! Add a life.
 ; Cherry count: 3 / Non-cherry: 1
@@ -1713,22 +1708,22 @@ CheckReel3Symbol:
 AddSlotMachineExtraLives:
 	TYA ; Y contains extra lives to add
 	CLC
-	ADC ExtraLives ; Add won extra lives to current lives
+	ADC iExtraMen ; Add won extra lives to current lives
 	BCC loc_BANKF_E8D3 ; Check if adding extra lives has wrapped the counter
 
 	LDA #$FF ; If so, set extra lives to 255 (#$FF)
 
 loc_BANKF_E8D3:
-	STA ExtraLives
+	STA iExtraMen
 	TYA ; Did we actually win any lives?
 	BEQ SlotMachineLoseFanfare ; No, play lose sound effect
 
 	ORA #$D0
-	STA PPUBuffer_Player1UpText + 11 ; Update number of lives won
+	STA iLDPBonucChanceLiveEMCount ; Update number of lives won
 	LDA #Music2_CrystalGetFanfare ; Play winner jingle
-	STA MusicQueue2
+	STA iMusic2
 	LDA #$A0
-	STA byte_RAM_6
+	STA z06
 	JSR WaitForNMI
 
 	JSR sub_BANKF_EA68
@@ -1739,15 +1734,15 @@ loc_BANKF_E8ED:
 	JSR SlotMachineTextFlashIndex
 
 	LDA BonusChanceUpdateBuffer_PLAYER_1UP, Y
-	STA ScreenUpdateIndex
-	DEC byte_RAM_6
+	STA zScreenUpdateIndex
+	DEC z06
 	BNE loc_BANKF_E8ED
 
 	BEQ loc_BANKF_E90C
 
 SlotMachineLoseFanfare:
 	LDA #Music2_DeathJingle
-	STA MusicQueue2
+	STA iMusic2
 	JSR WaitForNMI
 
 	JSR sub_BANKF_EA68
@@ -1756,7 +1751,7 @@ SlotMachineLoseFanfare:
 
 loc_BANKF_E90C:
 	LDA #ScreenUpdateBuffer_RAM_EraseBonusMessageTextUnused
-	STA ScreenUpdateIndex
+	STA zScreenUpdateIndex
 	JSR WaitForNMI
 
 	JMP loc_BANKF_E7FD
@@ -1766,13 +1761,13 @@ loc_BANKF_E90C:
 ; Used for flashing text in Bonus Chance
 ;
 ; ##### Input
-; - `byte_RAM_6`: Bonus Chance timer
+; - `z06`: Bonus Chance timer
 ;
 ; ##### Output
 ; - `Y`: 0 to show text, 1 to hide text
 ;
 SlotMachineTextFlashIndex:
-	LDA byte_RAM_6
+	LDA z06
 	LSR A
 	LSR A
 	LSR A
@@ -1786,27 +1781,24 @@ NoCoinsForSlotMachine:
 	JSR Delay80Frames
 
 	LDA #Music2_DeathJingle
-	STA MusicQueue2
+	STA iMusic2
 
-IFDEF EXPAND_MUSIC
-	LDA #$08
-ENDIF
-	STA byte_RAM_6
+	STA z06
 loc_BANKF_E92A:
-	LDA byte_RAM_6
+	LDA z06
 	AND #$01
 	TAY
 	LDA BonusChanceUpdateBuffer_NO_BONUS, Y
-	STA ScreenUpdateIndex
+	STA zScreenUpdateIndex
 
 	LDA #$0A
-	STA byte_RAM_7
+	STA z07
 loc_BANKF_E938:
 	JSR WaitForNMI_TurnOnPPU
-	DEC byte_RAM_7
+	DEC z07
 	BNE loc_BANKF_E938
 
-	DEC byte_RAM_6
+	DEC z06
 	BPL loc_BANKF_E92A
 
 	JMP GoToNextLevel
@@ -1820,10 +1812,10 @@ Delay160Frames:
 	LDA #$A0
 
 DelayFrames:
-	STA byte_RAM_7
+	STA z07
 DelayFrames_Loop:
 	JSR WaitForNMI_TurnOnPPU
-	DEC byte_RAM_7
+	DEC z07
 	BNE DelayFrames_Loop
 
 	RTS
@@ -1841,7 +1833,7 @@ EndingSceneRoutine:
 	; It looks like they missed this one, though.
 	STA FDS_WAVETABLE_VOL
 	ASL A
-	STA SoundEffectPlaying1
+	STA iCurrentPulse2SFX
 	LDA #PRGBank_0_1
 	JSR ChangeMappedPRGBank
 
@@ -1860,7 +1852,7 @@ EndingSceneRoutine:
 	LDA #PRGBank_0_1
 	JSR ChangeMappedPRGBank
 
-	INC GameMilestoneCounter
+	INC iMainGameState
 
 	JSR ContributorScene
 
@@ -1878,14 +1870,14 @@ SetupMarioSleepingScene:
 	LDA #PRGBank_C_D
 	JSR ChangeMappedPRGBank
 
-	INC GameMilestoneCounter
+	INC iMainGameState
 	JMP MarioSleepingScene
 
 
 DisableNMI:
 	LDA #PPUCtrl_Base2000 | PPUCtrl_WriteHorizontal | PPUCtrl_Sprite0000 | PPUCtrl_Background1000 | PPUCtrl_SpriteSize8x16 | PPUCtrl_NMIDisabled
 	STA PPUCTRL
-	STA PPUCtrlMirror
+	STA zPPUControl
 	RTS
 
 
@@ -1922,12 +1914,12 @@ BonusChanceUpdateBuffer_PLAYER_1UP:
 ;
 PauseScreen_ExtraLife:
 	LDA #ScreenUpdateBuffer_PauseExtraLife
-	STA CardScreenUpdateIndex
+	STA iCardScreenID
 	; Draw EXTRA LIFE text near bottom of card
 	LDA #$26
-	STA TitleCard_ExtraLife_DrawAddress
+	STA wExtraLifeDrawPointer
 	LDA #$C8
-	STA TitleCard_ExtraLife_DrawAddress + 1
+	STA wExtraLifeDrawPointer + 1
 
 ;
 ; Loads the palette and graphics for the pause screen to display
@@ -1946,7 +1938,7 @@ PauseScreen_Card:
 	LDY #$23
 PauseScreen_Card_Loop:
 	LDA TitleCardPalettes, Y
-	STA PPUBuffer_TitleCardPalette, Y
+	STA iStartingPalettes, Y
 	DEY
 	BPL PauseScreen_Card_Loop
 
@@ -1955,22 +1947,22 @@ PauseScreen_Card_ScreenReset:
 
 	JSR EnableNMI_PauseTitleCard
 
-	LDX CurrentWorld
-	LDY CurrentLevel
+	LDX iCurrentWorld
+	LDY iCurrentLvl
 	JSR DisplayLevelTitleCardText
 
 	LDA #$FF
-	STA PPUScrollXMirror
+	STA zPPUScrollX
 	JSR WaitForNMI
 
-	LDA CardScreenUpdateIndex
-	STA ScreenUpdateIndex
+	LDA iCardScreenID
+	STA zScreenUpdateIndex
 	JSR WaitForNMI
 
 
 EnableNMI:
 	LDA #PPUCtrl_Base2000 | PPUCtrl_WriteHorizontal | PPUCtrl_Sprite0000 | PPUCtrl_Background1000 | PPUCtrl_SpriteSize8x16 | PPUCtrl_NMIEnabled
-	STA PPUCtrlMirror
+	STA zPPUControl
 	STA PPUCTRL
 	RTS
 
@@ -1987,7 +1979,7 @@ sub_BANKF_EA33:
 	STY PPUADDR
 
 loc_BANKF_EA43:
-	LDA unk_RAM_59C, Y
+	LDA i59C, Y
 	STA PPUDATA
 	INY
 	CPY #$10
@@ -2012,22 +2004,22 @@ SetBonusChancePalette:
 ; =============== S U B R O U T I N E =======================================
 
 sub_BANKF_EA68:
-	LDY ExtraLives
+	LDY iExtraMen
 	DEY
 	TYA
 	JSR GetTwoDigitNumberTiles
-	STY byte_RAM_599
-	STA byte_RAM_59A
+	STY i599
+	STA i59a
 
-	LDA SlotMachineCoins
+	LDA iTotalCoins
 	CLC
 	ADC #$D0
-	STA byte_RAM_588
+	STA i588
 
 	LDA #ScreenUpdateBuffer_RAM_BonusChanceCoinsExtraLife
-	STA ScreenUpdateIndex
+	STA zScreenUpdateIndex
 	LDA #Stack100_Menu
-	STA StackArea
+	STA iStack
 	JSR EnableNMI
 
 	JMP WaitForNMI
@@ -2076,21 +2068,21 @@ WaitForNMI_TurnOnPPU:
 	LDA #PPUMask_ShowLeft8Pixels_BG | PPUMask_ShowLeft8Pixels_SPR | PPUMask_ShowBackground | PPUMask_ShowSprites
 
 _WaitForNMI_StuffPPUMask:
-	STA PPUMaskMirror
+	STA zPPUMask
 
 WaitForNMI:
-	LDA ScreenUpdateIndex
+	LDA zScreenUpdateIndex
 	ASL A
 	TAX
 	LDA ScreenUpdateBufferPointers, X
-	STA RAM_PPUDataBufferPointer
+	STA zPPUDataBufferPointer
 	LDA ScreenUpdateBufferPointers + 1, X
-	STA RAM_PPUDataBufferPointer + 1
+	STA zPPUDataBufferPointer + 1
 
 	LDA #$00
-	STA NMIWaitFlag ; Start waiting for NMI to finish
+	STA zNMIOccurred ; Start waiting for NMI to finish
 WaitForNMILoop:
-	LDA NMIWaitFlag ; Has the NMI routine set the flag yet?
+	LDA zNMIOccurred ; Has the NMI routine set the flag yet?
 	BPL WaitForNMILoop ; If no, wait some more
 
 	RTS ; If yes, go back to what we were doing
@@ -2099,13 +2091,13 @@ WaitForNMILoop:
 ; =============== S U B R O U T I N E =======================================
 
 sub_BANKF_EAC2:
-	LDA Player1JoypadPress
+	LDA zInputBottleneck
 	BPL locret_BANKF_EAD1
 
 	LDX #$00
 
 loc_BANKF_EAC8:
-	LDA ObjectXLo, X
+	LDA zObjectXLo, X
 	BNE loc_BANKF_EAD2
 
 	INX
@@ -2119,9 +2111,9 @@ locret_BANKF_EAD1:
 
 loc_BANKF_EAD2:
 	LDA #$00
-	STA ObjectXLo, X
+	STA zObjectXLo, X
 	LDA #SoundEffect1_CherryGet
-	STA SoundEffectQueue1
+	STA iPulse2SFX
 	RTS
 
 ; End of function sub_BANKF_EAC2
@@ -2132,19 +2124,19 @@ sub_BANKF_EADC:
 	LDX #$02
 
 loc_BANKF_EADE:
-	LDA ObjectXLo, X
+	LDA zObjectXLo, X
 	BEQ loc_BANKF_EAF2
 
-	DEC ObjectXLo + 3, X
+	DEC zObjectXLo + 3, X
 	BNE loc_BANKF_EAF2
 
 	LDA #$04
-	STA ObjectXLo + 3, X
-	DEC ObjectXLo + 6, X
+	STA zObjectXLo + 3, X
+	DEC zObjectXLo + 6, X
 	BPL loc_BANKF_EAF2
 
 	LDA #$07
-	STA ObjectXLo + 6, X
+	STA zObjectXLo + 6, X
 
 loc_BANKF_EAF2:
 	DEX
@@ -2158,31 +2150,31 @@ loc_BANKF_EAF2:
 
 sub_BANKF_EAF6:
 	LDA #$02
-	STA byte_RAM_0
+	STA z00
 
 loc_BANKF_EAFA:
-	LDA byte_RAM_0
+	LDA z00
 	TAY
 	ASL A
 	ASL A
 	ASL A
 	TAX
-	ADC ObjectXLo + 6, Y
+	ADC zObjectXLo + 6, Y
 	TAY
-	LDA SlotMachineReelOrder1RAM, Y
+	LDA iReelBuffer, Y
 	TAY
 	LDA #$07
-	STA byte_RAM_1
+	STA z01
 
 loc_BANKF_EB0D:
 	LDA BonusChanceCherrySprite, Y
-	STA SpriteDMAArea + $10, X
+	STA iVirtualOAM + $10, X
 	INX
 	INY
-	DEC byte_RAM_1
+	DEC z01
 	BPL loc_BANKF_EB0D
 
-	DEC byte_RAM_0
+	DEC z00
 	BPL loc_BANKF_EAFA
 
 	LDX #$17
@@ -2192,8 +2184,8 @@ loc_BANKF_EB1F:
 	AND #$18
 	ASL A
 	ASL A
-	ADC SpriteDMAArea + $10, X
-	STA SpriteDMAArea + $10, X
+	ADC iVirtualOAM + $10, X
+	STA iVirtualOAM + $10, X
 	DEX
 	DEX
 	DEX
@@ -2212,8 +2204,8 @@ CopyUnusedCoinSpriteToSpriteArea:
 	LDY #$00
 
 CopyUnusedCoinSpriteToSpriteArea_Loop:
-	LDA BonusChanceUnusedCoinSprite_RAM, Y
-	STA SpriteDMAArea + $28, Y
+	LDA i653, Y
+	STA iVirtualOAM + $28, Y
 	INY
 	CPY #$08 ; Four bytes per sprite * 2 sprites = 8 bytes
 	BCC CopyUnusedCoinSpriteToSpriteArea_Loop
@@ -2231,13 +2223,13 @@ NMI_Transition:
 	STA OAM_DMA
 	JSR ChangeCHRBanks
 
-	LDA PPUMaskMirror
+	LDA zPPUMask
 	STA PPUMASK
 	JSR DoSoundProcessing
 
-	LDA PPUCtrlMirror
+	LDA zPPUControl
 	STA PPUCTRL
-	DEC NMIWaitFlag
+	DEC zNMIOccurred
 	JMP NMI_Exit
 
 
@@ -2256,11 +2248,11 @@ NMI_PauseOrMenu:
 
 	JSR ResetPPUAddress
 
-	LDA PPUScrollXMirror
+	LDA zPPUScrollX
 	STA PPUSCROLL
 	LDA #$00
 	STA PPUSCROLL
-	LDA PPUMaskMirror
+	LDA zPPUMask
 	STA PPUMASK
 	JMP NMI_CheckScreenUpdateIndex
 
@@ -2269,7 +2261,7 @@ NMI_PauseOrMenu:
 ; When waiting for an NMI, just run the audio engine
 ;
 NMI_Waiting:
-	LDA PPUMaskMirror
+	LDA zPPUMask
 	STA PPUMASK
 	JMP NMI_DoSoundProcessing
 
@@ -2294,7 +2286,7 @@ NMI_Waiting:
 ;     divert to that code instead.
 ;  3. Hide the sprites/background and update the sprite OAM.
 ;  4. Load the current CHR banks.
-;  5. Check the `NMIWaitFlag`. If it's nonzero, restore `PPUMASK` and skip to
+;  5. Check the `zNMIOccurred`. If it's nonzero, restore `PPUMASK` and skip to
 ;     handling the sound processing.
 ;  6. Handle any horizontal or vertical scrolling tile updates.
 ;  7. Update PPU using the current screen update buffer.
@@ -2302,12 +2294,12 @@ NMI_Waiting:
 ;  9. Increment the global frame counter.
 ; 10. Reset PPU buffer 301 if we just used it for the screen update.
 ; 11. Read joypad input.
-; 12. Decrement `NMIWaitFlag`, unblocking any code that was waiting for the NMI.
+; 12. Decrement `zNMIOccurred`, unblocking any code that was waiting for the NMI.
 ; 13. Run the audio engine.
 ; 14. Restore registers and processor flags, yield back to the game loop.
 ;
 ; The game loop is synchronized with rendering using `JSR WaitForNMI`, which
-; sets `NMIWaitFlag` to `$00` until the NMI completes and decrements it.
+; sets `zNMIOccurred` to `$00` until the NMI completes and decrements it.
 ;
 ; Although the NMI itself doesn't lag (ie. the NMI itself is not interrupted
 ; by another NMI), there are some parts of the game that can feel sluggish.
@@ -2321,7 +2313,7 @@ NMI:
 	TYA
 	PHA
 
-	BIT StackArea
+	BIT iStack
 	BPL NMI_PauseOrMenu ; branch if bit 7 was 0
 
 	BVC NMI_Transition ; branch if bit 6 was 0
@@ -2335,7 +2327,7 @@ NMI:
 	JSR ChangeCHRBanks
 
 NMI_CheckWaitFlag:
-	LDA NMIWaitFlag
+	LDA zNMIOccurred
 	BNE NMI_Waiting
 
 NMI_Gameplay:
@@ -2343,15 +2335,15 @@ NMI_Gameplay:
 	; unsuitable for horizontal levels where scrolling the screen means drawing
 	; columns of new tiles. As a result, we need special logic to draw the
 	; background in horizontal levels!
-	LDA IsHorizontalLevel
+	LDA zScrollCondition
 	BEQ NMI_AfterBackgroundAttributesUpdate
 
-	LDA HasScrollingPPUTilesUpdate
+	LDA iScrollUpdateQueue
 	BEQ NMI_AfterBackgroundTilesUpdate
 
 	; Update nametable tiles in horizontal level
 	LDA #$00
-	STA HasScrollingPPUTilesUpdate
+	STA iScrollUpdateQueue
 	LDX #$1E
 	LDY #$00
 	LDA PPUSTATUS
@@ -2359,26 +2351,26 @@ NMI_Gameplay:
 	STA PPUCTRL
 
 NMI_DrawBackgroundTilesOuterLoop:
-	LDA_abs DrawBackgroundTilesPPUAddrHi
+	LDA_abs zBigPPUDrawer
 	STA PPUADDR
-	LDA_abs DrawBackgroundTilesPPUAddrLo
+	LDA_abs zBigPPUDrawer + 1
 	STA PPUADDR
 
 NMI_DrawBackgroundTilesInnerLoop:
-	LDA ScrollingPPUTileUpdateBuffer, Y
+	LDA iScrollTileBuffer, Y
 	STA PPUDATA
 	INY
 	DEX
 	BNE NMI_DrawBackgroundTilesInnerLoop
 
 	LDX #$1E
-	INC_abs DrawBackgroundTilesPPUAddrLo
+	INC_abs zBigPPUDrawer + 1
 
 	CPY #$3C
 	BNE NMI_DrawBackgroundTilesOuterLoop
 
 NMI_AfterBackgroundTilesUpdate:
-	LDA DrawBackgroundAttributesPPUAddrHi
+	LDA iBigDrawerAttrPointer
 	BEQ NMI_AfterBackgroundAttributesUpdate
 
 	; Update nametable attributes in horizontal level
@@ -2389,27 +2381,27 @@ NMI_AfterBackgroundTilesUpdate:
 
 NMI_DrawBackgroundAttributesOuterLoop:
 	LDA PPUSTATUS
-	LDA DrawBackgroundAttributesPPUAddrHi
+	LDA iBigDrawerAttrPointer
 	STA PPUADDR
-	LDA DrawBackgroundAttributesPPUAddrLo
+	LDA iBigDrawerAttrPointer + 1
 	STA PPUADDR
 
 NMI_DrawBackgroundAttributesInnerLoop:
-	LDA HorizontalScrollingPPUAttributeUpdateBuffer, Y
+	LDA iHorScrollBuffer, Y
 	STA PPUDATA
 	INY
 	TYA
 	LSR A
 	BCS NMI_DrawBackgroundAttributesInnerLoop
 
-	LDA DrawBackgroundAttributesPPUAddrLo
+	LDA iBigDrawerAttrPointer + 1
 	CLC
 	ADC #$08
-	STA DrawBackgroundAttributesPPUAddrLo
+	STA iBigDrawerAttrPointer + 1
 	DEX
 	BNE NMI_DrawBackgroundAttributesOuterLoop
 
-	STX DrawBackgroundAttributesPPUAddrHi
+	STX iBigDrawerAttrPointer
 
 NMI_AfterBackgroundAttributesUpdate:
 	JSR UpdatePPUFromBufferNMI
@@ -2417,49 +2409,45 @@ NMI_AfterBackgroundAttributesUpdate:
 	JSR ResetPPUAddress
 
 	LDA #PPUCtrl_Base2000 | PPUCtrl_WriteHorizontal | PPUCtrl_Sprite0000 | PPUCtrl_Background1000 | PPUCtrl_SpriteSize8x16 | PPUCtrl_NMIEnabled
-	ORA PPUScrollXHiMirror
-	LDY IsHorizontalLevel
+	ORA zXScrollPage
+	LDY zScrollCondition
 	BNE NMI_UpdatePPUScroll
 
 	AND #$FE
-	ORA PPUScrollYHiMirror
+	ORA zYScrollPage
 
 NMI_UpdatePPUScroll:
 	STA PPUCTRL
-	STA PPUCtrlMirror
-	LDA PPUScrollXMirror
+	STA zPPUControl
+	LDA zPPUScrollX
 	STA PPUSCROLL
-	LDA PPUScrollYMirror
+	LDA zPPUScrollY
 	CLC
-	ADC BackgroundYOffset
+	ADC iBGYOffset
 	STA PPUSCROLL
-	LDA PPUMaskMirror
+	LDA zPPUMask
 	STA PPUMASK
 
 NMI_IncrementGlobalCounter:
-	INC byte_RAM_10
+	INC z10
 
 NMI_CheckScreenUpdateIndex:
-	LDA ScreenUpdateIndex
+	LDA zScreenUpdateIndex
 	BNE NMI_ResetScreenUpdateIndex
 
 	; Turn off PPU buffer 301 update
-	STA byte_RAM_300
-	STA PPUBuffer_301
+	STA i300
+	STA iPPUBuffer
 
 NMI_ResetScreenUpdateIndex:
 	LDA #ScreenUpdateBuffer_RAM_301
-	STA ScreenUpdateIndex
+	STA zScreenUpdateIndex
 	JSR UpdateJoypads
 
-	DEC NMIWaitFlag
+	DEC zNMIOccurred
 
 NMI_DoSoundProcessing:
-IFNDEF DEBUG
 	JSR DoSoundProcessing
-ELSE
-	JMP DoSoundProcessingAndCheckDebug
-ENDIF
 
 NMI_Exit:
 	PLA
@@ -2497,13 +2485,13 @@ DoSoundProcessing:
 
 	JSR StartProcessingSoundQueue
 
-	LDA MMC3PRGBankTemp
+	LDA iCurrentROMBank
 	JMP ChangeMappedPRGBank
 
 
 ClearNametablesAndSprites:
 	LDA #$00
-	STA PPUMaskMirror
+	STA zPPUMask
 	STA PPUMASK
 	LDA #$20
 	JSR ClearNametableChunk
@@ -2520,7 +2508,7 @@ HideAllSprites:
 	LDA #$F8
 
 HideAllSpritesLoop:
-	STA SpriteDMAArea, Y
+	STA iVirtualOAM, Y
 	DEY
 	DEY
 	DEY
@@ -2534,7 +2522,7 @@ ClearNametableChunk:
 	LDY PPUSTATUS ; Reset PPU address latch
 	LDY #PPUCtrl_Base2000 | PPUCtrl_WriteHorizontal | PPUCtrl_Sprite0000 | PPUCtrl_Background1000 | PPUCtrl_SpriteSize8x16 | PPUCtrl_NMIDisabled
 	STY PPUCTRL ; Turn off NMI
-	STY PPUCtrlMirror
+	STY zPPUControl
 	LDY #$00
 	; A contains the high byte of the PPU address (generally $20, $24, $28)
 	STA PPUADDR
@@ -2566,7 +2554,7 @@ ClearNametableChunk_AttributeTableLoop:
 	BNE ClearNametableChunk_AttributeTableLoop
 
 PPUBufferUpdatesComplete:
-	RTS ; Woo fucking hoo
+	RTS ; Whew!
 
 
 ;
@@ -2590,21 +2578,21 @@ UpdatePPUFromBufferNMI:
 	LDY #$00
 
 UpdatePPUFromBufferNMI_CheckForBuffer:
-	LDA (RAM_PPUDataBufferPointer), Y
+	LDA (zPPUDataBufferPointer), Y
 	BEQ PPUBufferUpdatesComplete
 
 	LDX PPUSTATUS
 	STA PPUADDR
 	INY
-	LDA (RAM_PPUDataBufferPointer), Y
+	LDA (zPPUDataBufferPointer), Y
 	STA PPUADDR
 	INY
-	LDA (RAM_PPUDataBufferPointer), Y
+	LDA (zPPUDataBufferPointer), Y
 	TAX
 
 UpdatePPUFromBufferNMI_CopyLoop:
 	INY
-	LDA (RAM_PPUDataBufferPointer), Y
+	LDA (zPPUDataBufferPointer), Y
 	STA PPUDATA
 	DEX
 	BNE UpdatePPUFromBufferNMI_CopyLoop
@@ -2642,7 +2630,7 @@ UpdatePPUFromBufferNMI_CopyLoop:
 UpdatePPUFromBufferWithOptions:
 	; First, check if we have anything to send to the PPU
 	LDY #$00
-	LDA (RAM_PPUDataBufferPointer), Y
+	LDA (zPPUDataBufferPointer), Y
 	; If the first byte at the buffer address is #$00, we have nothing. We're done here!
 	BEQ PPUBufferUpdatesComplete
 
@@ -2652,14 +2640,14 @@ UpdatePPUFromBufferWithOptions:
 	; address from the PPU buffer
 	STA PPUADDR
 	INY
-	LDA (RAM_PPUDataBufferPointer), Y
+	LDA (zPPUDataBufferPointer), Y
 	STA PPUADDR
 	INY
-	LDA (RAM_PPUDataBufferPointer), Y ; Data segment length byte...
+	LDA (zPPUDataBufferPointer), Y ; Data segment length byte...
 	ASL A
 	PHA
 	; Enable NMI + Vertical increment + whatever else was already set...
-	LDA PPUCtrlMirror
+	LDA zPPUControl
 	ORA #PPUCtrl_Base2000 | PPUCtrl_WriteVertical | PPUCtrl_Sprite0000 | PPUCtrl_Background0000 | PPUCtrl_SpriteSize8x8 | PPUCtrl_NMIEnabled
 	; ...but only if $80 was set in the length byte. Otherwise, turn vertical incrementing back off.
 	BCS UpdatePPUFBWO_EnableVerticalIncrement
@@ -2698,7 +2686,7 @@ UpdatePPUFBWO_CopyLoop:
 	INY
 
 UpdatePPUFBWO_CopySingleTileSkip:
-	LDA (RAM_PPUDataBufferPointer), Y ; Load data from buffer...
+	LDA (zPPUDataBufferPointer), Y ; Load data from buffer...
 	STA PPUDATA ; ...store it to the PPU.
 	DEX ; Decrease remaining length.
 	BNE UpdatePPUFBWO_CopyLoop ; Are we done? If no, copy more stuff
@@ -2706,76 +2694,19 @@ UpdatePPUFBWO_CopySingleTileSkip:
 	INY ; Y contains the amount of copied data now
 	TYA ; ...and now A does
 	CLC ; Clear carry bit (from earlier)
-	ADC RAM_PPUDataBufferPointer ; Add the length to the PPU data buffer
-	STA RAM_PPUDataBufferPointer
-	LDA RAM_PPUDataBufferPointer + 1
+	ADC zPPUDataBufferPointer ; Add the length to the PPU data buffer
+	STA zPPUDataBufferPointer
+	LDA zPPUDataBufferPointer + 1
 	; If the length overflowed (carry set),
 	; add that to the hi byte of the pointer
 	ADC #$00
-	STA RAM_PPUDataBufferPointer + 1
+	STA zPPUDataBufferPointer + 1
 	; Start the cycle over again.
 	; (If the PPU buffer points to a 0, it will terminate after this jump)
 	JMP UpdatePPUFromBufferWithOptions
 
 
-IF INES_MAPPER == MAPPER_FME7
-RESET_FME7:
-	LDA #$08 ; PRG bank 0
-	STA FME7_Command
-	LDA #%11000000
-	STA FME7_Parameter
-
-	LDA #$09 ; PRG bank 1
-	STA FME7_Command
-	LDA #$00 ; ROM bank 0
-	STA FME7_Parameter
-
-	LDA #$0A ; PRG bank 2
-	STA FME7_Command
-	LDA #$01 ; ROM bank 1
-	STA FME7_Parameter
-
-	LDA #$0B ; PRG bank 3
-	STA FME7_Command
-	LDA #$0E ; ROM bank E
-	STA FME7_Parameter
-
-	JMP RESET
-
-
-ChangeCHRBanks_FME7:
-	LDY BackgroundCHR1
-	LDA #$04
-	STA FME7_Command
-	STY FME7_Parameter
-
-	INY
-	LDA #$05
-	STA FME7_Command
-	STY FME7_Parameter
-
-	LDY BackgroundCHR2
-	LDA #$06
-	STA FME7_Command
-	STY FME7_Parameter
-
-	INY
-	LDA #$07
-	STA FME7_Command
-	STY FME7_Parameter
-
-	LDY #$03
-ChangeCHRBanks_FME7_Loop:
-	TYA
-	STA FME7_Command
-	LDA SpriteCHR1, Y
-	STA FME7_Parameter
-	DEY
-	BPL ChangeCHRBanks_FME7_Loop
-
-	RTS
-
-ELSEIF INES_MAPPER == MAPPER_MMC5
+IF INES_MAPPER == MAPPER_MMC5
 RESET_MMC5:
 	; Set PRG mode 3 and CHR mode 3
 	LDA #$03
@@ -2820,34 +2751,34 @@ RESET_MMC5:
 
 
 ChangeCHRBanks_MMC5:
-	LDA SpriteCHR1
+	LDA iObjCHR1
 	STA MMC5_CHRBankSwitch1
 
-	LDA SpriteCHR2
+	LDA iObjCHR2
 	STA MMC5_CHRBankSwitch2
 
-	LDA SpriteCHR3
+	LDA iObjCHR3
 	STA MMC5_CHRBankSwitch3
 
-	LDA SpriteCHR4
+	LDA iObjCHR4
 	STA MMC5_CHRBankSwitch4
 
-	LDA BackgroundCHR1
+	LDA iBGCHR1
 	STA MMC5_CHRBankSwitch5
 	ADC #$01
 	STA MMC5_CHRBankSwitch6
 
-	LDA BackgroundCHR2
+	LDA iBGCHR2
 	STA MMC5_CHRBankSwitch7
 	ADC #$01
 	STA MMC5_CHRBankSwitch8
 
-	LDA BackgroundCHR1
+	LDA iBGCHR1
 	STA MMC5_CHRBankSwitch9
 	ADC #$01
 	STA MMC5_CHRBankSwitch10
 
-	LDA BackgroundCHR2
+	LDA iBGCHR2
 	STA MMC5_CHRBankSwitch11
 	ADC #$01
 	STA MMC5_CHRBankSwitch12
@@ -2855,9 +2786,10 @@ ChangeCHRBanks_MMC5:
 	RTS
 ENDIF
 
-; Unused space in the original ($ED4D - $EFFF)
-unusedSpace $F000, $FF
-
+IFNDEF EVEN_UPPER_ROM_AREA
+	; Unused space in the original ($ED4D - $EFFF)
+	unusedSpace $F000, $FF
+ENDIF
 
 ;
 ; ## Tile collision bounding boxes
@@ -3048,11 +2980,11 @@ ObjectCollisionHitboxHeight:
 
 
 NextSpriteFlickerSlot:
-	DEC SpriteFlickerSlot
+	DEC iObjectFlickerer
 	BPL NextSpriteFlickerSlot_Exit
 
 	LDA #$08
-	STA SpriteFlickerSlot
+	STA iObjectFlickerer
 
 NextSpriteFlickerSlot_Exit:
 	RTS
@@ -3071,15 +3003,15 @@ LevelMusicIndexes:
 sub_BANKF_F0F9:
 	JSR NextSpriteFlickerSlot
 
-	LDA PlayerInRocket
+	LDA iIsInRocket
 	BNE loc_BANKF_F11B
 
 	; boss clear fanfare locks player movement
-	LDA MusicPlaying2
+	LDA iCurrentMusic2
 	CMP #Music2_BossClearFanfare
 	BEQ loc_BANKF_F115
 
-	LDA PlayerLock
+	LDA iPlayerLock
 	BNE loc_BANKF_F115
 
 	LDA #PRGBank_0_1
@@ -3104,20 +3036,20 @@ RunFrame_Horizontal:
 	JSR NextSpriteFlickerSlot
 
 	; If the player is in a rocket, cut to the chase
-	LDA PlayerInRocket
+	LDA iIsInRocket
 	BNE RunFrame_Common
 
 	; Switch to banks 0/1 for the scrolling logic
 	LDA #PRGBank_0_1
 	JSR ChangeMappedPRGBank
 
-	; If the boss clear fanfare is playing or `PlayerLock` is set, skip the
+	; If the boss clear fanfare is playing or `iPlayerLock` is set, skip the
 	; player state update subroutine
-	LDA MusicPlaying2
+	LDA iCurrentMusic2
 	CMP #Music2_BossClearFanfare
 	BEQ RunFrame_Horizontal_AfterPlayerState
 
-	LDA PlayerLock
+	LDA iPlayerLock
 	BNE RunFrame_Horizontal_AfterPlayerState
 
 	JSR HandlePlayerState
@@ -3140,10 +3072,6 @@ RunFrame_Common:
 
 	JSR AreaSecondaryRoutine
 
-IFDEF CONTROLLER_2_DEBUG
-	JSR AreaDebugRoutine
-ENDIF
-
 	JSR AnimateCHRRoutine
 
 	JSR SetAreaStartPage
@@ -3151,31 +3079,31 @@ ENDIF
 	; Decrement player state timers
 	LDX #$03
 DecrementPlayerStateTimers_Loop:
-	LDA PlayerStateTimer, X
+	LDA zPlayerStateTimer, X
 	BEQ DecrementPlayerStateTimers_Zero
 
-	DEC PlayerStateTimer, X
+	DEC zPlayerStateTimer, X
 
 DecrementPlayerStateTimers_Zero:
 	DEX
 	BPL DecrementPlayerStateTimers_Loop
 
 	; If invincible, decrement timer every 8 frames
-	LDY StarInvincibilityTimer
+	LDY iStarTimer
 	BEQ RunFrame_Exit
 
-	LDA byte_RAM_10
+	LDA z10
 	AND #$07
 	BNE RunFrame_Exit
 
 	; When the invincibility timer hits 8, restore the regular level music
-	DEC StarInvincibilityTimer
+	DEC iStarTimer
 	CPY #$08
 	BNE RunFrame_Exit
 
-	LDY CurrentMusicIndex
+	LDY iMusicID
 	LDA LevelMusicIndexes, Y
-	STA MusicQueue1
+	STA iMusic1
 
 RunFrame_Exit:
 	RTS
@@ -3190,16 +3118,16 @@ RunFrame_Vertical:
 	JSR DetermineVerticalScroll
 
 	; If the player is in a rocket, cut to the chase
-	LDA PlayerInRocket
+	LDA iIsInRocket
 	BNE RunFrame_Vertical_Common
 
-	; If the boss clear fanfare is playing or `PlayerLock` is set, skip the
+	; If the boss clear fanfare is playing or `iPlayerLock` is set, skip the
 	; player state update subroutine
-	LDA MusicPlaying2
+	LDA iCurrentMusic2
 	CMP #Music2_BossClearFanfare
 	BEQ RunFrame_Vertical_AfterPlayerState
 
-	LDA PlayerLock
+	LDA iPlayerLock
 	BNE RunFrame_Vertical_AfterPlayerState
 
 	; Switch to banks 0/1 for the scrolling logic
@@ -3227,29 +3155,29 @@ RunFrame_Vertical_Common:
 ; to restart the area from the previous transition after the player dies.
 ;
 RememberAreaInitialState:
-	LDA DoAreaTransition
+	LDA iAreaTransitionID
 	CMP #$02 ; Skip if the player is going into a pointer jar
 	BEQ RememberAreaInitialState_Exit
 
 	LDY #$03
 RememberAreaInitialState_Loop:
-	LDA CurrentLevel, Y
-	STA CurrentLevel_Init, Y
+	LDA iCurrentLvl, Y
+	STA iCurrentLevel_Init, Y
 	DEY
 	BPL RememberAreaInitialState_Loop
 
-	LDA PlayerXLo
-	STA PlayerXLo_Init
-	LDA PlayerYLo
-	STA PlayerYLo_Init
-	LDA PlayerScreenX
-	STA PlayerScreenX_Init
-	LDA PlayerScreenYLo
-	STA PlayerScreenYLo_Init
-	LDA PlayerYVelocity
-	STA PlayerYVelocity_Init
-	LDA PlayerState
-	STA PlayerState_Init
+	LDA zPlayerXLo
+	STA iPlayer_X_Lo_Init
+	LDA zPlayerYLo
+	STA iPlayer_Y_Lo_Init
+	LDA iPlayerScreenX
+	STA iPlayerScreenX_Init
+	LDA iPlayerScreenY
+	STA iPlayerScreenY_Init
+	LDA zPlayerYVelocity
+	STA iPlayer_Y_Velocity_Init
+	LDA zPlayerState
+	STA iPlayer_State_Init
 
 RememberAreaInitialState_Exit:
 	RTS
@@ -3266,35 +3194,35 @@ LevelInitialization:
 
 ; Loop through and set level, area, page, and transition from RAM
 LevelInitialization_AreaSetupLoop:
-	LDA CurrentLevel_Init, Y
-	STA CurrentLevel, Y
+	LDA iCurrentLevel_Init, Y
+	STA iCurrentLvl, Y
 	DEY
 	BPL LevelInitialization_AreaSetupLoop
 
 	; position the player
-	LDA PlayerXLo_Init
-	STA PlayerXLo
-	LDA PlayerYLo_Init
-	STA PlayerYLo
-	LDA PlayerScreenX_Init
-	STA PlayerScreenX
-	LDA PlayerScreenYLo_Init
-	STA PlayerScreenYLo
-	LDA PlayerYVelocity_Init
-	STA PlayerYVelocity
-	LDA PlayerState_Init
-	STA PlayerState
+	LDA iPlayer_X_Lo_Init
+	STA zPlayerXLo
+	LDA iPlayer_Y_Lo_Init
+	STA zPlayerYLo
+	LDA iPlayerScreenX_Init
+	STA iPlayerScreenX
+	LDA iPlayerScreenY_Init
+	STA iPlayerScreenY
+	LDA iPlayer_Y_Velocity_Init
+	STA zPlayerYVelocity
+	LDA iPlayer_State_Init
+	STA zPlayerState
 	LDA #$00
-	STA InSubspaceOrJar
-	STA InJarType
-	STA PlayerInAir
-	STA DamageInvulnTime
+	STA iSubAreaFlags
+	STA iInJarType
+	STA zPlayerGrounding
+	STA zDamageCooldown
 
 
 RestorePlayerToFullHealth:
-	LDY PlayerMaxHealth ; Get player's current max HP
+	LDY iPlayerMaxHP ; Get player's current max HP
 	LDA PlayerHealthValueByHeartCount, Y ; Get the health value for this amount of hearts
-	STA PlayerHealth
+	STA iPlayerHP
 	RTS
 
 
@@ -3312,7 +3240,7 @@ ClimbSpeedDown:
 ClimbSpeedUp:
 	.db $F0
 ; Bug: The climb speed index is determined by checking the up/down flags in
-; Player1JoypadHeld. If both are enabled, the index it out of bounds and uses
+; zInputCurrentState. If both are enabled, the index it out of bounds and uses
 ; the LDA ($A5) below, which zips the player up the vine!
 IFDEF FIX_CLIMB_ZIP
 	.db $00
@@ -3326,24 +3254,24 @@ ENDIF
 ; camera can always keep up with the player in normal gameplay.
 ;
 SetPlayerScreenPosition:
-	LDA PlayerXLo
+	LDA zPlayerXLo
 	SEC
-	SBC ScreenBoundaryLeftLo
-	STA PlayerScreenX
-	LDA PlayerYLo
+	SBC iBoundLeftLower
+	STA iPlayerScreenX
+	LDA zPlayerYLo
 	CLC
-	SBC ScreenYLo
-	STA PlayerScreenYLo
-	LDA PlayerYHi
-	SBC ScreenYHi
-	STA PlayerScreenYHi
+	SBC zScreenY
+	STA iPlayerScreenY
+	LDA zPlayerYHi
+	SBC zScreenYPage
+	STA iPlayerScreenYPage
 
 	; Exit if the player state is not standing/jumping or climbing
-	LDA PlayerState
+	LDA zPlayerState
 	CMP #PlayerState_Lifting
 	BCS SetPlayerScreenPosition_Exit
 
-	LDA PlayerScreenYHi
+	LDA iPlayerScreenYPage
 	BEQ SetPlayerScreenPosition_CheckClimbing
 
 	BMI SetPlayerScreenPosition_Above
@@ -3351,21 +3279,21 @@ SetPlayerScreenPosition:
 ; If the player falls below the screen, they are in a bottomless pit.
 SetPlayerScreenPosition_Below:
 	LDA #$00
-	STA PlayerStateTimer
+	STA zPlayerStateTimer
 	JMP KillPlayer
 
 ; If the player is above the screen, they might be jumping out of a jar.
 SetPlayerScreenPosition_Above:
 	; Verify that the y-position is above the first page of the area
-	LDA PlayerYHi
+	LDA zPlayerYHi
 	BPL SetPlayerScreenPosition_Exit
 
 	; We're above the top of the area, so check if we're in a jar
-	LDA InJarType
+	LDA iInJarType
 	BEQ SetPlayerScreenPosition_CheckClimbing
 
 	; Check if the player is far enough above the top of the area
-	LDA PlayerYLo
+	LDA zPlayerYLo
 	CMP #$F0
 	BCS SetPlayerScreenPosition_Exit
 
@@ -3378,26 +3306,26 @@ SetPlayerScreenPosition_Above:
 
 	; Put the player in a crouching stance
 	LDY #$00
-	STY PlayerDucking
-	STY PlayerYVelocity
-	STY PlayerXVelocity
+	STY zPlayerHitBoxHeight
+	STY zPlayerYVelocity
+	STY zPlayerXVelocity
 	LDA #PlayerState_ExitingJar
-	STA PlayerState
+	STA zPlayerState
 	LDA #SpriteAnimation_Ducking
-	STA PlayerAnimationFrame
-	LDA InJarType
-	STY InJarType
+	STA zPlayerAnimFrame
+	LDA iInJarType
+	STY iInJarType
 	CMP #$02
 	BNE SetPlayerScreenPosition_ExitSubAreaJar
 
 SetPlayerScreenPosition_ExitPointerJar:
-	STA DoAreaTransition
+	STA iAreaTransitionID
 	RTS
 
 SetPlayerScreenPosition_ExitSubAreaJar:
-	STY InSubspaceOrJar
-	LDA CurrentLevelAreaCopy
-	STA CurrentLevelArea
+	STY iSubAreaFlags
+	LDA iCurrentAreaBackup
+	STA iCurrentLvlArea
 	LDA #PRGBank_8_9
 	JSR ChangeMappedPRGBank
 
@@ -3407,35 +3335,35 @@ SetPlayerScreenPosition_Exit:
 	RTS
 
 SetPlayerScreenPosition_CheckClimbing:
-	LDA PlayerState
+	LDA zPlayerState
 	CMP #PlayerState_Climbing
 	BNE SetPlayerScreenPosition_Exit
 
 	; No climbing transitions from subspace
-	LDA InSubspaceOrJar
+	LDA iSubAreaFlags
 	CMP #$02
 	BEQ SetPlayerScreenPosition_Exit
 
 	; Climbing upwards
 	LDA ClimbSpeedUp
-	LDY PlayerYHi
+	LDY zPlayerYHi
 	BMI SetPlayerScreenPosition_DoClimbingTransition
 
 	; Climbing downwards
-	LDA PlayerScreenYLo
+	LDA iPlayerScreenY
 	CMP #$B8
 	BCC SetPlayerScreenPosition_Exit
 
 	; Set y-position to an odd number
-	LSR PlayerYLo
+	LSR zPlayerYLo
 	SEC
-	ROL PlayerYLo
+	ROL zPlayerYLo
 	LDA ClimbSpeedDown
 
 SetPlayerScreenPosition_DoClimbingTransition:
-	STA PlayerYVelocity
+	STA zPlayerYVelocity
 	LDA #PlayerState_ClimbingAreaTransition
-	STA PlayerState
+	STA zPlayerState
 	RTS
 
 
@@ -3445,17 +3373,17 @@ SetPlayerScreenPosition_DoClimbingTransition:
 ;
 GetMoveCameraX:
 	LDA #$00
-	LDY ScrollXLock
+	LDY iScrollXLock
 	BNE GetMoveCameraX_Exit
 
-	LDA PlayerXLo
+	LDA zPlayerXLo
 	SEC
 	SBC #$78
 	SEC
-	SBC ScreenBoundaryLeftLo
+	SBC iBoundLeftLower
 
 GetMoveCameraX_Exit:
-	STA MoveCameraX
+	STA zXVelocity
 	RTS
 
 
@@ -3553,74 +3481,19 @@ CharacterTiles_PrincessJumpBody:
 DamageInvulnBlinkFrames:
 	.db $01, $01, $01, $02, $02, $04, $04, $04
 
-IFDEF CONTROLLER_2_DEBUG
-ChangePlayerPoofTiles:
-	.db $5E
-	.db $3A
-	.db $3A
-	.db $3A
-	.db $38
-	.db $38
-	.db $38
-	.db $36
-	.db $34
-ENDIF
 
 ;
 ; Renders the player sprite
 ;
 RenderPlayer:
-IFDEF CONTROLLER_2_DEBUG
-	LDA ChangeCharacterPoofTimer
-	BEQ RenderPlayer_AfterChangeCharacterPoof
-
-	DEC ChangeCharacterPoofTimer
-
-	; tile
-	LDY ChangeCharacterPoofTimer
-	LDA ChangePlayerPoofTiles, Y
-	STA SpriteDMAArea + $01
-	STA SpriteDMAArea + $05
-	STA SpriteDMAArea + $09
-	STA SpriteDMAArea + $0D
-
-	; attributes
-	LDA #ObjAttrib_Palette1
-	STA SpriteDMAArea + $02
-	STA SpriteDMAArea + $0A
-	LDA #ObjAttrib_Palette1 | ObjAttrib_16x32
-	STA SpriteDMAArea + $06
-	STA SpriteDMAArea + $0E
-
-	; y-position
-	LDA PlayerScreenYLo
-	STA SpriteDMAArea + $00
-	STA SpriteDMAArea + $04
-	CLC
-	ADC #$10
-	STA SpriteDMAArea + $08
-	STA SpriteDMAArea + $0C
-
-	; x-position
-	LDA PlayerScreenX
-	STA SpriteDMAArea + $03
-	STA SpriteDMAArea + $0B
-	CLC
-	ADC #$08
-	STA SpriteDMAArea + $07
-	STA SpriteDMAArea + $0F
-
-RenderPlayer_AfterChangeCharacterPoof:
-ENDIF
-
-	LDY_abs PlayerState
+	LDY_abs zPlayerState
 	CPY #PlayerState_ChangingSize
 	BEQ loc_BANKF_F337
 
-	LDY StarInvincibilityTimer
+	LDY iStarTimer
 	BNE loc_BANKF_F337
 
-	LDA DamageInvulnTime ; Determine if the player is invincible from damage,
+	LDA zDamageCooldown ; Determine if the player is invincible from damage,
 ; and if so, if they should be visible
 	BEQ loc_BANKF_F345
 
@@ -3629,7 +3502,7 @@ ENDIF
 	LSR A
 	LSR A
 	TAY
-	LDA DamageInvulnTime
+	LDA zDamageCooldown
 	AND DamageInvulnBlinkFrames, Y
 	BNE loc_BANKF_F345
 
@@ -3638,7 +3511,7 @@ ENDIF
 ; ---------------------------------------------------------------------------
 
 loc_BANKF_F337:
-	LDA byte_RAM_10
+	LDA z10
 	CPY #$18
 	BCS loc_BANKF_F33F
 
@@ -3647,104 +3520,104 @@ loc_BANKF_F337:
 
 loc_BANKF_F33F:
 	AND #ObjAttrib_Palette
-	ORA PlayerAttributes
-	STA PlayerAttributes
+	ORA zPlayerAttributes
+	STA zPlayerAttributes
 
 loc_BANKF_F345:
-	LDA QuicksandDepth
+	LDA iQuicksandDepth
 	BEQ loc_BANKF_F350
 
 	LDA #ObjAttrib_BehindBackground
-	ORA PlayerAttributes
-	STA PlayerAttributes
+	ORA zPlayerAttributes
+	STA zPlayerAttributes
 
 loc_BANKF_F350:
-	LDA PlayerScreenX
-	STA SpriteDMAArea + $23
-	STA SpriteDMAArea + $2B
+	LDA iPlayerScreenX
+	STA iVirtualOAM + $23
+	STA iVirtualOAM + $2B
 	CLC
 	ADC #$08
-	STA SpriteDMAArea + $27
-	STA SpriteDMAArea + $2F
-	LDA PlayerScreenYLo
-	STA byte_RAM_0
-	LDA PlayerScreenYHi
-	STA byte_RAM_1
-	LDY PlayerAnimationFrame
+	STA iVirtualOAM + $27
+	STA iVirtualOAM + $2F
+	LDA iPlayerScreenY
+	STA z00
+	LDA iPlayerScreenYPage
+	STA z01
+	LDY zPlayerAnimFrame
 	CPY #$04
 	BEQ loc_BANKF_F382
 
-	LDA PlayerCurrentSize
+	LDA iCurrentPlayerSize
 	BEQ loc_BANKF_F382
 
-	LDA byte_RAM_0
+	LDA z00
 	CLC
 	ADC #$08
-	STA byte_RAM_0
+	STA z00
 	BCC loc_BANKF_F382
 
-	INC byte_RAM_1
+	INC z01
 
 loc_BANKF_F382:
-	LDA CurrentCharacter
+	LDA zCurrentCharacter
 	CMP #Character_Princess
 	BEQ loc_BANKF_F394
 
 	CPY #$00
 	BNE loc_BANKF_F394
 
-	LDA byte_RAM_0
+	LDA z00
 	BNE loc_BANKF_F392
 
-	DEC byte_RAM_1
+	DEC z01
 
 loc_BANKF_F392:
-	DEC byte_RAM_0
+	DEC z00
 
 loc_BANKF_F394:
 	JSR FindSpriteSlot
 
-	LDA byte_RAM_1
+	LDA z01
 	BNE loc_BANKF_F3A6
 
-	LDA byte_RAM_0
-	STA SpriteDMAArea, Y
-	STA SpriteDMAArea + $20
-	STA SpriteDMAArea + $24
+	LDA z00
+	STA iVirtualOAM, Y
+	STA iVirtualOAM + $20
+	STA iVirtualOAM + $24
 
 loc_BANKF_F3A6:
-	LDA byte_RAM_0
+	LDA z00
 	CLC
 	ADC #$10
-	STA byte_RAM_0
-	LDA byte_RAM_1
+	STA z00
+	LDA z01
 	ADC #$00
 	BNE loc_BANKF_F3BB
 
-	LDA byte_RAM_0
-	STA SpriteDMAArea + $28
-	STA SpriteDMAArea + $2C
+	LDA z00
+	STA iVirtualOAM + $28
+	STA iVirtualOAM + $2C
 
 loc_BANKF_F3BB:
-	LDA CrouchJumpTimer
+	LDA iCrouchJumpTimer
 	CMP #$3C
 	BCC loc_BANKF_F3CA
 
-	LDA byte_RAM_10
+	LDA z10
 	AND #ObjAttrib_Palette1
-	ORA PlayerAttributes
-	STA PlayerAttributes
+	ORA zPlayerAttributes
+	STA zPlayerAttributes
 
 loc_BANKF_F3CA:
-	LDA PlayerDirection
+	LDA zPlayerFacing
 	LSR A
 	ROR A
 	ROR A
-	ORA PlayerAttributes
+	ORA zPlayerAttributes
 	AND #%11111100
 	ORA #ObjAttrib_Palette1
-	STA SpriteDMAArea + 2, Y
-	LDX PlayerAnimationFrame
+	STA iVirtualOAM + 2, Y
+	LDX zPlayerAnimFrame
 	CPX #$07
 	BEQ loc_BANKF_F3E2
 
@@ -3752,57 +3625,57 @@ loc_BANKF_F3CA:
 	BNE loc_BANKF_F3EE
 
 loc_BANKF_F3E2:
-	LDA PlayerAttributes
-	STA SpriteDMAArea + $22
-	STA SpriteDMAArea + $2A
+	LDA zPlayerAttributes
+	STA iVirtualOAM + $22
+	STA iVirtualOAM + $2A
 	ORA #$40
 	BNE loc_BANKF_F3F8
 
 loc_BANKF_F3EE:
 	AND #$FC
-	ORA PlayerAttributes
-	STA SpriteDMAArea + $22
-	STA SpriteDMAArea + $2A
+	ORA zPlayerAttributes
+	STA iVirtualOAM + $22
+	STA iVirtualOAM + $2A
 
 loc_BANKF_F3F8:
-	STA SpriteDMAArea + $26
-	STA SpriteDMAArea + $2E
+	STA iVirtualOAM + $26
+	STA iVirtualOAM + $2E
 	LDA CharacterFrameEyeTiles, X
 	BNE loc_BANKF_F408
 
-	LDX CurrentCharacter
+	LDX zCurrentCharacter
 	LDA CharacterEyeTiles, X
 
 loc_BANKF_F408:
-	STA SpriteDMAArea + 1, Y
+	STA iVirtualOAM + 1, Y
 
-	LDA PlayerAnimationFrame
+	LDA zPlayerAnimFrame
 	CMP #$06
 	BCS loc_BANKF_F413
 
-	ORA HoldingItem
+	ORA zHeldItem
 
 loc_BANKF_F413:
 	ASL A
 	ASL A
 	TAX
-	LDA PlayerDirection
+	LDA zPlayerFacing
 	BNE loc_BANKF_F44A
 
-	LDA SpriteDMAArea + $23
-	STA SpriteDMAArea + 3, Y
+	LDA iVirtualOAM + $23
+	STA iVirtualOAM + 3, Y
 	LDA CharacterTiles_Walk1, X
-	STA SpriteDMAArea + $21
+	STA iVirtualOAM + $21
 	LDA CharacterTiles_Walk1 + 1, X
-	STA SpriteDMAArea + $25
-	LDA PlayerCurrentSize
+	STA iVirtualOAM + $25
+	LDA iCurrentPlayerSize
 	BNE loc_BANKF_F43F
 
-	LDA CurrentCharacter
+	LDA zCurrentCharacter
 	CMP #Character_Princess
 	BNE loc_BANKF_F43F
 
-	LDA PlayerAnimationFrame
+	LDA zPlayerAnimFrame
 	CMP #SpriteAnimation_Jumping
 	BNE loc_BANKF_F43F
 
@@ -3810,25 +3683,25 @@ loc_BANKF_F413:
 
 loc_BANKF_F43F:
 	LDA CharacterTiles_Walk1 + 2, X
-	STA SpriteDMAArea + $29
+	STA iVirtualOAM + $29
 	LDA CharacterTiles_Walk1 + 3, X
 	BNE loc_BANKF_F478
 
 loc_BANKF_F44A:
-	LDA SpriteDMAArea + $27
-	STA SpriteDMAArea + 3, Y
+	LDA iVirtualOAM + $27
+	STA iVirtualOAM + 3, Y
 	LDA CharacterTiles_Walk1 + 1, X
-	STA SpriteDMAArea + $21
+	STA iVirtualOAM + $21
 	LDA CharacterTiles_Walk1, X
-	STA SpriteDMAArea + $25
-	LDA PlayerCurrentSize
+	STA iVirtualOAM + $25
+	LDA iCurrentPlayerSize
 	BNE loc_BANKF_F46F
 
-	LDA CurrentCharacter
+	LDA zCurrentCharacter
 	CMP #Character_Princess
 	BNE loc_BANKF_F46F
 
-	LDA PlayerAnimationFrame
+	LDA zPlayerAnimFrame
 	CMP #SpriteAnimation_Jumping
 	BNE loc_BANKF_F46F
 
@@ -3836,22 +3709,22 @@ loc_BANKF_F44A:
 
 loc_BANKF_F46F:
 	LDA CharacterTiles_Walk1 + 3, X
-	STA SpriteDMAArea + $29
+	STA iVirtualOAM + $29
 	LDA CharacterTiles_Walk1 + 2, X
 
 loc_BANKF_F478:
-	STA SpriteDMAArea + $2D
+	STA iVirtualOAM + $2D
 	RTS
 
 
 ; =============== S U B R O U T I N E =======================================
 
 SetAreaStartPage:
-	LDA IsHorizontalLevel
+	LDA zScrollCondition
 	BNE SetAreaStartPage_HorizontalLevel
 
-	LDY PlayerYHi
-	LDA PlayerYLo
+	LDY zPlayerYHi
+	LDA zPlayerYLo
 	JSR GetVerticalAreaStartPage
 
 	TYA
@@ -3860,10 +3733,10 @@ SetAreaStartPage:
 	BEQ SetAreaStartPage_SetAndExit
 
 SetAreaStartPage_HorizontalLevel:
-	LDA PlayerXHi
+	LDA zPlayerXHi
 
 SetAreaStartPage_SetAndExit:
-	STA CurrentLevelPage
+	STA iCurrentLvlPage
 	RTS
 
 ;
@@ -3871,19 +3744,19 @@ SetAreaStartPage_SetAndExit:
 ;
 DetermineVerticalScroll:
 	; Exit if vertical scrolling is already happening
-	LDX NeedsScroll
+	LDX zScrollArray
 	BNE DetermineVerticalScroll_Exit
 
 	; Exit if the player is doing any kind of transition
-	LDA PlayerState
+	LDA zPlayerState
 	CMP #PlayerState_Lifting
 	BCS DetermineVerticalScroll_Exit
 
 	; Use the player's position to detmine how to scroll
-	LDA PlayerScreenYLo
-	LDY PlayerScreenYHi
-	BMI DetermineVerticalScroll_ScrollUpOnGround ; eg. `PlayerScreenYHi == $FF`
-	BNE DetermineVerticalScroll_ScrollDown ; eg. `PlayerScreenYHi == $01`
+	LDA iPlayerScreenY
+	LDY iPlayerScreenYPage
+	BMI DetermineVerticalScroll_ScrollUpOnGround ; eg. `iPlayerScreenYPage == $FF`
+	BNE DetermineVerticalScroll_ScrollDown ; eg. `iPlayerScreenYPage == $01`
 
 	; Scroll down if player is near the bottom
 	CMP #$B4
@@ -3895,7 +3768,7 @@ DetermineVerticalScroll:
 
 ; Don't start scrolling for offscreen player until they're standing or climbing
 DetermineVerticalScroll_ScrollUpOnGround:
-	LDY PlayerInAir
+	LDY zPlayerGrounding
 	BNE DetermineVerticalScroll_StartFromStationary ; Player is in the air
 	BEQ DetermineVerticalScroll_ScrollUp ; Player is NOT in the air
 
@@ -3908,12 +3781,12 @@ DetermineVerticalScroll_ScrollUp:
 	INX
 
 DetermineVerticalScroll_StartFromStationary:
-	LDA VerticalScrollDirection
-	STX VerticalScrollDirection
+	LDA iVerticalScrollVelocity
+	STX iVerticalScrollVelocity
 	BNE DetermineVerticalScroll_Exit
 
 	; We weren't already vertically scrolling, but we need to start
-	STX NeedsScroll
+	STX zScrollArray
 
 DetermineVerticalScroll_Exit:
 	RTS
@@ -3921,7 +3794,7 @@ DetermineVerticalScroll_Exit:
 
 ; Determines start page for vertical area
 GetVerticalAreaStartPage:
-	STA byte_RAM_F
+	STA z0f
 	TYA
 	BMI locret_BANKF_F4D9
 
@@ -3930,7 +3803,7 @@ GetVerticalAreaStartPage:
 	ASL A
 	ASL A
 	CLC
-	ADC byte_RAM_F
+	ADC z0f
 	BCS loc_BANKF_F4D5
 
 	CMP #$F0
@@ -4351,7 +4224,6 @@ EnemyPlayerCollisionTable:
 	.db $02 ; $46 Enemy_Stopwatch
 
 ; @TODO: use flag
-; IFNDEF ENABLE_TILE_ATTRIBUTES_TABLE
 ;
 ; This table determines the "solidness" of tiles.
 ;
@@ -4382,549 +4254,6 @@ TileSolidnessTable:
 	.db $98
 	.db $D5
 
-IFDEF ENABLE_TILE_ATTRIBUTES_TABLE
-; ELSE
-;
-; This table determines the collision properties of a tile
-;
-; * bit 7: whether bottom is solid to "background interactive" enemies
-; * bit 6: whether top is solid to "background interactive" enemies
-; * bit 5: whether right side is solid to "background interactive" enemies
-; * bit 4: whether left side is solid to "background interactive" enemies
-; * bit 3: whether bottom is solid
-; * bit 2: whether top is solid
-; * bit 1: whether right side is solid
-; * bit 0: whether left side is solid
-;
-TileCollisionAttributesTable:
-	.db %00000000 ; $00
-	.db %11110000 ; $01
-	.db %11110000 ; $02
-	.db %11110000 ; $03
-	.db %11110000 ; $04
-	.db %11110000 ; $05
-	.db %11110000 ; $06
-	.db %11110000 ; $07
-	.db %11110000 ; $08
-	.db %11110000 ; $09
-	.db %11110000 ; $0A
-	.db %11110000 ; $0B
-	.db %11110000 ; $0C
-	.db %11110000 ; $0D
-	.db %11110000 ; $0E
-	.db %11110000 ; $0F
-	.db %11110000 ; $10
-	.db %11110000 ; $11
-	.db %00000100 ; $12
-	.db %00000100 ; $13
-	.db %00000100 ; $14
-	.db %00000100 ; $15
-	.db %00000100 ; $16
-	.db %00000100 ; $17
-	.db %00001111 ; $18
-	.db %00001111 ; $19
-	.db %10001111 ; $1A
-	.db %00001111 ; $1B
-	.db %00001111 ; $1C
-	.db %00001111 ; $1D
-	.db %00001111 ; $1E
-	.db %00001111 ; $1F
-	.db %00001111 ; $20
-	.db %00001111 ; $21
-	.db %00001111 ; $22
-	.db %00001111 ; $23
-	.db %00001111 ; $24
-	.db %00001111 ; $25
-	.db %00001111 ; $26
-	.db %00001111 ; $27
-	.db %00001111 ; $28
-	.db %00001111 ; $29
-	.db %00001111 ; $2A
-	.db %00001111 ; $2B
-	.db %00001111 ; $2C
-	.db %00001111 ; $2D
-	.db %00001111 ; $2E
-	.db %00001111 ; $2F
-	.db %00001111 ; $30
-	.db %00001111 ; $31
-	.db %00001111 ; $32
-	.db %00001111 ; $33
-	.db %00001111 ; $34
-	.db %00001111 ; $35
-	.db %00001111 ; $36
-	.db %00001111 ; $37
-	.db %00001111 ; $38
-	.db %00001111 ; $39
-	.db %00001111 ; $3A
-	.db %00001111 ; $3B
-	.db %00001111 ; $3C
-	.db %00001111 ; $3D
-	.db %00001111 ; $3E
-	.db %00001111 ; $3F
-	.db %00000000 ; $40
-	.db %00000000 ; $41
-	.db %00000000 ; $42
-	.db %11110000 ; $43
-	.db %11110000 ; $44
-	.db %11110000 ; $45
-	.db %11110000 ; $46
-	.db %11110000 ; $47
-	.db %11110000 ; $48
-	.db %11110000 ; $49
-	.db %11110000 ; $4A
-	.db %11110000 ; $4B
-	.db %11110000 ; $4C
-	.db %11110000 ; $4D
-	.db %11110000 ; $4E
-	.db %11110000 ; $4F
-	.db %11110000 ; $50
-	.db %11110000 ; $51
-	.db %11110000 ; $52
-	.db %11110000 ; $53
-	.db %11110000 ; $54
-	.db %11110000 ; $55
-	.db %11110000 ; $56
-	.db %11110000 ; $57
-	.db %11110000 ; $58
-	.db %11110000 ; $59
-	.db %11110000 ; $5A
-	.db %11110000 ; $5B
-	.db %11110000 ; $5C
-	.db %11110000 ; $5D
-	.db %11110000 ; $5E
-	.db %11110000 ; $5F
-	.db %00000100 ; $60
-	.db %00000100 ; $61
-	.db %00000100 ; $62
-	.db %00000100 ; $63
-	.db %00000100 ; $64
-	.db %00000100 ; $65
-	.db %00000100 ; $66
-	.db %00000100 ; $67
-	.db %00000100 ; $68
-	.db %00001111 ; $69
-	.db %00001111 ; $6A
-	.db %00001111 ; $6B
-	.db %00001111 ; $6C
-	.db %00001111 ; $6D
-	.db %00001111 ; $6E
-	.db %00001111 ; $6F
-	.db %00001111 ; $70
-	.db %00001111 ; $71
-	.db %00001111 ; $72
-	.db %00001111 ; $73
-	.db %00001111 ; $74
-	.db %00001111 ; $75
-	.db %00001111 ; $76
-	.db %00001111 ; $77
-	.db %00001111 ; $78
-	.db %00001111 ; $79
-	.db %00001111 ; $7A
-	.db %00001111 ; $7B
-	.db %00001111 ; $7C
-	.db %00001111 ; $7D
-	.db %00001111 ; $7E
-	.db %00001111 ; $7F
-	.db %11110000 ; $80
-	.db %11110000 ; $81
-	.db %11110000 ; $82
-	.db %11110000 ; $83
-	.db %11110000 ; $84
-	.db %11110000 ; $85
-	.db %11110000 ; $86
-	.db %11110000 ; $87
-	.db %11110000 ; $88
-	.db %11110000 ; $89
-	.db %11110000 ; $8A
-	.db %11110000 ; $8B
-	.db %11110000 ; $8C
-	.db %11110000 ; $8D
-	.db %11110000 ; $8E
-	.db %11110000 ; $8F
-	.db %11110000 ; $90
-	.db %00000100 ; $91
-	.db %00000100 ; $92
-	.db %00000100 ; $93
-	.db %00000100 ; $94
-	.db %00000100 ; $95
-	.db %00000100 ; $96
-	.db %00000100 ; $97
-	.db %00001111 ; $98
-	.db %00001111 ; $99
-	.db %00001111 ; $9A
-	.db %00001111 ; $9B
-	.db %00001111 ; $9C
-	.db %00001111 ; $9D
-	.db %00001111 ; $9E
-	.db %00001111 ; $9F
-	.db %00001111 ; $A0
-	.db %00001111 ; $A1
-	.db %00001111 ; $A2
-	.db %00001111 ; $A3
-	.db %00001111 ; $A4
-	.db %00001111 ; $A5
-	.db %00001111 ; $A6
-	.db %00001111 ; $A7
-	.db %00001111 ; $A8
-	.db %00001111 ; $A9
-	.db %00001111 ; $AA
-	.db %00001111 ; $AB
-	.db %00001111 ; $AC
-	.db %00001111 ; $AD
-	.db %00001111 ; $AE
-	.db %00001111 ; $AF
-	.db %00001111 ; $B0
-	.db %00001111 ; $B1
-	.db %00001111 ; $B2
-	.db %00001111 ; $B3
-	.db %00001111 ; $B4
-	.db %00001111 ; $B5
-	.db %00001111 ; $B6
-	.db %00001111 ; $B7
-	.db %00001111 ; $B8
-	.db %00001111 ; $B9
-	.db %00001111 ; $BA
-	.db %00001111 ; $BB
-	.db %00001111 ; $BC
-	.db %00001111 ; $BD
-	.db %00001111 ; $BE
-	.db %00001111 ; $BF
-	.db %11110000 ; $C0
-	.db %11110000 ; $C1
-	.db %11110000 ; $C2
-	.db %11110000 ; $C3
-	.db %11110000 ; $C4
-	.db %11110000 ; $C5
-	.db %11110000 ; $C6
-	.db %11110000 ; $C7
-	.db %11110000 ; $C8
-	.db %11110000 ; $C9
-	.db %00000100 ; $CA
-	.db %00000100 ; $CB
-	.db %00000100 ; $CC
-	.db %00000100 ; $CD
-	.db %00000100 ; $CE
-	.db %00000100 ; $CF
-	.db %00000100 ; $D0
-	.db %00000100 ; $D1
-	.db %00000100 ; $D2
-	.db %00000100 ; $D3
-	.db %00000100 ; $D4
-	.db %00001111 ; $D5
-	.db %00001111 ; $D6
-	.db %00001111 ; $D7
-	.db %00001111 ; $D8
-	.db %00001111 ; $D9
-	.db %00001111 ; $DA
-	.db %00001111 ; $DB
-	.db %00001111 ; $DC
-	.db %00001111 ; $DD
-	.db %00001111 ; $DE
-	.db %00001111 ; $DF
-	.db %00001111 ; $E0
-	.db %00001111 ; $E1
-	.db %00001111 ; $E2
-	.db %00001111 ; $E3
-	.db %00001111 ; $E4
-	.db %00001111 ; $E5
-	.db %00001111 ; $E6
-	.db %00001111 ; $E7
-	.db %00001111 ; $E8
-	.db %00001111 ; $E9
-	.db %00001111 ; $EA
-	.db %00001111 ; $EB
-	.db %00001111 ; $EC
-	.db %00001111 ; $ED
-	.db %00001111 ; $EE
-	.db %00001111 ; $EF
-	.db %00001111 ; $F0
-	.db %00001111 ; $F1
-	.db %00001111 ; $F2
-	.db %00001111 ; $F3
-	.db %00001111 ; $F4
-	.db %00001111 ; $F5
-	.db %00001111 ; $F6
-	.db %00001111 ; $F7
-	.db %00001111 ; $F8
-	.db %00001111 ; $F9
-	.db %00001111 ; $FA
-	.db %00001111 ; $FB
-	.db %00001111 ; $FC
-	.db %00001111 ; $FD
-	.db %00001111 ; $FE
-	.db %00001111 ; $FF
-
-
-; Tile attributes
-;
-; This table determines properties of each tile, including collision properties and special flags
-;
-; %76543210
-;  xxxxMMHH
-;
-; * M: movement effect (0 = none, 1 = slippery, 2 = quicksand, 3 = conveyor)
-; * H: health effect (0 = none, 1 = damage, 2 = kill, 3 = heal)
-;
-TileInteractionAttributesTable:
-	.db %00000000 ; $00
-	.db %00000000 ; $01
-	.db %00000000 ; $02
-	.db %00000000 ; $03
-	.db %00000000 ; $04
-	.db %00000000 ; $05
-	.db %00000000 ; $06
-	.db %00000000 ; $07
-	.db %00000000 ; $08
-	.db %00000000 ; $09
-	.db %00000000 ; $0A
-	.db %00000000 ; $0B
-	.db %00000000 ; $0C
-	.db %00000000 ; $0D
-	.db %00000000 ; $0E
-	.db %00000000 ; $0F
-	.db %00000000 ; $10
-	.db %00000000 ; $11
-	.db %00000000 ; $12
-	.db %00000000 ; $13
-	.db %00000000 ; $14
-	.db %00000000 ; $15
-	.db %00000100 ; $16
-	.db %00000000 ; $17
-	.db %00000000 ; $18
-	.db %00000000 ; $19
-	.db %00000001 ; $1A
-	.db %00000000 ; $1B
-	.db %00000000 ; $1C
-	.db %00000000 ; $1D
-	.db %00000000 ; $1E
-	.db %00000000 ; $1F
-	.db %00000000 ; $20
-	.db %00000000 ; $21
-	.db %00000000 ; $22
-	.db %00000000 ; $23
-	.db %00000000 ; $24
-	.db %00000000 ; $25
-	.db %00000000 ; $26
-	.db %00000000 ; $27
-	.db %00000000 ; $28
-	.db %00000000 ; $29
-	.db %00000000 ; $2A
-	.db %00000000 ; $2B
-	.db %00000000 ; $2C
-	.db %00000000 ; $2D
-	.db %00000000 ; $2E
-	.db %00000000 ; $2F
-	.db %00000000 ; $30
-	.db %00000000 ; $31
-	.db %00000000 ; $32
-	.db %00000000 ; $33
-	.db %00000000 ; $34
-	.db %00000000 ; $35
-	.db %00000000 ; $36
-	.db %00000000 ; $37
-	.db %00000000 ; $38
-	.db %00000000 ; $39
-	.db %00000000 ; $3A
-	.db %00000000 ; $3B
-	.db %00000000 ; $3C
-	.db %00000000 ; $3D
-	.db %00000000 ; $3E
-	.db %00000000 ; $3F
-	.db %00000000 ; $40
-	.db %00000000 ; $41
-	.db %00000000 ; $42
-	.db %00000000 ; $43
-	.db %00000000 ; $44
-	.db %00000000 ; $45
-	.db %00000000 ; $46
-	.db %00000000 ; $47
-	.db %00000000 ; $48
-	.db %00000000 ; $49
-	.db %00000000 ; $4A
-	.db %00000000 ; $4B
-	.db %00000000 ; $4C
-	.db %00000000 ; $4D
-	.db %00000000 ; $4E
-	.db %00000000 ; $4F
-	.db %00000000 ; $50
-	.db %00000000 ; $51
-	.db %00000000 ; $52
-	.db %00000000 ; $53
-	.db %00000000 ; $54
-	.db %00000000 ; $55
-	.db %00000000 ; $56
-	.db %00000000 ; $57
-	.db %00000000 ; $58
-	.db %00000000 ; $59
-	.db %00000000 ; $5A
-	.db %00000000 ; $5B
-	.db %00000000 ; $5C
-	.db %00000000 ; $5D
-	.db %00000000 ; $5E
-	.db %00000000 ; $5F
-	.db %00000000 ; $60
-	.db %00000000 ; $61
-	.db %00000000 ; $62
-	.db %00000000 ; $63
-	.db %00000000 ; $64
-	.db %00000000 ; $65
-	.db %00000000 ; $66
-	.db %00001100 ; $67
-	.db %00001100 ; $68
-	.db %00000000 ; $69
-	.db %00000000 ; $6A
-	.db %00000000 ; $6B
-	.db %00000000 ; $6C
-	.db %00000000 ; $6D
-	.db %00000000 ; $6E
-	.db %00000000 ; $6F
-	.db %00000000 ; $70
-	.db %00000000 ; $71
-	.db %00000000 ; $72
-	.db %00000000 ; $73
-	.db %00000000 ; $74
-	.db %00000000 ; $75
-	.db %00000000 ; $76
-	.db %00000000 ; $77
-	.db %00000000 ; $78
-	.db %00000000 ; $79
-	.db %00000000 ; $7A
-	.db %00000000 ; $7B
-	.db %00000000 ; $7C
-	.db %00000000 ; $7D
-	.db %00000000 ; $7E
-	.db %00000000 ; $7F
-	.db %00000000 ; $80
-	.db %00000000 ; $81
-	.db %00000000 ; $82
-	.db %00000000 ; $83
-	.db %00000000 ; $84
-	.db %00000000 ; $85
-	.db %00000000 ; $86
-	.db %00000000 ; $87
-	.db %00000000 ; $88
-	.db %00000000 ; $89
-	.db %00001000 ; $8A
-	.db %00001000 ; $8B
-	.db %00000000 ; $8C
-	.db %00000000 ; $8D
-	.db %00000000 ; $8E
-	.db %00000000 ; $8F
-	.db %00000000 ; $90
-	.db %00000000 ; $91
-	.db %00000000 ; $92
-	.db %00000000 ; $93
-	.db %00000000 ; $94
-	.db %00000000 ; $95
-	.db %00000000 ; $96
-	.db %00000000 ; $97
-	.db %00000000 ; $98
-	.db %00000000 ; $99
-	.db %00000000 ; $9A
-	.db %00000000 ; $9B
-	.db %00000000 ; $9C
-	.db %00000000 ; $9D
-	.db %00000000 ; $9E
-	.db %00000000 ; $9F
-	.db %00000000 ; $A0
-	.db %00000000 ; $A1
-	.db %00000000 ; $A2
-	.db %00000000 ; $A3
-	.db %00000000 ; $A4
-	.db %00000000 ; $A5
-	.db %00000000 ; $A6
-	.db %00000000 ; $A7
-	.db %00000000 ; $A8
-	.db %00000000 ; $A9
-	.db %00000000 ; $AA
-	.db %00000000 ; $AB
-	.db %00000000 ; $AC
-	.db %00000000 ; $AD
-	.db %00000000 ; $AE
-	.db %00000000 ; $AF
-	.db %00000000 ; $B0
-	.db %00000000 ; $B1
-	.db %00000000 ; $B2
-	.db %00000000 ; $B3
-	.db %00000000 ; $B4
-	.db %00000000 ; $B5
-	.db %00000000 ; $B6
-	.db %00000000 ; $B7
-	.db %00000000 ; $B8
-	.db %00000000 ; $B9
-	.db %00000000 ; $BA
-	.db %00000000 ; $BB
-	.db %00000000 ; $BC
-	.db %00000000 ; $BD
-	.db %00000000 ; $BE
-	.db %00000000 ; $BF
-	.db %00000000 ; $C0
-	.db %00000000 ; $C1
-	.db %00000000 ; $C2
-	.db %00000000 ; $C3
-	.db %00000000 ; $C4
-	.db %00000000 ; $C5
-	.db %00000000 ; $C6
-	.db %00000000 ; $C7
-	.db %00000000 ; $C8
-	.db %00000000 ; $C9
-	.db %00000000 ; $CA
-	.db %00000000 ; $CB
-	.db %00000000 ; $CC
-	.db %00000000 ; $CD
-	.db %00000000 ; $CE
-	.db %00000000 ; $CF
-	.db %00000000 ; $D0
-	.db %00000000 ; $D1
-	.db %00000000 ; $D2
-	.db %00000000 ; $D3
-	.db %00000000 ; $D4
-	.db %00000000 ; $D5
-	.db %00000000 ; $D6
-	.db %00000000 ; $D7
-	.db %00000000 ; $D8
-	.db %00000000 ; $D9
-	.db %00000000 ; $DA
-	.db %00000000 ; $DB
-	.db %00000000 ; $DC
-	.db %00000000 ; $DD
-	.db %00000000 ; $DE
-	.db %00000000 ; $DF
-	.db %00000000 ; $E0
-	.db %00000000 ; $E1
-	.db %00000000 ; $E2
-	.db %00000000 ; $E3
-	.db %00000000 ; $E4
-	.db %00000000 ; $E5
-	.db %00000000 ; $E6
-	.db %00000000 ; $E7
-	.db %00000000 ; $E8
-	.db %00000000 ; $E9
-	.db %00000000 ; $EA
-	.db %00000000 ; $EB
-	.db %00000000 ; $EC
-	.db %00000000 ; $ED
-	.db %00000000 ; $EE
-	.db %00000000 ; $EF
-	.db %00000000 ; $F0
-	.db %00000000 ; $F1
-	.db %00000000 ; $F2
-	.db %00000000 ; $F3
-	.db %00000000 ; $F4
-	.db %00000000 ; $F5
-	.db %00000000 ; $F6
-	.db %00000000 ; $F7
-	.db %00000000 ; $F8
-	.db %00000000 ; $F9
-	.db %00000000 ; $FA
-	.db %00000000 ; $FB
-	.db %00000000 ; $FC
-	.db %00000000 ; $FD
-	.db %00000000 ; $FE
-	.db %00000000 ; $FF
-ENDIF
-
-
 ;
 ; ### Warp destination lookup table
 ;
@@ -4949,35 +4278,21 @@ UpdateJoypads:
 UpdateJoypads_DoubleCheck:
 	; Work around DPCM sample bug,
 	; where some spurious inputs are read
-IFDEF CONTROLLER_2_DEBUG
-	LDY Player2JoypadPress
-	STY UpdateJoypadsTemp
-ENDIF
-	LDY Player1JoypadPress
+	LDY zInputBottleneck
 	JSR ReadJoypads
 
-	CPY Player1JoypadPress
+	CPY zInputBottleneck
 	BNE UpdateJoypads_DoubleCheck
-
-IFDEF CONTROLLER_2_DEBUG
-	LDY UpdateJoypadsTemp
-	CPY Player2JoypadPress
-	BNE UpdateJoypads_DoubleCheck
-ENDIF
 
 	LDX #$01
 
 UpdateJoypads_Loop:
-	LDA Player1JoypadPress, X ; Update the press/held values
-IFDEF JOYPAD_D1
-	ORA Player1JoypadExpansionPress, X
-	STA Player1JoypadPress, X
-ENDIF
+	LDA zInputBottleneck, X ; Update the press/held values
 	TAY
-	EOR Player1JoypadHeld, X
-	AND Player1JoypadPress, X
-	STA Player1JoypadPress, X
-	STY Player1JoypadHeld, X
+	EOR zInputCurrentState, X
+	AND zInputBottleneck, X
+	STA zInputBottleneck, X
+	STY zInputCurrentState, X
 	DEX
 	BPL UpdateJoypads_Loop
 
@@ -4998,20 +4313,20 @@ ReadJoypadLoop:
 	LDA JOY1
 	LSR A
 	; Read D0 standard controller data
-	ROL Player1JoypadPress
+	ROL zInputBottleneck
 	LSR A
 	; Read D1 expansion port controller data
 	;
 	; Before you get too excited, keep in mind that this code is basically ported from the FDS bios.
 	; Code to mux D1 and D0 isn't present, so even if you had an expansion port controller that used
 	; D1, the game wouldn't use it!
-	ROL Player1JoypadExpansionPress
+	ROL iExpansionInput
 
 	LDA JOY2
 	LSR A
-	ROL Player2JoypadPress
+	ROL zInputBottleneck + 1
 	LSR A
-	ROL Player2JoypadExpansionPress
+	ROL iExpansionInput + 1
 	DEX
 	BNE ReadJoypadLoop
 
@@ -5022,21 +4337,21 @@ ReadJoypadLoop:
 ; Load the area specified by the area pointer at the current page
 ;
 FollowCurrentAreaPointer:
-	LDA CurrentLevelPage
+	LDA iCurrentLvlPage
 	ASL A
 	TAY
-	LDA AreaPointersByPage, Y
-	STA CurrentLevel
+	LDA iAreaAddresses, Y
+	STA iCurrentLvl
 	INY
-	LDA AreaPointersByPage, Y
+	LDA iAreaAddresses, Y
 	LSR A
 	LSR A
 	LSR A
 	LSR A
-	STA CurrentLevelArea
-	LDA AreaPointersByPage, Y
+	STA iCurrentLvlArea
+	LDA iAreaAddresses, Y
 	AND #$0F
-	STA CurrentLevelEntryPage
+	STA iCurrentLvlEntryPage
 	RTS
 
 
@@ -5046,27 +4361,27 @@ FollowCurrentAreaPointer:
 ; we're playing the invincibility music.
 ;
 ; ##### Input
-; - `CompareMusicIndex`: music we should be playing
-; - `CurrentMusicIndex`: music we're actually playing
-; - `StarInvincibilityTimer`: whether the player is invincible
+; - `iLevelMusic`: music we should be playing
+; - `iMusicID`: music we're actually playing
+; - `iStarTimer`: whether the player is invincible
 ;
 ; ##### Output
-; - `CurrentMusicIndex`: music we should be plathing
-; - `MusicQueue1`: song to play if we need to change the music
+; - `iMusicID`: music we should be plathing
+; - `iMusic1`: song to play if we need to change the music
 ;
 EnsureCorrectMusic:
-	LDA CompareMusicIndex
-	CMP CurrentMusicIndex
+	LDA iLevelMusic
+	CMP iMusicID
 	BEQ EnsureCorrectMusic_Exit
 
 	TAX
-	STX CurrentMusicIndex
-	LDA StarInvincibilityTimer
+	STX iMusicID
+	LDA iStarTimer
 	CMP #$08
 	BCS EnsureCorrectMusic_Exit
 
 	LDA LevelMusicIndexes, X
-	STA MusicQueue1
+	STA iMusic1
 
 EnsureCorrectMusic_Exit:
 	RTS
@@ -5074,27 +4389,24 @@ EnsureCorrectMusic_Exit:
 
 DoAreaReset:
 	LDA #$00
-	STA AreaInitialized
-	STA ObjectCarriedOver
-	STA SubspaceTimer
-	STA SubspaceDoorTimer
-IFDEF CONTROLLER_2_DEBUG
-	STA ChangeCharacterPoofTimer
-ENDIF
+	STA iAreaInitFlag
+	STA iObjectToUseNextRoom
+	STA iSubTimeLeft
+	STA iSubDoorTimer
 	LDX #$08
 
 DoAreaReset_EnemyLoop:
-	LDA EnemyState, X
+	LDA zEnemyState, X
 	BEQ DoAreaReset_EnemyLoopEnd
 
-	LDA ObjectBeingCarriedTimer, X
+	LDA zHeldObjectTimer, X
 	BEQ DoAreaReset_AfterCarryOver
 
-	LDA ObjectType, X
+	LDA zObjectType, X
 	CMP #Enemy_MushroomBlock
 	BEQ DoAreaReset_AfterCarryOver
 
-	STA ObjectCarriedOver
+	STA iObjectToUseNextRoom
 
 DoAreaReset_AfterCarryOver:
 	JSR AreaResetEnemyDestroy
@@ -5103,7 +4415,7 @@ DoAreaReset_EnemyLoopEnd:
 	DEX
 	BPL DoAreaReset_EnemyLoop
 
-	LDX byte_RAM_12
+	LDX z12
 	RTS
 
 ; End of function DoAreaReset
@@ -5112,18 +4424,18 @@ DoAreaReset_EnemyLoopEnd:
 
 AreaResetEnemyDestroy:
 	; load raw enemy data offset so we can allow the level object to respawn
-	LDY EnemyRawDataOffset, X
+	LDY iEnemyRawDataOffset, X
 	; nothing to reset if offset is invalid
 	BMI AreaResetEnemyDestroy_AfterAllowRespawn
 
 	; disabling bit 7 allows the object to respawn
-	LDA (RawEnemyData), Y
+	LDA (zRawSpriteData), Y
 	AND #$7F
-	STA (RawEnemyData), Y
+	STA (zRawSpriteData), Y
 
 AreaResetEnemyDestroy_AfterAllowRespawn:
 	LDA #EnemyState_Inactive
-	STA EnemyState, X
+	STA zEnemyState, X
 	RTS
 
 ; End of function AreaResetEnemyDestroy
@@ -5132,42 +4444,42 @@ AreaResetEnemyDestroy_AfterAllowRespawn:
 
 KillPlayer:
 	LDA #PlayerState_Dying ; Mark player as dead
-	STA PlayerState
+	STA zPlayerState
 	LDA #$00 ; Clear some variables
-	STA PlayerHealth
-	STA CrouchJumpTimer
-	STA StarInvincibilityTimer
+	STA iPlayerHP
+	STA iCrouchJumpTimer
+	STA iStarTimer
 	LDA #SpriteAnimation_Dead ; Set player animation to dead?
-	STA PlayerAnimationFrame
-	LDA HoldingItem
+	STA zPlayerAnimFrame
+	LDA zHeldItem
 	BEQ loc_BANKF_F749
 
 	; Probably something to throw away
 	; a held item on death
-	DEC HoldingItem
-	LDY ObjectBeingCarriedIndex
-	STA ObjectProjectileTimer, Y
+	DEC zHeldItem
+	LDY iHeldItemIndex
+	STA iObjectBulletTimer, Y
 	LSR A
-	STA ObjectBeingCarriedTimer, Y
-	STA ObjectXVelocity, Y
+	STA zHeldObjectTimer, Y
+	STA zObjectXVelocity, Y
 	LDA #$E0
-	STX byte_RAM_D
-	LDX EnemyState, Y
+	STX z0d
+	LDX zEnemyState, Y
 	CPX #EnemyState_Sinking
 	BEQ loc_BANKF_F747
 
-	STA ObjectYVelocity, Y
+	STA zObjectYVelocity, Y
 
 loc_BANKF_F747:
-	LDX byte_RAM_D
+	LDX z0d
 
 loc_BANKF_F749:
 	; Set music to death jingle
 	LDA #Music2_DeathJingle
-	STA MusicQueue2
+	STA iMusic2
 	; BUG: Setting DPCM at the same time as music
 	LDA #DPCM_PlayerDeath
-	STA DPCMQueue
+	STA iDPCMSFX
 	RTS
 
 
@@ -5176,37 +4488,37 @@ loc_BANKF_F749:
 ;
 CopyLevelDataToMemory:
 	; Determine the global area index from the current level and area.
-	LDY CurrentLevel
+	LDY iCurrentLvl
 	LDA LevelAreaStartIndexes, Y
 	CLC
-	ADC CurrentLevelArea
+	ADC iCurrentLvlArea
 	TAY
 
 	; Calculate the pointer for the start of the level data.
 	LDA LevelDataPointersLo, Y
-	STA byte_RAM_5
+	STA z05
 	LDA LevelDataPointersHi, Y
-	STA byte_RAM_6
+	STA z06
 
 	; Blindly copy 255 bytes of data, which is presumed to contain the full area.
 	LDX #$FF
 
 	; Set the destination address in RAM for copying level data.
-	LDA #>RawLevelData
-	STA byte_RAM_2
-	LDY #<RawLevelData
-	STY byte_RAM_1
+	LDA #>wRawLevelData
+	STA z02
+	LDY #<wRawLevelData
+	STY z01
 
 	; `Y = $00`
 CopyLevelDataToMemory_Loop:
-	LDA (byte_RAM_5), Y
-	STA (byte_RAM_1), Y
+	LDA (z05), Y
+	STA (z01), Y
 	INY
 	DEX
 	BNE CopyLevelDataToMemory_Loop
 
 	; We end up copying the first byte twice!
-	STA (byte_RAM_1), Y
+	STA (z01), Y
 
 
 ;
@@ -5214,18 +4526,18 @@ CopyLevelDataToMemory_Loop:
 ;
 CopyEnemyDataToMemory:
 	; Determine the address of the level's enemy pointer tables.
-	LDY CurrentLevel
+	LDY iCurrentLvl
 	LDA EnemyPointersByLevel_HiHi, Y
-	STA byte_RAM_1
+	STA z01
 	LDA EnemyPointersByLevel_HiLo, Y
-	STA byte_RAM_0
+	STA z00
 	LDA EnemyPointersByLevel_LoHi, Y
-	STA byte_RAM_3
+	STA z03
 	LDA EnemyPointersByLevel_LoLo, Y
-	STA byte_RAM_2
+	STA z02
 
 	; Determine whether we want the enemy data for the area or for the jar.
-	LDA InSubspaceOrJar
+	LDA iSubAreaFlags
 	CMP #$01
 	BNE CopyEnemyDataToMemory_Area
 
@@ -5234,28 +4546,28 @@ CopyEnemyDataToMemory_Jar:
 	JMP CopyEnemyDataToMemory_SetAddress
 
 CopyEnemyDataToMemory_Area:
-	LDY CurrentLevelArea
+	LDY iCurrentLvlArea
 
 CopyEnemyDataToMemory_SetAddress:
 	; Calculate the pointer for the start of the enemy data.
-	LDA (byte_RAM_0), Y
-	STA byte_RAM_1
-	LDA (byte_RAM_2), Y
-	STA byte_RAM_0
+	LDA (z00), Y
+	STA z01
+	LDA (z02), Y
+	STA z00
 
 	; Blindly copy 255 bytes of data, which is presumed to contain the full area.
 	LDX #$FF
 
 	; Set the destination address in RAM for copying level data.
-	LDA #>RawEnemyDataAddr
-	STA byte_RAM_3
-	LDY #<RawEnemyDataAddr
-	STY byte_RAM_2
+	LDA #>wRawEnemyPointer
+	STA z03
+	LDY #<wRawEnemyPointer
+	STY z02
 
 	; `Y = $00`
 CopyEnemyDataToMemory_Loop:
-	LDA (byte_RAM_0), Y
-	STA (byte_RAM_2), Y
+	LDA (z00), Y
+	STA (z02), Y
 	INY
 	DEX
 	BNE CopyEnemyDataToMemory_Loop
@@ -5268,7 +4580,7 @@ CopyEnemyDataToMemory_Loop:
 ;
 CopyJarDataToMemory:
 	; Determine the global area index from the current level and area.
-	LDY CurrentLevel
+	LDY iCurrentLvl
 	LDA LevelAreaStartIndexes, Y
 	CLC
 	ADC #AreaIndex_Jar
@@ -5276,19 +4588,19 @@ CopyJarDataToMemory:
 
 	; Calculate the pointer for the start of the level data.
 	LDA LevelDataPointersLo, Y
-	STA byte_RAM_5
+	STA z05
 	LDA LevelDataPointersHi, Y
-	STA byte_RAM_6
+	STA z06
 
 	; Set the destination address in RAM for copying level data.
-	LDA #>RawJarData
-	STA byte_RAM_2
-	LDY #<RawJarData
-	STY byte_RAM_1
+	LDA #>wRawJarData
+	STA z02
+	LDY #<wRawJarData
+	STY z01
 
 	; `Y = $00`
 CopyJarDataToMemory_Loop:
-	LDA (byte_RAM_5), Y
+	LDA (z05), Y
 	; Unlike `CopyLevelDataToMemory`, which always copies 255 bytes, this stops on any `$FF` read!
 	;
 	; This isn't technically "correct", but in practice it's not the most devastating limitation.
@@ -5298,12 +4610,12 @@ CopyJarDataToMemory_Loop:
 	CMP #$FF ; This one actually terminates on any $FF read! Welp.
 	BEQ CopyJarDataToMemory_Exit
 
-	STA (byte_RAM_1), Y
+	STA (z01), Y
 	INY
 	JMP CopyJarDataToMemory_Loop
 
 CopyJarDataToMemory_Exit:
-	STA (byte_RAM_1), Y
+	STA (z01), Y
 	RTS
 
 
@@ -5374,9 +4686,6 @@ TileQuads1:
 	.db $32, $34, $33, $35 ; $80
 	.db $33, $35, $33, $35 ; $84
 	.db $24, $26, $25, $27 ; $88
-IFDEF EXPAND_TABLES
-	unusedSpace TileQuads1 + $100, $FC
-ENDIF
 
 TileQuads2:
 	.db $FA, $FA, $FA, $FA ; $00
@@ -5438,9 +4747,6 @@ TileQuads2:
 	.db $6C, $54, $6D, $55 ; $E0
 	.db $32, $34, $33, $35 ; $E4
 	.db $33, $35, $33, $35 ; $E8
-IFDEF EXPAND_TABLES
-	unusedSpace TileQuads2 + $100, $FC
-ENDIF
 
 TileQuads3:
 	.db $94, $95, $94, $95 ; $00
@@ -5487,9 +4793,6 @@ TileQuads3:
 	.db $72, $73, $4A, $4B ; $A4
 	.db $40, $42, $41, $43 ; $A8
 	.db $41, $43, $41, $43 ; $AC
-IFDEF EXPAND_TABLES
-	unusedSpace TileQuads3 + $100, $FC
-ENDIF
 TileQuads4:
 	.db $40, $42, $41, $43 ; $00
 	.db $40, $42, $41, $43 ; $04
@@ -5516,9 +4819,6 @@ TileQuads4:
 	.db $8E, $8F, $8F, $8E ; $58
 	.db $72, $73, $73, $72 ; $5C
 	.db $44, $45, $45, $44 ; $60
-IFDEF EXPAND_TABLES
-	unusedSpace TileQuads4 + $100, $FC
-ENDIF
 
 EndOfLevelDoor: ; PPU data
 	.db $22, $D0, $04, $FC, $FC, $AD, $FA
@@ -5584,7 +4884,7 @@ BackgroundCHRAnimationSpeedByWorld:
 ; Increments the frame of the CHR animation using the world/area speed
 ;
 AnimateCHRRoutine:
-	DEC BackgroundCHR2Timer
+	DEC iBGCHR2Timer
 	BPL AnimateCHRRoutine_Exit
 
 	LDX #$07 ; default index for animation speed table
@@ -5594,11 +4894,11 @@ AnimateCHRRoutine:
 	; This loop performs the lookup to see if that should happen.
 	LDY #(DefaultCHRAnimationSpeed_Area - DefaultCHRAnimationSpeed_Level - 1)
 AnimateCHRRoutine_DefaultSpeedLoop:
-	LDA CurrentLevel_Init
+	LDA iCurrentLevel_Init
 	CMP DefaultCHRAnimationSpeed_Level, Y
 	BNE AnimateCHRRoutine_DefaultSpeedNext
 
-	LDA CurrentLevelArea_Init
+	LDA iCurrentLevelArea_Init
 	CMP DefaultCHRAnimationSpeed_Area, Y
 	BEQ AnimateCHRRoutine_SetSpeed
 
@@ -5606,12 +4906,12 @@ AnimateCHRRoutine_DefaultSpeedNext:
 	DEY
 	BPL AnimateCHRRoutine_DefaultSpeedLoop
 
-	LDX CurrentWorldTileset
+	LDX iCurrentWorldTileset
 
 AnimateCHRRoutine_SetSpeed:
 	LDA BackgroundCHRAnimationSpeedByWorld, X
-	STA BackgroundCHR2Timer
-	LDY BackgroundCHR2
+	STA iBGCHR2Timer
+	LDY iBGCHR2
 	INY
 	INY
 
@@ -5630,7 +4930,7 @@ ENDIF
 	LDY #CHRBank_Animated1
 
 AnimateCHRRoutine_SetCHR:
-	STY BackgroundCHR2
+	STY iBGCHR2
 
 AnimateCHRRoutine_Exit:
 	RTS
@@ -5643,14 +4943,14 @@ AnimateCHRRoutine_Exit:
 ; - `X`: enemy slot
 ;
 ; ##### Output
-; - `X`: byte_RAM_12
+; - `X`: z12
 ; - `Y`: sprite slot
 ;
 FindSpriteSlot:
 	LDX #$08
 
 FindSpriteSlot_Loop:
-	LDA EnemyState, X
+	LDA zEnemyState, X
 	BEQ FindSpriteSlot_CheckInactiveSlot
 
 FindSpriteSlot_LoopNext:
@@ -5660,11 +4960,11 @@ FindSpriteSlot_LoopNext:
 FindSpriteSlot_Default:
 	; Check that both halves of the default sprite slot are unused
 	LDY #$00
-	LDA SpriteDMAArea, Y
+	LDA iVirtualOAM, Y
 	CMP #$F8
 	BNE FindSpriteSlot_FallbackExit
 
-	LDA SpriteDMAArea + 4, Y
+	LDA iVirtualOAM + 4, Y
 	CMP #$F8
 	BEQ FindSpriteSlot_Exit
 
@@ -5673,7 +4973,7 @@ FindSpriteSlot_FallbackExit:
 	LDY #$10
 
 FindSpriteSlot_Exit:
-	LDX byte_RAM_12
+	LDX z12
 	RTS
 
 ; The object slot is inactive, so check that something else hasn't claimed the
@@ -5682,36 +4982,22 @@ FindSpriteSlot_CheckInactiveSlot:
 	; Calculate the sprite slot using the flicker offset
 	TXA
 	CLC
-	ADC SpriteFlickerSlot
+	ADC iObjectFlickerer
 	TAY
 	LDA SpriteFlickerDMAOffset, Y
 
 	; Check that both halves of the object's sprite slot are unused
 	TAY
-	LDA SpriteDMAArea, Y
+	LDA iVirtualOAM, Y
 	CMP #$F8
 	BNE FindSpriteSlot_LoopNext
-	LDA SpriteDMAArea + 4, Y
+	LDA iVirtualOAM + 4, Y
 	CMP #$F8
 	BNE FindSpriteSlot_LoopNext
 	BEQ FindSpriteSlot_Exit
 
-
-IFDEF DEBUG
-	.include "src/extras/debug-f.asm"
-ENDIF
-
 ; Unused space in the original ($FB36 - $FDFF)
 unusedSpace $FE00, $FF
-
-IFDEF RESET_CHR_LATCH
-CHRBank_Boss:
-	.db CHRBank_EnemiesGrass ; Mouser
-	.db CHRBank_EnemiesDesert ; Tryclyde
-	.db CHRBank_EnemiesIce ; Fryguy
-	.db CHRBank_EnemiesGrass ; Clawgrip
-	.db CHRBank_EnemiesSky ; Wart
-ENDIF
 
 CHRBank_WorldEnemies:
 	.db CHRBank_EnemiesGrass
@@ -5744,87 +5030,49 @@ CHRBank_CharacterSize:
 
 LoadWorldCHRBanks:
 	LDY #CHRBank_CommonEnemies1
-	STY SpriteCHR2
+	STY iObjCHR2
 	INY
-	STY SpriteCHR3
-	LDY CurrentWorldTileset
+	STY iObjCHR3
+	LDY iCurrentWorldTileset
 	LDA CHRBank_WorldEnemies, Y
-	STA SpriteCHR4
+	STA iObjCHR4
 	LDA CHRBank_WorldBossBackground, Y
-	STA BackgroundCHR1
+	STA iBGCHR1
 	LDA #CHRBank_Animated1
-	STA BackgroundCHR2
-
-IFDEF RESET_CHR_LATCH
-	LDY BossTileset
-	BMI LoadCharacterCHRBanks
-	LDA CHRBank_Boss, Y
-	STA SpriteCHR4
-ENDIF
+	STA iBGCHR2
 
 LoadCharacterCHRBanks:
-	LDA CurrentCharacter
+	LDA zCurrentCharacter
 	ASL A
-	ORA PlayerCurrentSize
+	ORA iCurrentPlayerSize
 	TAY
 	LDA CHRBank_CharacterSize, Y
-	STA SpriteCHR1
+	STA iObjCHR1
 	RTS
-
-IFDEF RESET_CHR_LATCH
-CheckResetCHRLatch:
-	LDA ResetCHRLatch
-	BEQ CheckResetCHRLatch_Exit
-
-	LDA #$00
-	STA ResetCHRLatch
-
-	LDY #CHRBank_CommonEnemies1
-	STY SpriteCHR2
-	INY
-	STY SpriteCHR3
-
-	LDY CurrentWorldTileset
-	LDA CHRBank_WorldEnemies, Y
-	STA SpriteCHR4
-	LDA CHRBank_WorldBossBackground, Y
-	STA BackgroundCHR1
-	LDA #CHRBank_Animated1
-	STA BackgroundCHR2
-
-	LDY BossTileset
-	BMI CheckResetCHRLatch_Exit
-	LDA CHRBank_Boss, Y
-	STA SpriteCHR4
-
-CheckResetCHRLatch_Exit:
-	RTS
-ENDIF
-
 
 LoadTitleScreenCHRBanks:
 	LDA #CHRBank_TitleScreenBG1
-	STA BackgroundCHR1
+	STA iBGCHR1
 	LDA #CHRBank_TitleScreenBG2
-	STA BackgroundCHR2
+	STA iBGCHR2
 	RTS
 
 
 LoadCelebrationSceneBackgroundCHR:
 	LDA #CHRBank_CelebrationBG1
-	STA BackgroundCHR1
+	STA iBGCHR1
 	LDA #CHRBank_CelebrationBG2
-	STA BackgroundCHR2
+	STA iBGCHR2
 	RTS
 
 
 LoadCharacterSelectCHRBanks:
 	LDA #CHRBank_CharacterSelectSprites
-	STA SpriteCHR1
+	STA iObjCHR1
 	LDA #CHRBank_CharacterSelectBG1
-	STA BackgroundCHR1
+	STA iBGCHR1
 	LDA #CHRBank_CharacterSelectBG2
-	STA BackgroundCHR2
+	STA iBGCHR2
 	RTS
 
 
@@ -5839,29 +5087,29 @@ TitleCardCHRBanks:
 
 
 ChangeTitleCardCHR:
-	LDY CurrentWorld
+	LDY iCurrentWorld
 	LDA TitleCardCHRBanks, Y
-	STA BackgroundCHR2
+	STA iBGCHR2
 	RTS
 
 
 LoadBonusChanceCHRBanks:
 	LDA #CHRBank_ChanceBG1
-	STA BackgroundCHR1
+	STA iBGCHR1
 	LDA #CHRBank_ChanceBG2
-	STA BackgroundCHR2
+	STA iBGCHR2
 	RTS
 
 
 LoadMarioSleepingCHRBanks:
 	LDY #CHRBank_EndingSprites
-	STY SpriteCHR1
+	STY iObjCHR1
 	INY
-	STY SpriteCHR2
+	STY iObjCHR2
 	LDA #CHRBank_EndingBackground1
-	STA BackgroundCHR1
+	STA iBGCHR1
 	LDA #CHRBank_EndingBackground1 + 2
-	STA BackgroundCHR2
+	STA iBGCHR2
 	RTS
 
 
@@ -5896,12 +5144,7 @@ RESET_VBlank2Loop:
 	LDA PPUSTATUS
 	BPL RESET_VBlank2Loop
 
-IF INES_MAPPER == MAPPER_FME7
-	LDA #$0C
-	STA FME7_Command
-	LDA #VMirror
-	STA FME7_Parameter
-ELSEIF INES_MAPPER == MAPPER_MMC5
+IF INES_MAPPER == MAPPER_MMC5
 	LDA #MMC5_VMirror
 	STA MMC5_NametableMapping
 	; Maintain location of the next subroutine
@@ -5922,14 +5165,7 @@ ENDIF
 ;
 ; Switches the current CHR banks
 ;
-IF INES_MAPPER == MAPPER_FME7
-ChangeCHRBanks:
-	JMP ChangeCHRBanks_FME7
-
-	; Maintain location of the next subroutine
-	unusedSpace $FF85, $FF
-
-ELSEIF INES_MAPPER == MAPPER_MMC5
+IF INES_MAPPER == MAPPER_MMC5
 ChangeCHRBanks:
 	JMP ChangeCHRBanks_MMC5
 
@@ -5943,7 +5179,7 @@ ChangeCHRBanks_Loop:
 	TYA
 	ORA #CHR_A12_INVERSION
 	STA MMC3_BankSelect
-	LDA BackgroundCHR1, Y
+	LDA iBGCHR1, Y
 	STA MMC3_BankData
 	DEY
 	BPL ChangeCHRBanks_Loop
@@ -5958,7 +5194,7 @@ ENDIF
 ; the original bank set with this can be restored.
 ;
 ChangeMappedPRGBank:
-	STA MMC3PRGBankTemp ; See below comment.
+	STA iCurrentROMBank ; See below comment.
 
 ;
 ; Any call to this subroutine switches the lower two banks together.
@@ -5987,24 +5223,7 @@ ChangeMappedPRGBank:
 ChangeMappedPRGBankWithoutSaving:
 	ASL A
 
-IF INES_MAPPER == MAPPER_FME7
-	; Change first bank
-	PHA
-	LDA #$09
-	STA FME7_Command
-	PLA
-	STA FME7_Parameter
-	ORA #$01 ; Use the bank right after this one next
-	; Change second bank
-	PHA
-	LDA #$0A
-	STA FME7_Command
-	PLA
-	STA FME7_Parameter
-
-	RTS
-
-ELSEIF INES_MAPPER == MAPPER_MMC5
+IF INES_MAPPER == MAPPER_MMC5
 	ORA #$80
 	STA MMC5_PRGBankSwitch2
 	ORA #$01
@@ -6040,13 +5259,7 @@ ENDIF
 ; - `A`: `$00` =  vertical, `$01` = horizontal
 ;
 ChangeNametableMirroring:
-IF INES_MAPPER == MAPPER_FME7
-	PHA
-	LDA #$0C
-	STA FME7_Command
-	PLA
-	STA FME7_Parameter
-ELSEIF INES_MAPPER == MAPPER_MMC5
+IF INES_MAPPER == MAPPER_MMC5
 	STA MMC5_NametableMapping
 ELSE
 	STA MMC3_Mirroring
@@ -6099,9 +5312,7 @@ ENDIF
 
 NESVectorTables:
 	.dw NMI
-IF INES_MAPPER == MAPPER_FME7
-	.dw RESET_FME7
-ELSEIF INES_MAPPER == MAPPER_MMC5
+IF INES_MAPPER == MAPPER_MMC5
 	.dw RESET_MMC5
 ELSE ; INES_MAPPER == MAPPER_MMC3
 	.dw RESET

@@ -79,14 +79,14 @@ MusicDataStar_Triangle:
 	.db $48
 
 MusicDataStar_DPCM:
-IFNDEF EXPAND_MUSIC
-	.db $94, $01
-	.db $98, $10
-	.db $94, $10, $10, $10, $01, $01
+	.db $94
+	.db $01
+	.db $98
+	.db $10
+	.db $94
+	.db $10
+	.db $10
+	.db $10
+	.db $01
+	.db $01
 	.db $00
-ELSE
-	.db $94, $02
-	.db $98, $06
-	.db $94, $06, $06, $06, $02, $02
-	.db $00
-ENDIF

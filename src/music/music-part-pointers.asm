@@ -7,7 +7,7 @@
 ;
 MusicPartPointers:
 
-; These pointers correspond to MusicQueue2 fanfares that temporarily interrupt
+; These pointers correspond to iMusic2 fanfares that temporarily interrupt
 ; the current background music
 MusicPartPointers_Mushroom:
 	musicPart MusicHeaderMushroomBonusChance
@@ -95,34 +95,17 @@ MusicPartPointers_SubSpaceLoop:
 MusicPartPointers_SubSpaceEnd:
 	musicPart MusicHeaderSubspace4
 
-
 MusicPartPointers_Ending:
 	musicPart MusicHeaderEnding1
 	musicPart MusicHeaderEnding2
 	musicPart MusicHeaderEnding3
 	musicPart MusicHeaderEnding4
-IFNDEF PROTOTYPE_MUSIC_ENDING
 	musicPart MusicHeaderEnding5
 MusicPartPointers_EndingLoop:
 MusicPartPointers_EndingEnd:
 	musicPart MusicHeaderEnding6
-ELSE
-MusicPartPointers_EndingEnd:
-	musicPart MusicHeaderEnding5
-ENDIF
 
-
-IFNDEF PROTOTYPE_MUSIC_UNDERGROUND
 MusicPartPointers_Underground:
 MusicPartPointers_UndergroundLoop:
 MusicPartPointers_UndergroundEnd:
 	musicPart MusicHeaderUnderground
-ELSE
-MusicPartPointers_Underground:
-MusicPartPointers_UndergroundLoop:
-	musicPart MusicHeaderUndergroundBeta1
-	musicPart MusicHeaderUndergroundBeta1
-	musicPart MusicHeaderUndergroundBeta2
-MusicPartPointers_UndergroundEnd:
-	musicPart MusicHeaderUndergroundBeta2
-ENDIF

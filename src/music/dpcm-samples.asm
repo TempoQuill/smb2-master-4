@@ -387,7 +387,6 @@ DPCMSampleData_DoorOpenBombBom:
 	.db $89,$00,$0A,$00,$FF,$DF,$49,$02,$0A,$70,$EA,$07,$EE,$EA,$F6 ; NOT logged as PCM data
 DPCMSampleDataEnd_DoorOpenBombBom:
 
-IFNDEF PROTOTYPE_DPCM_SAMPLES
 DPCMSampleData_DrumSample:
 	.db $6A,$55,$55,$D5,$54,$AA,$5A,$55,$55,$85,$D8,$EA,$D7,$FF,$02 ; Logged as PCM data
 	.db $00,$00,$FE,$FF,$5F,$62,$00,$00,$00,$FF,$FF,$FF,$27,$00,$00,$E8,$FF,$FF ; $F
@@ -462,8 +461,4 @@ DPCMSampleDataEnd_DrumSample_B:
 	.db $5A,$55,$42,$AB,$56,$55,$53,$29,$B1,$7A,$59,$B5,$54,$55,$52 ; $169
 	.db $6B,$AB,$56,$25,$49,$56,$6D ; $178
 DPCMSampleDataEnd_DrumSample:
-ENDIF
 
-IFDEF PROTOTYPE_DPCM_SAMPLES
-	.include "src/extras/prototype-dpcm-samples.asm"
-ENDIF

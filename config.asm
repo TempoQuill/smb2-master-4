@@ -81,8 +81,8 @@ PRESERVE_UNUSED_SPACE = 1
 ; Fixes green platform tiles in Subspace
 ; FIX_SUBSPACE_TILES = 1
 
-; Supports D1 joypad data for expansion port controllers
-; JOYPAD_D1 = 1
+; DPCM is not interrupted when sound effects end or when songs start
+; FIX_MIXER_CODE = 1
 
 ; ----------------------------------------
 ; Patches that alter the game in
@@ -95,23 +95,9 @@ PRESERVE_UNUSED_SPACE = 1
 ; Go to the Charater Select screen after death
 ; CHARACTER_SELECT_AFTER_DEATH = 1
 
-; Restore the prototype's DPCM samples and/or music;
-; NOTE: The prototype underground music requires the shortened prototype ending music to fit
-; everything in the music header table. Use EXPAND_MUSIC to remove this restriction.
-; PROTOTYPE_DPCM_SAMPLES = 1
-; PROTOTYPE_INSTRUMENTS = 1
-; PROTOTYPE_MUSIC_STARMAN = 1
-; PROTOTYPE_MUSIC_UNDERGROUND = 1
-; PROTOTYPE_MUSIC_ENDING = 1
-
-; Include debugging tools
-; (push Select to open the debug menu)
-; DEBUG = 1
-
-; Include controller 2 debug features
-; (@TODO: explain usage)
-; CONTROLLER_2_DEBUG = 1
-
+; swaps out SMB2's sound engine for VulpReich's
+; needs MMC5 to work properly
+; VULPREICH_SOUND_ENGINE = 1
 
 
 ; ----------------------------------------
@@ -127,51 +113,11 @@ PRESERVE_UNUSED_SPACE = 1
 ; Based on RetroRain's MMC5 patch (https://www.romhacking.net/hacks/2568)
 ; MMC5 = 1
 
-; Enable hard-wired 4-screen mirroring. If enabled, normal nametable mirroring is disabled.
-; See https://wiki.nesdev.com/w/index.php/INES#Flags_6
-; FOURSCREEN = 1
-
-; Use FME-7 (mapper 69) instead of MMC3 (mapper 4)
-; FME7 = 1
-
-; Pads title screen PPU data for easier modification
-; PAD_TITLE_SCREEN_PPU_DATA = 1
-
-; Expands various lookup tables so that more values can be added
-; EXPAND_TABLES = 1
-
 ; Skip unnecessary bonus chance RAM copy
 ; BONUS_CHANCE_RAM_CLEANUP = 1
 
-; Uses an alternative pointer method for music headers to allow for more segments
-; EXPAND_MUSIC = 1
-
-; Encode world tileset in unused 3 bits of area header byte 2
-; AREA_HEADER_TILESET = 1
-
-; Checks the CHR latch variable to reload the CHR data
-; RESET_CHR_LATCH = 1
-
-; Encode level engine object mode switch in unused 2 bits of area header byte 4
-; ENABLE_LEVEL_OBJECT_MODE = 1
-
-; Enables additional level engine features
-; LEVEL_ENGINE_UPGRADES = 1
-
-; Enables quicksand tile behavior outside of worlds 2 and 6
-; ALWAYS_ALLOW_QUICKSAND = 1
-
-; Use a tile attributes table for rather than TileSolidnessTable
-; ENABLE_TILE_ATTRIBUTES_TABLE = 1
-
-; Disables door pointers, so that area pointers are always required
-; DISABLE_DOOR_POINTERS = 1
-
-; Enables full-page door/vine searching so that entrances don't need to align
-; ROBUST_TRANSITION_SEARCH = 1
-
-; Use RAM address for player hitbox offset rather than PlayerDucking
-; PLAYER_HITBOX = 1
-
+; Condense data in Home ROM to 8K rather than 9K
+; Expand DPCM area to 8K
+; EVEN_UPPER_ROM_AREA = 1
 
 .endinl

@@ -14,13 +14,13 @@
 ; Initializes a vertical area
 ;
 InitializeAreaVertical:
-	LDA byte_RAM_502
+	LDA i502
 	BNE loc_BANK0_805D
 
 	LDA #HMirror
 	JSR ChangeNametableMirroring
 
-	LDA CurrentLevelEntryPage
+	LDA iCurrentLvlEntryPage
 	BNE loc_BANK0_8013
 
 loc_BANK0_800F:
@@ -33,11 +33,11 @@ loc_BANK0_8013:
 
 loc_BANK0_8016:
 	ORA #$C0
-	STA BackgroundUpdateBoundaryBackward
+	STA zBGBufferBackward
 	SEC
 	SBC #$40
-	STA BackgroundUpdateBoundary
-	LDA CurrentLevelEntryPage
+	STA zBGBuffer
+	LDA iCurrentLvlEntryPage
 
 loc_BANK0_8022:
 	CLC
@@ -49,60 +49,60 @@ loc_BANK0_8022:
 
 loc_BANK0_802B:
 	ORA #$10
-	STA BackgroundUpdateBoundaryForward
-	LDA CurrentLevelEntryPage
+	STA zBGBufferForward
+	LDA iCurrentLvlEntryPage
 	LDY #$00
 	JSR ResetPPUScrollHi
 
 	LDA #$20
-	STA DrawBackgroundTilesPPUAddrLoBackward
+	STA zPPUDrawerRemains
 	LDA #$60
-	STA DrawBackgroundTilesPPUAddrLoForward
+	STA zPPUDrawerOffset
 
 	; Set the flag for the initial screen render
-	INC byte_RAM_502
+	INC i502
 
 	; Initialize the PPU update boundary
 	LDA #$E0
-	STA byte_RAM_E2
+	STA ze2
 	LDA #$01
-	STA byte_RAM_E4
-	STA byte_RAM_53A
+	STA ze4
+	STA i53a
 	LSR A
-	STA DrawBackgroundTilesPPUAddrLo
+	STA zBigPPUDrawer + 1
 
 	; Set the screen y-position
-	LDY CurrentLevelEntryPage
+	LDY iCurrentLvlEntryPage
 	JSR PageHeightCompensation
-	STA ScreenYLo
-	STY ScreenYHi
+	STA zScreenY
+	STY zScreenYPage
 
 	; Cue player transition
 	JSR ApplyAreaTransition
 
 loc_BANK0_805D:
 	LDA #$00
-	STA byte_RAM_6
+	STA z06
 	LDA #$FF
-	STA byte_RAM_505
+	STA i505
 	LDA #$A0
-	STA PPUScrollCheckLo
+	STA iPPUBigScrollCheck + 1
 
 	JSR sub_BANK0_823D
 
-	LDA byte_RAM_53A
+	LDA i53a
 	BNE InitializeAreaVertical_Exit
 
 	; Initial screen render is complete
-	INC BreakStartLevelLoop
+	INC zBreakStartLevelLoop
 
 	LDA #$E8
-	STA byte_RAM_E1
+	STA ze1
 	LDA #$C8
-	STA byte_RAM_E2
+	STA ze2
 
 	LDA #$00
-	STA byte_RAM_502
+	STA i502
 
 InitializeAreaVertical_Exit:
 	RTS
@@ -113,12 +113,12 @@ InitializeAreaVertical_Exit:
 ; it was necessary.
 ;
 ApplyVerticalScroll:
-	LDA NeedsScroll
+	LDA zScrollArray
 	AND #%00000100
 	BNE loc_BANK0_809D
 
 	;	Not currently in a scroll interval
-	LDA NeedsScroll
+	LDA zScrollArray
 	AND #%00000111
 	BNE loc_BANK0_8092
 
@@ -127,21 +127,21 @@ ApplyVerticalScroll:
 ; ---------------------------------------------------------------------------
 
 loc_BANK0_8092:
-	LDA NeedsScroll
+	LDA zScrollArray
 	ORA #%00000100
-	STA NeedsScroll
+	STA zScrollArray
 	LDA #$12
-	STA CameraScrollTiles
+	STA iCameraOSTiles
 
 loc_BANK0_809D:
-	LDA NeedsScroll
+	LDA zScrollArray
 	LSR A
-	LDA PPUScrollYMirror
+	LDA zPPUScrollY
 	BCC loc_BANK0_8103
 
 	BNE loc_BANK0_80B1
 
-	LDA BackgroundUpdateBoundaryBackward
+	LDA zBGBufferBackward
 	AND #$0F
 	CMP #$09
 	BNE loc_BANK0_80B1
@@ -154,33 +154,33 @@ loc_BANK0_80B1:
 	LDA #$01
 	JSR SetObjectLocks
 
-	LDA PPUScrollYMirror
+	LDA zPPUScrollY
 	SEC
 	SBC #$04
-	STA PPUScrollYMirror
-	LDA ScreenYLo
+	STA zPPUScrollY
+	LDA zScreenY
 	SEC
 	SBC #$04
-	STA ScreenYLo
+	STA zScreenY
 	BCS loc_BANK0_80C8
 
-	DEC ScreenYHi
+	DEC zScreenYPage
 
 loc_BANK0_80C8:
-	LDA PPUScrollYMirror
+	LDA zPPUScrollY
 	CMP #$0FC
 	BNE loc_BANK0_80DB
 
 	LDA #$EC
-	STA PPUScrollYMirror
-	LDA PPUScrollYHiMirror
+	STA zPPUScrollY
+	LDA zYScrollPage
 	EOR #$02
-	STA PPUScrollYHiMirror
+	STA zYScrollPage
 	LSR A
-	STA PPUScrollXHiMirror
+	STA zXScrollPage
 
 loc_BANK0_80DB:
-	LDA PPUScrollYMirror
+	LDA zPPUScrollY
 	AND #$07
 	BEQ loc_BANK0_80E2
 
@@ -195,7 +195,7 @@ loc_BANK0_80E2:
 	INX
 	JSR loc_BANK0_8287
 
-	LDA PPUScrollYMirror
+	LDA zPPUScrollY
 	AND #$0F
 	BNE loc_BANK0_80FB
 
@@ -216,22 +216,22 @@ loc_BANK0_80FB:
 loc_BANK0_8103:
 	BNE loc_BANK0_8121
 
-	LDA CurrentLevelPages
-	STA byte_RAM_F
+	LDA iCurrentLvlPages
+	STA z0f
 	CMP #$09
 	BNE loc_BANK0_8114
 
 	LDA #$00
-	STA byte_RAM_F
+	STA z0f
 	BEQ loc_BANK0_8116
 
 loc_BANK0_8114:
-	INC byte_RAM_F
+	INC z0f
 
 loc_BANK0_8116:
-	LDA BackgroundUpdateBoundaryForward
+	LDA zBGBufferForward
 	AND #$0F
-	CMP byte_RAM_F
+	CMP z0f
 	BNE loc_BANK0_8121
 
 	JMP loc_BANK0_819C
@@ -242,20 +242,20 @@ loc_BANK0_8121:
 	LDA #$01
 	JSR SetObjectLocks
 
-	LDA PPUScrollYMirror
+	LDA zPPUScrollY
 	CLC
 	ADC #$04
-	STA PPUScrollYMirror
-	LDA ScreenYLo
+	STA zPPUScrollY
+	LDA zScreenY
 	CLC
 	ADC #$04
-	STA ScreenYLo
+	STA zScreenY
 	BCC loc_BANK0_8138
 
-	INC ScreenYHi
+	INC zScreenYPage
 
 loc_BANK0_8138:
-	LDA PPUScrollYMirror
+	LDA zPPUScrollY
 	AND #$07
 	BEQ loc_BANK0_813F
 
@@ -264,17 +264,17 @@ loc_BANK0_8138:
 ; ---------------------------------------------------------------------------
 
 loc_BANK0_813F:
-	LDA PPUScrollYMirror
+	LDA zPPUScrollY
 	CMP #$F0
 	BNE loc_BANK0_8152
 
 	LDA #$00
-	STA PPUScrollYMirror
-	LDA PPUScrollYHiMirror
+	STA zPPUScrollY
+	LDA zYScrollPage
 	EOR #$02
-	STA PPUScrollYHiMirror
+	STA zYScrollPage
 	LSR A
-	STA PPUScrollXHiMirror
+	STA zXScrollPage
 
 loc_BANK0_8152:
 	LDX #$02
@@ -283,7 +283,7 @@ loc_BANK0_8152:
 	DEX
 	JSR sub_BANK0_828F
 
-	LDA DrawBackgroundTilesPPUAddrLoForward
+	LDA zPPUDrawerOffset
 	AND #$20
 	BNE loc_BANK0_816B
 
@@ -298,13 +298,13 @@ loc_BANK0_816B:
 	JSR PrepareBackgroundDrawing_Vertical
 
 loc_BANK0_8170:
-	LDA CameraScrollTiles
+	LDA iCameraOSTiles
 	CMP #$12
 	BNE loc_BANK0_818F
 
 	LDA #$01
-	STA byte_RAM_E4
-	LDA NeedsScroll
+	STA ze4
+	LDA zScrollArray
 	LSR A
 	BCC loc_BANK0_8186
 
@@ -319,14 +319,14 @@ loc_BANK0_8186:
 	LDA #$10
 
 loc_BANK0_818A:
-	STA byte_RAM_1
+	STA z01
 	JSR sub_BANK0_8314
 
 loc_BANK0_818F:
 	; Update PPU for scrolling
 	JSR CopyBackgroundToPPUBuffer_Vertical
 
-	DEC CameraScrollTiles
+	DEC iCameraOSTiles
 	BNE locret_BANK0_81A0
 
 	LDA #$00
@@ -334,7 +334,7 @@ loc_BANK0_818F:
 
 loc_BANK0_819C:
 	LDA #$00
-	STA NeedsScroll
+	STA zScrollArray
 
 locret_BANK0_81A0:
 	RTS
@@ -349,85 +349,85 @@ locret_BANK0_81A0:
 ; the pause screen
 ;
 StashScreenScrollPosition:
-	LDA PPUScrollYMirror
-	STA PPUScrollYMirror_Backup
-	LDA PPUScrollXMirror
-	STA PPUScrollXMirror_Backup
-	LDA PPUScrollYHiMirror
-	STA PPUScrollYHiMirror_Backup
-	LDA PPUScrollXHiMirror
-	STA PPUScrollXHiMirror_Backup
-	LDA ScreenYHi
-	STA ScreenYHi_Backup
-	LDA ScreenYLo
-	STA ScreenYLo_Backup
-	LDA ScreenBoundaryLeftHi
-	STA ScreenBoundaryLeftHi_Backup
-	LDA byte_RAM_E1
-	STA byte_RAM_517
+	LDA zPPUScrollY
+	STA iPPUScrollY
+	LDA zPPUScrollX
+	STA iPPUScrollX
+	LDA zYScrollPage
+	STA iYScrollPage
+	LDA zXScrollPage
+	STA iXScrollPage
+	LDA zScreenYPage
+	STA iScreenYPage
+	LDA zScreenY
+	STA iScreenY
+	LDA iBoundLeftUpper
+	STA iBoundLeftUpper_Backup
+	LDA ze1
+	STA i517
 	LDA #$00
-	STA PPUScrollYMirror
-	STA PPUScrollXMirror
-	STA PPUScrollYHiMirror
-	STA PPUScrollXHiMirror
+	STA zPPUScrollY
+	STA zPPUScrollX
+	STA zYScrollPage
+	STA zXScrollPage
 	RTS
 
 
 RestoreScreenScrollPosition:
-	LDA PPUScrollYMirror_Backup
-	STA PPUScrollYMirror
-	LDA PPUScrollXMirror_Backup
-	STA PPUScrollXMirror
-	STA ScreenBoundaryLeftLo
-	LDA PPUScrollYHiMirror_Backup
-	STA PPUScrollYHiMirror
-	LDA PPUScrollXHiMirror_Backup
-	STA PPUScrollXHiMirror
-	LDA ScreenBoundaryLeftHi_Backup
-	STA ScreenBoundaryLeftHi
-	LDA ScreenYHi_Backup
-	STA ScreenYHi
-	LDA ScreenYLo_Backup
-	STA ScreenYLo
+	LDA iPPUScrollY
+	STA zPPUScrollY
+	LDA iPPUScrollX
+	STA zPPUScrollX
+	STA iBoundLeftLower
+	LDA iYScrollPage
+	STA zYScrollPage
+	LDA iXScrollPage
+	STA zXScrollPage
+	LDA iBoundLeftUpper_Backup
+	STA iBoundLeftUpper
+	LDA iScreenYPage
+	STA zScreenYPage
+	LDA iScreenY
+	STA zScreenY
 	RTS
 
 
 ; Used for redrawing the screen in a vertical area after unpausing
 sub_BANK0_81FE:
-	LDA BackgroundUpdateBoundaryBackward
+	LDA zBGBufferBackward
 	AND #$10
 	BEQ loc_BANK0_820B
 
-	LDA byte_RAM_E1
+	LDA ze1
 	SEC
 	SBC #$08
-	STA byte_RAM_E1
+	STA ze1
 
 loc_BANK0_820B:
 	LDA #$01
-	STA byte_RAM_E4
-	LDA BackgroundUpdateBoundaryBackward
-	STA BackgroundUpdateBoundary
+	STA ze4
+	LDA zBGBufferBackward
+	STA zBGBuffer
 	LDA #$10
-	STA byte_RAM_1
+	STA z01
 	LDX #$00
 	JSR sub_BANK0_8314
 
-	LDA DrawBackgroundTilesPPUAddrLoBackward
-	STA DrawBackgroundTilesPPUAddrLo
-	LDA byte_RAM_E1
-	STA byte_RAM_E2
+	LDA zPPUDrawerRemains
+	STA zBigPPUDrawer + 1
+	LDA ze1
+	STA ze2
 	LDX #$01
 	JSR sub_BANK0_846A
 
 	LDA #$F0
-	STA PPUScrollCheckHi
-	STA PPUScrollCheckLo
-	LDA BackgroundUpdateBoundaryForward
-	STA byte_RAM_505
-	INC byte_RAM_D5
+	STA iPPUBigScrollCheck
+	STA iPPUBigScrollCheck + 1
+	LDA zBGBufferForward
+	STA i505
+	INC zd5
 	LDA #$01
-	STA byte_RAM_6
+	STA z06
 	RTS
 
 
@@ -435,7 +435,7 @@ loc_BANK0_820B:
 sub_BANK0_823D:
 	; Clear the flag to indicate that we're drawing
 	LDX #$00
-	STX byte_RAM_537
+	STX i537
 
 	JSR PrepareBackgroundDrawing_Vertical
 
@@ -445,44 +445,44 @@ sub_BANK0_823D:
 	LDX #$00
 	JSR sub_BANK0_828F
 
-	LDA PPUScrollCheckHi
-	CMP DrawBackgroundTilesPPUAddrHi
+	LDA iPPUBigScrollCheck
+	CMP zBigPPUDrawer
 	BNE loc_BANK0_8277
 
-	LDA PPUScrollCheckLo
+	LDA iPPUBigScrollCheck + 1
 	CLC
 	ADC #$20
-	CMP DrawBackgroundTilesPPUAddrLo
+	CMP zBigPPUDrawer + 1
 	BNE loc_BANK0_8277
 
 loc_BANK0_825E:
-	LDA byte_RAM_6
+	LDA z06
 	TAX
 	BEQ loc_BANK0_8268
 
-	LDA byte_RAM_517
-	STA byte_RAM_E1
+	LDA i517
+	STA ze1
 
 loc_BANK0_8268:
 	; Set the flag to indicate that we've finished drawing
-	INC byte_RAM_537
+	INC i537
 
 	LDA #$00
-	STA byte_RAM_53A, X
-	STA byte_RAM_53D
-	STA byte_RAM_53E
+	STA i53a, X
+	STA i53d
+	STA i53e
 
 	RTS
 
 ; ---------------------------------------------------------------------------
 
 loc_BANK0_8277:
-	LDA DrawBackgroundTilesPPUAddrLo
+	LDA zBigPPUDrawer + 1
 	AND #$20
 	BNE locret_BANK0_828E
 
-	LDA BackgroundUpdateBoundary
-	CMP byte_RAM_505
+	LDA zBGBuffer
+	CMP i505
 	BEQ loc_BANK0_825E
 
 	JMP IncrementVerticalScrollRow
@@ -491,10 +491,10 @@ loc_BANK0_8277:
 
 ; Decrement tiles row
 loc_BANK0_8287:
-	LDA DrawBackgroundTilesPPUAddrLoBackward, X
+	LDA zPPUDrawerRemains, X
 	SEC
 	SBC #$20
-	STA DrawBackgroundTilesPPUAddrLoBackward, X
+	STA zPPUDrawerRemains, X
 
 locret_BANK0_828E:
 	RTS
@@ -502,10 +502,10 @@ locret_BANK0_828E:
 
 ; Increment tiles row
 sub_BANK0_828F:
-	LDA DrawBackgroundTilesPPUAddrLo, X
+	LDA zBigPPUDrawer + 1, X
 	CLC
 	ADC #$20
-	STA DrawBackgroundTilesPPUAddrLo, X
+	STA zBigPPUDrawer + 1, X
 	RTS
 
 
@@ -514,33 +514,33 @@ sub_BANK0_828F:
 ;
 DecrementVerticalScrollRow:
 	; Decrement the row offset
-	LDA BackgroundUpdateBoundaryBackward, X
+	LDA zBGBufferBackward, X
 	SEC
 	SBC #$10
-	STA BackgroundUpdateBoundaryBackward, X
+	STA zBGBufferBackward, X
 	AND #$F0
 	CMP #$F0
 	BNE DecrementVerticalScrollRow_Exit
 
 	; Decrement the page
-	LDA BackgroundUpdateBoundaryBackward, X
+	LDA zBGBufferBackward, X
 	AND #$0F
 	CLC
 	ADC #$E0
-	STA BackgroundUpdateBoundaryBackward, X
-	DEC BackgroundUpdateBoundaryBackward, X
-	LDA BackgroundUpdateBoundaryBackward, X
+	STA zBGBufferBackward, X
+	DEC zBGBufferBackward, X
+	LDA zBGBufferBackward, X
 	CMP #$DF
 	BNE loc_BANK0_82B9
 
 	; Wrap around to the last row of the last page
 	LDA #$E9
-	STA BackgroundUpdateBoundaryBackward, X
+	STA zBGBufferBackward, X
 
 ; @TODO: What's this doing, exactly?
 loc_BANK0_82B9:
 	LDA #$A0
-	STA DrawBackgroundTilesPPUAddrLoBackward, X
+	STA zPPUDrawerRemains, X
 
 DecrementVerticalScrollRow_Exit:
 	RTS
@@ -551,31 +551,31 @@ DecrementVerticalScrollRow_Exit:
 ;
 IncrementVerticalScrollRow:
 	; Increment the row offset
-	LDA BackgroundUpdateBoundary, X
+	LDA zBGBuffer, X
 	CLC
 	ADC #$10
-	STA BackgroundUpdateBoundary, X
+	STA zBGBuffer, X
 	AND #$F0
 	CMP #$F0
 	BNE IncrementVerticalScrollRow_Exit
 
 	; Increment the page
-	LDA BackgroundUpdateBoundary, X
+	LDA zBGBuffer, X
 	AND #$0F
-	STA BackgroundUpdateBoundary, X
-	INC BackgroundUpdateBoundary, X
-	LDA BackgroundUpdateBoundary, X
+	STA zBGBuffer, X
+	INC zBGBuffer, X
+	LDA zBGBuffer, X
 	CMP #$0A
 	BNE loc_BANK0_82DD
 
 	; Wrap around to the first row of the first page
 	LDA #$00
-	STA BackgroundUpdateBoundary, X
+	STA zBGBuffer, X
 
 ; @TODO: What's this doing, exactly?
 loc_BANK0_82DD:
 	LDA #$00
-	STA DrawBackgroundTilesPPUAddrLo, X
+	STA zBigPPUDrawer + 1, X
 
 IncrementVerticalScrollRow_Exit:
 	RTS
@@ -586,32 +586,32 @@ IncrementVerticalScrollRow_Exit:
 ; screen and where to draw them for vertical areas.
 ;
 ; ##### Input
-; - `BackgroundUpdateBoundary`: drawing boundary table
+; - `zBGBuffer`: drawing boundary table
 ; - `X`: drawing boundary index (`$00` = full, `$01` = up, `$02` = down)
 ;
 ; ##### Output
-; - `ReadLevelDataAddress`: decoded level data address
-; - `ReadLevelDataOffset`: level data offset
-; - `DrawBackgroundTilesPPUAddrHi`/`DrawBackgroundTilesPPUAddrLo`: PPU start address
+; - `zLevelDataPointer`: decoded level data address
+; - `zLevelDataOffset`: level data offset
+; - `zBigPPUDrawer`: PPU start address
 ;
 PrepareBackgroundDrawing_Vertical:
 	; Lower nybble is used for page
-	LDA BackgroundUpdateBoundary, X
+	LDA zBGBuffer, X
 	AND #$0F
 	TAY
 	; Get the address of the decoded level data
 	LDA DecodedLevelPageStartLo_Bank1, Y
-	STA ReadLevelDataAddress
+	STA zLevelDataPointer
 	LDA DecodedLevelPageStartHi_Bank1, Y
-	STA ReadLevelDataAddress + 1
+	STA zLevelDataPointer + 1
 
 	; Upper nybble is used for the tile offset (rows)
-	LDA BackgroundUpdateBoundary, X
+	LDA zBGBuffer, X
 	AND #$F0
-	STA ReadLevelDataOffset
+	STA zLevelDataOffset
 
 	; Determine where on the screen we should draw the tile
-	LDA BackgroundUpdateBoundary, X
+	LDA zBGBuffer, X
 	LSR A
 	BCC PrepareBackgroundDrawing_Vertical_Nametable2800
 
@@ -622,18 +622,18 @@ PrepareBackgroundDrawing_Vertical_Nametable2800:
 	LDA #$28
 
 PrepareBackgroundDrawing_Vertical_SetNametableHi:
-	STA DrawBackgroundTilesPPUAddrHi
+	STA zBigPPUDrawer
 
-	LDA BackgroundUpdateBoundary, X
+	LDA zBGBuffer, X
 	AND #$C0
 	ASL A
 	ROL A
 	ROL A
-	ADC DrawBackgroundTilesPPUAddrHi
-	STA DrawBackgroundTilesPPUAddrHi
+	ADC zBigPPUDrawer
+	STA zBigPPUDrawer
 
-	LDA DrawBackgroundTilesPPUAddrLo, X
-	STA DrawBackgroundTilesPPUAddrLo
+	LDA zBigPPUDrawer + 1, X
+	STA zBigPPUDrawer + 1
 
 PrepareBackgroundDrawing_Vertical_Exit:
 	RTS
@@ -643,33 +643,33 @@ PrepareBackgroundDrawing_Vertical_Exit:
 ; =============== S U B R O U T I N E =======================================
 ;
 sub_BANK0_8314:
-	LDA BackgroundUpdateBoundary, X
+	LDA zBGBuffer, X
 	AND #$10
 	BEQ PrepareBackgroundDrawing_Vertical_Exit
 
-	LDA BackgroundUpdateBoundary, X
-	STA byte_RAM_3
+	LDA zBGBuffer, X
+	STA z03
 	SEC
-	SBC byte_RAM_1
-	STA BackgroundUpdateBoundary, X
+	SBC z01
+	STA zBGBuffer, X
 	JSR PrepareBackgroundDrawing_Vertical
 
 ; loop through tiles to generate PPU attribute data
 loc_BANK0_8326:
 	LDA #$0F
-	STA PPUAttributeUpdateCounter
+	STA zAttrUpdateIndex
 	LDA #$00
-	STA CopyBackgroundCounter
+	STA zBGBufferSize
 
 loc_BANK0_832E:
 	JSR ReadNextTileAndSetPaletteInPPUAttribute
 
-	LDA PPUAttributeUpdateCounter
+	LDA zAttrUpdateIndex
 	BPL loc_BANK0_832E
 
-	LDA byte_RAM_3
-	STA BackgroundUpdateBoundary, X
-	DEC byte_RAM_E4
+	LDA z03
+	STA zBGBuffer, X
+	DEC ze4
 	JMP PrepareBackgroundDrawing_Vertical
 
 
@@ -677,47 +677,47 @@ loc_BANK0_832E:
 ; This draws ground tiles to the PPU buffer
 ;
 ; ##### Input
-; - `byte_RAM_300`: offset in PPU buffer
-; - `DrawBackgroundTilesPPUAddrHi`/`DrawBackgroundTilesPPUAddrLo`: PPU start address
-; - `ReadLevelDataAddress`: decoded level data address
-; - `ReadLevelDataOffset`: level data offset
+; - `i300`: offset in PPU buffer
+; - `zBigPPUDrawer`: PPU start address
+; - `zLevelDataPointer`: decoded level data address
+; - `zLevelDataOffset`: level data offset
 ;
 CopyBackgroundToPPUBuffer_Vertical:
 	; Set the PPU start address (ie. where we're going to draw tiles)
-	LDX byte_RAM_300
-	LDA DrawBackgroundTilesPPUAddrHi
-	STA PPUBuffer_301, X
+	LDX i300
+	LDA zBigPPUDrawer
+	STA iPPUBuffer, X
 	INX
-	LDA DrawBackgroundTilesPPUAddrLo
-	STA PPUBuffer_301, X
+	LDA zBigPPUDrawer + 1
+	STA iPPUBuffer, X
 	INX
 
 	; We're going to draw a full row of tiles on the screen
 	LDA #$20
-	STA PPUBuffer_301, X
+	STA iPPUBuffer, X
 
 	; Prepare the counters
 	INX
 	LDA #$00
-	STA CopyBackgroundCounter
+	STA zBGBufferSize
 	LDA #$0F
-	STA PPUAttributeUpdateCounter
+	STA zAttrUpdateIndex
 
-	LDA byte_RAM_D5
+	LDA zd5
 	BEQ CopyBackgroundToPPUBuffer_Vertical_Loop
 
-	LDY ReadLevelDataOffset
+	LDY zLevelDataOffset
 	CPY #$E0
 	BNE CopyBackgroundToPPUBuffer_Vertical_Loop
 
 	LDA #$00
-	STA byte_RAM_E4
-	INC UpdatingPPUAttributeBottomRow
+	STA ze4
+	INC iBottomRowField
 
 CopyBackgroundToPPUBuffer_Vertical_Loop:
-	LDY ReadLevelDataOffset
-	LDA (ReadLevelDataAddress), Y
-	STA DrawTileId
+	LDY zLevelDataOffset
+	LDA (zLevelDataPointer), Y
+	STA iTileID
 	AND #%11000000
 	ASL A
 	ROL A
@@ -725,15 +725,15 @@ CopyBackgroundToPPUBuffer_Vertical_Loop:
 	TAY
 	; Get the tile quad pointer
 	LDA TileQuadPointersLo, Y
-	STA byte_RAM_0
+	STA z00
 	LDA TileQuadPointersHi, Y
-	STA byte_RAM_1
-	LDY ReadLevelDataOffset
-	LDA (ReadLevelDataAddress), Y
+	STA z01
+	LDY zLevelDataOffset
+	LDA (zLevelDataPointer), Y
 	ASL A
 	ASL A
 	TAY
-	LDA byte_RAM_D5
+	LDA zd5
 	BEQ loc_BANK0_8390
 
 	INY
@@ -741,43 +741,43 @@ CopyBackgroundToPPUBuffer_Vertical_Loop:
 
 loc_BANK0_8390:
 	; Write the tile to the PPU buffer
-	LDA (byte_RAM_0), Y
-	STA PPUBuffer_301, X
-	INC CopyBackgroundCounter
+	LDA (z00), Y
+	STA iPPUBuffer, X
+	INC zBGBufferSize
 	INX
 	INY
-	LDA CopyBackgroundCounter
+	LDA zBGBufferSize
 	LSR A
 	BCS loc_BANK0_8390
 
-	INC ReadLevelDataOffset
-	LDA byte_RAM_D5
+	INC zLevelDataOffset
+	LDA zd5
 	BEQ loc_BANK0_83A7
 
 	JSR SetTilePaletteInPPUAttribute
 
 loc_BANK0_83A7:
 	; Did we finish drawing the row yet?
-	LDA CopyBackgroundCounter
+	LDA zBGBufferSize
 	CMP #$20
 	BCC CopyBackgroundToPPUBuffer_Vertical_Loop
 
 	LDA #$00
-	STA PPUBuffer_301, X
-	STX byte_RAM_300
-	LDA byte_RAM_D5
+	STA iPPUBuffer, X
+	STX i300
+	LDA zd5
 	BEQ loc_BANK0_840B
 
-	LDA byte_RAM_E4
+	LDA ze4
 	BEQ loc_BANK0_83C2
 
-	DEC byte_RAM_E4
+	DEC ze4
 	JMP loc_BANK0_83DE
 
 ; ---------------------------------------------------------------------------
 
 loc_BANK0_83C2:
-	LDA NeedsScroll
+	LDA zScrollArray
 	LSR A
 	BCS loc_BANK0_83D4
 
@@ -800,18 +800,18 @@ loc_BANK0_83D4:
 
 loc_BANK0_83DE:
 	LDX #$00
-	LDA NeedsScroll
+	LDA zScrollArray
 	LSR A
 	BCC loc_BANK0_83FA
 
 ; up
 	INX
-	LDA BackgroundUpdateBoundaryBackward, X
+	LDA zBGBufferBackward, X
 	AND #$F0
 	CMP #$E0
 	BEQ loc_BANK0_83F4
 
-	LDA BackgroundUpdateBoundaryBackward, X
+	LDA zBGBufferBackward, X
 	AND #$10
 	BNE loc_BANK0_840B
 
@@ -822,12 +822,12 @@ loc_BANK0_83F4:
 
 ; down
 loc_BANK0_83FA:
-	LDA BackgroundUpdateBoundaryBackward, X
+	LDA zBGBufferBackward, X
 	AND #$F0
 	CMP #$E0
 	BEQ loc_BANK0_8408
 
-	LDA BackgroundUpdateBoundaryBackward, X
+	LDA zBGBufferBackward, X
 	AND #$10
 	BEQ loc_BANK0_840B
 
@@ -835,9 +835,9 @@ loc_BANK0_8408:
 	JSR sub_BANK0_846A
 
 loc_BANK0_840B:
-	LDA byte_RAM_D5
+	LDA zd5
 	EOR #$01
-	STA byte_RAM_D5
+	STA zd5
 	RTS
 
 
@@ -845,84 +845,84 @@ loc_BANK0_840B:
 ; This draws ground background attributes to the PPU buffer
 ;
 CopyBackgroundAttributesToPPUBuffer_Vertical:
-	LDY byte_RAM_300
+	LDY i300
 	; Setting the attribute address to update
-	LDA DrawBackgroundTilesPPUAddrHi
+	LDA zBigPPUDrawer
 	ORA #$03
-	STA PPUBuffer_301, Y
+	STA iPPUBuffer, Y
 	INY
-	LDA byte_RAM_E1, X
-	STA PPUBuffer_301, Y
+	LDA ze1, X
+	STA iPPUBuffer, Y
 	INY
 	; We're updating 8 blocks of attribute data
 	LDA #$08
-	STA PPUBuffer_301, Y
+	STA iPPUBuffer, Y
 	INY
 
 	LDX #$07
 CopyBackgroundAttributesToPPUBuffer_Vertical_Loop:
-	LDA UpdatingPPUAttributeBottomRow
+	LDA iBottomRowField
 	BEQ CopyBackgroundAttributesToPPUBuffer_Vertical_FullRow
 
 CopyBackgroundAttributesToPPUBuffer_Vertical_HalfRow:
 	; Bottom row of PPU attributes has half-sized blocks
   ; Shift background palettes down one quad
-	LDA ScrollingPPUAttributeUpdateBuffer, X
+	LDA zScrollBuffer, X
 	LSR A
 	LSR A
 	LSR A
 	LSR A
-	STA ScrollingPPUAttributeUpdateBuffer, X
+	STA zScrollBuffer, X
 	JMP CopyBackgroundAttributesToPPUBuffer_Vertical_Next
 
 CopyBackgroundAttributesToPPUBuffer_Vertical_FullRow:
-	LDA NeedsScroll
+	LDA zScrollArray
 	LSR A
 	BCC CopyBackgroundAttributesToPPUBuffer_Vertical_Next
 
 CopyBackgroundAttributesToPPUBuffer_Vertical_Reverse:
 	; Swap palettes for upper and lower background quads, since tiles are drawn
 	; in the reverse order when scrolling up
-	LDA ScrollingPPUAttributeUpdateBuffer, X
+	LDA zScrollBuffer, X
 	ASL A
 	ASL A
 	ASL A
 	ASL A
-	STA byte_RAM_1
-	LDA ScrollingPPUAttributeUpdateBuffer, X
+	STA z01
+	LDA zScrollBuffer, X
 	LSR A
 	LSR A
 	LSR A
 	LSR A
-	ORA byte_RAM_1
-	STA ScrollingPPUAttributeUpdateBuffer, X
+	ORA z01
+	STA zScrollBuffer, X
 
 CopyBackgroundAttributesToPPUBuffer_Vertical_Next:
-	LDA ScrollingPPUAttributeUpdateBuffer, X
-	STA PPUBuffer_301, Y
+	LDA zScrollBuffer, X
+	STA iPPUBuffer, Y
 	INY
 	DEX
 	BPL CopyBackgroundAttributesToPPUBuffer_Vertical_Loop
 
 	LDA #$01
-	STA byte_RAM_E4
+	STA ze4
 	LSR A
-	STA UpdatingPPUAttributeBottomRow
-	STA PPUBuffer_301, Y
-	STY byte_RAM_300
+	STA iBottomRowField
+	STA iPPUBuffer, Y
+	STY i300
 	RTS
 
 
 ; Increment attributes row
 sub_BANK0_846A:
-	LDA byte_RAM_E1, X
+	LDA ze1, X
 	CLC
 	ADC #$08
-	STA byte_RAM_E1, X
+	STA ze1, X
 	BCC locret_BANK0_8477
 
 	LDA #$C0
-	STA byte_RAM_E1, X
+	STA ze1, X
 
 locret_BANK0_8477:
 	RTS
@@ -930,15 +930,15 @@ locret_BANK0_8477:
 
 ; Decrement attributes row
 sub_BANK0_8478:
-	LDA byte_RAM_E1, X
+	LDA ze1, X
 	SEC
 	SBC #$08
-	STA byte_RAM_E1, X
+	STA ze1, X
 	CMP #$C0
 	BCS locret_BANK0_8487
 
 	LDA #$F8
-	STA byte_RAM_E1, X
+	STA ze1, X
 
 locret_BANK0_8487:
 	RTS
@@ -952,26 +952,26 @@ locret_BANK0_8487:
 ; This subroutine is only used in vertical areas.
 ;
 ; ##### Input
-; - `DrawTileId`: tile ID to use for the palette
-; - `PPUAttributeUpdateCounter`: determines index to update in buffer
+; - `iTileID`: tile ID to use for the palette
+; - `zAttrUpdateIndex`: determines index to update in buffer
 ;
 SetTilePaletteInPPUAttribute:
-	LDA PPUAttributeUpdateCounter
+	LDA zAttrUpdateIndex
 	LSR A
 	TAY
 	; Shift two bits to the right to make room for the next tile
-	LDA ScrollingPPUAttributeUpdateBuffer, Y
+	LDA zScrollBuffer, Y
 	LSR A
 	LSR A
-	STA ScrollingPPUAttributeUpdateBuffer, Y
+	STA zScrollBuffer, Y
 	; Load the color for the next tile and apply it to the attribute value
-	LDA DrawTileId
+	LDA iTileID
 	AND #%11000000
-	ORA ScrollingPPUAttributeUpdateBuffer, Y
-	STA ScrollingPPUAttributeUpdateBuffer, Y
+	ORA zScrollBuffer, Y
+	STA zScrollBuffer, Y
 
 	; Move on to the next block
-	DEC PPUAttributeUpdateCounter
+	DEC zAttrUpdateIndex
 	RTS
 
 
@@ -982,7 +982,7 @@ _code_04A2:
 
 ; Unused?
 loc_BANK0_84A6:
-	STA ScrollingPPUAttributeUpdateBuffer, X
+	STA zScrollBuffer, X
 	DEX
 	BNE loc_BANK0_84A6
 
@@ -993,17 +993,17 @@ loc_BANK0_84A6:
 ; Loads a background tile from the level data and determines its PPU attribute data
 ;
 ; ##### Input
-; - `ReadLevelDataAddress`: decoded level data address
+; - `zLevelDataPointer`: decoded level data address
 ;
 ; ##### Output
-; - `DrawTileId` - tile ID
+; - `iTileID` - tile ID
 ;
 ReadNextTileAndSetPaletteInPPUAttribute:
 sub_BANK0_84AC:
-	LDY ReadLevelDataOffset
-	LDA (ReadLevelDataAddress), Y
-	STA DrawTileId
-	INC ReadLevelDataOffset
+	LDY zLevelDataOffset
+	LDA (zLevelDataPointer), Y
+	STA iTileID
+	INC zLevelDataOffset
 	JMP SetTilePaletteInPPUAttribute
 
 
@@ -1015,7 +1015,7 @@ unusedSpace $8500, $FF
 ; Initializes a horizontal area
 ;
 InitializeAreaHorizontal:
-	LDA byte_RAM_502
+	LDA i502
 	BNE loc_BANK0_855C
 
 	LDA #VMirror
@@ -1024,9 +1024,9 @@ InitializeAreaHorizontal:
 	JSR ApplyAreaTransition
 
 	LDA #$00
-	STA PPUScrollYMirror
+	STA zPPUScrollY
 
-	LDA CurrentLevelEntryPage
+	LDA iCurrentLvlEntryPage
 	BNE loc_BANK0_851A
 
 	LDA #$09
@@ -1038,11 +1038,11 @@ loc_BANK0_851A:
 
 loc_BANK0_851D:
 	ORA #$D0
-	STA BackgroundUpdateBoundaryBackward
+	STA zBGBufferBackward
 	SEC
 	SBC #$20
-	STA BackgroundUpdateBoundary
-	LDA CurrentLevelEntryPage
+	STA zBGBuffer
+	LDA iCurrentLvlEntryPage
 	CLC
 	ADC #$01
 	CMP #$0A
@@ -1052,38 +1052,38 @@ loc_BANK0_851D:
 
 loc_BANK0_8532:
 	ORA #$10
-	STA BackgroundUpdateBoundaryForward
-	LDA CurrentLevelEntryPage
+	STA zBGBufferForward
+	LDA iCurrentLvlEntryPage
 	LDY #$01
 	JSR ResetPPUScrollHi
 
 	; Set the flag for the initial screen render
-	INC byte_RAM_502
+	INC i502
 
 	; Set the screen x-position
-	LDA CurrentLevelEntryPage
-	STA ScreenBoundaryLeftHi
+	LDA iCurrentLvlEntryPage
+	STA iBoundLeftUpper
 
 	; Initialize the PPU update boundary
 	LDA #$01
-	STA byte_RAM_53A
+	STA i53a
 	LSR A
-	STA byte_RAM_6
+	STA z06
 	LDA #$FF
-	STA byte_RAM_505
+	STA i505
 	LDA #$0F
-	STA PPUScrollCheckLo
+	STA iPPUBigScrollCheck + 1
 
 	JSR sub_BANK0_856A
 
 loc_BANK0_855C:
 	JSR sub_BANK0_87AA
 
-	LDA byte_RAM_53A
+	LDA i53a
 	BNE InitializeAreaHorizontal_Exit
 
-	STA byte_RAM_502
-	INC BreakStartLevelLoop
+	STA i502
+	INC zBreakStartLevelLoop
 
 InitializeAreaHorizontal_Exit:
 	RTS
@@ -1092,54 +1092,54 @@ InitializeAreaHorizontal_Exit:
 ; =============== S U B R O U T I N E =======================================
 
 sub_BANK0_856A:
-	LDA CurrentLevelEntryPage
+	LDA iCurrentLvlEntryPage
 	BNE loc_BANK0_8576
 
-	LDA MoveCameraX
+	LDA zXVelocity
 	BMI loc_BANK0_85E7
 
-	LDA CurrentLevelEntryPage
+	LDA iCurrentLvlEntryPage
 
 loc_BANK0_8576:
-	CMP CurrentLevelPages
+	CMP iCurrentLvlPages
 	BNE loc_BANK0_857F
 
-	LDA MoveCameraX
+	LDA zXVelocity
 	BPL loc_BANK0_85E7
 
 loc_BANK0_857F:
 	LDX #$02
-	LDA MoveCameraX
+	LDA zXVelocity
 	BPL loc_BANK0_858B
 
 	LDA #$FF
-	STA byte_RAM_B
+	STA z0b
 	BNE loc_BANK0_858F
 
 loc_BANK0_858B:
 	LDA #$00
-	STA byte_RAM_B
+	STA z0b
 
 loc_BANK0_858F:
-	LDA MoveCameraX
+	LDA zXVelocity
 	AND #$F0
 	CLC
-	ADC BackgroundUpdateBoundary, X
+	ADC zBGBuffer, X
 	PHP
-	ADC byte_RAM_B
+	ADC z0b
 	PLP
-	STA byte_RAM_C
-	LDA byte_RAM_B
+	STA z0c
+	LDA z0b
 	BNE loc_BANK0_85B1
 
 	BCC loc_BANK0_85C2
 
-	LDA BackgroundUpdateBoundary, X
+	LDA zBGBuffer, X
 	AND #$0F
 	CMP #$09
 	BNE loc_BANK0_85C2
 
-	LDA byte_RAM_C
+	LDA z0c
 	AND #$F0
 	JMP loc_BANK0_85C4
 
@@ -1148,11 +1148,11 @@ loc_BANK0_858F:
 loc_BANK0_85B1:
 	BCS loc_BANK0_85C2
 
-	LDA BackgroundUpdateBoundary, X
+	LDA zBGBuffer, X
 	AND #$0F
 	BNE loc_BANK0_85C2
 
-	LDA byte_RAM_C
+	LDA z0c
 	AND #$F0
 	ADC #$09
 	JMP loc_BANK0_85C4
@@ -1160,31 +1160,31 @@ loc_BANK0_85B1:
 ; ---------------------------------------------------------------------------
 
 loc_BANK0_85C2:
-	LDA byte_RAM_C
+	LDA z0c
 
 loc_BANK0_85C4:
-	STA BackgroundUpdateBoundary, X
+	STA zBGBuffer, X
 	DEX
 	BPL loc_BANK0_858F
 
-	LDA MoveCameraX
-	STA PPUScrollXMirror
-	STA ScreenBoundaryLeftLo
+	LDA zXVelocity
+	STA zPPUScrollX
+	STA iBoundLeftLower
 	AND #$F0
-	STA CurrentLevelPageX
-	LDA MoveCameraX
+	STA iCurrentLvlPageX
+	LDA zXVelocity
 	BPL loc_BANK0_85E7
 
-	DEC ScreenBoundaryLeftHi
-	LDA PPUScrollXHiMirror
+	DEC iBoundLeftUpper
+	LDA zXScrollPage
 	EOR #$01
-	STA PPUScrollXHiMirror
+	STA zXScrollPage
 	LDA #$01
-	STA PPUScrollCheckLo
+	STA iPPUBigScrollCheck + 1
 
 loc_BANK0_85E7:
 	LDA #$00
-	STA MoveCameraX
+	STA zXVelocity
 	RTS
 
 ; End of function sub_BANK0_856A
@@ -1201,74 +1201,74 @@ loc_BANK0_85E7:
 ApplyHorizontalScroll:
 	; Reset the PPU tile update flag
 	LDA #$00
-	STA HasScrollingPPUTilesUpdate
+	STA iScrollUpdateQueue
 
 	; Are we scrolling in more tiles?
-	LDA HorizontalScrollDirection
+	LDA iHorScrollDir
 	BEQ ApplyHorizontalScroll_CheckMoveCameraX
 
 	; Which direction?
-	LDA HorizontalScrollDirection
+	LDA iHorScrollDir
 	LSR A
 	BCS ApplyHorizontalScroll_Left
 
 ApplyHorizontalScroll_Right:
 	LDX #$02
-	STX byte_RAM_9
+	STX z09
 	LDA #$10
-	STA byte_RAM_1
+	STA z01
 	DEX
-	LDA HorizontalScrollDirection
-	STA NeedsScroll
+	LDA iHorScrollDir
+	STA zScrollArray
 	JSR CopyAttributesToHorizontalBuffer
 
-	LDA byte_RAM_3
-	STA BackgroundUpdateBoundaryForward
+	LDA z03
+	STA zBGBufferForward
 	LDA #$00
-	STA HorizontalScrollDirection
+	STA iHorScrollDir
 	BEQ ApplyHorizontalScroll_CheckMoveCameraX
 
 ApplyHorizontalScroll_Left:
 	LDX #$01
-	STX byte_RAM_9
+	STX z09
 	DEX
-	STX byte_RAM_1
-	LDA HorizontalScrollDirection
-	STA NeedsScroll
+	STX z01
+	LDA iHorScrollDir
+	STA zScrollArray
 	JSR CopyAttributesToHorizontalBuffer
 
 	LDA #$00
-	STA HorizontalScrollDirection
+	STA iHorScrollDir
 
 ApplyHorizontalScroll_CheckMoveCameraX:
-	LDA MoveCameraX
+	LDA zXVelocity
 	BNE ApplyMoveCameraX
 
 	RTS
 
 
 ApplyMoveCameraX:
-	LDA MoveCameraX
+	LDA zXVelocity
 	BPL ApplyMoveCameraX_Right
 
 ApplyMoveCameraX_ScrollLeft:
 	LDA #$01
-	STA NeedsScroll
+	STA zScrollArray
 
 	; Weird `JMP`, but okay...
 	JMP ApplyMoveCameraX_Left
 
 ApplyMoveCameraX_Right:
 	LDA #$02
-	STA NeedsScroll
+	STA zScrollArray
 
-	LDX MoveCameraX
+	LDX zXVelocity
 ApplyMoveCameraX_Right_Loop:
-	LDA PPUScrollXMirror
+	LDA zPPUScrollX
 	BNE loc_BANK0_8651
 
-	LDA ScreenBoundaryLeftHi
-	CMP CurrentLevelPages
+	LDA iBoundLeftUpper
+	CMP iCurrentLvlPages
 	BNE loc_BANK0_8651
 
 	; Can't scroll past beyond the last page of the area
@@ -1278,40 +1278,40 @@ ApplyMoveCameraX_Right_Loop:
 ; practice it only ends up being like 3 iterations at most.
 ApplyMoveCameraX_Right_AddPixel:
 loc_BANK0_8651:
-	LDA PPUScrollXMirror
+	LDA zPPUScrollX
 	CLC
 	ADC #$01
-	STA PPUScrollXMirror
-	STA ScreenBoundaryLeftLo
+	STA zPPUScrollX
+	STA iBoundLeftLower
 	BCC loc_BANK0_8669
 
-	INC ScreenBoundaryLeftHi
-	LDA PPUScrollXHiMirror
+	INC iBoundLeftUpper
+	LDA zXScrollPage
 	EOR #$01
-	STA PPUScrollXHiMirror
+	STA zXScrollPage
 	ASL A
-	STA PPUScrollYHiMirror
+	STA zYScrollPage
 
 loc_BANK0_8669:
-	LDA ScreenBoundaryLeftHi
-	CMP CurrentLevelPages
+	LDA iBoundLeftUpper
+	CMP iCurrentLvlPages
 	BEQ loc_BANK0_8685
 
-	LDA PPUScrollXMirror
+	LDA zPPUScrollX
 	AND #$F0
-	CMP CurrentLevelPageX
+	CMP iCurrentLvlPageX
 	BEQ ApplyMoveCameraX_Right_Next
 
-	STA CurrentLevelPageX
+	STA iCurrentLvlPageX
 	LDA #$01
-	STA HasScrollingPPUTilesUpdate
+	STA iScrollUpdateQueue
 
 ApplyMoveCameraX_Right_Next:
 	DEX
 	BNE ApplyMoveCameraX_Right_Loop
 
 loc_BANK0_8685:
-	LDA HasScrollingPPUTilesUpdate
+	LDA iScrollUpdateQueue
 	BEQ ApplyMoveCameraX_Exit
 
 	LDX #$02
@@ -1328,47 +1328,47 @@ loc_BANK0_868C:
 
 
 ApplyMoveCameraX_Left:
-	LDX MoveCameraX
+	LDX zXVelocity
 ApplyMoveCameraX_Left_Loop:
-	LDA PPUScrollXMirror
+	LDA zPPUScrollX
 	BNE loc_BANK0_86A8
 
-	LDA ScreenBoundaryLeftHi
+	LDA iBoundLeftUpper
 	BNE loc_BANK0_86A8
 
 	; Can't scroll past beyond the first page of the area
 	JMP ApplyMoveCameraX_Exit
 
 loc_BANK0_86A8:
-	LDA PPUScrollXMirror
+	LDA zPPUScrollX
 	SEC
 	SBC #$01
-	STA PPUScrollXMirror
-	STA ScreenBoundaryLeftLo
+	STA zPPUScrollX
+	STA iBoundLeftLower
 	BCS loc_BANK0_86C0
 
-	DEC ScreenBoundaryLeftHi
-	LDA PPUScrollXHiMirror
+	DEC iBoundLeftUpper
+	LDA zXScrollPage
 	EOR #$01
-	STA PPUScrollXHiMirror
+	STA zXScrollPage
 	ASL A
-	STA PPUScrollYHiMirror
+	STA zYScrollPage
 
 loc_BANK0_86C0:
-	LDA PPUScrollXMirror
+	LDA zPPUScrollX
 	AND #$F0
-	CMP CurrentLevelPageX
+	CMP iCurrentLvlPageX
 	BEQ loc_BANK0_86D1
 
-	STA CurrentLevelPageX
+	STA iCurrentLvlPageX
 	LDA #$01
-	STA HasScrollingPPUTilesUpdate
+	STA iScrollUpdateQueue
 
 loc_BANK0_86D1:
 	INX
 	BNE ApplyMoveCameraX_Left_Loop
 
-	LDA HasScrollingPPUTilesUpdate
+	LDA iScrollUpdateQueue
 	BEQ ApplyMoveCameraX_Exit
 
 	LDX #$02
@@ -1386,7 +1386,7 @@ loc_BANK0_86E6:
 
 ApplyMoveCameraX_Exit:
 	LDA #$00
-	STA NeedsScroll
+	STA zScrollArray
 	RTS
 
 
@@ -1398,9 +1398,9 @@ ApplyMoveCameraX_Exit:
 ; - `Y`: 0 = vertical, 1 = horizontal
 ;
 ; ##### Output
-; - `PPUScrollYHiMirror`
-; - `PPUScrollXHiMirror`
-; - `PPUScrollCheckHi`: PPU scroll offset high byte
+; - `zYScrollPage`
+; - `zXScrollPage`
+; - `iPPUBigScrollCheck`: PPU scroll offset high byte
 ;
 ResetPPUScrollHi:
 	LSR A
@@ -1408,20 +1408,20 @@ ResetPPUScrollHi:
 
 ResetPPUScrollHi_NametableA:
 	LDA #$01
-	STA PPUScrollXHiMirror
+	STA zXScrollPage
 	ASL A
-	STA PPUScrollYHiMirror
+	STA zYScrollPage
 	LDA #$20
 	BNE ResetPPUScrollHi_Exit
 
 ResetPPUScrollHi_NametableB:
 	LDA #$00
-	STA PPUScrollXHiMirror
-	STA PPUScrollYHiMirror
+	STA zXScrollPage
+	STA zYScrollPage
 	LDA PPUScrollHiOffsets, Y
 
 ResetPPUScrollHi_Exit:
-	STA PPUScrollCheckHi
+	STA iPPUBigScrollCheck
 	RTS
 
 
@@ -1444,62 +1444,62 @@ SubAreaPage:
 
 ; Stash the PPU scrolling data from the main area and rest it for the subarea
 UseSubareaScreenBoundaries:
-	LDA PPUScrollXMirror
-	STA PPUScrollXMirror_Backup
-	LDA PPUScrollXHiMirror
-	STA PPUScrollXHiMirror_Backup
-	LDA ScreenBoundaryLeftHi
-	STA ScreenBoundaryLeftHi_Backup
-	INC byte_RAM_53D
+	LDA zPPUScrollX
+	STA iPPUScrollX
+	LDA zXScrollPage
+	STA iXScrollPage
+	LDA iBoundLeftUpper
+	STA iBoundLeftUpper_Backup
+	INC i53d
 	LDA SubAreaPage
-	STA CurrentLevelEntryPage
+	STA iCurrentLvlEntryPage
 	JSR ResetPPUScrollHi
 
 	LDA #$00
-	STA PPUScrollXMirror
-	STA ScreenBoundaryLeftLo
+	STA zPPUScrollX
+	STA iBoundLeftLower
 	LDA SubAreaPage
-	STA ScreenBoundaryLeftHi
+	STA iBoundLeftUpper
 
 	JSR ApplyAreaTransition
 
 	LDA SubAreaPage
-	STA BackgroundUpdateBoundary
+	STA zBGBuffer
 	LDA #$E0
-	STA PPUScrollCheckHi
+	STA iPPUBigScrollCheck
 	LDA SubAreaPage
 	CLC
 	ADC #$F0
-	STA byte_RAM_505
+	STA i505
 	RTS
 
 
 ; Restore the PPU scrolling data for the main area
 UseMainAreaScreenBoundaries:
-	LDA PPUScrollXMirror_Backup
-	STA PPUScrollXMirror
-	STA ScreenBoundaryLeftLo
-	LDA PPUScrollXHiMirror_Backup
-	STA PPUScrollXHiMirror
-	LDA ScreenBoundaryLeftHi_Backup
-	STA ScreenBoundaryLeftHi
-	LDA byte_RAM_53D
+	LDA iPPUScrollX
+	STA zPPUScrollX
+	STA iBoundLeftLower
+	LDA iXScrollPage
+	STA zXScrollPage
+	LDA iBoundLeftUpper_Backup
+	STA iBoundLeftUpper
+	LDA i53d
 	BNE UseMainAreaScreenBoundaries_Exit
 
-	INC byte_RAM_53E
-	INC byte_RAM_53D
-	INC byte_RAM_D5
+	INC i53e
+	INC i53d
+	INC zd5
 	JSR RestorePlayerPosition
 
-	LDA BackgroundUpdateBoundaryBackward
-	STA BackgroundUpdateBoundary
+	LDA zBGBufferBackward
+	STA zBGBuffer
 	LDA #$10
-	STA byte_RAM_1
+	STA z01
 	LDA #$F0
-	STA PPUScrollCheckHi
-	STA PPUScrollCheckLo
-	LDA BackgroundUpdateBoundaryForward
-	STA byte_RAM_505
+	STA iPPUBigScrollCheck
+	STA iPPUBigScrollCheck + 1
+	LDA zBGBufferForward
+	STA i505
 
 UseMainAreaScreenBoundaries_Exit:
 	RTS
@@ -1507,14 +1507,14 @@ UseMainAreaScreenBoundaries_Exit:
 
 ; Used for redrawing the screen in a horizontal area after unpausing
 sub_BANK0_8785:
-	LDA BackgroundUpdateBoundaryBackward
-	STA BackgroundUpdateBoundary
+	LDA zBGBufferBackward
+	STA zBGBuffer
 	LDA #$10
-	STA byte_RAM_1
+	STA z01
 	LDA #$F0
-	STA PPUScrollCheckHi
-	STA PPUScrollCheckLo
-	LDA BackgroundUpdateBoundaryForward
+	STA iPPUBigScrollCheck
+	STA iPPUBigScrollCheck + 1
+	LDA zBGBufferForward
 	CLC
 	ADC #$10
 	ADC #$00
@@ -1524,45 +1524,45 @@ sub_BANK0_8785:
 	LDA #$00
 
 loc_BANK0_87A2:
-	STA byte_RAM_505
+	STA i505
 	LDA #$01
-	STA byte_RAM_6
+	STA z06
 	RTS
 
 ; Used for redrawing the background tiles in a horizontal area
 sub_BANK0_87AA:
 	LDX #$00
-	STX byte_RAM_537
-	STX HasScrollingPPUTilesUpdate
-	STX NeedsScroll
+	STX i537
+	STX iScrollUpdateQueue
+	STX zScrollArray
 
 	JSR PrepareBackgroundDrawing_Horizontal
 
 	JSR CopyBackgroundToPPUBuffer_Horizontal
 
-	LDA PPUScrollCheckHi
-	CMP DrawBackgroundTilesPPUAddrHi
+	LDA iPPUBigScrollCheck
+	CMP zBigPPUDrawer
 	BNE loc_BANK0_87DA
 
-	LDA PPUScrollCheckLo
+	LDA iPPUBigScrollCheck + 1
 	CLC
 	ADC #$01
-	CMP DrawBackgroundTilesPPUAddrLo
+	CMP zBigPPUDrawer + 1
 	BNE loc_BANK0_87DA
 
 loc_BANK0_87CB:
 	LDA #$00
-	STA byte_RAM_53A
-	STA byte_RAM_53D
-	STA byte_RAM_53E
-	INC byte_RAM_537
+	STA i53a
+	STA i53d
+	STA i53e
+	INC i537
 	RTS
 
 ; ---------------------------------------------------------------------------
 
 loc_BANK0_87DA:
-	LDA BackgroundUpdateBoundary
-	CMP byte_RAM_505
+	LDA zBGBuffer
+	CMP i505
 	BEQ loc_BANK0_87CB
 
 	LDX #$00
@@ -1573,21 +1573,21 @@ loc_BANK0_87DA:
 ;
 DecrementHorizontalScrollColumn:
 	; Decrement the column offset
-	LDA BackgroundUpdateBoundary, X
+	LDA zBGBuffer, X
 	SEC
 	SBC #$10
-	STA BackgroundUpdateBoundary, X
+	STA zBGBuffer, X
 	BCS DecrementHorizontalScrollColumn_Exit
 
 	; Decrement the page
-	DEC BackgroundUpdateBoundary, X
-	LDA BackgroundUpdateBoundary, X
+	DEC zBGBuffer, X
+	LDA zBGBuffer, X
 	CMP #$EF
 	BNE DecrementHorizontalScrollColumn_Exit
 
 	; Wrap around to the last column of the last page
 	LDA #$F9
-	STA BackgroundUpdateBoundary, X
+	STA zBGBuffer, X
 
 DecrementHorizontalScrollColumn_Exit:
 	RTS
@@ -1598,21 +1598,21 @@ DecrementHorizontalScrollColumn_Exit:
 ;
 IncrementHorizontalScrollColumn:
 	; Increment the column offset
-	LDA BackgroundUpdateBoundary, X
+	LDA zBGBuffer, X
 	CLC
 	ADC #$10
-	STA BackgroundUpdateBoundary, X
+	STA zBGBuffer, X
 	BCC IncrementHorizontalScrollColumn_Exit
 
 	; Increment the page
-	INC BackgroundUpdateBoundary, X
-	LDA BackgroundUpdateBoundary, X
+	INC zBGBuffer, X
+	LDA zBGBuffer, X
 	CMP #$0A
 	BNE IncrementHorizontalScrollColumn_Exit
 
 	; Wrap around to the first page
 	LDA #$00
-	STA BackgroundUpdateBoundary, X
+	STA zBGBuffer, X
 
 IncrementHorizontalScrollColumn_Exit:
 	RTS
@@ -1623,52 +1623,52 @@ IncrementHorizontalScrollColumn_Exit:
 ; screen and where to draw them for horizontal areas.
 ;
 ; ##### Input
-; - `BackgroundUpdateBoundary`: drawing boundary table
+; - `zBGBuffer`: drawing boundary table
 ; - `X`: drawing boundary index (`$00` = full, `$01` = left, `$02` = right)
 ;
 ; ##### Output
-; - `ReadLevelDataAddress`: decoded level data address
-; - `ReadLevelDataOffset`: level data offset
-; - `DrawBackgroundTilesPPUAddrHi`/`DrawBackgroundTilesPPUAddrLo`: PPU start address
+; - `zLevelDataPointer`: decoded level data address
+; - `zLevelDataOffset`: level data offset
+; - `zBigPPUDrawer`: PPU start address
 ;
 PrepareBackgroundDrawing_Horizontal:
 	; Stash Y so we can restore it later
-	STY byte_RAM_F
+	STY z0f
 
 	; Lower nybble is used for page
-	LDA BackgroundUpdateBoundary, X
+	LDA zBGBuffer, X
 	AND #$0F
 	TAY
 	; Get the address of the decoded level data
 	LDA DecodedLevelPageStartLo_Bank1, Y
-	STA ReadLevelDataAddress
+	STA zLevelDataPointer
 	LDA DecodedLevelPageStartHi_Bank1, Y
-	STA ReadLevelDataAddress + 1
+	STA zLevelDataPointer + 1
 
 	; Upper nybble is used for the tile offset (columns)
-	LDA BackgroundUpdateBoundary, X
+	LDA zBGBuffer, X
 	LSR A
 	LSR A
 	LSR A
 	LSR A
-	STA ReadLevelDataOffset
+	STA zLevelDataOffset
 
 	; Determine where on the screen we should draw the tile
 	ASL A
-	STA DrawBackgroundTilesPPUAddrLo
+	STA zBigPPUDrawer + 1
 
 	LDY #$20
-	LDA BackgroundUpdateBoundary, X
+	LDA zBGBuffer, X
 	LSR A
 	BCS PrepareBackgroundDrawing_Horizontal_Exit
 
 	LDY #$24
 
 PrepareBackgroundDrawing_Horizontal_Exit:
-	STY DrawBackgroundTilesPPUAddrHi
+	STY zBigPPUDrawer
 
 	; Restore original Y value
-	LDY byte_RAM_F
+	LDY z0f
 
 	RTS
 
@@ -1677,38 +1677,38 @@ PrepareBackgroundDrawing_Horizontal_Exit:
 ; horizontal
 ;
 sub_BANK0_883C:
-	STX byte_RAM_8
-	LDX byte_RAM_9
+	STX z08
+	LDX z09
 	LDY #$02
-	LDA BackgroundUpdateBoundary, X
-	STA byte_RAM_3
+	LDA zBGBuffer, X
+	STA z03
 	SEC
-	SBC byte_RAM_1
-	STA BackgroundUpdateBoundary, X
+	SBC z01
+	STA zBGBuffer, X
 
 	JSR PrepareBackgroundDrawing_Horizontal
 
 	LDA #$07
-	STA PPUAttributeUpdateCounter
+	STA zAttrUpdateIndex
 	LDA #$00
-	STA CopyBackgroundCounter
+	STA zBGBufferSize
 
 loc_BANK0_8856:
 	JSR sub_BANK0_8925
 
-	LDA PPUAttributeUpdateCounter
+	LDA zAttrUpdateIndex
 	BPL loc_BANK0_8856
 
-	LDA DrawBackgroundTilesPPUAddrLo
+	LDA zBigPPUDrawer + 1
 	AND #$1C
 	LSR A
 	LSR A
 	ORA #$C0
-	STA DrawBackgroundAttributesPPUAddrLo
-	LDA DrawBackgroundTilesPPUAddrHi
+	STA iBigDrawerAttrPointer + 1
+	LDA zBigPPUDrawer
 	ORA #$03
-	STA DrawBackgroundAttributesPPUAddrHi
-	LDX byte_RAM_8
+	STA iBigDrawerAttrPointer
+	LDX z08
 	RTS
 
 
@@ -1717,16 +1717,16 @@ loc_BANK0_8856:
 ;
 CopyBackgroundToPPUBuffer_Horizontal:
 	LDA #$0F
-	STA PPUAttributeUpdateCounter
+	STA zAttrUpdateIndex
 
 	LDA #$00
-	STA CopyBackgroundCounter
-	STA byte_RAM_D5
+	STA zBGBufferSize
+	STA zd5
 	TAX
 CopyBackgroundToPPUBuffer_Horizontal_Loop:
-	LDY ReadLevelDataOffset
-	LDA (ReadLevelDataAddress), Y
-	STA DrawTileId
+	LDY zLevelDataOffset
+	LDA (zLevelDataPointer), Y
+	STA iTileID
 	AND #%11000000
 	ASL A
 	ROL A
@@ -1734,82 +1734,82 @@ CopyBackgroundToPPUBuffer_Horizontal_Loop:
 	TAY
 	; Get the tile quad pointer
 	LDA TileQuadPointersLo, Y
-	STA byte_RAM_0
+	STA z00
 	LDA TileQuadPointersHi, Y
-	STA byte_RAM_1
+	STA z01
 
-	LDY ReadLevelDataOffset
-	LDA (ReadLevelDataAddress), Y
+	LDY zLevelDataOffset
+	LDA (zLevelDataPointer), Y
 	ASL A
 	ASL A
 	TAY
-	LDA byte_RAM_D5
+	LDA zd5
 	BEQ loc_BANK0_88A0
 
 	INY
 
 loc_BANK0_88A0:
-	LDA (byte_RAM_0), Y
-	STA ScrollingPPUTileUpdateBuffer, X
+	LDA (z00), Y
+	STA iScrollTileBuffer, X
 	INY
-	LDA (byte_RAM_0), Y
-	STA ScrollingPPUTileUpdateBuffer + $1E, X
+	LDA (z00), Y
+	STA iScrollTileBuffer + $1E, X
 	INY
-	LDA (byte_RAM_0), Y
-	STA ScrollingPPUTileUpdateBuffer + $01, X
+	LDA (z00), Y
+	STA iScrollTileBuffer + $01, X
 	INY
-	LDA (byte_RAM_0), Y
-	STA ScrollingPPUTileUpdateBuffer + $1F, X
-	INC CopyBackgroundCounter
+	LDA (z00), Y
+	STA iScrollTileBuffer + $1F, X
+	INC zBGBufferSize
 	INX
 	INX
-	LDA ReadLevelDataOffset
+	LDA zLevelDataOffset
 	CLC
 	ADC #$10
-	STA ReadLevelDataOffset
-	LDA CopyBackgroundCounter
+	STA zLevelDataOffset
+	LDA zBGBufferSize
 	CMP #$0F
 	BCC CopyBackgroundToPPUBuffer_Horizontal_Loop
 
 	LDA #$00
-	STA DrawBackgroundAttributesPPUAddrHi
-	LDA NeedsScroll
+	STA iBigDrawerAttrPointer
+	LDA zScrollArray
 	LSR A
 	BCS loc_BANK0_88F2
 
 ; down
-	LDA DrawBackgroundTilesPPUAddrLo
+	LDA zBigPPUDrawer + 1
 	AND #$02
 	BEQ loc_BANK0_88FD
 
-	LDA NeedsScroll
+	LDA zScrollArray
 	BNE loc_BANK0_88F8
 
 	LDA #$10
-	STA byte_RAM_1
+	STA z01
 	LDX #$00
-	STX byte_RAM_9
+	STX z09
 	INX
 	JSR CopyAttributesToHorizontalBuffer
 
-	LDA byte_RAM_3
-	STA BackgroundUpdateBoundary
+	LDA z03
+	STA zBGBuffer
 	JSR PrepareBackgroundDrawing_Horizontal
 
 	JMP loc_BANK0_88FD
 
 ; up
 loc_BANK0_88F2:
-	LDA DrawBackgroundTilesPPUAddrLo
+	LDA zBigPPUDrawer + 1
 	AND #$02
 	BNE loc_BANK0_88FD
 
 loc_BANK0_88F8:
-	LDA NeedsScroll
-	STA HorizontalScrollDirection
+	LDA zScrollArray
+	STA iHorScrollDir
 
 loc_BANK0_88FD:
-	INC HasScrollingPPUTilesUpdate
+	INC iScrollUpdateQueue
 	RTS
 
 
@@ -1826,22 +1826,22 @@ CopyAttributesToHorizontalBuffer:
 	JSR sub_BANK0_883C
 
 	LDX #$07
-	STX byte_RAM_E
+	STX z0e
 	LDY #$00
 CopyAttributesToHorizontalBuffer_Loop:
-	LDX byte_RAM_E
-	LDA ScrollingPPUAttributeUpdateBuffer, X
-	STA HorizontalScrollingPPUAttributeUpdateBuffer, Y
+	LDX z0e
+	LDA zScrollBuffer, X
+	STA iHorScrollBuffer, Y
 	INY
 	DEX
 	DEX
 	DEX
 	DEX
-	LDA ScrollingPPUAttributeUpdateBuffer, X
-	STA HorizontalScrollingPPUAttributeUpdateBuffer, Y
+	LDA zScrollBuffer, X
+	STA iHorScrollBuffer, Y
 	INY
-	DEC byte_RAM_E
-	LDA byte_RAM_E
+	DEC z0e
+	LDA z0e
 	CMP #03
 	BNE CopyAttributesToHorizontalBuffer_Loop
 
@@ -1853,40 +1853,40 @@ CopyAttributesToHorizontalBuffer_Loop:
 ; Reads a group of four background tiles to determine the PPU attribute data
 ;
 sub_BANK0_8925:
-	STY byte_RAM_F
+	STY z0f
 	LDA #01
-	STA byte_RAM_4
-	LDY ReadLevelDataOffset
-	LDX PPUAttributeUpdateCounter
+	STA z04
+	LDY zLevelDataOffset
+	LDX zAttrUpdateIndex
 
 loc_BANK0_892F:
-	LDA ScrollingPPUAttributeUpdateBuffer, X
+	LDA zScrollBuffer, X
 	LSR A
 	LSR A
-	STA ScrollingPPUAttributeUpdateBuffer, X
-	LDA (ReadLevelDataAddress), Y
+	STA zScrollBuffer, X
+	LDA (zLevelDataPointer), Y
 	AND #%11000000
-	ORA ScrollingPPUAttributeUpdateBuffer, X
-	STA ScrollingPPUAttributeUpdateBuffer, X
+	ORA zScrollBuffer, X
+	STA zScrollBuffer, X
 	INY
-	LDA ScrollingPPUAttributeUpdateBuffer, X
+	LDA zScrollBuffer, X
 	LSR A
 	LSR A
-	STA ScrollingPPUAttributeUpdateBuffer, X
-	LDA (ReadLevelDataAddress), Y
+	STA zScrollBuffer, X
+	LDA (zLevelDataPointer), Y
 	AND #%11000000
-	ORA ScrollingPPUAttributeUpdateBuffer, X
-	STA ScrollingPPUAttributeUpdateBuffer, X
-	LDA ReadLevelDataOffset
+	ORA zScrollBuffer, X
+	STA zScrollBuffer, X
+	LDA zLevelDataOffset
 	CLC
 	ADC #$10
 	TAY
-	STA ReadLevelDataOffset
-	DEC byte_RAM_4
+	STA zLevelDataOffset
+	DEC z04
 	BPL loc_BANK0_892F
 
-	DEC PPUAttributeUpdateCounter
-	LDY byte_RAM_F
+	DEC zAttrUpdateIndex
+	LDY z0f
 	RTS
 
 
@@ -1894,7 +1894,7 @@ SetObjectLocks:
 	LDX #$07
 
 SetObjectLocks_Loop:
-	STA ObjectLock - 1, X
+	STA iObjectLock - 1, X
 	DEX
 	BPL SetObjectLocks_Loop
 
@@ -1912,33 +1912,29 @@ GrowShrinkSFXIndexes:
 
 
 HandlePlayerState:
-IFDEF CONTROLLER_2_DEBUG
-	JSR CheckPlayer2Joypad
-ENDIF
-
-	LDA PlayerState ; Handles player states?
+	LDA zPlayerState ; Handles player states?
 	CMP #PlayerState_Lifting
 	BCS loc_BANK0_8A26 ; If the player is changing size, just handle that
 
 	LDA #$00 ; Check if the player needs to change size
 	LDY #$10
-	CPY PlayerHealth
+	CPY iPlayerHP
 	ROL A
-	EOR PlayerCurrentSize
+	EOR iCurrentPlayerSize
 	BEQ loc_BANK0_8A26
 
-	LDY PlayerCurrentSize
+	LDY iCurrentPlayerSize
 	LDA GrowShrinkSFXIndexes, Y
-	STA SoundEffectQueue2
+	STA iPulse1SFX
 	LDA #$1E
-	STA PlayerStateTimer
+	STA zPlayerStateTimer
 	LDA #PlayerState_ChangingSize
-	STA PlayerState
+	STA zPlayerState
 
 loc_BANK0_8A26:
 	LDA #ObjAttrib_Palette0
-	STA PlayerAttributes
-	LDA PlayerState
+	STA zPlayerAttributes
+	LDA zPlayerState
 	JSR JumpToTableAfterJump ; Player state handling?
 
 	.dw HandlePlayerState_Normal ; Normal
@@ -1974,10 +1970,10 @@ ApplyPlayerPhysicsX:
 	LDX #$00
 	JSR ApplyPlayerPhysics
 
-	LDA IsHorizontalLevel
+	LDA zScrollCondition
 	BNE ApplyPlayerPhysicsX_Exit
 
-	STA PlayerXHi
+	STA zPlayerXHi
 
 ApplyPlayerPhysicsX_Exit:
 	RTS
@@ -1987,40 +1983,40 @@ ApplyPlayerPhysicsX_Exit:
 ; What goes up must come down
 ;
 HandlePlayerState_Dying:
-	LDA PlayerStateTimer
+	LDA zPlayerStateTimer
 	BNE locret_BANK0_8A86
 
-	LDA PlayerScreenYHi
+	LDA iPlayerScreenYPage
 	CMP #02
 	BEQ LoseALife
 
 	JSR ApplyPlayerPhysicsY
 
-	LDA PlayerYVelocity
+	LDA zPlayerYVelocity
 	BMI loc_BANK0_8A72
 
 	CMP #$39
 	BCS locret_BANK0_8A86
 
 loc_BANK0_8A72:
-	INC PlayerYVelocity
-	INC PlayerYVelocity
+	INC zPlayerYVelocity
+	INC zPlayerYVelocity
 	RTS
 
 ; ---------------------------------------------------------------------------
 
 LoseALife:
 	LDA #02
-	STA PlayerAnimationFrame
+	STA zPlayerAnimFrame
 	LDY #$01 ; Set game mode to title card
-	DEC ExtraLives
+	DEC iExtraMen
 	BNE SetGameModeAfterDeath
 
 	INY ; If no lives, increase game mode
 ; from 1 (title card) to 2 (game over)
 
 SetGameModeAfterDeath:
-	STY GameMode
+	STY iGameMode
 
 locret_BANK0_8A86:
 	RTS
@@ -2028,11 +2024,11 @@ locret_BANK0_8A86:
 ; ---------------------------------------------------------------------------
 
 HandlePlayerState_Lifting:
-	LDA PlayerStateTimer
+	LDA zPlayerStateTimer
 	BNE locret_BANK0_8AC1
 
-	LDX ObjectBeingCarriedIndex
-	LDY ObjectBeingCarriedTimer, X
+	LDX iHeldItemIndex
+	LDY zHeldObjectTimer, X
 	CPY #$02
 	BCC loc_BANK0_8ABB
 
@@ -2040,17 +2036,17 @@ HandlePlayerState_Lifting:
 	BNE loc_BANK0_8A9D
 
 	LDA #DPCM_ItemPull
-	STA DPCMQueue
+	STA iDPCMSFX
 
 loc_BANK0_8A9D:
-	DEC ObjectBeingCarriedTimer, X
+	DEC zHeldObjectTimer, X
 	LDA PlayerLiftFrames, Y
-	STA PlayerAnimationFrame
-	LDA EnemyState, X
+	STA zPlayerAnimFrame
+	LDA zEnemyState, X
 	CMP #$06
 	BEQ loc_BANK0_8AB0
 
-	LDA ObjectType, X
+	LDA zObjectType, X
 	CMP #Enemy_VegetableSmall
 	BNE loc_BANK0_8AB5
 
@@ -2059,24 +2055,20 @@ loc_BANK0_8AB0:
 	BPL loc_BANK0_8AB8
 
 loc_BANK0_8AB5:
-	LDA PickupSpeedAnimation - 2, Y
+	LDA iPickupSpeed - 2, Y
 
 loc_BANK0_8AB8:
-	STA PlayerStateTimer
+	STA zPlayerStateTimer
 	RTS
 
 ; ---------------------------------------------------------------------------
 
 loc_BANK0_8ABB:
-	STA PlayerState
-	INC PlayerInAir
+	STA zPlayerState
+	INC zPlayerGrounding
 
 loc_BANK0_8ABF:
-	INC PlayerDucking
-IFDEF PLAYER_HITBOX
-	LDA PlayerDucking
-	STA PlayerHitbox
-ENDIF
+	INC zPlayerHitBoxHeight
 
 locret_BANK0_8AC1:
 	RTS
@@ -2105,7 +2097,7 @@ byte_BANK0_8ACE:
 ; ---------------------------------------------------------------------------
 
 HandlePlayerState_Climbing:
-	LDA Player1JoypadHeld
+	LDA zInputCurrentState
 	AND #ControllerInput_Down | ControllerInput_Up
 	LSR A
 	LSR A
@@ -2117,13 +2109,13 @@ HandlePlayerState_Climbing:
 
 loc_BANK0_8ADF:
 	LDA ClimbSpeed, Y
-	STA PlayerYVelocity
-	LDA Player1JoypadHeld
+	STA zPlayerYVelocity
+	LDA zInputCurrentState
 	AND #ControllerInput_Right | ControllerInput_Left
 	TAY
 	LDA byte_BANK0_8ACE, Y
-	STA PlayerXVelocity
-	LDA PlayerXLo
+	STA zPlayerXVelocity
+	LDA zPlayerXLo
 	CLC
 	ADC #$04
 	AND #$0F
@@ -2131,7 +2123,7 @@ loc_BANK0_8ADF:
 	BCS loc_BANK0_8B14
 
 	LDY TileCollisionHitboxIndex + $0B
-	LDA PlayerYVelocity
+	LDA zPlayerYVelocity
 	BMI loc_BANK0_8B01
 
 	INY
@@ -2143,10 +2135,10 @@ loc_BANK0_8B01:
 	BCS loc_BANK0_8B0E
 
 loc_BANK0_8B08:
-	LDA PlayerYVelocity
+	LDA zPlayerYVelocity
 	BPL loc_BANK0_8B14
 
-	STX PlayerYVelocity
+	STX zPlayerYVelocity
 
 loc_BANK0_8B0E:
 	JSR ApplyPlayerPhysicsX
@@ -2157,7 +2149,7 @@ loc_BANK0_8B0E:
 
 loc_BANK0_8B14:
 	LDA #$00
-	STA PlayerState
+	STA zPlayerState
 	RTS
 
 
@@ -2165,15 +2157,15 @@ loc_BANK0_8B14:
 ; Does climbing animation and sound
 ;
 PlayerClimbAnimation:
-	LDA byte_RAM_10
+	LDA z10
 	AND #$07
 	BNE PlayerClimbAnimation_Exit
 
-	LDA PlayerDirection
+	LDA zPlayerFacing
 	EOR #$01
-	STA PlayerDirection
+	STA zPlayerFacing
 	LDA #SoundEffect2_Climbing
-	STA SoundEffectQueue2
+	STA iPulse1SFX
 
 PlayerClimbAnimation_Exit:
 	RTS
@@ -2196,14 +2188,14 @@ ClimbableTiles:
 ; Checks whether the player is on a climbable tile
 ;
 ; Input
-;   byte_RAM_0 = tile ID
+;   z00 = tile ID
 ; Output
 ;   C = set if the player is on a climbable tile
 ;
 PlayerTileCollision_CheckClimbable:
 	JSR sub_BANK0_924F
 
-	LDA byte_RAM_0
+	LDA z00
 	LDY #$09
 
 PlayerTileCollision_CheckClimbable_Loop:
@@ -2221,13 +2213,13 @@ PlayerTileCollision_CheckClimbable_Exit:
 
 HandlePlayerState_GoingDownJar:
 	LDA #ObjAttrib_BehindBackground
-	STA PlayerAttributes
-	INC PlayerYLo
-	LDA PlayerYLo
+	STA zPlayerAttributes
+	INC zPlayerYLo
+	LDA zPlayerYLo
 	AND #$0F
 	BNE HandlePlayerState_GoingDownJar_Exit
 
-	STA PlayerState
+	STA zPlayerState
 	JSR DoAreaReset
 
 	PLA
@@ -2235,23 +2227,23 @@ HandlePlayerState_GoingDownJar:
 	JSR StashPlayerPosition_Bank0
 
 	LDA #TransitionType_Jar
-	STA TransitionType
-	LDA InJarType
+	STA iTransitionType
+	LDA iInJarType
 	BNE HandlePlayerState_GoingDownJar_NonWarp
 
 	LDA #GameMode_Warp
-	STA GameMode
+	STA iGameMode
 	RTS
 
 HandlePlayerState_GoingDownJar_NonWarp:
 	CMP #$01
 	BEQ HandlePlayerState_GoingDownJar_Regular
 
-	STA DoAreaTransition
+	STA iAreaTransitionID
 	RTS
 
 HandlePlayerState_GoingDownJar_Regular:
-	STA InSubspaceOrJar
+	STA iSubAreaFlags
 
 HandlePlayerState_GoingDownJar_Exit:
 	RTS
@@ -2259,13 +2251,13 @@ HandlePlayerState_GoingDownJar_Exit:
 
 HandlePlayerState_ExitingJar:
 	LDA #ObjAttrib_BehindBackground
-	STA PlayerAttributes
-	DEC PlayerYLo
-	LDA PlayerYLo
+	STA zPlayerAttributes
+	DEC zPlayerYLo
+	LDA zPlayerYLo
 	AND #$0F
 	BNE locret_BANK0_8B86
 
-	STA PlayerState
+	STA zPlayerState
 
 locret_BANK0_8B86:
 	RTS
@@ -2288,7 +2280,7 @@ ClimbTransitionYEnterPositionLo:
 
 HandlePlayerState_ClimbingAreaTransition:
 	; Determine the climbing direction from the y-velocity ($00 = down, $00 = up)
-	LDA PlayerYVelocity
+	LDA zPlayerYVelocity
 	ASL A
 	ROL A
 	AND #$01
@@ -2296,28 +2288,28 @@ HandlePlayerState_ClimbingAreaTransition:
 
 HandlePlayerState_CheckExitPosition:
 	; Determine whether the player screen y-position matches the table entry
-	LDA PlayerScreenYHi
+	LDA iPlayerScreenYPage
 	CMP ClimbTransitionYExitPositionHi, Y
 	BNE HandlePlayerState_CheckEnterPosition
 
-	LDA PlayerScreenYLo
+	LDA iPlayerScreenY
 	CMP ClimbTransitionYExitPositionLo, Y
 	BNE HandlePlayerState_CheckEnterPosition
 
 	; The position matches, so keep climbing and transition to the next area
 	JSR DoAreaReset
 
-	INC DoAreaTransition
+	INC iAreaTransitionID
 	LDA #TransitionType_Vine
-	STA TransitionType
+	STA iTransitionType
 	RTS
 
 HandlePlayerState_CheckEnterPosition:
-	LDA PlayerScreenYHi
+	LDA iPlayerScreenYPage
 	BNE HandlePlayerState_JustClimb
 
 	; Climbing until player reaches the desired position
-	LDA PlayerScreenYLo
+	LDA iPlayerScreenY
 	CMP ClimbTransitionYEnterPositionLo, Y
 	BEQ HandlePlayerState_SetClimbing
 
@@ -2333,27 +2325,27 @@ HandlePlayerState_JustClimb_Physics:
 
 HandlePlayerState_SetClimbing:
 	LDA #PlayerState_Climbing
-	STA PlayerState
+	STA zPlayerState
 	RTS
 
 
 
 HandlePlayerState_HawkmouthEating:
-	LDA PlayerStateTimer
+	LDA zPlayerStateTimer
 	BEQ loc_BANK0_8BE9
 
 	JSR ApplyPlayerPhysicsY
 
-	LDA_abs PlayerCollision
+	LDA_abs zPlayerCollision
 
 	BEQ locret_BANK0_8BEB
 
 	LDA #ObjAttrib_BehindBackground
-	STA PlayerAttributes
+	STA zPlayerAttributes
 	LDA #$04
-	STA PlayerXVelocity
+	STA zPlayerXVelocity
 	LDA #$01
-	STA PlayerDirection
+	STA zPlayerFacing
 
 loc_BANK0_8BE3:
 	JSR ApplyPlayerPhysicsX
@@ -2363,7 +2355,7 @@ loc_BANK0_8BE3:
 ; ---------------------------------------------------------------------------
 
 loc_BANK0_8BE9:
-	STA PlayerState
+	STA zPlayerState
 
 locret_BANK0_8BEB:
 	RTS
@@ -2379,19 +2371,19 @@ ChangingSizeKeyframes:
 
 
 HandlePlayerState_ChangingSize:
-	LDA PlayerStateTimer
+	LDA zPlayerStateTimer
 	BEQ loc_BANK0_8C0D
 
-	INC DamageInvulnTime
+	INC zDamageCooldown
 
 	LDY #$04
 HandlePlayerState_ChangingSize_Loop:
 	CMP ChangingSizeKeyframes, Y
 	BNE HandlePlayerState_ChangingSize_Next
 
-	LDA PlayerCurrentSize
+	LDA iCurrentPlayerSize
 	EOR #$01
-	STA PlayerCurrentSize
+	STA iCurrentPlayerSize
 	JMP LoadCharacterCHRBanks
 
 HandlePlayerState_ChangingSize_Next:
@@ -2403,14 +2395,14 @@ HandlePlayerState_ChangingSize_Next:
 ; ---------------------------------------------------------------------------
 
 loc_BANK0_8C0D:
-	LDY PlayerAnimationFrame
+	LDY zPlayerAnimFrame
 	CPY #$0A
 	BNE loc_BANK0_8C15
 
 	LDA #PlayerState_Climbing
 
 loc_BANK0_8C15:
-	STA PlayerState
+	STA zPlayerState
 	RTS
 
 ; ---------------------------------------------------------------------------
@@ -2425,91 +2417,83 @@ PlayerControlAcceleration:
 sub_BANK0_8C1A:
 	JSR PlayerWalkJumpAnim
 
-	LDA PlayerInAir
+	LDA zPlayerGrounding
 	BNE ResetPartialCrouchJumpTimer
 
-	LDA PlayerDucking
+	LDA zPlayerHitBoxHeight
 	BEQ loc_BANK0_8C2B
 
-	LDA PlayerStateTimer
+	LDA zPlayerStateTimer
 	BNE loc_BANK0_8C92
 
-	DEC PlayerDucking
-IFDEF PLAYER_HITBOX
-	LDA PlayerDucking
-	STA PlayerHitbox
-ENDIF
+	DEC zPlayerHitBoxHeight
 
 loc_BANK0_8C2B:
-	LDA Player1JoypadPress
+	LDA zInputBottleneck
 	BPL loc_BANK0_8C3D ; branch if not pressing A Button
 
-	INC PlayerInAir
+	INC zPlayerGrounding
 	LDA #SpriteAnimation_Jumping
-	STA PlayerAnimationFrame
+	STA zPlayerAnimFrame
 	JSR PlayerStartJump
 
 	LDA #SoundEffect2_Jump
-	STA SoundEffectQueue2
+	STA iPulse1SFX
 
 loc_BANK0_8C3D:
-	LDA PlayerRidingCarpet
+	LDA iIsRidingCarpet
 	BNE loc_BANK0_8C92
 
-	LDA QuicksandDepth
+	LDA iQuicksandDepth
 	BNE ResetPartialCrouchJumpTimer
 
-	LDA Player1JoypadHeld ; skip if down button is not pressed
+	LDA zInputCurrentState ; skip if down button is not pressed
 	AND #ControllerInput_Down
 	BEQ ResetPartialCrouchJumpTimer
 
-	INC PlayerDucking ; set ducking state?
-IFDEF PLAYER_HITBOX
-	LDA PlayerDucking
-	STA PlayerHitbox
-ENDIF
+	INC zPlayerHitBoxHeight ; set ducking state?
 	LDA #SpriteAnimation_Ducking ; set ducking animation
-	STA PlayerAnimationFrame
-	LDA PlayerInAir ; skip ahead if player is in air
+	STA zPlayerAnimFrame
+	LDA zPlayerGrounding ; skip ahead if player is in air
 	BNE ResetPartialCrouchJumpTimer
 
-	LDA CrouchJumpTimer ; check if crouch jump is charged
+	LDA iCrouchJumpTimer ; check if crouch jump is charged
 	CMP #$3C
 	BCS loc_BANK0_8C92
 
-	INC CrouchJumpTimer ; increment crouch jump charge
+	INC iCrouchJumpTimer ; increment crouch jump charge
 	BNE loc_BANK0_8C92
 
 ResetPartialCrouchJumpTimer: ; reset crouch jump timer if it isn't full
-	LDA CrouchJumpTimer
+	LDA iCrouchJumpTimer
 	CMP #$3C ; max crouch jump timer
 	BCS loc_BANK0_8C6F
 
 	LDA #$00 ; reset crouch jump timer to zero
-	STA CrouchJumpTimer
+	STA iCrouchJumpTimer
 
 loc_BANK0_8C6F:
-	LDA Player1JoypadHeld
+	LDA zInputCurrentState
 	AND #ControllerInput_Right | ControllerInput_Left
 	BEQ loc_BANK0_8C92
 
 	AND #$01
-	STA PlayerDirection
+	STA zPlayerFacing
 	TAY
-	LDA GroundSlipperiness
+	LDA iFriction
 	LSR A
 	LSR A
-	AND byte_RAM_10
+	AND z10
 	BNE ResetCrouchJumpTimer
 
-	LDA PlayerXVelocity
+	LDA zPlayerXVelocity
 	CLC
 	ADC PlayerControlAcceleration, Y
-	STA PlayerXVelocity
+	STA zPlayerXVelocity
 
 ResetCrouchJumpTimer:
 	LDA #$00
-	STA CrouchJumpTimer
+	STA iCrouchJumpTimer
 	BEQ loc_BANK0_8C95 ; unconditional branch?
 
 loc_BANK0_8C92:
@@ -2534,18 +2518,18 @@ loc_BANK0_8C95:
 ;   I = whether the player is holding an item
 ;
 PlayerStartJump:
-	LDA QuicksandDepth
+	LDA iQuicksandDepth
 	CMP #$02
 	BCC PlayerStartJump_LoadXVelocity
 
 	; Quicksand
-	LDA JumpHeightQuicksand
-	STA PlayerYVelocity
+	LDA iSinkingJumpHeight
+	STA zPlayerYVelocity
 	BNE PlayerStartJump_Exit
 
 PlayerStartJump_LoadXVelocity:
 	; The x-velocity may affect the jump
-	LDA PlayerXVelocity
+	LDA zPlayerXVelocity
 	BPL PlayerStartJump_CheckXSpeed
 
 	; Absolute value of x-velocity
@@ -2558,35 +2542,35 @@ PlayerStartJump_CheckXSpeed:
 	CMP #$08
 	; Clear y subpixel
 	LDA #$00
-	STA PlayerYSubpixel
+	STA iPlayerYSubpixel
 	; Set bit for x-speed using carry flag
 	ROL A
 
 	; Check crouch jump timer
-	LDY CrouchJumpTimer
+	LDY iCrouchJumpTimer
 	CPY #$3C
 	BCC PlayerStartJump_SetYVelocity
 
-	; Clear Player1JoypadHeld for a crouch jump
+	; Clear zInputCurrentState for a crouch jump
 	LDA #$00
-	STA Player1JoypadHeld
+	STA zInputCurrentState
 
 PlayerStartJump_SetYVelocity:
 	; Set bit for charged jump using carry flag
 	ROL A
 	; Set bit for whether player is holding an item
 	ASL A
-	ORA HoldingItem
+	ORA zHeldItem
 	TAY
-	LDA JumpHeightStanding, Y
-	STA PlayerYVelocity
+	LDA iMainJumpHeights, Y
+	STA zPlayerYVelocity
 
-	LDA JumpFloatLength
-	STA JumpFloatTimer
+	LDA iFloatLength
+	STA iFloatTimer
 
 PlayerStartJump_Exit:
 	LDA #$00
-	STA CrouchJumpTimer
+	STA iCrouchJumpTimer
 	RTS
 
 
@@ -2598,39 +2582,39 @@ PlayerStartJump_Exit:
 ; This also handles floating
 ;
 PlayerGravity:
-	LDA QuicksandDepth
+	LDA iQuicksandDepth
 	CMP #$02
 	BCC loc_BANK0_8CE5
 
-	LDA GravityQuicksand
+	LDA iGravities + 2
 	BNE loc_BANK0_8D13
 
 loc_BANK0_8CE5:
-	LDA GravityWithoutJumpButton
-	LDY Player1JoypadHeld ; holding jump button to fight physics
+	LDA iGravities
+	LDY zInputCurrentState ; holding jump button to fight physics
 	BPL PlayerGravity_Falling
 
-	LDA GravityWithJumpButton
-	LDY PlayerYVelocity
+	LDA iGravities + 1
+	LDY zPlayerYVelocity
 	CPY #$0FC
 	BMI PlayerGravity_Falling
 
-	LDY JumpFloatTimer
+	LDY iFloatTimer
 	BEQ PlayerGravity_Falling
 
-	DEC JumpFloatTimer
-	LDA byte_RAM_10
+	DEC iFloatTimer
+	LDA z10
 	LSR A
 	LSR A
 	LSR A
 	AND #$03
 	TAY
 	LDA FloatingYVelocity, Y
-	STA PlayerYVelocity
+	STA zPlayerYVelocity
 	RTS
 
 PlayerGravity_Falling:
-	LDY PlayerYVelocity
+	LDY zPlayerYVelocity
 	BMI loc_BANK0_8D13
 
 	CPY #$39
@@ -2638,16 +2622,16 @@ PlayerGravity_Falling:
 
 loc_BANK0_8D13:
 	CLC
-	ADC PlayerYVelocity
-	STA PlayerYVelocity
+	ADC zPlayerYVelocity
+	STA zPlayerYVelocity
 
 loc_BANK0_8D18:
-	LDA JumpFloatTimer
-	CMP JumpFloatLength
+	LDA iFloatTimer
+	CMP iFloatLength
 	BEQ PlayerGravity_Exit
 
 	LDA #$00
-	STA JumpFloatTimer
+	STA iFloatTimer
 
 PlayerGravity_Exit:
 	RTS
@@ -2667,19 +2651,19 @@ PlayerXDeceleration:
 ; =============== S U B R O U T I N E =======================================
 
 sub_BANK0_8D2C:
-	LDA PlayerInAir
+	LDA zPlayerGrounding
 	BNE locret_BANK0_8D61
 
-	LDA byte_RAM_10
-	AND GroundSlipperiness
+	LDA z10
+	AND iFriction
 	BNE loc_BANK0_8D4D
 
-	LDA PlayerXVelocity
+	LDA zPlayerXVelocity
 	AND #$80
 	ASL A
 	ROL A
 	TAY
-	LDA PlayerXVelocity
+	LDA zPlayerXVelocity
 	ADC PlayerXDeceleration, Y
 	TAX
 	EOR PlayerControlAcceleration, Y
@@ -2688,23 +2672,23 @@ sub_BANK0_8D2C:
 	LDX #$00
 
 loc_BANK0_8D4B:
-	STX PlayerXVelocity
+	STX zPlayerXVelocity
 
 loc_BANK0_8D4D:
-	LDA PlayerDucking
+	LDA zPlayerHitBoxHeight
 	BNE locret_BANK0_8D61
 
-	LDA PlayerAnimationFrame
+	LDA zPlayerAnimFrame
 	CMP #SpriteAnimation_Throwing
 	BEQ locret_BANK0_8D61
 
 	LDA #SpriteAnimation_Standing
-	STA PlayerAnimationFrame
+	STA zPlayerAnimFrame
 	LDA #$00
-	STA PlayerWalkFrameCounter
+	STA zWalkCycleTimer
 
 loc_BANK0_8D5F:
-	STA PlayerWalkFrame
+	STA zPlayerWalkFrame
 
 locret_BANK0_8D61:
 	RTS
@@ -2734,35 +2718,35 @@ PlayerWalkFrames:
 
 ; jump animation subroutine
 PlayerWalkJumpAnim:
-	LDA PlayerDucking ; exit if we're ducking, since the player will be ducking
+	LDA zPlayerHitBoxHeight ; exit if we're ducking, since the player will be ducking
 	BNE ExitPlayerWalkJumpAnim
 
 	; if we're not in the air, skip ahead
-	LDA PlayerInAir
+	LDA zPlayerGrounding
 	BEQ PlayerWalkAnim
 
-	LDA CurrentCharacter ; does this character get to flutter jump?
+	LDA zCurrentCharacter ; does this character get to flutter jump?
 	CMP #Character_Luigi
 	BNE ExitPlayerWalkJumpAnim
 
-	LDA PlayerWalkFrameCounter
+	LDA zWalkCycleTimer
 	BNE UpdatePlayerAnimationFrame ; maintain current frame
 
 	LDA #$02 ; fast animation
 	BNE NextPlayerWalkFrame
 
 PlayerWalkAnim:
-	LDA PlayerWalkFrameCounter
+	LDA zWalkCycleTimer
 	BNE UpdatePlayerAnimationFrame ; maintain current frame
 
 	LDA #$05
-	LDY GroundSlipperiness
+	LDY iFriction
 	BNE NextPlayerWalkFrame
 
-	LDA PlayerXVelocity
+	LDA zPlayerXVelocity
 	BPL PlayerWalkFrameDuration
 
-	; use absolute value of PlayerXVelocity
+	; use absolute value of zPlayerXVelocity
 	EOR #$FF
 	CLC
 	ADC #$01
@@ -2775,17 +2759,17 @@ PlayerWalkFrameDuration:
 	LDA PlayerWalkFrameDurations, Y
 
 NextPlayerWalkFrame:
-	STA PlayerWalkFrameCounter ; hold frame for duration specified in accumulator
-	DEC PlayerWalkFrame
+	STA zWalkCycleTimer ; hold frame for duration specified in accumulator
+	DEC zPlayerWalkFrame
 	BPL UpdatePlayerAnimationFrame
 
 	LDA #$01 ; next walk frame
-	STA PlayerWalkFrame
+	STA zPlayerWalkFrame
 
 UpdatePlayerAnimationFrame:
-	LDY PlayerWalkFrame
+	LDY zPlayerWalkFrame
 	LDA PlayerWalkFrames, Y
-	STA PlayerAnimationFrame
+	STA zPlayerAnimFrame
 
 ExitPlayerWalkJumpAnim:
 	RTS
@@ -2817,16 +2801,16 @@ SoftThrowOffset:
 ; Determine the max speed based on the terrain and what the player is carrying.
 sub_BANK0_8DC0:
 	LDY #$02
-	LDA QuicksandDepth
+	LDA iQuicksandDepth
 	CMP #$02
 	BCS loc_BANK0_8DE0
 
 	DEY
-	LDA HoldingItem
+	LDA zHeldItem
 	BEQ loc_BANK0_8DDF
 
-	LDX ObjectBeingCarriedIndex
-	LDA ObjectType, X
+	LDX iHeldItemIndex
+	LDA zObjectType, X
 	CMP #Enemy_VegetableSmall
 	BCC loc_BANK0_8DE0
 
@@ -2841,51 +2825,51 @@ loc_BANK0_8DDF:
 
 ; 1.5x max speed when the run button is held!
 loc_BANK0_8DE0:
-	LDA RunSpeedRight, Y
-	BIT Player1JoypadHeld
+	LDA iRunSpeeds, Y
+	BIT zInputCurrentState
 	BVC loc_BANK0_8DEC
 
 	LSR A
 	CLC
-	ADC RunSpeedRight, Y
+	ADC iRunSpeeds, Y
 
 loc_BANK0_8DEC:
-	CMP PlayerXVelocity
+	CMP zPlayerXVelocity
 	BPL loc_BANK0_8DF2
 
-	STA PlayerXVelocity
+	STA zPlayerXVelocity
 
 loc_BANK0_8DF2:
-	LDA RunSpeedLeft, Y
-	BIT Player1JoypadHeld
+	LDA iRunSpeeds + 3, Y
+	BIT zInputCurrentState
 	BVC loc_BANK0_8DFF
 
 	SEC
 	ROR A
 	CLC
-	ADC RunSpeedLeft, Y
+	ADC iRunSpeeds + 3, Y
 
 loc_BANK0_8DFF:
-	CMP PlayerXVelocity
+	CMP zPlayerXVelocity
 	BMI loc_BANK0_8E05
 
-	STA PlayerXVelocity
+	STA zPlayerXVelocity
 
 ; Check to see if we have an item that we want to throw.
 loc_BANK0_8E05:
-	BIT Player1JoypadPress
+	BIT zInputBottleneck
 	BVC locret_BANK0_8E41
 
-	LDA HoldingItem
+	LDA zHeldItem
 	BEQ locret_BANK0_8E41
 
 	LDY #$00
-	LDX ObjectBeingCarriedIndex
-	LDA EnemyState, X
+	LDX iHeldItemIndex
+	LDA zEnemyState, X
 	CMP #EnemyState_Sand
 	BEQ locret_BANK0_8E41
 
-	LDA ObjectType, X
+	LDA zObjectType, X
 	CMP #Enemy_MushroomBlock
 	BCC loc_BANK0_8E22
 
@@ -2899,17 +2883,17 @@ loc_BANK0_8E22:
 	LDY #$02
 
 loc_BANK0_8E28:
-	STY byte_RAM_7
-	LDA PlayerDirection
+	STY z07
+	LDA zPlayerFacing
 	ASL A
-	ORA PlayerDucking
+	ORA zPlayerHitBoxHeight
 	TAX
 	LDY TileCollisionHitboxIndex + $06, X
 	LDX #$00
 	JSR sub_BANK0_924F
 
-	LDA byte_RAM_0
-	LDY byte_RAM_7
+	LDA z00
+	LDY z07
 	JSR CheckTileUsesCollisionType
 
 	BCC loc_BANK0_8E42
@@ -2922,23 +2906,23 @@ locret_BANK0_8E41:
 
 loc_BANK0_8E42:
 	LDA #SpriteAnimation_Throwing
-	STA PlayerAnimationFrame
+	STA zPlayerAnimFrame
 	LDA #$02
-	STA PlayerWalkFrame
+	STA zPlayerWalkFrame
 	LDA #$0A
-	STA PlayerWalkFrameCounter
-	DEC HoldingItem
+	STA zWalkCycleTimer
+	DEC zHeldItem
 	LDA #SoundEffect1_ThrowItem
-	STA SoundEffectQueue1
+	STA iPulse2SFX
 	LDA #$00
-	STA PlayerDucking
-	STA Player1JoypadPress
-	STA byte_RAM_1
-	LDX ObjectBeingCarriedIndex
+	STA zPlayerHitBoxHeight
+	STA zInputBottleneck
+	STA z01
+	LDX iHeldItemIndex
 	LDA #Enemy_Coin
-	CMP ObjectType, X
-	ROL byte_RAM_1
-	LDA PlayerXVelocity
+	CMP zObjectType, X
+	ROL z01
+	LDA zPlayerXVelocity
 	BPL loc_BANK0_8E6F
 
 	EOR #$FF
@@ -2947,38 +2931,38 @@ loc_BANK0_8E42:
 
 loc_BANK0_8E6F:
 	CMP #$08
-	ROL byte_RAM_1
+	ROL z01
 	BNE loc_BANK0_8E89
 
-	LDY PlayerDirection
+	LDY zPlayerFacing
 	LDA SoftThrowOffset, Y
 	CLC
-	ADC ObjectXLo, X
-	STA ObjectXLo, X
-	LDA IsHorizontalLevel
+	ADC zObjectXLo, X
+	STA zObjectXLo, X
+	LDA zScrollCondition
 	BEQ loc_BANK0_8E89
 
 	DEY
 	TYA
-	ADC ObjectXHi, X
+	ADC zObjectXHi, X
 
 loc_BANK0_8E87:
-	STA ObjectXHi, X
+	STA zObjectXHi, X
 
 loc_BANK0_8E89:
-	LDY byte_RAM_1
+	LDY z01
 	LDA ThrowYVelocity, Y
-	STA ObjectYVelocity, X
-	LDA byte_RAM_1
+	STA zObjectYVelocity, X
+	LDA z01
 	ASL A
-	ORA PlayerDirection
+	ORA zPlayerFacing
 	TAY
 	LDA ThrowXVelocity, Y
-	STA ObjectXVelocity, X
+	STA zObjectXVelocity, X
 	LDA #$01
-	STA ObjectProjectileTimer, X
+	STA iObjectBulletTimer, X
 	LSR A
-	STA ObjectBeingCarriedTimer, X
+	STA zHeldObjectTimer, X
 	RTS
 
 
@@ -2996,9 +2980,9 @@ ApplyPlayerPhysicsY:
 ;
 ApplyPlayerPhysics:
 	; Add acceleration to velocity
-	LDA PlayerXVelocity, X
+	LDA zPlayerXVelocity, X
 	CLC
-	ADC PlayerXAcceleration, X
+	ADC iPlayerXVelocity, X
 	PHP
 	BPL loc_BANK0_8EB4
 
@@ -3023,8 +3007,8 @@ loc_BANK0_8EB4:
 	ASL A
 	CLC
 
-	ADC PlayerXSubpixel, X
-	STA PlayerXSubpixel, X
+	ADC iPlayerXSubpixel, X
+	STA iPlayerXSubpixel, X
 
 	TYA
 	ADC #$00
@@ -3044,13 +3028,13 @@ loc_BANK0_8ED1:
 
 loc_BANK0_8ED8:
 	CLC
-	ADC PlayerXLo, X
-	STA PlayerXLo, X
+	ADC zPlayerXLo, X
+	STA zPlayerXLo, X
 	TYA
-	ADC PlayerXHi, X
-	STA PlayerXHi, X
+	ADC zPlayerXHi, X
+	STA zPlayerXHi, X
 	LDA #$00
-	STA PlayerXAcceleration, X
+	STA iPlayerXVelocity, X
 	RTS
 
 
@@ -3074,17 +3058,6 @@ InteractiveTileCollisionTable:
 	.db $02 ; jumpthrough left (x-velocity > 0)
 	.db $02
 
-IFDEF ENABLE_TILE_ATTRIBUTES_TABLE
-CheckPlayerTileCollisionAttributesTable:
-	.db %00001000 ; jumpthrough bottom (y-velocity < 0)
-	.db %00001000
-	.db %00000100 ; jumpthrough top (y-velocity > 0)
-	.db %00000100
-	.db %00000010 ; jumpthrough right (x-velocity < 0)
-	.db %00000010
-	.db %00000001 ; jumpthrough left (x-velocity > 0)
-	.db %00000001
-ENDIF
 
 ;
 ; Collision flags that should be set if a given collision check passes
@@ -3113,36 +3086,37 @@ ConveyorSpeedTable:
 PlayerTileCollision:
 	; Reset a bunch of collision flags
 	LDA #$00
-	STA PlayerCollision
-	STA GroundSlipperiness
-	STA byte_RAM_7
-	STA byte_RAM_A ; conveyor
-	STA byte_RAM_E ; spikes
-	STA byte_RAM_C ; ice
+	STA zPlayerCollision
+	STA iFriction
+	STA z07
+	STA z0a ; conveyor
+	STA z0e
+ ; spikes
+	STA z0c ; ice
 
 	JSR PlayerTileCollision_CheckCherryAndClimbable
 
 	; Determine bounding box lookup index
-	LDA PlayerDucking
+	LDA zPlayerHitBoxHeight
 	ASL A
-	ORA HoldingItem
+	ORA zHeldItem
 	TAX
 
 	; Look up the bounding box for collision detection
 	LDA TileCollisionHitboxIndex, X
-	STA byte_RAM_8
+	STA z08
 
 	; Determine whether the player is going up
-	LDA PlayerYVelocity
+	LDA zPlayerYVelocity
 	CLC
-	ADC PlayerYAcceleration
+	ADC iPlayerYVelocity
 	BPL PlayerTileCollision_Downward
 
 PlayerTileCollision_Upward:
 	JSR CheckPlayerTileCollision_Twice ; use top two tiles
 	JSR CheckPlayerTileCollision_IncrementTwice ; skip bottom two tiles
 
-	LDA PlayerCollision
+	LDA zPlayerCollision
 	BNE PlayerTileCollision_CheckDamageTile
 	BEQ PlayerTileCollision_Horizontal
 
@@ -3150,90 +3124,83 @@ PlayerTileCollision_Downward:
 	JSR CheckPlayerTileCollision_IncrementTwice ; skip top two tiles
 	JSR CheckPlayerTileCollision_Twice ; use bottom two tiles
 
-	LDA PlayerCollision
+	LDA zPlayerCollision
 	BNE PlayerTileCollision_CheckInteractiveTiles
 
 	LDA #$00
 	LDX #$01
 
 	; Do the quicksand check in worlds 2 and 6
-	LDY CurrentWorldTileset
+	LDY iCurrentWorldTileset
 	CPY #$01
 	BEQ PlayerTileCollision_Downward_CheckQuicksand
 
 	CPY #$05
-IFNDEF ALWAYS_ALLOW_QUICKSAND
 	BNE PlayerTileCollision_Downward_AfterCheckQuicksand
-ELSE
-	NOP
-	NOP
-ENDIF
 
 PlayerTileCollision_Downward_CheckQuicksand:
 	JSR PlayerTileCollision_CheckQuicksand
 
 PlayerTileCollision_Downward_AfterCheckQuicksand:
-	STA QuicksandDepth
-	STX PlayerInAir
+	STA iQuicksandDepth
+	STX zPlayerGrounding
 	JMP PlayerTileCollision_Horizontal
 
 PlayerTileCollision_CheckInteractiveTiles:
 	; Reset quicksand depth
 	LDA #$00
-	STA QuicksandDepth
+	STA iQuicksandDepth
 
-	LDA PlayerYLo
+	LDA zPlayerYLo
 	AND #$0C
 	BNE PlayerTileCollision_Horizontal
 
-	STA PlayerInAir
-	LDA PlayerYLo
+	STA zPlayerGrounding
+	LDA zPlayerYLo
 	AND #$F0
-	STA PlayerYLo
+	STA zPlayerYLo
 
 PlayerTileCollision_CheckConveyorTile:
-	LSR byte_RAM_A
+	LSR z0a
 	BCC PlayerTileCollision_CheckSlipperyTile
 
-	LDX byte_RAM_A
+	LDX z0a
 	LDA ConveyorSpeedTable, X
-	STA PlayerXAcceleration
+	STA iPlayerXVelocity
 
 PlayerTileCollision_CheckSlipperyTile:
-	LSR byte_RAM_C
+	LSR z0c
 	BCC PlayerTileCollision_CheckJar
 
 	LDA #$0F
-	STA GroundSlipperiness
+	STA iFriction
 
 PlayerTileCollision_CheckJar:
 	JSR TileBehavior_CheckJar
 
 PlayerTileCollision_CheckDamageTile:
 	LDA #$00
-	STA PlayerYVelocity
-	STA PlayerYAcceleration
-	LDA StarInvincibilityTimer
+	STA zPlayerYVelocity
+	STA iPlayerYVelocity
+	LDA iStarTimer
 	BNE PlayerTileCollision_Horizontal
 
-	LSR byte_RAM_E
+	LSR z0e
 	BCC PlayerTileCollision_Horizontal
 
-	LDA PlayerScreenX
-	STA SpriteTempScreenX
-	ROR byte_RAM_12
+	LDA iPlayerScreenX
+	STA iSpriteTempScreenX
+	ROR z12
 
-IFNDEF ENABLE_TILE_ATTRIBUTES_TABLE
 	JSR PlayerTileCollision_HurtPlayer
-ELSE
-	LDA byte_RAM_E
+	LDA z0e
 	CMP #$02
 	BCC PlayerTileCollision_DamageTile
 	BNE PlayerTileCollision_HealthTile
 
 	; instant kill
 	LDY #$0F
-	STY PlayerHealth
+	STY iPlayerHP
 
 PlayerTileCollision_DamageTile:
 	JSR PlayerTileCollision_HurtPlayer
@@ -3241,23 +3208,22 @@ PlayerTileCollision_DamageTile:
 
 PlayerTileCollision_HealthTile:
 	JSR RestorePlayerToFullHealth
-ENDIF
 
 PlayerTileCollision_Horizontal:
 	LDY #$02
-	LDA PlayerXVelocity
+	LDA zPlayerXVelocity
 	CLC
-	ADC PlayerXAcceleration
+	ADC iPlayerXVelocity
 	BMI loc_BANK0_8FA3
 
 	DEY
 	JSR CheckPlayerTileCollision_IncrementTwice
 
 loc_BANK0_8FA3:
-	STY PlayerMovementDirection
+	STY zPlayerTrajectory
 	JSR CheckPlayerTileCollision_Twice
 
-	LDA PlayerCollision
+	LDA zPlayerCollision
 	AND #CollisionFlags_Right | CollisionFlags_Left
 	BEQ PlayerTileCollision_Exit
 
@@ -3271,25 +3237,24 @@ PlayerTileCollision_Exit:
 ; Check collision attributes for the next two tiles
 ;
 ; Input
-;   byte_RAM_7: collision direction
-;   byte_RAM_8: bounding box offset
+;   z07: collision direction
+;   z08: bounding box offset
 ;
 ; Output
-;   byte_RAM_7 += 2
-;   byte_RAM_8 += 2
+;   z07 += 2
+;   z08 += 2
 ;
 CheckPlayerTileCollision_Twice:
 	JSR CheckPlayerTileCollision
 
-IFNDEF ENABLE_TILE_ATTRIBUTES_TABLE
 CheckPlayerTileCollision:
 	LDX #$00
-	LDY byte_RAM_8
+	LDY z08
 	JSR sub_BANK0_924F
 
-	LDX byte_RAM_7
+	LDX z07
 	LDY JumpthroughTileCollisionTable, X
-	LDA byte_RAM_0
+	LDA z00
 
 	JSR CheckTileUsesCollisionType
 
@@ -3300,7 +3265,7 @@ CheckPlayerTileCollision_CheckSpikes:
 	BNE CheckPlayerTileCollision_CheckIce
 
 	LDA InteractiveTileCollisionTable, X
-	STA byte_RAM_E
+	STA z0e
 	BNE CheckPlayerTileCollision_UpdatePlayerCollision
 
 CheckPlayerTileCollision_CheckIce:
@@ -3308,7 +3273,7 @@ CheckPlayerTileCollision_CheckIce:
 	BNE CheckPlayerTileCollision_CheckConveyor
 
 	LDA InteractiveTileCollisionTable, X
-	STA byte_RAM_C
+	STA z0c
 	BNE CheckPlayerTileCollision_UpdatePlayerCollision
 
 CheckPlayerTileCollision_CheckConveyor:
@@ -3319,94 +3284,39 @@ CheckPlayerTileCollision_CheckConveyor:
 
 	ASL A
 	ORA InteractiveTileCollisionTable, X
-	STA byte_RAM_A
+	STA z0a
 
 CheckPlayerTileCollision_UpdatePlayerCollision:
 	LDA EnableCollisionFlagTable, X
-	ORA PlayerCollision
-	STA PlayerCollision
+	ORA zPlayerCollision
+	STA zPlayerCollision
 
 CheckPlayerTileCollision_Exit:
 	JMP CheckPlayerTileCollision_Increment
-
-ELSE
-; custom behavior using tile attribute table
-CheckPlayerTileCollision:
-	LDX #$00
-	LDY byte_RAM_8
-	JSR sub_BANK0_924F
-
-	LDX byte_RAM_7
-	LDY byte_RAM_0
-
-	; check tile attributes
-	LDA TileCollisionAttributesTable, Y
-	AND CheckPlayerTileCollisionAttributesTable, X
-
-	BEQ CheckPlayerTileCollision_CheckSpikes
-
-	LDA EnableCollisionFlagTable, X
-	ORA PlayerCollision
-	STA PlayerCollision
-
-CheckPlayerTileCollision_CheckSpikes:
-	LDA TileInteractionAttributesTable, Y
-	AND #%00000011
-	BEQ CheckPlayerTileCollision_CheckIce
-
-	ASL A
-	ORA #%00000001
-	STA byte_RAM_E
-
-CheckPlayerTileCollision_CheckIce:
-	LDA TileInteractionAttributesTable, Y
-	AND #%00001100
-	BEQ CheckPlayerTileCollision_CheckConveyor
-	CMP #%00000100
-	BNE CheckPlayerTileCollision_CheckConveyor
-
-	LDA #$01
-	STA byte_RAM_C
-	BNE CheckPlayerTileCollision_Exit
-
-CheckPlayerTileCollision_CheckConveyor:
-	CMP #%00001100
-	BNE CheckPlayerTileCollision_Exit
-
-	TYA
-	AND #%00000001
-	ASL A
-	ORA #%00000001
-	STA byte_RAM_A
-
-CheckPlayerTileCollision_Exit:
-	JMP CheckPlayerTileCollision_Increment
-ENDIF
-
 
 ;
 ; Skip two tiles
 ;
 ; Output
-;   byte_RAM_7 += 2
-;   byte_RAM_8 += 2
+;   z07 += 2
+;   z08 += 2
 ;
 CheckPlayerTileCollision_IncrementTwice:
 	JSR CheckPlayerTileCollision_Increment
 
 CheckPlayerTileCollision_Increment:
-	INC byte_RAM_7
-	INC byte_RAM_8
+	INC z07
+	INC z08
 	RTS
 
 
 PlayerTileCollision_CheckCherryAndClimbable:
 	LDY TileCollisionHitboxIndex + $0A
 
-	; byte_RAM_10 seems to be a global counter
+	; z10 seems to be a global counter
 	; this code increments Y every other frame, but why?
 	; Seems like it alternates on each frame between checking the top and bottom of the player.
-	LDA byte_RAM_10
+	LDA z10
 	LSR A
 	BCS PlayerTileCollision_CheckCherryAndClimbable_AfterTick
 	INY
@@ -3417,33 +3327,33 @@ PlayerTileCollision_CheckCherryAndClimbable_AfterTick:
 
 	BCS PlayerTileCollision_Climbable
 
-	LDA byte_RAM_0
+	LDA z00
 	CMP #BackgroundTile_Cherry
 	BNE PlayerTileCollision_Climbable_Exit
 
-	INC CherryCount
-	LDA CherryCount
+	INC iCherryAmount
+	LDA iCherryAmount
 	SBC #$05
 	BNE PlayerTileCollision_Cherry
 
-	STA CherryCount
+	STA iCherryAmount
 	JSR CreateStarman
 
 PlayerTileCollision_Cherry:
 	LDA #SoundEffect1_CherryGet
-	STA SoundEffectQueue1
+	STA iPulse2SFX
 	LDA #BackgroundTile_Sky
 	JMP loc_BANK0_937C
 
 PlayerTileCollision_Climbable:
-	LDA Player1JoypadHeld
+	LDA zInputCurrentState
 	AND #ControllerInput_Down | ControllerInput_Up
 	BEQ PlayerTileCollision_Climbable_Exit
 
-	LDY HoldingItem
+	LDY zHeldItem
 	BNE PlayerTileCollision_Climbable_Exit
 
-	LDA PlayerXLo
+	LDA zPlayerXLo
 	CLC
 	ADC #$04
 	AND #$0F
@@ -3451,11 +3361,11 @@ PlayerTileCollision_Climbable:
 	BCS PlayerTileCollision_Climbable_Exit
 
 	LDA #PlayerState_Climbing
-	STA PlayerState
-	STY PlayerInAir
-	STY PlayerDucking
+	STA zPlayerState
+	STY zPlayerGrounding
+	STY zPlayerHitBoxHeight
 	LDA #SpriteAnimation_Climbing
-	STA PlayerAnimationFrame
+	STA zPlayerAnimFrame
 
 	; Break JSR PlayerTileCollision_CheckCherryAndClimbable
 	PLA
@@ -3528,7 +3438,7 @@ loc_BANK0_9074:
 	LDX #$06
 
 loc_BANK0_9076:
-	LDA EnemyState, X
+	LDA zEnemyState, X
 	BEQ loc_BANK0_9080
 
 	INX
@@ -3539,35 +3449,35 @@ loc_BANK0_9076:
 
 ; create the sprite for the item being picked up
 loc_BANK0_9080:
-	LDA byte_RAM_0
-	STA EnemyVariable, X
-	LDA byte_RAM_3
-	STA ObjectXHi, X
-	LDA byte_RAM_4
-	STA ObjectYHi, X
-	LDA byte_RAM_5
-	STA ObjectXLo, X
-	LDA byte_RAM_6
-	STA ObjectYLo, X
+	LDA z00
+	STA zObjectVariables, X
+	LDA z03
+	STA zObjectXHi, X
+	LDA z04
+	STA zObjectYHi, X
+	LDA z05
+	STA zObjectXLo, X
+	LDA z06
+	STA zObjectYLo, X
 	LDA #$00
-	STA ObjectProjectileTimer, X
-	STA ObjectAnimationTimer, X
-	STA EnemyArray_B1, X
+	STA iObjectBulletTimer, X
+	STA zObjectAnimTimer, X
+	STA zEnemyArray, X
 	JSR UnlinkEnemyFromRawData_Bank1
 
 	LDA #EnemyState_Alive
-	LDY byte_RAM_9
+	LDY z09
 	CPY #$0E
 	BNE loc_BANK0_90AE
 
 	LDA #$20
-	STA ObjectTimer1, X
+	STA zSpriteTimer, X
 	LDA #EnemyState_Sand
 
 loc_BANK0_90AE:
-	STA EnemyState, X
+	STA zEnemyState, X
 	LDA PickUpToEnemyTypeTable, Y ; What sprite is spawned for you when lifting a bg object
-	STA ObjectType, X
+	STA zObjectType, X
 
 	LDY #$FF ; regular bomb fuse
 	CMP #Enemy_Bomb
@@ -3579,18 +3489,18 @@ loc_BANK0_90AE:
 	LDY #$50 ; BobOmb fuse
 
 loc_BANK0_90C1:
-	STY ObjectTimer1, X
+	STY zSpriteTimer, X
 	BNE loc_BANK0_90EA
 
 loc_BANK0_90C5:
 	CMP #Enemy_Mushroom1up
 	BNE loc_BANK0_90D5
 
-	LDA Mushroom1upPulled
+	LDA iLifeUpEventFlag
 	BEQ loc_BANK0_90EA
 
 	LDA #Enemy_VegetableSmall
-	STA ObjectType, X
+	STA zObjectType, X
 
 	JMP loc_BANK0_90EA
 
@@ -3598,48 +3508,48 @@ loc_BANK0_90D5:
 	CMP #Enemy_VegetableLarge
 	BNE loc_BANK0_90EA
 
-	LDY BigVeggiesPulled
+	LDY iLargeVeggieAmount
 	INY
 	CPY #$05
 	BCC loc_BANK0_90E7
 
 	LDA #Enemy_Stopwatch
-	STA ObjectType, X
+	STA zObjectType, X
 	LDY #$00
 
 loc_BANK0_90E7:
-	STY BigVeggiesPulled
+	STY iLargeVeggieAmount
 
 loc_BANK0_90EA:
 	JSR loc_BANK1_B9EB
 
 	LDA #CollisionFlags_Down
-	STA EnemyCollision, X
+	STA zEnemyCollision, X
 	LDA #BackgroundTile_Sky
 	JSR ReplaceTile_Bank0
 
 	LDA #$07
-	STA ObjectBeingCarriedTimer, X
-	STX ObjectBeingCarriedIndex
+	STA zHeldObjectTimer, X
+	STX iHeldItemIndex
 	LDA #PlayerState_Lifting
-	STA PlayerState
+	STA zPlayerState
 	LDA #$06
-	STA PlayerStateTimer
+	STA zPlayerStateTimer
 	LDA #SpriteAnimation_Pulling
-	STA PlayerAnimationFrame
-	INC HoldingItem
+	STA zPlayerAnimFrame
+	INC zHeldItem
 	RTS
 
 
 TileBehavior_CheckJar:
-	LDY HoldingItem
+	LDY zHeldItem
 	BNE loc_BANK0_917C
 
-	LDA PlayerDucking
+	LDA zPlayerHitBoxHeight
 	BEQ TileBehavior_CheckPickUp
 
-	LDA byte_RAM_0
-	LDX InSubspaceOrJar
+	LDA z00
+	LDX iSubAreaFlags
 	CPX #$02
 	BNE TileBehavior_CheckJar_NotSubspace
 
@@ -3663,7 +3573,7 @@ TileBehavior_CheckJar_NotSubspace:
 	; Now Y = $02
 
 TileBehavior_GoDownJar:
-	LDA PlayerXLo
+	LDA zPlayerXLo
 	CLC
 	ADC #$04
 	AND #$0F
@@ -3672,50 +3582,50 @@ TileBehavior_GoDownJar:
 
 	; Stop horiziontal movement
 	LDA #$00
-	STA PlayerXVelocity
+	STA zPlayerXVelocity
 
 	; We're going down the jar!
 	LDA #PlayerState_GoingDownJar
-	STA PlayerState
+	STA zPlayerState
 
 	; What kind of jar are we going down?
 	; $00 = warp, $01 = regular, $02 = pointer
-	STY InJarType
+	STY iInJarType
 
 ;
 ; Snaps the player to the closest tile (for entering doors and jars)
 ;
 SnapPlayerToTile:
-	LDA PlayerXLo
+	LDA zPlayerXLo
 	CLC
 	ADC #$08
 	AND #$F0
-	STA PlayerXLo
+	STA zPlayerXLo
 	BCC SnapPlayerToTile_Exit
 
-	LDA IsHorizontalLevel
+	LDA zScrollCondition
 	BEQ SnapPlayerToTile_Exit
 
-	INC PlayerXHi
+	INC zPlayerXHi
 
 SnapPlayerToTile_Exit:
 	RTS
 
 
 TileBehavior_CheckPickUp:
-	BIT Player1JoypadPress
+	BIT zInputBottleneck
 	BVC loc_BANK0_917C
 
 	; B button pressed
 
-	LDA PlayerXLo
+	LDA zPlayerXLo
 	CLC
 	ADC #$06
 	AND #$0F
 	CMP #$0C
 	BCS loc_BANK0_917C
 
-	LDA byte_RAM_0
+	LDA z00
 	CMP #BackgroundTile_DiggableSand
 	BNE loc_BANK0_916E
 
@@ -3733,44 +3643,44 @@ loc_BANK0_916E:
 	BCC loc_BANK0_917C
 
 loc_BANK0_9177:
-	STA byte_RAM_9
+	STA z09
 	JMP loc_BANK0_9074
 
 ; ---------------------------------------------------------------------------
 
 loc_BANK0_917C:
-	LDA PlayerDucking
+	LDA zPlayerHitBoxHeight
 	BNE locret_BANK0_91CE
 
-	LDA byte_RAM_6
+	LDA z06
 	SEC
 	SBC #$10
-	STA byte_RAM_6
-	STA byte_RAM_E6
-	LDA byte_RAM_4
+	STA z06
+	STA ze6
+	LDA z04
 	SBC #$00
-	STA byte_RAM_4
-	STA byte_RAM_1
-	LDA byte_RAM_3
-	STA byte_RAM_2
+	STA z04
+	STA z01
+	LDA z03
+	STA z02
 	JSR sub_BANK0_92C1
 
 	BCS locret_BANK0_91CE
 
 	JSR SetTileOffsetAndAreaPageAddr_Bank1
 
-	LDY byte_RAM_E7
-	LDA (byte_RAM_1), Y
-	LDX HoldingItem
+	LDY ze7
+	LDA (z01), Y
+	LDX zHeldItem
 	BEQ loc_BANK0_91AE
 
-	LDX ObjectBeingCarriedIndex
-	LDY ObjectType, X
+	LDX iHeldItemIndex
+	LDY zObjectType, X
 	CPY #Enemy_Key
 	BNE locret_BANK0_91CE
 
 loc_BANK0_91AE:
-	LDX InSubspaceOrJar
+	LDX iSubAreaFlags
 	CPX #$02
 	BEQ loc_BANK0_91BF
 
@@ -3785,10 +3695,10 @@ loc_BANK0_91B7:
 	BPL loc_BANK0_91B7
 
 loc_BANK0_91BF:
-	BIT Player1JoypadPress
+	BIT zInputBottleneck
 	BVC locret_BANK0_91CE
 
-	STA byte_RAM_0
+	STA z00
 	CMP #BackgroundTile_GrassInactive
 	BCS locret_BANK0_91CE
 
@@ -3802,15 +3712,15 @@ locret_BANK0_91CE:
 ; ---------------------------------------------------------------------------
 
 loc_BANK0_91CF:
-	LDX InSubspaceOrJar
+	LDX iSubAreaFlags
 	CPX #$02
 	BNE loc_BANK0_91E3
 
-	LDA SubspaceVisits
+	LDA iSubspaceVisitCount
 	CMP #$02
 	BCS loc_BANK0_91E2 ; skip if we've already visited Subspace twice
 
-	INC SubspaceCoins
+	INC iSubspaceCoinCount
 	LDX #$00
 
 loc_BANK0_91E2:
@@ -3819,7 +3729,7 @@ loc_BANK0_91E2:
 loc_BANK0_91E3:
 	CLC
 	ADC #$04
-	STA byte_RAM_9
+	STA z09
 	JMP loc_BANK0_9074
 
 ; ---------------------------------------------------------------------------
@@ -3830,12 +3740,12 @@ loc_BANK0_91E3:
 ; Input
 ;   Y = tile index in DoorTiles
 loc_BANK0_91EB:
-	LDA Player1JoypadPress
+	LDA zInputBottleneck
 	AND #ControllerInput_Up
 	BEQ locret_BANK0_91CE
 
 	; player is holding up and is trying to go through this door
-	LDA PlayerXLo
+	LDA zPlayerXLo
 	CLC
 	ADC #$05
 	AND #$0F
@@ -3845,16 +3755,16 @@ loc_BANK0_91EB:
 	CPY #$04 ; index of BackgroundTile_LightDoorEndLevel
 	BNE loc_BANK0_9205
 
-	; setting GameMode to $03 to go to Bonus Chance
+	; setting iGameMode to $03 to go to Bonus Chance
 	DEY
-	STY GameMode
+	STY iGameMode
 	RTS
 
 ; ---------------------------------------------------------------------------
 
 loc_BANK0_9205:
 	LDA #TransitionType_Door
-	STA TransitionType
+	STA iTransitionType
 	TYA
 	JSR JumpToTableAfterJump
 
@@ -3869,30 +3779,30 @@ DoorHandling_UnlockedDoor:
 	JSR DoorAnimation_Unlocked
 
 DoorHandling_GoThroughDoor:
-	INC DoorAnimationTimer
-	INC PlayerLock
+	INC iDoorAnimTimer
+	INC iPlayerLock
 	JSR SnapPlayerToTile
 
 	LDA #DPCM_DoorOpenBombBom
-	STA DPCMQueue
+	STA iDPCMSFX
 
 DoorHandling_Exit:
 	RTS
 
 
 DoorHandling_LockedDoor:
-	LDA HoldingItem
+	LDA zHeldItem
 	; don't come to a locked door empty-handed
 	BEQ DoorHandling_Exit
 
 	; and make sure you have a key
-	LDY ObjectBeingCarriedIndex
-	LDA ObjectType, Y
+	LDY iHeldItemIndex
+	LDA zObjectType, Y
 	CMP #Enemy_Key
 	BNE DoorHandling_Exit
 
 	; the key has been used
-	INC KeyUsed
+	INC iKeyUsed
 	TYA
 	TAX
 
@@ -3902,7 +3812,7 @@ DoorHandling_LockedDoor:
 
 
 DoorHandling_Entrance:
-	INC DoAreaTransition
+	INC iAreaTransitionID
 	JMP DoAreaReset
 
 
@@ -3921,57 +3831,57 @@ DoorTiles:
 ;   X = object index (0 = player)
 ;   Y = bounding box offset
 ; Output
-;   byte_RAM_0 = tile ID
+;   z00 = tile ID
 ;
 sub_BANK0_924F:
 	TXA
 	PHA
 	LDA #$00
-	STA byte_RAM_0
-	STA byte_RAM_1
+	STA z00
+	STA z01
 	LDA VerticalTileCollisionHitboxX, Y
 	BPL loc_BANK0_925E
 
-	DEC byte_RAM_0
+	DEC z00
 
 loc_BANK0_925E:
 	CLC
-	ADC PlayerXLo, X
+	ADC zPlayerXLo, X
 	AND #$F0
-	STA byte_RAM_5
+	STA z05
 	PHP
 	LSR A
 	LSR A
 	LSR A
 	LSR A
-	STA byte_RAM_E5
+	STA ze5
 	PLP
-	LDA PlayerXHi, X
-	ADC byte_RAM_0
-	STA byte_RAM_2
-	STA byte_RAM_3
-	LDA IsHorizontalLevel
+	LDA zPlayerXHi, X
+	ADC z00
+	STA z02
+	STA z03
+	LDA zScrollCondition
 	BNE loc_BANK0_927D
 
-	STA byte_RAM_2
-	STA byte_RAM_3
+	STA z02
+	STA z03
 
 loc_BANK0_927D:
 	LDA VerticalTileCollisionHitboxY, Y
 	BPL loc_BANK0_9284
 
-	DEC byte_RAM_1
+	DEC z01
 
 loc_BANK0_9284:
 	CLC
-	ADC PlayerYLo, X
+	ADC zPlayerYLo, X
 	AND #$F0
-	STA byte_RAM_6
-	STA byte_RAM_E6
-	LDA PlayerYHi, X
-	ADC byte_RAM_1
-	STA byte_RAM_1
-	STA byte_RAM_4
+	STA z06
+	STA ze6
+	LDA zPlayerYHi, X
+	ADC z01
+	STA z01
+	STA z04
 	JSR sub_BANK0_92C1
 
 	BCC loc_BANK0_929E
@@ -3982,11 +3892,11 @@ loc_BANK0_9284:
 loc_BANK0_929E:
 	JSR SetTileOffsetAndAreaPageAddr_Bank1
 
-	LDY byte_RAM_E7
-	LDA (byte_RAM_1), Y
+	LDY ze7
+	LDA (z01), Y
 
 loc_BANK0_92A5:
-	STA byte_RAM_0
+	STA z00
 	PLA
 	TAX
 	RTS
@@ -3995,7 +3905,7 @@ loc_BANK0_92A5:
 ; =============== S U B R O U T I N E =======================================
 
 sub_BANK0_92AA:
-	STA byte_RAM_F
+	STA z0f
 	TYA
 	BMI locret_BANK0_92C0
 
@@ -4004,7 +3914,7 @@ sub_BANK0_92AA:
 	ASL A
 	ASL A
 	CLC
-	ADC byte_RAM_F
+	ADC z0f
 	BCS loc_BANK0_92BC
 
 	CMP #$F0
@@ -4026,20 +3936,20 @@ locret_BANK0_92C0:
 ;
 ;
 sub_BANK0_92C1:
-	LDY byte_RAM_1
-	LDA byte_RAM_E6
+	LDY z01
+	LDA ze6
 	JSR sub_BANK0_92AA
 
-	STY byte_RAM_1
-	STA byte_RAM_E6
-	LDY IsHorizontalLevel
-	LDA byte_RAM_1, Y
-	STA byte_RAM_E8
-	LDA byte_RAM_2
+	STY z01
+	STA ze6
+	LDY zScrollCondition
+	LDA z01, Y
+	STA ze8
+	LDA z02
 	CMP byte_BANK0_92E0 + 1, Y
 	BCS locret_BANK0_92DF
 
-	LDA byte_RAM_1
+	LDA z01
 	CMP byte_BANK0_92E0, Y
 
 locret_BANK0_92DF:
@@ -4055,15 +3965,15 @@ byte_BANK0_92E0:
 ; Unused?
 ; Copy of DetermineVerticalScroll
 _code_12E3:
-	LDX NeedsScroll
+	LDX zScrollArray
 	BNE locret_BANK0_9311
 
-	LDA PlayerState
+	LDA zPlayerState
 	CMP #PlayerState_Lifting
 	BCS locret_BANK0_9311
 
-	LDA PlayerScreenYLo
-	LDY PlayerScreenYHi
+	LDA iPlayerScreenY
+	LDY iPlayerScreenYPage
 	BMI loc_BANK0_92FF
 
 	BNE loc_BANK0_9305
@@ -4075,7 +3985,7 @@ _code_12E3:
 	BCS loc_BANK0_9307
 
 loc_BANK0_92FF:
-	LDY PlayerInAir
+	LDY zPlayerGrounding
 	BNE loc_BANK0_9307
 
 	BEQ loc_BANK0_9306
@@ -4087,12 +3997,12 @@ loc_BANK0_9306:
 	INX
 
 loc_BANK0_9307:
-	LDA VerticalScrollDirection
-	STX VerticalScrollDirection
+	LDA iVerticalScrollVelocity
+	STX iVerticalScrollVelocity
 	BNE locret_BANK0_9311
 
 loc_BANK0_930F:
-	STX NeedsScroll
+	STX zScrollArray
 
 locret_BANK0_9311:
 	RTS
@@ -4111,11 +4021,11 @@ PlayerCollisionResultTable_Bank0:
 ; Enforces the left/right boundaries of horizontal areas
 ;
 PlayerAreaBoundaryCollision:
-	LDA IsHorizontalLevel
+	LDA zScrollCondition
 	BEQ PlayerAreaBoundaryCollision_Exit
 
-	LDA PlayerScreenX
-	LDY PlayerMovementDirection
+	LDA iPlayerScreenX
+	LDY zPlayerTrajectory
 	CPY #$01
 	BEQ PlayerAreaBoundaryCollision_CheckRight
 
@@ -4131,31 +4041,31 @@ PlayerAreaBoundaryCollision_CheckRight:
 	BCC PlayerAreaBoundaryCollision_Exit
 
 PlayerAreaBoundaryCollision_BoundaryHit:
-	LDA PlayerCollision
+	LDA zPlayerCollision
 	ORA PlayerCollisionDirectionTable - 1, Y
-	STA PlayerCollision
+	STA zPlayerCollision
 
 ;
 ; NOTE: This is a copy of the "PlayerHorizontalCollision" routine in Bank 3
 ;
 PlayerHorizontalCollision_Bank0:
 	LDX #$00
-	LDY PlayerMovementDirection
-	LDA PlayerXVelocity
+	LDY zPlayerTrajectory
+	LDA zPlayerXVelocity
 	EOR PlayerCollisionResultTable_Bank0 - 1, Y
 	BPL loc_BANK0_9340
 
-	STX PlayerXVelocity
+	STX zPlayerXVelocity
 
 loc_BANK0_9340:
-	LDA PlayerXAcceleration
+	LDA iPlayerXVelocity
 	EOR PlayerCollisionResultTable_Bank0 - 1, Y
 	BPL loc_BANK0_934B
 
-	STX PlayerXAcceleration
+	STX iPlayerXVelocity
 
 loc_BANK0_934B:
-	STX PlayerXSubpixel
+	STX iPlayerXSubpixel
 
 locret_BANK0_934E:
 	RTS
@@ -4174,7 +4084,7 @@ locret_BANK0_934E:
 ;
 ReplaceTile_Bank0:
 	PHA ; Something to update the PPU for some tile change
-	LDA ObjectXLo, X
+	LDA zObjectXLo, X
 	CLC
 	ADC #$08
 	PHP
@@ -4182,24 +4092,24 @@ ReplaceTile_Bank0:
 	LSR A
 	LSR A
 	LSR A
-	STA byte_RAM_E5
+	STA ze5
 	PLP
-	LDA ObjectXHi, X
-	LDY IsHorizontalLevel
+	LDA zObjectXHi, X
+	LDY zScrollCondition
 	BEQ ReplaceTile_StoreXHi_Bank0
 
 	ADC #$00
 
 ReplaceTile_StoreXHi_Bank0:
-	STA byte_RAM_2
-	LDA ObjectYLo, X
+	STA z02
+	LDA zObjectYLo, X
 	CLC
 	ADC #$08
 	AND #$F0
-	STA byte_RAM_E6
-	LDA ObjectYHi, X
+	STA ze6
+	LDA zObjectYHi, X
 	ADC #$00
-	STA byte_RAM_1
+	STA z01
 	JSR sub_BANK0_92C1
 
 	PLA
@@ -4211,40 +4121,40 @@ ReplaceTile_StoreXHi_Bank0:
 ;
 loc_BANK0_937C:
 	; Stash X so we can restore it later on
-	STX byte_RAM_3
+	STX z03
 
 	; Stash the target tile and figure out where to draw it
 	PHA
 	JSR SetTileOffsetAndAreaPageAddr_Bank1
 	PLA
 	; Update the tile in the decoded level data
-	LDY byte_RAM_E7
-	STA (byte_RAM_1), Y
+	LDY ze7
+	STA (z01), Y
 
 	PHA
-	LDX byte_RAM_300
+	LDX i300
 	LDA #$00
-	STA PPUBuffer_301, X
+	STA iPPUBuffer, X
 	TYA
 	AND #$F0
 	ASL A
-	ROL PPUBuffer_301, X
+	ROL iPPUBuffer, X
 	ASL A
-	ROL PPUBuffer_301, X
-	STA PPUBuffer_301 + 1, X
+	ROL iPPUBuffer, X
+	STA iPPUBuffer + 1, X
 	TYA
 	AND #$0F
 	ASL A
 
-	ADC PPUBuffer_301 + 1, X
-	STA PPUBuffer_301 + 1, X
+	ADC iPPUBuffer + 1, X
+	STA iPPUBuffer + 1, X
 	CLC
 	ADC #$20
-	STA PPUBuffer_301 + 6, X
-	LDA IsHorizontalLevel
+	STA iPPUBuffer + 6, X
+	LDA zScrollCondition
 	ASL A
 	TAY
-	LDA byte_RAM_1
+	LDA z01
 	AND #$10
 	BNE loc_BANK0_93B9
 
@@ -4253,12 +4163,12 @@ loc_BANK0_937C:
 loc_BANK0_93B9:
 	LDA byte_BANK0_940A, Y
 	CLC
-	ADC PPUBuffer_301, X
-	STA PPUBuffer_301, X
-	STA PPUBuffer_301 + 5, X
+	ADC iPPUBuffer, X
+	STA iPPUBuffer, X
+	STA iPPUBuffer + 5, X
 	LDA #$02
-	STA PPUBuffer_301 + 2, X
-	STA PPUBuffer_301 + 7, X
+	STA iPPUBuffer + 2, X
+	STA iPPUBuffer + 7, X
 
 	PLA
 	PHA
@@ -4269,31 +4179,31 @@ loc_BANK0_93B9:
 	TAY
 	; Get the tile quad pointer
 	LDA TileQuadPointersLo, Y
-	STA byte_RAM_0
+	STA z00
 	LDA TileQuadPointersHi, Y
-	STA byte_RAM_1
+	STA z01
 	PLA
 	ASL A
 	ASL A
 	TAY
-	LDA (byte_RAM_0), Y
-	STA PPUBuffer_301 + 3, X
+	LDA (z00), Y
+	STA iPPUBuffer + 3, X
 	INY
-	LDA (byte_RAM_0), Y
-	STA PPUBuffer_301 + 4, X
+	LDA (z00), Y
+	STA iPPUBuffer + 4, X
 	INY
-	LDA (byte_RAM_0), Y
-	STA PPUBuffer_301 + 8, X
+	LDA (z00), Y
+	STA iPPUBuffer + 8, X
 	INY
-	LDA (byte_RAM_0), Y
-	STA PPUBuffer_301 + 9, X
+	LDA (z00), Y
+	STA iPPUBuffer + 9, X
 	LDA #$00
-	STA PPUBuffer_301 + 10, X
+	STA iPPUBuffer + 10, X
 	TXA
 	CLC
 	ADC #$0A
-	STA byte_RAM_300
-	LDX byte_RAM_3
+	STA i300
+	LDX z03
 	RTS
 
 
@@ -4309,17 +4219,17 @@ byte_BANK0_940A:
 ; NOTE: This is a copy of the "StashPlayerPosition" routine in Bank 3
 ;
 StashPlayerPosition_Bank0:
-	LDA InSubspaceOrJar
+	LDA iSubAreaFlags
 	BNE StashPlayerPosition_Exit_Bank0
 
-	LDA PlayerXHi
-	STA PlayerXHi_Backup
-	LDA PlayerXLo
-	STA PlayerXLo_Backup
-	LDA PlayerYHi
-	STA PlayerYHi_Backup
-	LDA PlayerYLo
-	STA PlayerYLo_Backup
+	LDA zPlayerXHi
+	STA iPlayerXHi
+	LDA zPlayerXLo
+	STA iPlayer_X_Lo
+	LDA zPlayerYHi
+	STA iPlayerYHi
+	LDA zPlayerYLo
+	STA iPlayerYLoBackup
 
 StashPlayerPosition_Exit_Bank0:
 	RTS
@@ -4328,38 +4238,38 @@ StashPlayerPosition_Exit_Bank0:
 ; Restores the player position from the backup values after exiting a subarea
 ;
 RestorePlayerPosition:
-	LDA PlayerXHi_Backup
-	STA PlayerXHi
-	LDA PlayerXLo_Backup
-	STA PlayerXLo
-	LDA PlayerYHi_Backup
-	STA PlayerYHi
-	LDA PlayerYLo_Backup
-	STA PlayerYLo
-	LDA PlayerXLo
+	LDA iPlayerXHi
+	STA zPlayerXHi
+	LDA iPlayer_X_Lo
+	STA zPlayerXLo
+	LDA iPlayerYHi
+	STA zPlayerYHi
+	LDA iPlayerYLoBackup
+	STA zPlayerYLo
+	LDA zPlayerXLo
 	SEC
-	SBC ScreenBoundaryLeftLo
-	STA PlayerScreenX
-	LDA PlayerYLo
+	SBC iBoundLeftLower
+	STA iPlayerScreenX
+	LDA zPlayerYLo
 	SEC
-	SBC ScreenYLo
-	STA PlayerScreenYLo
-	LDA PlayerYHi
-	SBC ScreenYHi
-	STA PlayerScreenYHi
-	LDA TransitionType
+	SBC zScreenY
+	STA iPlayerScreenY
+	LDA zPlayerYHi
+	SBC zScreenYPage
+	STA iPlayerScreenYPage
+	LDA iTransitionType
 	SEC
 	SBC #TransitionType_SubSpace
 	BNE StashPlayerPosition_Exit_Bank0
 
 	; resetting these to zero (A=$00, otherwise we would have branched)
-	STA PlayerState
-	STA PlayerLock
-	STA SubspaceTimer
+	STA zPlayerState
+	STA iPlayerLock
+	STA iSubTimeLeft
 	JSR DoorAnimation_Unlocked
 
 	LDA #$0A
-	STA SubspaceDoorTimer
+	STA iSubDoorTimer
 	RTS
 
 
@@ -4367,12 +4277,12 @@ RestorePlayerPosition:
 ; Performs an area transition
 ;
 ApplyAreaTransition:
-	LDA TransitionType
+	LDA iTransitionType
 	CMP #TransitionType_Jar
 	BNE ApplyAreaTransition_NotJar
 
 ApplyAreaTransition_Jar:
-	LDA InJarType
+	LDA iInJarType
 	BNE ApplyAreaTransition_NotJar
 
 	JSR RestorePlayerPosition
@@ -4380,57 +4290,57 @@ ApplyAreaTransition_Jar:
 	JMP ApplyAreaTransition_MoveCamera
 
 ApplyAreaTransition_NotJar:
-	LDA CurrentLevelEntryPage
+	LDA iCurrentLvlEntryPage
 	LDY #$00
-	LDX IsHorizontalLevel
+	LDX zScrollCondition
 	BNE ApplyAreaTransition_Horizontal
 
 ApplyAreaTransition_Vertical:
-	STY PlayerXHi
-	STA PlayerYHi
+	STY zPlayerXHi
+	STA zPlayerYHi
 	BEQ ApplyAreaTransition_SetPlayerPosition
 
 ApplyAreaTransition_Horizontal:
-	STA PlayerXHi
-	STY PlayerYHi
+	STA zPlayerXHi
+	STY zPlayerYHi
 
 ApplyAreaTransition_SetPlayerPosition:
 	JSR AreaTransitionPlacement
 
 	; The height of a page is only `$0F` tiles instead of `$10`.
-	; PlayerYHi is currently using the vertical page rather than the actual high
+	; zPlayerYHi is currently using the vertical page rather than the actual high
 	; byte of the absolute position, so we need to convert it to compensate!
-	LDY PlayerYHi
-	LDA PlayerYLo
+	LDY zPlayerYHi
+	LDA zPlayerYLo
 	JSR PageHeightCompensation
-	STY PlayerYHi
-	STA PlayerYLo
+	STY zPlayerYHi
+	STA zPlayerYLo
 
-	LDA PlayerXLo
+	LDA zPlayerXLo
 	SEC
-	SBC ScreenBoundaryLeftLo
-	STA PlayerScreenX
+	SBC iBoundLeftLower
+	STA iPlayerScreenX
 
-	LDA PlayerYLo
+	LDA zPlayerYLo
 	SEC
-	SBC ScreenYLo
-	STA PlayerScreenYLo
+	SBC zScreenY
+	STA iPlayerScreenY
 
-	LDA PlayerYHi
-	SBC ScreenYHi
-	STA PlayerScreenYHi
+	LDA zPlayerYHi
+	SBC zScreenYPage
+	STA iPlayerScreenYPage
 
-	LDA TransitionType
+	LDA iTransitionType
 	CMP #TransitionType_SubSpace
 	BNE ApplyAreaTransition_MoveCamera
 
 	JSR DoorAnimation_Unlocked
 
 ApplyAreaTransition_MoveCamera:
-	LDA PlayerXLo
+	LDA zPlayerXLo
 	SEC
 	SBC #$78
-	STA MoveCameraX
+	STA zXVelocity
 	RTS
 
 
@@ -4438,7 +4348,7 @@ ApplyAreaTransition_MoveCamera:
 ; Do the player placement after an area transition
 ;
 AreaTransitionPlacement:
-	LDA TransitionType
+	LDA iTransitionType
 	JSR JumpToTableAfterJump
 
 	.dw AreaTransitionPlacement_Reset
@@ -4451,64 +4361,38 @@ AreaTransitionPlacement:
 
 AreaTransitionPlacement_Reset:
 	LDA #$01
-	STA PlayerDirection
+	STA zPlayerFacing
 	JSR AreaTransitionPlacement_Middle
 
 	LSR A
 	LSR A
 	LSR A
 	LSR A
-	STA byte_RAM_E5
+	STA ze5
 	LDA #$D0
-	STA PlayerYLo
-	STA byte_RAM_E6
-	LDA CurrentLevelEntryPage
-	STA byte_RAM_E8
-
-IFDEF LEVEL_ENGINE_UPGRADES
-	LDX IsHorizontalLevel
-	BEQ AreaTransitionPlacement_Reset_FindOpenSpace
-
-	; Find non-sky to use as the ground
-	LDA #$E0
-	STA byte_RAM_E6
-
-AreaTransitionPlacement_Reset_FindStandableTile:
-	LDA #$0C
-	STA byte_RAM_3
-AreaTransitionPlacement_Reset_FindStandableTileLoop:
-	JSR SetTileOffsetAndAreaPageAddr_Bank1
-
-	LDY byte_RAM_E7
-	LDA (byte_RAM_1), Y
-	CMP #BackgroundTile_Sky
-	BNE AreaTransitionPlacement_Reset_FindOpenSpaceLoop
-
-	JSR AreaTransitionPlacement_MovePlayerUp1Tile
-
-	STA byte_RAM_E6
-	DEC byte_RAM_3
-	BNE AreaTransitionPlacement_Reset_FindStandableTileLoop
-ENDIF
+	STA zPlayerYLo
+	STA ze6
+	LDA iCurrentLvlEntryPage
+	STA ze8
 
 ;
 ; The player must start in empty space (not a wall)
 ;
 AreaTransitionPlacement_Reset_FindOpenSpace:
 	LDA #$0C
-	STA byte_RAM_3
+	STA z03
 AreaTransitionPlacement_Reset_FindOpenSpaceLoop:
 	JSR SetTileOffsetAndAreaPageAddr_Bank1
 
-	LDY byte_RAM_E7
-	LDA (byte_RAM_1), Y
+	LDY ze7
+	LDA (z01), Y
 	CMP #BackgroundTile_Sky
 	BEQ AreaTransitionPlacement_MovePlayerUp1Tile
 
 	JSR AreaTransitionPlacement_MovePlayerUp1Tile
 
-	STA byte_RAM_E6
-	DEC byte_RAM_3
+	STA ze6
+	DEC z03
 	BNE AreaTransitionPlacement_Reset_FindOpenSpaceLoop
 
 
@@ -4516,10 +4400,10 @@ AreaTransitionPlacement_Reset_FindOpenSpaceLoop:
 ; Moves the player up by one tile
 ;
 AreaTransitionPlacement_MovePlayerUp1Tile:
-	LDA PlayerYLo
+	LDA zPlayerYLo
 	SEC
 	SBC #$10
-	STA PlayerYLo
+	STA zPlayerYLo
 	RTS
 
 
@@ -4534,36 +4418,36 @@ AreaTransitionPlacement_MovePlayerUp1Tile:
 ; top-middle of the screen instead
 ;
 AreaTransitionPlacement_Door:
-	LDA PlayerXLo
+	LDA zPlayerXLo
 	; Switch the x-position to the opposite side of the screen
 	CLC
 	ADC #$08
 	AND #$F0
 	EOR #$F0
-	STA PlayerXLo
+	STA zPlayerXLo
 
 	; Convert to a tile offset
 	LSR A
 	LSR A
 	LSR A
 	LSR A
-	STA byte_RAM_E5
+	STA ze5
 
 	; Start at the bottom of the page
 	LDA #$E0
-	STA PlayerYLo
-	STA byte_RAM_E6
-	LDA CurrentLevelEntryPage
-	STA byte_RAM_E8
+	STA zPlayerYLo
+	STA ze6
+	LDA iCurrentLvlEntryPage
+	STA ze8
 	LDA #$0D
-	STA byte_RAM_3
+	STA z03
 
 AreaTransitionPlacement_Door_Loop:
 	JSR SetTileOffsetAndAreaPageAddr_Bank1
 
 	; Read the target tile
-	LDY byte_RAM_E7
-	LDA (byte_RAM_1), Y
+	LDY ze7
+	LDA (z01), Y
 	LDY #$05
 
 AreaTransitionPlacement_Door_InnerLoop:
@@ -4574,17 +4458,12 @@ AreaTransitionPlacement_Door_InnerLoop:
 	BNE AreaTransitionPlacement_Door_InnerLoop
 
 	; Nothing matched on this row, so check the next row or give up
-	DEC byte_RAM_3
-IFNDEF ROBUST_TRANSITION_SEARCH
+	DEC z03
 	BEQ AreaTransitionPlacement_Door_Fallback
-ENDIF
-IFDEF ROBUST_TRANSITION_SEARCH
-	BEQ AreaTransitionPlacement_DoorCustom
-ENDIF
 
 	JSR AreaTransitionPlacement_MovePlayerUp1Tile
 
-	STA byte_RAM_E6
+	STA ze6
 	JMP AreaTransitionPlacement_Door_Loop
 
 AreaTransitionPlacement_Door_Fallback:
@@ -4595,80 +4474,24 @@ AreaTransitionPlacement_Door_Exit:
 	JSR AreaTransitionPlacement_MovePlayerUp1Tile
 
 	LDA #$00
-	STA PlayerLock
+	STA iPlayerLock
 	RTS
-
-
-IFDEF ROBUST_TRANSITION_SEARCH
-;
-; Looks for a door and positions the player at it
-;
-; In contrast to the normal door placement routine, this will search all
-; x-positions rather than just one opposite the door
-;
-AreaTransitionPlacement_DoorCustom:
-	; Start on the correct page
-	LDX CurrentLevelEntryPage
-	JSR SetAreaPageAddr_Bank1
-
-	; Start at the bottom right and work backwards
-	LDA #$EF
-	STA byte_RAM_E7
-
-AreaTransitionPlacement_DoorCustom_Loop:
-	; Read the target tile
-	LDY byte_RAM_E7
-	LDA (byte_RAM_1), Y
-	LDY #$05
-
-AreaTransitionPlacement_DoorCustom_InnerLoop:
-	; See if it matches any door tile
-	CMP DoorTiles - 1, Y
-	BEQ AreaTransitionPlacement_DoorCustom_Exit
-	DEY
-	BNE AreaTransitionPlacement_DoorCustom_InnerLoop
-
-	; No matches on this tile, check the next one or give up
-	DEC byte_RAM_E7
-	BEQ AreaTransitionPlacement_DoorCustom_Fallback
-
-	JMP AreaTransitionPlacement_DoorCustom_Loop
-
-AreaTransitionPlacement_DoorCustom_Fallback:
-	LDA #$20
-	STA PlayerYLo
-	JSR AreaTransitionPlacement_Middle
-	JMP AreaTransitionPlacement_Door_Exit
-
-AreaTransitionPlacement_DoorCustom_Exit:
-	LDA byte_RAM_E7
-	ASL A
-	ASL A
-	ASL A
-	ASL A
-	STA PlayerXLo
-	LDA byte_RAM_E7
-	AND #$F0
-	STA PlayerYLo
-	JMP AreaTransitionPlacement_Door_Exit
-ENDIF
-
 
 ;
 ; Place the player at the top of the screen in the middle horizontally
 ;
 AreaTransitionPlacement_Jar:
 	LDA #$00
-	STA PlayerYLo
+	STA zPlayerYLo
 
 ;
 ; Place the player in the air in the middle of the screen horizontally
 ;
 AreaTransitionPlacement_Middle:
 	LDA #$01
-	STA PlayerInAir
+	STA zPlayerGrounding
 	LDA #$78
-	STA PlayerXLo
+	STA zPlayerXLo
 	RTS
 
 ;
@@ -4679,186 +4502,52 @@ AreaTransitionPlacement_Middle:
 ; be climbing on nothing.
 ;
 AreaTransitionPlacement_Climbing:
-	LDA PlayerXLo
+	LDA zPlayerXLo
 	; Switch the x-position to the opposite side of the screen
 	CLC
 	ADC #$08
 	AND #$F0
 	EOR #$F0
-	STA PlayerXLo
+	STA zPlayerXLo
 
 	; Switch the y-position to the opposite side of the screen
-	LDA PlayerScreenYLo
+	LDA iPlayerScreenY
 	CLC
 	ADC #$08
 	AND #$F0
 	EOR #$10
-	STA PlayerYLo
+	STA zPlayerYLo
 	CMP #$F0
 	BEQ AreaTransitionPlacement_Climbing_Exit
 
-	DEC PlayerYHi
+	DEC zPlayerYHi
 
 AreaTransitionPlacement_Climbing_Exit:
-IFDEF ROBUST_TRANSITION_SEARCH
-	JSR AreaTransitionPlacement_ClimbingCustom
-
-	BCS AreaTransitionPlacement_Climbing_SetPlayerAnimationFrame
-
-	; Try the opposite side of the screen
-	LDA PlayerYLo
-	EOR #$10
-	STA PlayerYLo
-
-	LDA PlayerYHi
-	EOR #$FF
-	STA PlayerYHi
-
-	JSR AreaTransitionPlacement_ClimbingCustom
-	BCC AreaTransitionPlacement_Climbing_UnreversePositionY
-
-	; Found something on the opposite side, so flip Y velocity
-	LDY #$01
-	LDA PlayerYVelocity
-	BMI AreaTransitionPlacement_Climbing_SetYVelocity
-
-	INY
-AreaTransitionPlacement_Climbing_SetYVelocity:
-	LDA ClimbSpeed, Y
-	STA PlayerYVelocity
-
-	BNE AreaTransitionPlacement_Climbing_SetPlayerAnimationFrame
-
-AreaTransitionPlacement_Climbing_UnreversePositionY:
-	; Unflip Y position
-	LDA PlayerYLo
-	EOR #$10
-	STA PlayerYLo
-
-	LDA PlayerYHi
-	EOR #$FF
-	STA PlayerYHi
-
-AreaTransitionPlacement_Climbing_SetPlayerAnimationFrame:
-ENDIF
-
 	LDA #SpriteAnimation_Climbing
-	STA PlayerAnimationFrame
+	STA zPlayerAnimFrame
 	RTS
-
-
-IFDEF ROBUST_TRANSITION_SEARCH
-;
-; Ouput
-;   C = set if a climbable tile was found
-;
-AreaTransitionPlacement_ClimbingCustom:
-	; Target x-position
-	LDA PlayerXLo
-	LSR A
-	LSR A
-	LSR A
-	LSR A
-	STA byte_RAM_E5
-
-	; Target y-position
-	LDA PlayerYLo
-	EOR #$10
-	CLC
-	ADC #$10
-	CMP #$F0
-	BNE AreaTransitionPlacement_ClimbingCustom_AfterNudge
-	SEC
-	SBC #$10
-AreaTransitionPlacement_ClimbingCustom_AfterNudge:
-	STA byte_RAM_E6
-
-	; Read the target tile
-	LDA CurrentLevelEntryPage
-	STA byte_RAM_E8
-	JSR SetTileOffsetAndAreaPageAddr_Bank1
-	LDY byte_RAM_E7
-	LDA (byte_RAM_1), Y
-
-	; Check if the target tile is climbable
-	LDY #$09
-AreaTransitionPlacement_ClimbingCustom_CheckLoop:
-	CMP ClimbableTiles, Y
-	BNE AreaTransitionPlacement_ClimbingCustom_LoopNext
-
-	RTS
-
-AreaTransitionPlacement_ClimbingCustom_LoopNext:
-	DEY
-	BPL AreaTransitionPlacement_ClimbingCustom_CheckLoop
-
-	; Target tile is not climbable; start at the right and work backwards
-	LDA byte_RAM_E7
-	AND #$F0
-	STA byte_RAM_E6
-
-	LDA #$0F
-	STA byte_RAM_3
-	CLC
-	ADC byte_RAM_E6
-	STA byte_RAM_E7
-
-AreaTransitionPlacement_ClimbingCustom_Loop:
-	; Read the target tile
-	LDY byte_RAM_E7
-	LDA (byte_RAM_1), Y
-	LDY #$09
-
-AreaTransitionPlacement_ClimbingCustom_InnerLoop:
-	CMP ClimbableTiles, Y
-	BEQ AreaTransitionPlacement_ClimbingCustom_SetXPosition
-	DEY
-	BPL AreaTransitionPlacement_ClimbingCustom_InnerLoop
-
-	; No matches on this tile, check the next one or give up
-	DEC byte_RAM_E7
-	DEC byte_RAM_3
-	BMI AreaTransitionPlacement_ClimbingCustom_NotFound
-
-	JMP AreaTransitionPlacement_ClimbingCustom_Loop
-
-AreaTransitionPlacement_ClimbingCustom_SetXPosition:
-	LDA byte_RAM_3
-	ASL A
-	ASL A
-	ASL A
-	ASL A
-	STA PlayerXLo
-
-	SEC
-	RTS
-
-AreaTransitionPlacement_ClimbingCustom_NotFound:
-	CLC
-	RTS
-ENDIF
 
 
 AreaTransitionPlacement_Subspace:
-	LDA PlayerScreenX
+	LDA iPlayerScreenX
 	SEC
-	SBC MoveCameraX
+	SBC zXVelocity
 	EOR #$FF
 	CLC
 	ADC #$F1
-	STA PlayerXLo
-	LDA PlayerScreenYLo
-	STA PlayerYLo
-	DEC PlayerLock
+	STA zPlayerXLo
+	LDA iPlayerScreenY
+	STA zPlayerYLo
+	DEC iPlayerLock
 	LDA #$60
-	STA SubspaceTimer
+	STA iSubTimeLeft
 	RTS
 
 
 AreaTransitionPlacement_Rocket:
 	JSR AreaTransitionPlacement_Middle
 	LDA #$60
-	STA PlayerYLo
+	STA zPlayerYLo
 	RTS
 
 
@@ -4886,12 +4575,12 @@ PageHeightCompensation:
 	ASL A
 	ASL A
 	ASL A
-	STA byte_RAM_F
+	STA z0f
 	PLA
 
 	; Subtract the tiles from the position
 	SEC
-	SBC byte_RAM_F
+	SBC z0f
 	BCS PageHeightCompensation_Exit
 
 	; Carry to the high byte
@@ -4901,37 +4590,33 @@ PageHeightCompensation_Exit:
 	RTS
 
 
-IFNDEF ENABLE_TILE_ATTRIBUTES_TABLE
-IFNDEF ROBUST_TRANSITION_SEARCH
 
 ; Unused space in the original ($95C3 - $95FF)
 unusedSpace $9600, $FF
-ENDIF
-ENDIF
 
 
 TitleScreenPPUDataPointers:
-	.dw PPUBuffer_301
+	.dw iPPUBuffer
 	.dw TitleLayout
 
 
 WaitForNMI_TitleScreen_TurnOnPPU:
 	LDA #PPUMask_ShowLeft8Pixels_BG | PPUMask_ShowLeft8Pixels_SPR | PPUMask_ShowBackground | PPUMask_ShowSprites
-	STA PPUMaskMirror
+	STA zPPUMask
 
 WaitForNMI_TitleScreen:
-	LDA ScreenUpdateIndex
+	LDA zScreenUpdateIndex
 	ASL A
 	TAX
 	LDA TitleScreenPPUDataPointers, X
-	STA RAM_PPUDataBufferPointer
+	STA zPPUDataBufferPointer
 	LDA TitleScreenPPUDataPointers + 1, X
-	STA RAM_PPUDataBufferPointer + 1
+	STA zPPUDataBufferPointer + 1
 
 	LDA #$00
-	STA NMIWaitFlag
+	STA zNMIOccurred
 WaitForNMI_TitleScreenLoop:
-	LDA NMIWaitFlag
+	LDA zNMIOccurred
 	BPL WaitForNMI_TitleScreenLoop
 
 	RTS
@@ -5053,10 +4738,6 @@ TitleLayout:
 	.db $23, $E3, $02, $88, $22
 	.db $23, $EA, $04, $F0, $F8, $F2, $F0
 	.db $00
-
-IFDEF PAD_TITLE_SCREEN_PPU_DATA
-	.pad TitleLayout + $300, $00
-ENDIF
 
 TitleBackgroundPalettes:
 	.db $22, $37, $16, $07 ; Most of screen, outline, etc.
@@ -5197,19 +4878,19 @@ TitleAttributeData2:
 
 TitleScreen:
 	LDY #$07 ; Does initialization of RAM.
-	STY byte_RAM_1 ; This clears $200 to $7FF.
+	STY z01 ; This clears $200 to $7FF.
 	LDY #$00
-	STY byte_RAM_0
+	STY z00
 	TYA
 
 InitMemoryLoop:
-	STA (byte_RAM_0), Y ; I'm not sure if a different method of initializing memory
+	STA (z00), Y ; I'm not sure if a different method of initializing memory
 ; would work better in this case.
 	DEY
 	BNE InitMemoryLoop
 
-	DEC byte_RAM_1
-	LDX byte_RAM_1
+	DEC z01
+	LDX z01
 	CPX #$02
 	BCS InitMemoryLoop ; Stop initialization after we hit $200.
 
@@ -5222,7 +4903,7 @@ InitMemoryLoop2:
 	; Notably, this leaves the stack area $0100-$01FF uninitialized.
 	; This is not super important, but you might want to do it yourself to
 	; track stack corruption or whatever.
-	STA byte_RAM_0, Y
+	STA z00, Y
 	INY
 	BNE InitMemoryLoop2
 
@@ -5244,44 +4925,44 @@ InitTitleBackgroundPalettesLoop:
 	BCC InitTitleBackgroundPalettesLoop
 
 	LDA #$01
-	STA RAM_PPUDataBufferPointer
+	STA zPPUDataBufferPointer
 	LDA #$03
-	STA RAM_PPUDataBufferPointer + 1
+	STA zPPUDataBufferPointer + 1
 	LDA #Stack100_Menu
-	STA StackArea
+	STA iStack
 	LDA #PPUCtrl_Base2000 | PPUCtrl_WriteHorizontal | PPUCtrl_Sprite0000 | PPUCtrl_Background1000 | PPUCtrl_SpriteSize8x8 | PPUCtrl_NMIEnabled
-	STA PPUCtrlMirror
+	STA zPPUControl
 	STA PPUCTRL
 	JSR WaitForNMI_TitleScreen
 
 	LDA #$01 ; @TODO
-	STA ScreenUpdateIndex
+	STA zScreenUpdateIndex
 	JSR WaitForNMI_TitleScreen
 
 	LDA #Music1_Title
-	STA MusicQueue1
+	STA iMusic1
 	JSR WaitForNMI_TitleScreen_TurnOnPPU
 
 	LDA #$03
-	STA byte_RAM_10
+	STA z10
 	LDA #$25
-	STA byte_RAM_2
+	STA z02
 	LDA #$20
-	STA PlayerXHi
+	STA zPlayerXHi
 	LDA #$C7
-	STA ObjectXHi
+	STA zObjectXHi
 	LDA #$52
-	STA ObjectXHi + 1
+	STA zObjectXHi + 1
 
 loc_BANK0_9AB4:
 	JSR WaitForNMI_TitleScreen
 
-	LDA ObjectXHi + 2
+	LDA zObjectXHi + 2
 	BNE loc_BANK0_9AF3
 
 loc_BANK0_9ABB:
-	INC byte_RAM_10
-	LDA byte_RAM_10
+	INC z10
+	LDA z10
 	AND #$0F
 	BEQ loc_BANK0_9AC6
 
@@ -5290,65 +4971,65 @@ loc_BANK0_9ABB:
 ; ---------------------------------------------------------------------------
 
 loc_BANK0_9AC6:
-	DEC byte_RAM_2
-	LDA byte_RAM_2
+	DEC z02
+	LDA z02
 	CMP #$06
 	BNE loc_BANK0_9B4D
 
-	INC ObjectXHi + 2
-	LDA PlayerXHi
-	STA PPUBuffer_301
-	LDA ObjectXHi
-	STA PPUBuffer_301 + 1
-	LDA ObjectXHi + 1
-	STA PPUBuffer_301 + 2
+	INC zObjectXHi + 2
+	LDA zPlayerXHi
+	STA iPPUBuffer
+	LDA zObjectXHi
+	STA iPPUBuffer + 1
+	LDA zObjectXHi + 1
+	STA iPPUBuffer + 2
 	LDA #$E6
-	STA ObjectXHi
+	STA zObjectXHi
 	LDA #$54
-	STA ObjectXHi + 1
+	STA zObjectXHi + 1
 	LDA #$0FB
-	STA PPUBuffer_301 + 3
+	STA iPPUBuffer + 3
 	LDA #$00
-	STA PPUBuffer_301 + 4
+	STA iPPUBuffer + 4
 	BEQ loc_BANK0_9B4D
 
 loc_BANK0_9AF3:
-	LDA PlayerXHi
-	STA PPUBuffer_301
-	LDA ObjectXHi
-	STA PPUBuffer_301 + 1
-	LDA ObjectXHi + 1
-	STA PPUBuffer_301 + 2
+	LDA zPlayerXHi
+	STA iPPUBuffer
+	LDA zObjectXHi
+	STA iPPUBuffer + 1
+	LDA zObjectXHi + 1
+	STA iPPUBuffer + 2
 	LDA #$0FB
-	STA PPUBuffer_301 + 3
+	STA iPPUBuffer + 3
 	LDA #$00
-	STA PPUBuffer_301 + 4
-	LDA ObjectXHi
+	STA iPPUBuffer + 4
+	LDA zObjectXHi
 	CLC
 	ADC #$20
-	STA ObjectXHi
-	LDA PlayerXHi
+	STA zObjectXHi
+	LDA zPlayerXHi
 	ADC #$00
-	STA PlayerXHi
+	STA zPlayerXHi
 	CMP #$23
 
 loc_BANK0_9B1B:
 	BCC loc_BANK0_9B4D
 
 	LDA #$20
-	STA byte_RAM_10
+	STA z10
 	LDX #$17
 	LDY #$00
 
 loc_BANK0_9B25:
 	LDA TitleAttributeData1, Y
-	STA PPUBuffer_301 + 4, Y
+	STA iPPUBuffer + 4, Y
 	INY
 	DEX
 	BPL loc_BANK0_9B25
 
 	LDA #$00
-	STA PPUBuffer_301 + 4, Y
+	STA iPPUBuffer + 4, Y
 	JSR WaitForNMI_TitleScreen
 
 	LDX #$1B
@@ -5356,19 +5037,19 @@ loc_BANK0_9B25:
 
 loc_BANK0_9B3B:
 	LDA TitleAttributeData2, Y
-	STA PPUBuffer_301, Y
+	STA iPPUBuffer, Y
 	INY
 	DEX
 	BPL loc_BANK0_9B3B
 
 	LDA #$00
-	STA PPUBuffer_301, Y
+	STA iPPUBuffer, Y
 	JMP loc_BANK0_9B59
 
 ; ---------------------------------------------------------------------------
 
 loc_BANK0_9B4D:
-	LDA Player1JoypadPress
+	LDA zInputBottleneck
 	AND #ControllerInput_Start
 	BEQ loc_BANK0_9B56
 
@@ -5384,7 +5065,7 @@ loc_BANK0_9B56:
 loc_BANK0_9B59:
 	JSR WaitForNMI_TitleScreen
 
-	LDA ObjectXHi + 4
+	LDA zObjectXHi + 4
 	BEQ loc_BANK0_9B63
 
 	JMP loc_BANK0_9C19
@@ -5392,14 +5073,14 @@ loc_BANK0_9B59:
 ; ---------------------------------------------------------------------------
 
 loc_BANK0_9B63:
-	LDA ObjectXHi + 3
+	LDA zObjectXHi + 3
 	CMP #$09
 	BEQ loc_BANK0_9B93
 
-	LDA ObjectXHi + 3
+	LDA zObjectXHi + 3
 	BNE loc_BANK0_9BA3
 
-	DEC byte_RAM_10
+	DEC z10
 	BMI TitleScreen_WriteSTORYText
 
 	JMP loc_BANK0_9C19
@@ -5408,93 +5089,93 @@ loc_BANK0_9B63:
 
 TitleScreen_WriteSTORYText:
 	LDA #$20
-	STA PPUBuffer_301
+	STA iPPUBuffer
 	LDA #$0AE
-	STA PPUBuffer_301 + 1
+	STA iPPUBuffer + 1
 	LDA #$05 ; Length of STORY text (5 bytes)
-	STA PPUBuffer_301 + 2
+	STA iPPUBuffer + 2
 	LDY #$04 ; Bytes to copy minus one (5-1=4)
 
 TitleScreen_WriteSTORYTextLoop:
 	LDA TitleStoryText_STORY, Y ; Copy STORY text to PPU write buffer
-	STA PPUBuffer_301 + 3, Y
+	STA iPPUBuffer + 3, Y
 	DEY
 	BPL TitleScreen_WriteSTORYTextLoop
 
 	LDA #$00 ; Terminate STORY text in buffer
-	STA PPUBuffer_301 + 8
+	STA iPPUBuffer + 8
 
 loc_BANK0_9B93:
-	INC ObjectXHi + 3
+	INC zObjectXHi + 3
 	LDA #$21
-	STA PlayerXHi
+	STA zPlayerXHi
 	LDA #$06
-	STA ObjectXHi
+	STA zObjectXHi
 	LDA #$40
-	STA ObjectXHi + 5
+	STA zObjectXHi + 5
 	BNE loc_BANK0_9C19
 
 loc_BANK0_9BA3:
-	DEC ObjectXHi + 5
+	DEC zObjectXHi + 5
 	BPL loc_BANK0_9C19
 
 loc_BANK0_9BA7:
 	LDA #$40
-	STA ObjectXHi + 5
-	LDA PlayerXHi
-	STA PPUBuffer_301
+	STA zObjectXHi + 5
+	LDA zPlayerXHi
+	STA iPPUBuffer
 
 loc_BANK0_9BB0:
-	LDA ObjectXHi
+	LDA zObjectXHi
 
 loc_BANK0_9BB2:
-	STA PPUBuffer_301 + 1
+	STA iPPUBuffer + 1
 	LDA #$14
-	STA PPUBuffer_301 + 2
-	LDX ObjectXHi + 3
+	STA iPPUBuffer + 2
+	LDX zObjectXHi + 3
 	DEX
 	LDA TitleStoryTextPointersHi, X
-	STA byte_RAM_4
+	STA z04
 	LDA TitleStoryTextPointersLo, X
-	STA byte_RAM_3
+	STA z03
 	LDY #$00
 	LDX #$13
 
 loc_BANK0_9BCB:
-	LDA (byte_RAM_3), Y
-	STA PPUBuffer_301 + 3, Y
+	LDA (z03), Y
+	STA iPPUBuffer + 3, Y
 	INY
 	DEX
 	BPL loc_BANK0_9BCB
 
 	LDA #$00
-	STA PPUBuffer_301 + 3, Y
-	INC ObjectXHi + 3
-	LDA ObjectXHi
+	STA iPPUBuffer + 3, Y
+	INC zObjectXHi + 3
+	LDA zObjectXHi
 	CLC
 	ADC #$40
-	STA ObjectXHi
-	LDA PlayerXHi
+	STA zObjectXHi
+	LDA zPlayerXHi
 	ADC #$00
-	STA PlayerXHi
-	LDA ObjectXHi + 3
+	STA zPlayerXHi
+	LDA zObjectXHi + 3
 	CMP #$09
 	BCC loc_BANK0_9C19
 
 	BNE loc_BANK0_9C0B
 
 	LDA #$09
-	STA byte_RAM_2
+	STA z02
 	LDA #$03
-	STA byte_RAM_10
+	STA z10
 	LDA #$20
-	STA PlayerXHi
+	STA zPlayerXHi
 	LDA #$C7
-	STA ObjectXHi
+	STA zObjectXHi
 	LDA #$52
-	STA ObjectXHi + 1
+	STA zObjectXHi + 1
 	LDA #$00
-	STA ObjectXHi + 2
+	STA zObjectXHi + 2
 	JMP loc_BANK0_9ABB
 
 ; ---------------------------------------------------------------------------
@@ -5503,27 +5184,27 @@ loc_BANK0_9C0B:
 	CMP #$12
 	BCC loc_BANK0_9C19
 
-	INC ObjectXHi + 4
+	INC zObjectXHi + 4
 	LDA #$25
-	STA byte_RAM_2
+	STA z02
 	LDA #$03
-	STA byte_RAM_10
+	STA z10
 
 loc_BANK0_9C19:
-	LDA Player1JoypadHeld
+	LDA zInputCurrentState
 	AND #ControllerInput_Start
 	BEQ loc_BANK0_9C35
 
 loc_BANK0_9C1F:
 	LDA #Music2_StopMusic
-	STA MusicQueue2
+	STA iMusic2
 	JSR WaitForNMI_TitleScreen
 
 	LDA #$00
 	TAY
 
 loc_BANK0_9C2A:
-	STA byte_RAM_0, Y
+	STA z00, Y
 	INY
 	CPY #$F0
 	BCC loc_BANK0_9C2A
@@ -5533,16 +5214,16 @@ loc_BANK0_9C2A:
 ; ---------------------------------------------------------------------------
 
 loc_BANK0_9C35:
-	LDA ObjectXHi + 4
+	LDA zObjectXHi + 4
 	BEQ loc_BANK0_9C4B
 
-	INC byte_RAM_10
-	LDA byte_RAM_10
+	INC z10
+	LDA z10
 	AND #$0F
 	BNE loc_BANK0_9C4B
 
-	DEC byte_RAM_2
-	LDA byte_RAM_2
+	DEC z02
+	LDA z02
 	CMP #$06
 	BNE loc_BANK0_9C4B
 
@@ -5555,7 +5236,7 @@ loc_BANK0_9C4B:
 
 loc_BANK0_9C4E:
 	LDA #PPUCtrl_Base2000 | PPUCtrl_WriteHorizontal | PPUCtrl_Sprite0000 | PPUCtrl_Background1000 | PPUCtrl_SpriteSize8x8 | PPUCtrl_NMIDisabled
-	STA PPUCtrlMirror
+	STA zPPUControl
 
 loc_BANK0_9C52:
 	STA PPUCTRL
@@ -5570,7 +5251,7 @@ unusedSpace $A200, $FF
 
 
 EndingPPUDataPointers:
-	.dw PPUBuffer_301
+	.dw iPPUBuffer
 	.dw EndingCorkJarRoom
 	.dw EndingCelebrationCeilingTextAndPodium
 	.dw EndingCelebrationFloorAndSubconParade
@@ -5593,21 +5274,21 @@ WaitForNMI_Ending_TurnOnPPU:
 	LDA #PPUMask_ShowLeft8Pixels_BG | PPUMask_ShowLeft8Pixels_SPR | PPUMask_ShowBackground | PPUMask_ShowSprites
 
 WaitForNMI_Ending_SetPPUMaskMirror:
-	STA PPUMaskMirror
+	STA zPPUMask
 
 WaitForNMI_Ending:
-	LDA ScreenUpdateIndex
+	LDA zScreenUpdateIndex
 	ASL A
 	TAX
 	LDA EndingPPUDataPointers, X
-	STA RAM_PPUDataBufferPointer
+	STA zPPUDataBufferPointer
 	LDA EndingPPUDataPointers + 1, X
-	STA RAM_PPUDataBufferPointer + 1
+	STA zPPUDataBufferPointer + 1
 
 	LDA #$00
-	STA NMIWaitFlag
+	STA zNMIOccurred
 WaitForNMI_EndingLoop:
-	LDA NMIWaitFlag
+	LDA zNMIOccurred
 	BPL WaitForNMI_EndingLoop
 
 	RTS
@@ -5740,75 +5421,75 @@ FreeSubconsScene:
 	JSR ClearNametablesAndSprites
 
 	LDA #Stack100_Menu
-	STA StackArea
+	STA iStack
 	LDA #PPUCtrl_Base2000 | PPUCtrl_WriteHorizontal | PPUCtrl_Sprite0000 | PPUCtrl_Background1000 | PPUCtrl_SpriteSize8x16 | PPUCtrl_NMIEnabled
-	STA PPUCtrlMirror
+	STA zPPUControl
 	STA PPUCTRL
 	JSR WaitForNMI_Ending
 
 	LDA #EndingUpdateBuffer_JarRoom
-	STA ScreenUpdateIndex
+	STA zScreenUpdateIndex
 	JSR WaitForNMI_Ending
 
 	LDA #$60
-	STA FreeSubconsTimer
+	STA zEndgameTimer
 	LDA #$01
-	STA PlayerDirection
+	STA zPlayerFacing
 	LSR A
-	STA PlayerState ; A=$00
-	STA FreeSubconsCorkCounter
-	STA CrouchJumpTimer
-	STA byte_RAM_E6
-	STA byte_RAM_E5
-	STA SpriteFlickerSlot
+	STA zPlayerState ; A=$00
+	STA zEndgameCorkTimer
+	STA iCrouchJumpTimer
+	STA ze6
+	STA ze5
+	STA iObjectFlickerer
 
 	LDX #$09
 FreeSubconsScene_SpriteLoop:
 	LDA CorkRoomSpriteStartX, X
-	STA ObjectXLo - 1, X
+	STA zObjectXLo - 1, X
 	LDA CorkRoomSpriteStartY, X
-	STA ObjectYLo - 1, X
+	STA zObjectYLo - 1, X
 	LDA CorkRoomSpriteTargetX, X
-	STA ObjectXVelocity - 1, X
+	STA zObjectXVelocity - 1, X
 	LDA CorkRoomSpriteTargetY, X
-	STA ObjectYVelocity - 1, X
+	STA zObjectYVelocity - 1, X
 	LDA CorkRoomSpriteDelay, X
-	STA ObjectTimer1 - 1, X
+	STA zSpriteTimer - 1, X
 	LDA CorkRoomSpriteAttributes, X
-	STA ObjectAttributes - 1, X
+	STA zObjectAttributes - 1, X
 	DEX
 	BPL FreeSubconsScene_SpriteLoop
 
 FreeSubconsScene_JumpingLoop:
 	JSR WaitForNMI_Ending_TurnOnPPU
 
-	INC byte_RAM_10
+	INC z10
 	JSR HideAllSprites
 
 	JSR FreeSubconsScene_Player
 
 	JSR FreeSubconsScene_Cork
 
-	LDA FreeSubconsTimer
+	LDA zEndgameTimer
 	BEQ FreeSubconsScene_Exit
 
-	LDA byte_RAM_10
+	LDA z10
 	AND #$07
 	BNE FreeSubconsScene_JumpingLoop
 
-	DEC FreeSubconsTimer
-	LDA FreeSubconsTimer
+	DEC zEndgameTimer
+	LDA zEndgameTimer
 	CMP #$25
 	BNE FreeSubconsScene_JumpingLoop
 
 	LDY #Music2_EndingAndCast
-	STY MusicQueue2
+	STY iMusic2
 	BNE FreeSubconsScene_JumpingLoop
 
 FreeSubconsScene_Exit:
 	JSR EndingSceneTransition
 
-	LDA byte_RAM_E6
+	LDA ze6
 	BEQ FreeSubconsScene_JumpingLoop
 
 	RTS
@@ -5818,25 +5499,25 @@ FreeSubconsScene_Exit:
 ; Moves the player, driving the main action in the scene
 ;
 FreeSubconsScene_Player:
-	LDA PlayerWalkFrameCounter
+	LDA zWalkCycleTimer
 	BEQ FreeSubconsScene_Player_AfterWalkFrameCounter
 
-	DEC PlayerWalkFrameCounter
+	DEC zWalkCycleTimer
 
 FreeSubconsScene_Player_AfterWalkFrameCounter:
-	LDA PlayerStateTimer
+	LDA zPlayerStateTimer
 	BEQ FreeSubconsScene_Player_AfterStateTimer
 
-	DEC PlayerStateTimer
+	DEC zPlayerStateTimer
 
 FreeSubconsScene_Player_AfterStateTimer:
-	LDA PlayerXLo
-	STA PlayerScreenX
-	LDA PlayerYLo
-	STA PlayerScreenYLo
+	LDA zPlayerXLo
+	STA iPlayerScreenX
+	LDA zPlayerYLo
+	STA iPlayerScreenY
 	JSR RenderPlayer
 
-	LDA PlayerState
+	LDA zPlayerState
 	JSR JumpToTableAfterJump
 
 
@@ -5854,18 +5535,18 @@ FreeSubconsScene_Phase1:
 	JSR ApplyPlayerPhysicsX
 
 	; check x-position to trigger first jump
-	LDA PlayerXLo
+	LDA zPlayerXLo
 	CMP #$3E
 	BCC FreeSubconsScene_PhaseExit
 
-	INC PlayerState
-	INC PlayerInAir
+	INC zPlayerState
+	INC zPlayerGrounding
 	LDA #SpriteAnimation_Jumping
-	STA PlayerAnimationFrame
+	STA zPlayerAnimFrame
 
 FreeSubconsScene_Jump:
 	LDA #SoundEffect2_Jump
-	STA SoundEffectQueue2
+	STA iPulse1SFX
 	JMP PlayerStartJump
 
 
@@ -5879,17 +5560,17 @@ FreeSubconsScene_Phase2:
 
 	JSR ApplyPlayerPhysicsY
 
-	LDA PlayerYVelocity
+	LDA zPlayerYVelocity
 	BMI FreeSubconsScene_PhaseExit
 
 	; check y-position to trigger second jump
-	LDA PlayerYLo
+	LDA zPlayerYLo
 	CMP #$A0
 	BCC FreeSubconsScene_Phase2_NoJump
 
 	; set x-velocity to land second jump on the jar
 	LDA #$0C
-	STA PlayerXVelocity
+	STA zPlayerXVelocity
 	JMP FreeSubconsScene_Jump
 
 FreeSubconsScene_Phase2_NoJump:
@@ -5898,12 +5579,12 @@ FreeSubconsScene_Phase2_NoJump:
 	BCC FreeSubconsScene_PhaseExit
 
 	; check x-position for jar
-	LDA PlayerXLo
+	LDA zPlayerXLo
 	CMP #$70
 	BCC FreeSubconsScene_PhaseExit
 
-	INC PlayerState
-	DEC PlayerInAir
+	INC zPlayerState
+	DEC zPlayerGrounding
 
 FreeSubconsScene_PhaseExit:
 	RTS
@@ -5916,19 +5597,19 @@ FreeSubconsScene_Phase3:
 	JSR ApplyPlayerPhysicsX
 
 	; check x-position for jar
-	LDA PlayerXLo
+	LDA zPlayerXLo
 	CMP #$80
 	BCC FreeSubconsScene_PhaseExit
 
 	; pull the cork
-	INC PlayerState
-	INC HoldingItem
+	INC zPlayerState
+	INC zHeldItem
 	LDA #SpriteAnimation_Pulling
-	STA PlayerAnimationFrame
+	STA zPlayerAnimFrame
 	LDA #$05
-	STA FreeSubconsCorkCounter
+	STA zEndgameCorkTimer
 	LDA #$28
-	STA PlayerStateTimer
+	STA zPlayerStateTimer
 	RTS
 
 
@@ -5948,32 +5629,32 @@ PullCorkOffsets:
 
 ; Pull the cork out
 FreeSubconsScene_Phase4:
-	; use PlayerStateTimer to hold this frame
-	LDA PlayerStateTimer
+	; use zPlayerStateTimer to hold this frame
+	LDA zPlayerStateTimer
 	BNE FreeSubconsScene_Phase4_Exit
 
-	; next FreeSubconsCorkCounter to move cork
-	DEC FreeSubconsCorkCounter
+	; next zEndgameCorkTimer to move cork
+	DEC zEndgameCorkTimer
 	BNE FreeSubconsScene_Phase4_NextCorkFrame
 
 	; uncorked! start jumping
-	INC PlayerState
-	INC PlayerInAir
+	INC zPlayerState
+	INC zPlayerGrounding
 
 	LDA #SpriteAnimation_Jumping
-	STA PlayerAnimationFrame
+	STA zPlayerAnimFrame
 
 	LDA #DPCM_ItemPull
-	STA DPCMQueue
+	STA iDPCMSFX
 
 	LDA #$A0
-	STA ObjectYVelocity + 8
+	STA zObjectYVelocity + 8
 	RTS
 
 FreeSubconsScene_Phase4_NextCorkFrame:
-	LDY FreeSubconsCorkCounter
+	LDY zEndgameCorkTimer
 	LDA PullCorkFrameDurations - 1, Y
-	STA PlayerStateTimer
+	STA zPlayerStateTimer
 
 FreeSubconsScene_Phase4_Exit:
 	RTS
@@ -5989,11 +5670,11 @@ FreeSubconsScene_Phase5:
 
 	JSR ApplyPlayerPhysicsY
 
-	LDA PlayerYVelocity
+	LDA zPlayerYVelocity
 	BMI FreeSubconsScene_Phase5_Exit
 
 	; jump when we're on the jar
-	LDA PlayerYLo
+	LDA zPlayerYLo
 	CMP #$80
 	BCC FreeSubconsScene_Phase5_Exit
 
@@ -6011,11 +5692,11 @@ CorkRoomCharacterGravity:
 
 
 ApplyCorkRoomGravity:
-	LDY CurrentCharacter
+	LDY zCurrentCharacter
 	LDA CorkRoomCharacterGravity, Y
 	CLC
-	ADC PlayerYVelocity
-	STA PlayerYVelocity
+	ADC zPlayerYVelocity
+	STA zPlayerYVelocity
 	RTS
 
 
@@ -6026,43 +5707,43 @@ FreeSubconsScene_Subcons:
 	LDX #$07
 
 FreeSubconsScene_Subcons_Loop:
-	STX byte_RAM_12
-	LDA ObjectTimer1, X
+	STX z12
+	LDA zSpriteTimer, X
 	BEQ FreeSubconsScene_Subcons_Movement
 
 	CMP #$01
 	BNE FreeSubconsScene_Subcons_Next
 
 	LDA #SoundEffect1_ThrowItem
-	STA SoundEffectQueue1
+	STA iPulse2SFX
 	BNE FreeSubconsScene_Subcons_Next
 
 FreeSubconsScene_Subcons_Movement:
 	JSR ApplyObjectMovement_Bank1
 
-	LDA ObjectYVelocity, X
+	LDA zObjectYVelocity, X
 	CMP #$08
 	BMI FreeSubconsScene_Subcons_Render
 
 	LDA #$00
-	STA ObjectXVelocity, X
+	STA zObjectXVelocity, X
 	LDA #$F9
-	STA ObjectYVelocity, X
+	STA zObjectYVelocity, X
 	LDA CorkRoomSpriteAttributes + 1, X
 	EOR #ObjAttrib_Palette0 | ObjAttrib_16x32
-	STA ObjectAttributes, X
+	STA zObjectAttributes, X
 
 FreeSubconsScene_Subcons_Render:
-	LDA byte_RAM_10
+	LDA z10
 	ASL A
 	AND #$02
-	STA byte_RAM_F
+	STA z0f
 	JSR FreeSubconsScene_Render
 
-	INC ObjectTimer1, X
+	INC zSpriteTimer, X
 
 FreeSubconsScene_Subcons_Next:
-	DEC ObjectTimer1, X
+	DEC zSpriteTimer, X
 	DEX
 	BPL FreeSubconsScene_Subcons_Loop
 
@@ -6072,15 +5753,15 @@ FreeSubconsScene_Subcons_Next:
 
 FreeSubconsScene_Cork:
 	LDA #$04
-	STA byte_RAM_F
+	STA z0f
 	LDX #$08
-	STX byte_RAM_12
+	STX z12
 	JSR FreeSubconsScene_Render
 
-	LDY FreeSubconsCorkCounter
+	LDY zEndgameCorkTimer
 	BNE FreeSubconsScene_Cork_Pull
 
-	LDA ObjectYLo + 8
+	LDA zObjectYLo + 8
 	CMP #$F0
 	BCS FreeSubconsScene_Cork_Exit
 
@@ -6089,8 +5770,8 @@ FreeSubconsScene_Cork:
 FreeSubconsScene_Cork_Pull:
 	LDA PullCorkOffsets - 1, Y
 	CLC
-	ADC PlayerYLo
-	STA ObjectYLo + 8
+	ADC zPlayerYLo
+	STA zObjectYLo + 8
 
 FreeSubconsScene_Cork_Exit:
 	RTS
@@ -6118,34 +5799,34 @@ CorkRoomSpriteOAMAddress:
 
 FreeSubconsScene_Render:
 	LDY CorkRoomSpriteOAMAddress, X
-	LDA ObjectYLo, X
-	STA SpriteDMAArea, Y
-	STA SpriteDMAArea + 4, Y
-	LDA ObjectXLo, X
-	STA SpriteDMAArea + 3, Y
+	LDA zObjectYLo, X
+	STA iVirtualOAM, Y
+	STA iVirtualOAM + 4, Y
+	LDA zObjectXLo, X
+	STA iVirtualOAM + 3, Y
 	CLC
 	ADC #$08
-	STA SpriteDMAArea + 7, Y
-	LDA ObjectAttributes, X
-	STA SpriteDMAArea + 2, Y
-	STA SpriteDMAArea + 6, Y
-	LDX byte_RAM_F
+	STA iVirtualOAM + 7, Y
+	LDA zObjectAttributes, X
+	STA iVirtualOAM + 2, Y
+	STA iVirtualOAM + 6, Y
+	LDX z0f
 	AND #ObjAttrib_16x32
 	BNE FreeSubconsScene_Render_Flipped
 
 	LDA CorkRoomSpriteTiles, X
-	STA SpriteDMAArea + 1, Y
+	STA iVirtualOAM + 1, Y
 	LDA CorkRoomSpriteTiles + 1, X
 	BNE FreeSubconsScene_Render_Exit
 
 FreeSubconsScene_Render_Flipped:
 	LDA CorkRoomSpriteTiles + 1, X
-	STA SpriteDMAArea + 1, Y
+	STA iVirtualOAM + 1, Y
 	LDA CorkRoomSpriteTiles, X
 
 FreeSubconsScene_Render_Exit:
-	STA SpriteDMAArea + 5, Y
-	LDX byte_RAM_12
+	STA iVirtualOAM + 5, Y
+	LDX z12
 	RTS
 
 
@@ -6357,17 +6038,17 @@ ContributorScene:
 	JSR ClearNametablesAndSprites
 
 	LDA #Stack100_Menu
-	STA StackArea
+	STA iStack
 	JSR EnableNMI_Bank1
 
 	JSR WaitForNMI_Ending
 
 	LDA #EndingUpdateBuffer_CeilingTextAndPodium
-	STA ScreenUpdateIndex
+	STA zScreenUpdateIndex
 	JSR WaitForNMI_Ending
 
 	LDA #EndingUpdateBuffer_FloorAndSubconParade
-	STA ScreenUpdateIndex
+	STA zScreenUpdateIndex
 	JSR WaitForNMI_Ending
 
 	JSR Ending_GetContributor
@@ -6380,40 +6061,40 @@ ContributorScene:
 	LDY #$03
 ContributorScene_SpriteZeroLoop:
 	LDA ContributorSpriteZeroOAMData, Y
-	STA SpriteDMAArea, Y
+	STA iVirtualOAM, Y
 	DEY
 	BPL ContributorScene_SpriteZeroLoop
 
 	LDA #$00
-	STA byte_RAM_F3
-	STA byte_RAM_E6
+	STA zf3
+	STA ze6
 
 	LDY #$3F
 ContributorScene_CharacterLoop:
 	LDA ContributorCharacterOAMData, Y
-	STA SpriteDMAArea + $10, Y
+	STA iVirtualOAM + $10, Y
 	DEY
 	BPL ContributorScene_CharacterLoop
 
 	LDA #$FF
-	STA PlayerXHi
+	STA zPlayerXHi
 	LDA #$A0
-	STA PlayerXLo
+	STA zPlayerXLo
 	LDA #$08
-	STA PlayerXVelocity
+	STA zPlayerXVelocity
 	LDA #$01
-	STA IsHorizontalLevel
+	STA zScrollCondition
 
 loc_BANK1_AAD4:
 	JSR WaitForNMI_Ending_TurnOnPPU
 
-	INC byte_RAM_F3
-	INC byte_RAM_10
+	INC zf3
+	INC z10
 	JSR ContributorTicker
 
 	JSR loc_BANK1_ABCC
 
-	LDA byte_RAM_E6
+	LDA ze6
 	CMP #$03
 	BCS loc_BANK1_AB20
 
@@ -6431,8 +6112,8 @@ loc_BANK1_AAF3:
 	LDY #$00
 
 loc_BANK1_AAF5:
-	LDA byte_RAM_0
-	LDA byte_RAM_0
+	LDA z00
+	LDA z00
 	DEY
 	BNE loc_BANK1_AAF5
 
@@ -6440,20 +6121,20 @@ loc_BANK1_AAF5:
 	BNE loc_BANK1_AAF3
 
 	LDA PPUSTATUS
-	LDA byte_RAM_F2
+	LDA zf2
 	STA PPUSCROLL
 	LDA #$00
 	STA PPUSCROLL
-	LDA byte_RAM_F3
+	LDA zf3
 	CMP #$0A
 	BCC loc_BANK1_AB1D
 
 	LDA #$00
-	STA byte_RAM_F3
-	LDA byte_RAM_F2
+	STA zf3
+	LDA zf2
 	SEC
 	SBC #$30
-	STA byte_RAM_F2
+	STA zf2
 
 loc_BANK1_AB1D:
 	JMP loc_BANK1_AAD4
@@ -6465,19 +6146,19 @@ loc_BANK1_AB20:
 	JSR ChangeNametableMirroring
 
 	LDA #$01
-	STA byte_RAM_F2
+	STA zf2
 	LSR A
-	STA byte_RAM_F3
-	STA byte_RAM_7
+	STA zf3
+	STA z07
 	LDA #EndingUpdateBuffer_SubconStandStill
-	STA ScreenUpdateIndex
+	STA zScreenUpdateIndex
 
 loc_BANK1_AB32:
 	JSR WaitForNMI_Ending
 
 	JSR EnableNMI_Bank1
 
-	INC byte_RAM_F3
+	INC zf3
 	JSR ContributorTicker
 
 	JSR ContributorCharacterAnimation
@@ -6496,8 +6177,8 @@ loc_BANK1_AB4C:
 	LDY #$00
 
 loc_BANK1_AB4E:
-	LDA byte_RAM_0
-	LDA byte_RAM_0
+	LDA z00
+	LDA z00
 	DEY
 	BNE loc_BANK1_AB4E
 
@@ -6505,33 +6186,33 @@ loc_BANK1_AB4E:
 	BNE loc_BANK1_AB4C
 
 	LDA #$B0
-	ORA byte_RAM_F2
-	STA PPUCtrlMirror
+	ORA zf2
+	STA zPPUControl
 	STA PPUCTRL
 	LDA PPUSTATUS
 	LDA #$00
 	STA PPUSCROLL
 	LDA #$00
 	STA PPUSCROLL
-	LDA byte_RAM_F3
+	LDA zf3
 	CMP #$14
 	BCC loc_BANK1_AB80
 
 	LDA #$00
-	STA byte_RAM_F3
-	LDA byte_RAM_F2
+	STA zf3
+	LDA zf2
 	EOR #$01
-	STA byte_RAM_F2
-	INC byte_RAM_7
+	STA zf2
+	INC z07
 
 loc_BANK1_AB80:
-	LDA byte_RAM_7
+	LDA z07
 	CMP #$29
 	BCC loc_BANK1_AB32
 
 	JSR EndingSceneTransition
 
-	LDA byte_RAM_E6
+	LDA ze6
 	CMP #$04
 	BCC loc_BANK1_AB32
 
@@ -6542,21 +6223,21 @@ loc_BANK1_AB80:
 ; Advances to the next scene and does the palette transition
 ;
 EndingSceneTransition:
-	LDA byte_RAM_10
+	LDA z10
 	AND #$03
 	BNE EndingSceneTransition_Exit
 
-	INC byte_RAM_E5
-	LDY byte_RAM_E5
+	INC ze5
+	LDY ze5
 	CPY #$03
 	BCS EndingSceneTransition_Next
 
 	LDA EndingScreenUpdateIndex, Y
-	STA ScreenUpdateIndex
+	STA zScreenUpdateIndex
 	RTS
 
 EndingSceneTransition_Next:
-	INC byte_RAM_E6
+	INC ze6
 
 EndingSceneTransition_Exit:
 	RTS
@@ -6565,24 +6246,24 @@ EndingSceneTransition_Exit:
 ; ---------------------------------------------------------------------------
 
 loc_BANK1_ABA7:
-	LDA byte_RAM_10
+	LDA z10
 	AND #$03
 	BNE EndingSceneTransition_Exit
 
-	DEC byte_RAM_E5
-	LDY byte_RAM_E5
+	DEC ze5
+	LDY ze5
 	LDA EndingScreenUpdateIndex, Y
-	STA ScreenUpdateIndex
+	STA zScreenUpdateIndex
 	TYA
 	BNE EndingSceneTransition_Exit
 
-	INC byte_RAM_E6
+	INC ze6
 	RTS
 
 
 EnableNMI_Bank1:
 	LDA #PPUCtrl_Base2000 | PPUCtrl_WriteHorizontal | PPUCtrl_Sprite0000 | PPUCtrl_Background1000 | PPUCtrl_SpriteSize8x16 | PPUCtrl_NMIEnabled
-	STA PPUCtrlMirror
+	STA zPPUControl
 	STA PPUCTRL
 	RTS
 
@@ -6590,7 +6271,7 @@ EnableNMI_Bank1:
 DisableNMI_Bank1:
 	LDA #PPUCtrl_Base2000 | PPUCtrl_WriteHorizontal | PPUCtrl_Sprite0000 | PPUCtrl_Background1000 | PPUCtrl_SpriteSize8x16 | PPUCtrl_NMIDisabled
 	STA PPUCTRL
-	STA PPUCtrlMirror
+	STA zPPUControl
 	RTS
 
 
@@ -6598,7 +6279,7 @@ DisableNMI_Bank1:
 loc_BANK1_ABCC:
 	JSR ContributorCharacterAnimation
 
-	LDA byte_RAM_E6
+	LDA ze6
 	JSR JumpToTableAfterJump
 
 	.dw loc_BANK1_ABA7
@@ -6670,37 +6351,37 @@ byte_BANK1_ABFE:
 loc_BANK1_AC0A:
 	JSR ApplyPlayerPhysicsX
 
-	LDA PlayerXHi
+	LDA zPlayerXHi
 	CMP #$01
 	BNE loc_BANK1_AC37
 
-	LDA PlayerXLo
+	LDA zPlayerXLo
 	CMP #$20
 	BCC loc_BANK1_AC37
 
-	INC_abs byte_RAM_E6
+	INC_abs ze6
 
 	LDA #$A0
-	STA byte_RAM_10
+	STA z10
 	LDX #$05
 
 loc_BANK1_AC22:
 	LDA #$20
-	STA ObjectXLo, X
+	STA zObjectXLo, X
 	LDA #$A8
 
 loc_BANK1_AC28:
-	STA ObjectYLo, X
+	STA zObjectYLo, X
 	LDA byte_BANK1_ABDA, X
-	STA ObjectXVelocity, X
+	STA zObjectXVelocity, X
 	LDA byte_BANK1_ABE0, X
-	STA ObjectYVelocity, X
+	STA zObjectYVelocity, X
 	DEX
 	BPL loc_BANK1_AC22
 
 loc_BANK1_AC37:
 	LDY #$A0
-	LDA byte_RAM_10
+	LDA z10
 	AND #$38
 	BNE loc_BANK1_AC40
 
@@ -6713,31 +6394,31 @@ loc_BANK1_AC40:
 	DEY
 
 loc_BANK1_AC45:
-	STY PlayerYLo
+	STY zPlayerYLo
 	LDX #$0B
 	LDY #$70
 
 loc_BANK1_AC4B:
-	LDA PlayerYLo
+	LDA zPlayerYLo
 	CLC
 	ADC byte_BANK1_ABFE, X
-	STA SpriteDMAArea, Y
+	STA iVirtualOAM, Y
 	LDA EndingWartTiles, X
-	STA SpriteDMAArea + 1, Y
+	STA iVirtualOAM + 1, Y
 	LDA #$01
-	STA SpriteDMAArea + 2, Y
-	LDA PlayerXLo
+	STA iVirtualOAM + 2, Y
+	LDA zPlayerXLo
 	CLC
 	ADC byte_BANK1_ABF2, X
-	STA SpriteDMAArea + 3, Y
-	LDA PlayerXHi
+	STA iVirtualOAM + 3, Y
+	LDA zPlayerXHi
 
 loc_BANK1_AC6A:
 	ADC #$00
 	BEQ loc_BANK1_AC73
 
 	LDA #$F0
-	STA SpriteDMAArea, Y
+	STA iVirtualOAM, Y
 
 loc_BANK1_AC73:
 	INY
@@ -6768,35 +6449,35 @@ byte_BANK1_AC81:
 
 
 loc_BANK1_AC87:
-	LDA byte_RAM_10
+	LDA z10
 	BNE loc_BANK1_ACA4
 
 loc_BANK1_AC8B:
-	STA ObjectXSubpixel + 6
-	STA ObjectYSubpixel + 6
-	STA ObjectXLo + 6
-	STA byte_RAM_10
+	STA iObjectXSubpixel + 6
+	STA iObjectYSubpixel + 6
+	STA zObjectXLo + 6
+	STA z10
 	LDA #$6F
-	STA ObjectYLo + 6
+	STA zObjectYLo + 6
 	LDA #$E6
-	STA ObjectXVelocity + 6
+	STA zObjectXVelocity + 6
 	LDA #$0DA
-	STA ObjectYVelocity + 6
+	STA zObjectYVelocity + 6
 
-	INC_abs byte_RAM_E6
+	INC_abs ze6
 
 
 loc_BANK1_ACA4:
 	LDX #$05
 
 loc_BANK1_ACA6:
-	STX byte_RAM_12
+	STX z12
 	JSR ApplyObjectPhysicsX_Bank1
 
 	JSR ApplyObjectPhysicsY_Bank1
 
 	LDY #$F0
-	LDA byte_RAM_10
+	LDA z10
 	BEQ loc_BANK1_ACC1
 
 	AND #$0F
@@ -6804,18 +6485,18 @@ loc_BANK1_ACA6:
 	BNE loc_BANK1_ACC3
 
 	LDA #$20
-	STA ObjectXLo, X
+	STA zObjectXLo, X
 	LDY #$A8
 
 loc_BANK1_ACC1:
-	STY ObjectYLo, X
+	STY zObjectYLo, X
 
 loc_BANK1_ACC3:
 	TXA
 	ASL A
 	ASL A
 	TAY
-	LDA ObjectXLo, X
+	LDA zObjectXLo, X
 	CMP #$80
 	BCS loc_BANK1_ACD1
 
@@ -6823,15 +6504,15 @@ loc_BANK1_ACC3:
 	BNE loc_BANK1_ACD6
 
 loc_BANK1_ACD1:
-	STA SpriteDMAArea + $73, Y
-	LDA ObjectYLo, X
+	STA iVirtualOAM + $73, Y
+	LDA zObjectYLo, X
 
 loc_BANK1_ACD6:
-	STA SpriteDMAArea + $70, Y
+	STA iVirtualOAM + $70, Y
 	LDA ZonkTiles, X
-	STA SpriteDMAArea + $71, Y
+	STA iVirtualOAM + $71, Y
 	LDA #$00
-	STA SpriteDMAArea + $72, Y
+	STA iVirtualOAM + $72, Y
 	DEX
 	BPL loc_BANK1_ACA6
 
@@ -6884,19 +6565,19 @@ ContributorAnimationTilesOffset:
 
 
 ContributorCharacterAnimation:
-	INC PlayerWalkFrame
+	INC zPlayerWalkFrame
 	LDA #$03
-	STA byte_RAM_0
-	LDA PlayerWalkFrame
-	STA byte_RAM_1
+	STA z00
+	LDA zPlayerWalkFrame
+	STA z01
 	LDY #$3C
 
 ContributorCharacterAnimation_OuterLoop:
-	LDX byte_RAM_0
+	LDX z00
 	LDA ContributorAnimationTilesOffset, X
 	TAX
-	INC byte_RAM_1
-	LDA byte_RAM_1
+	INC z01
+	LDA z01
 	AND #$10
 	BEQ ContributorCharacterAnimation_Render
 
@@ -6904,20 +6585,20 @@ ContributorCharacterAnimation_OuterLoop:
 
 ContributorCharacterAnimation_Render:
 	LDA #$03
-	STA byte_RAM_2
+	STA z02
 ContributorCharacterAnimation_InnerLoop:
 	LDA ContributorAnimationTiles, X
-	STA SpriteDMAArea + $11, Y
+	STA iVirtualOAM + $11, Y
 	DEX
 	DEX
 	DEY
 	DEY
 	DEY
 	DEY
-	DEC byte_RAM_2
+	DEC z02
 	BPL ContributorCharacterAnimation_InnerLoop
 
-	DEC byte_RAM_0
+	DEC z00
 	BPL ContributorCharacterAnimation_OuterLoop
 
 	RTS
@@ -6928,16 +6609,16 @@ ContributorCharacterAnimation_InnerLoop:
 ;
 Ending_GetContributor:
 	LDA #$00
-	STA MaxLevelsCompleted
+	STA iLevelRecord
 
 	LDY #$03
 Ending_GetContributor_Loop:
-	LDA CharacterLevelsCompleted, Y
-	CMP MaxLevelsCompleted
+	LDA iCharacterLevelCount, Y
+	CMP iLevelRecord
 	BCC Ending_GetContributor_Next
 
-	LDA CharacterLevelsCompleted, Y
-	STA MaxLevelsCompleted
+	LDA iCharacterLevelCount, Y
+	STA iLevelRecord
 
 Ending_GetContributor_Next:
 	DEY
@@ -6946,12 +6627,12 @@ Ending_GetContributor_Next:
 	LDX #$00
 	LDY #$03
 Ending_GetContributor_Loop2:
-	LDA CharacterLevelsCompleted, Y
-	CMP MaxLevelsCompleted
+	LDA iCharacterLevelCount, Y
+	CMP iLevelRecord
 	BNE Ending_GetContributor_Next2
 
 	TYA
-	STA Contributors, X
+	STA iContributors, X
 	INX
 
 Ending_GetContributor_Next2:
@@ -6959,96 +6640,96 @@ Ending_GetContributor_Next2:
 	BPL Ending_GetContributor_Loop2
 
 	DEX
-	STX NumContributors
+	STX iNumContributions
 	LDX #$00
 	LDA #$21
-	STA PPUBuffer_301, X
+	STA iPPUBuffer, X
 	INX
 	LDA #$2A
-	STA PPUBuffer_301, X
+	STA iPPUBuffer, X
 	INX
 	LDA #$0C
-	STA PPUBuffer_301, X
+	STA iPPUBuffer, X
 	INX
 	LDY #$00
-	LDA CharacterLevelsCompleted, Y
+	LDA iCharacterLevelCount, Y
 	JSR sub_BANK1_AE43
 
 	TYA
-	STA PPUBuffer_301, X
+	STA iPPUBuffer, X
 	INX
-	LDA byte_RAM_1
-	STA PPUBuffer_301, X
+	LDA z01
+	STA iPPUBuffer, X
 	INX
 	LDA #$0FB
-	STA PPUBuffer_301, X
+	STA iPPUBuffer, X
 	INX
 	LDY #$03
-	LDA CharacterLevelsCompleted, Y
+	LDA iCharacterLevelCount, Y
 	JSR sub_BANK1_AE43
 
 	TYA
-	STA PPUBuffer_301, X
+	STA iPPUBuffer, X
 	INX
-	LDA byte_RAM_1
-	STA PPUBuffer_301, X
+	LDA z01
+	STA iPPUBuffer, X
 	INX
 
 	LDA #$0FB
-	STA PPUBuffer_301, X
+	STA iPPUBuffer, X
 	INX
-	STA PPUBuffer_301, X
+	STA iPPUBuffer, X
 	INX
 	LDY #$02
-	LDA CharacterLevelsCompleted, Y
+	LDA iCharacterLevelCount, Y
 	JSR sub_BANK1_AE43
 
 	TYA
-	STA PPUBuffer_301, X
+	STA iPPUBuffer, X
 	INX
-	LDA byte_RAM_1
-	STA PPUBuffer_301, X
+	LDA z01
+	STA iPPUBuffer, X
 	INX
 	LDA #$0FB
-	STA PPUBuffer_301, X
+	STA iPPUBuffer, X
 	INX
 	LDY #$01
-	LDA CharacterLevelsCompleted, Y
+	LDA iCharacterLevelCount, Y
 	JSR sub_BANK1_AE43
 
 	TYA
-	STA PPUBuffer_301, X
+	STA iPPUBuffer, X
 	INX
-	LDA byte_RAM_1
-	STA PPUBuffer_301, X
+	LDA z01
+	STA iPPUBuffer, X
 	INX
 	LDA #$00
-	STA PPUBuffer_301, X
+	STA iPPUBuffer, X
 	LDA #$3C
-	STA ContributorTimer
+	STA iContributorTimer
 	RTS
 
 
 ; =============== S U B R O U T I N E =======================================
 
 ContributorTicker:
-	DEC ContributorTimer
+	DEC iContributorTimer
 	BPL ContributorTicker_Exit
 
 	LDA #$3C
-	STA ContributorTimer
-	LDY ContributorIndex
-	LDA Contributors, Y
+	STA iContributorTimer
+	LDY iContributorID
+	LDA iContributors, Y
 	CLC
 	ADC #$09
 
-	STA_abs ScreenUpdateIndex
+	STA_abs zScreenUpdateIndex
 
-	DEC ContributorIndex
+	DEC iContributorID
 	BPL ContributorTicker_Exit
 
-	LDA NumContributors
-	STA ContributorIndex
+	LDA iNumContributions
+	STA iContributorID
 
 ContributorTicker_Exit:
 	RTS
@@ -7096,7 +6777,7 @@ loc_BANK1_AE4F:
 	LDY #$0FB
 
 loc_BANK1_AE57:
-	STA byte_RAM_1
+	STA z01
 	RTS
 
 ; End of function sub_BANK1_AE43
@@ -7144,9 +6825,9 @@ ApplyObjectPhysicsY_Bank1:
 ;
 ApplyObjectPhysicsX_Bank1:
 	; Add acceleration to velocity
-	LDA ObjectXVelocity, X
+	LDA zObjectXVelocity, X
 	CLC
-	ADC ObjectXAcceleration, X
+	ADC iObjectXVelocity, X
 
 	PHA
 	; Lower nybble of velocity is for subpixel position
@@ -7154,7 +6835,7 @@ ApplyObjectPhysicsX_Bank1:
 	ASL A
 	ASL A
 	ASL A
-	STA byte_RAM_1
+	STA z01
 
 	; Upper nybble of velocity is for lo position
 	PLA
@@ -7170,7 +6851,7 @@ ApplyObjectPhysicsX_Bank1:
 	ORA #$F0
 
 ApplyObjectPhysics_StoreVelocityLo_Bank1:
-	STA byte_RAM_0
+	STA z00
 
 	LDY #$00
 	ASL A
@@ -7180,27 +6861,27 @@ ApplyObjectPhysics_StoreVelocityLo_Bank1:
 	DEY
 
 ApplyObjectPhysics_StoreDirection_Bank1:
-	STY byte_RAM_2
+	STY z02
 
 	; Add lower nybble of velocity for subpixel position
-	LDA ObjectXSubpixel, X
+	LDA iObjectXSubpixel, X
 	CLC
-	ADC byte_RAM_1
-	STA ObjectXSubpixel, X
+	ADC z01
+	STA iObjectXSubpixel, X
 
 	; Add upper nybble of velocity for lo position
-	LDA ObjectXLo, X
-	ADC byte_RAM_0
-	STA ObjectXLo, X
+	LDA zObjectXLo, X
+	ADC z00
+	STA zObjectXLo, X
 
 ApplyObjectPhysics_PositionHi_Bank1:
-	LSR byte_RAM_1
-	LDA ObjectXHi, X
-	ADC byte_RAM_2
-	STA ObjectXHi, X
+	LSR z01
+	LDA zObjectXHi, X
+	ADC z02
+	STA zObjectXHi, X
 
 ApplyObjectPhysics_Exit_Bank1:
-	LDX byte_RAM_12
+	LDX z12
 	RTS
 
 
@@ -7212,7 +6893,7 @@ ApplyObjectPhysics_Exit_Bank1:
 ;   X = enemy index
 ;
 ApplyObjectMovement_Bank1:
-	LDA ObjectShakeTimer, X
+	LDA iObjectShakeTimer, X
 	BNE ApplyObjectMovement_Vertical_Bank1
 
 	JSR ApplyObjectPhysicsX_Bank1
@@ -7220,7 +6901,7 @@ ApplyObjectMovement_Bank1:
 ApplyObjectMovement_Vertical_Bank1:
 	JSR ApplyObjectPhysicsY_Bank1
 
-	LDA ObjectYVelocity, X
+	LDA zObjectYVelocity, X
 	BMI ApplyObjectMovement_Gravity_Bank1
 
 	; Check terminal velocity
@@ -7228,8 +6909,8 @@ ApplyObjectMovement_Vertical_Bank1:
 	BCS ApplyObjectMovement_Exit_Bank1
 
 ApplyObjectMovement_Gravity_Bank1:
-	INC ObjectYVelocity, X
-	INC ObjectYVelocity, X
+	INC zObjectYVelocity, X
+	INC zObjectYVelocity, X
 
 ApplyObjectMovement_Exit_Bank1:
 	RTS
@@ -7248,18 +6929,18 @@ DoorAnimation:
 
 DoorAnimation_Loop:
 	; skip if inactive
-	LDA EnemyState, Y
+	LDA zEnemyState, Y
 	BEQ DoorAnimation_LoopNext
 
 	; skip enemies that aren't the door
-	LDA ObjectType, Y
+	LDA zObjectType, Y
 	CMP #Enemy_SubspaceDoor
 	BNE DoorAnimation_LoopNext
 
 	LDA #EnemyState_PuffOfSmoke
-	STA EnemyState, Y
+	STA zEnemyState, Y
 	LDA #$20
-	STA ObjectTimer1, Y
+	STA zSpriteTimer, Y
 
 DoorAnimation_LoopNext:
 	DEY
@@ -7270,27 +6951,27 @@ DoorAnimation_LoopNext:
 	BMI DoorAnimation_Exit
 
 	LDA #$00
-	STA DoorAnimationTimer
-	STA SubspaceDoorTimer
-	LDX byte_RAM_0
+	STA iDoorAnimTimer
+	STA iSubDoorTimer
+	LDX z00
 	PLA
-	STA EnemyArray_477, X
+	STA i477, X
 	LDA #Enemy_SubspaceDoor
-	STA ObjectType, X
-	LDA PlayerXLo
+	STA zObjectType, X
+	LDA zPlayerXLo
 	ADC #$08
 	AND #$F0
-	STA ObjectXLo, X
-	LDA PlayerXHi
+	STA zObjectXLo, X
+	LDA zPlayerXHi
 	ADC #$00
-	STA ObjectXHi, X
-	LDA PlayerYLo
-	STA ObjectYLo, X
-	LDA PlayerYHi
-	STA ObjectYHi, X
+	STA zObjectXHi, X
+	LDA zPlayerYLo
+	STA zObjectYLo, X
+	LDA zPlayerYHi
+	STA zObjectYHi, X
 	LDA #ObjAttrib_Palette1 | ObjAttrib_16x32
-	STA ObjectAttributes, X
-	LDX byte_RAM_12
+	STA zObjectAttributes, X
+	LDX z12
 	RTS
 
 DoorAnimation_Exit:
@@ -7303,24 +6984,24 @@ CreateStarman:
 
 	BMI CreateStarman_Exit
 
-	LDX byte_RAM_0
+	LDX z00
 	LDA #Enemy_Starman
-	STA ObjectType, X
-	LDA ScreenBoundaryLeftLo
+	STA zObjectType, X
+	LDA iBoundLeftLower
 	ADC #$D0
-	STA ObjectXLo, X
-	LDA ScreenBoundaryLeftHi
+	STA zObjectXLo, X
+	LDA iBoundLeftUpper
 	ADC #$00
-	STA ObjectXHi, X
-	LDA ScreenYLo
+	STA zObjectXHi, X
+	LDA zScreenY
 	ADC #$E0
-	STA ObjectYLo, X
-	LDA ScreenYHi
+	STA zObjectYLo, X
+	LDA zScreenYPage
 	ADC #$00
-	STA ObjectYHi, X
+	STA zObjectYHi, X
 	JSR loc_BANK1_BA17
 
-	LDX byte_RAM_12
+	LDX z12
 
 CreateStarman_Exit:
 	RTS
@@ -7330,41 +7011,41 @@ CreateStarman_Exit:
 
 EnemyInit_Basic_Bank1:
 	LDA #$00
-	STA ObjectTimer1, X
+	STA zSpriteTimer, X
 	LDA #$00
-	STA EnemyVariable, X
+	STA zObjectVariables, X
 
 loc_BANK1_B9EB:
 	LDA #$00
-	STA EnemyArray_B1, X
-	STA ObjectProjectileTimer, X
-	STA ObjectBeingCarriedTimer, X
-	STA ObjectAnimationTimer, X
-	STA ObjectShakeTimer, X
-	STA EnemyCollision, X
-	STA ObjectStunTimer, X
-	STA ObjectTimer2, X
-	STA ObjectXAcceleration, X
-	STA ObjectYAcceleration, X
-	STA ObjectFlashTimer, X
-	STA EnemyArray_477, X
-	STA EnemyArray_480, X
-	STA EnemyHP, X
-	STA ObjectYVelocity, X
-	STA ObjectXVelocity, X
+	STA zEnemyArray, X
+	STA iObjectBulletTimer, X
+	STA zHeldObjectTimer, X
+	STA zObjectAnimTimer, X
+	STA iObjectShakeTimer, X
+	STA zEnemyCollision, X
+	STA iObjectStunTimer, X
+	STA iSpriteTimer, X
+	STA iObjectXVelocity, X
+	STA iObjectYVelocity, X
+	STA iObjectFlashTimer, X
+	STA i477, X
+	STA i480, X
+	STA iEnemyHP, X
+	STA zObjectYVelocity, X
+	STA zObjectXVelocity, X
 
 ; look up object attributes
 loc_BANK1_BA17:
-	LDY ObjectType, X
+	LDY zObjectType, X
 	LDA ObjectAttributeTable, Y
 	AND #ObjAttrib_Palette | ObjAttrib_Horizontal | ObjAttrib_FrontFacing | ObjAttrib_Mirrored | ObjAttrib_BehindBackground | ObjAttrib_16x32
-	STA ObjectAttributes, X
+	STA zObjectAttributes, X
 	LDA EnemyArray_46E_Data, Y
-	STA EnemyArray_46E, X
+	STA i46e, X
 	LDA ObjectHitbox_Data, Y
-	STA ObjectHitbox, X
+	STA iObjectHitbox, X
 	LDA EnemyArray_492_Data, Y
-	STA EnemyArray_492, X
+	STA i492, X
 	RTS
 
 ; End of function EnemyInit_Basic_Bank1
@@ -7376,19 +7057,19 @@ loc_BANK1_BA17:
 ; Input
 ;   X = enemy slot
 ; Output
-;   X = value of byte_RAM_12
+;   X = value of z12
 ;
 TurnKeyIntoPuffOfSmoke:
-	LDA ObjectAttributes, X
+	LDA zObjectAttributes, X
 	AND #%11111100
 	ORA #ObjAttrib_Palette1
-	STA ObjectAttributes, X
+	STA zObjectAttributes, X
 	LDA #EnemyState_PuffOfSmoke
-	STA EnemyState, X
-	STA ObjectAnimationTimer, X
+	STA zEnemyState, X
+	STA zObjectAnimTimer, X
 	LDA #$1F
-	STA ObjectTimer1, X
-	LDX byte_RAM_12
+	STA zSpriteTimer, X
+	LDX z12
 	RTS
 
 
@@ -7407,7 +7088,7 @@ TurnKeyIntoPuffOfSmoke:
 ;
 UnlinkEnemyFromRawData_Bank1:
 	LDA #$FF
-	STA EnemyRawDataOffset, X
+	STA iEnemyRawDataOffset, X
 	RTS
 
 
@@ -7415,50 +7096,50 @@ UnlinkEnemyFromRawData_Bank1:
 ; Updates the area page and tile placement offset
 ;
 ; Input
-;   byte_RAM_E8 = area page
-;   byte_RAM_E5 = tile placement offset shift
-;   byte_RAM_E6 = previous tile placement offset
+;   ze8 = area page
+;   ze5 = tile placement offset shift
+;   ze6 = previous tile placement offset
 ; Output
 ;   RAM_1 = low byte of decoded level data RAM
 ;   RAM_2 = low byte of decoded level data RAM
-;   byte_RAM_E7 = target tile placement offset
+;   ze7 = target tile placement offset
 ;
 SetTileOffsetAndAreaPageAddr_Bank1:
-	LDX byte_RAM_E8
+	LDX ze8
 	JSR SetAreaPageAddr_Bank1
 
-	LDA byte_RAM_E6
+	LDA ze6
 	CLC
-	ADC byte_RAM_E5
-	STA byte_RAM_E7
+	ADC ze5
+	STA ze7
 	RTS
 
 
 DecodedLevelPageStartLo_Bank1:
-	.db <DecodedLevelData
-	.db <(DecodedLevelData+$00F0)
-	.db <(DecodedLevelData+$01E0)
-	.db <(DecodedLevelData+$02D0)
-	.db <(DecodedLevelData+$03C0)
-	.db <(DecodedLevelData+$04B0)
-	.db <(DecodedLevelData+$05A0)
-	.db <(DecodedLevelData+$0690)
-	.db <(DecodedLevelData+$0780)
-	.db <(DecodedLevelData+$0870)
-	.db <(SubAreaTileLayout)
+	.db <wLevelDataBuffer
+	.db <(wLevelDataBuffer+$00F0)
+	.db <(wLevelDataBuffer+$01E0)
+	.db <(wLevelDataBuffer+$02D0)
+	.db <(wLevelDataBuffer+$03C0)
+	.db <(wLevelDataBuffer+$04B0)
+	.db <(wLevelDataBuffer+$05A0)
+	.db <(wLevelDataBuffer+$0690)
+	.db <(wLevelDataBuffer+$0780)
+	.db <(wLevelDataBuffer+$0870)
+	.db <(iSubspaceLayout)
 
 DecodedLevelPageStartHi_Bank1:
-	.db >DecodedLevelData
-	.db >(DecodedLevelData+$00F0)
-	.db >(DecodedLevelData+$01E0)
-	.db >(DecodedLevelData+$02D0)
-	.db >(DecodedLevelData+$03C0)
-	.db >(DecodedLevelData+$04B0)
-	.db >(DecodedLevelData+$05A0)
-	.db >(DecodedLevelData+$0690)
-	.db >(DecodedLevelData+$0780)
-	.db >(DecodedLevelData+$0870)
-	.db >(SubAreaTileLayout)
+	.db >wLevelDataBuffer
+	.db >(wLevelDataBuffer+$00F0)
+	.db >(wLevelDataBuffer+$01E0)
+	.db >(wLevelDataBuffer+$02D0)
+	.db >(wLevelDataBuffer+$03C0)
+	.db >(wLevelDataBuffer+$04B0)
+	.db >(wLevelDataBuffer+$05A0)
+	.db >(wLevelDataBuffer+$0690)
+	.db >(wLevelDataBuffer+$0780)
+	.db >(wLevelDataBuffer+$0870)
+	.db >(iSubspaceLayout)
 
 
 ;
@@ -7467,14 +7148,14 @@ DecodedLevelPageStartHi_Bank1:
 ; Input
 ;   X = area page
 ; Output
-;   byte_RAM_1 = low byte of decoded level data RAM
-;   byte_RAM_2 = low byte of decoded level data RAM
+;   z01 = low byte of decoded level data RAM
+;   z02 = low byte of decoded level data RAM
 ;
 SetAreaPageAddr_Bank1:
 	LDA DecodedLevelPageStartLo_Bank1, X
-	STA byte_RAM_1
+	STA z01
 	LDA DecodedLevelPageStartHi_Bank1, X
-	STA byte_RAM_2
+	STA z02
 	RTS
 
 
@@ -7482,37 +7163,19 @@ SetAreaPageAddr_Bank1:
 ; Checks whether the player is on a quicksand tile
 ;
 ; Input
-;   byte_RAM_0 = tile ID
+;   z00 = tile ID
 ; Output
 ;   A = Whether the player is sinking in quicksand
-;   X = PlayerInAir flag
+;   X = zPlayerGrounding flag
 ;
-IFNDEF ENABLE_TILE_ATTRIBUTES_TABLE
 PlayerTileCollision_CheckQuicksand:
 	LDA #$01
-	LDY byte_RAM_0
+	LDY z00
 	CPY #BackgroundTile_QuicksandSlow
 	BEQ PlayerTileCollision_QuicksandSlow
 
 	CPY #BackgroundTile_QuicksandFast
 	BEQ PlayerTileCollision_QuicksandFast
-
-ELSE
-PlayerTileCollision_CheckQuicksand:
-	LDY byte_RAM_0
-	LDA InteractiveTileCollisionTable, Y
-	AND #%00001100
-	CMP #%00001000
-
-	BNE PlayerTileCollision_NotQuicksand
-
-	TYA
-	AND %00000001
-	BNE PlayerTileCollision_QuicksandFast
-
-	LDA #$01
-	BNE PlayerTileCollision_QuicksandSlow
-ENDIF
 
 PlayerTileCollision_NotQuicksand:
 	LDA #$00
@@ -7522,21 +7185,21 @@ PlayerTileCollision_QuicksandFast:
 	LDA #$08
 
 PlayerTileCollision_QuicksandSlow:
-	STA PlayerYVelocity
-	LDA QuicksandDepth
+	STA zPlayerYVelocity
+	LDA iQuicksandDepth
 	BNE loc_BANK1_BA9B
 
-	LDA PlayerYLo
+	LDA zPlayerYLo
 	AND #$10
-	STA byte_RAM_4EB
+	STA i4eb
 
 loc_BANK1_BA9B:
 	; check if player is too far under
-	LDA PlayerYLo
+	LDA zPlayerYLo
 	AND #$0F
 	TAY
-	LDA byte_RAM_4EB
-	EOR PlayerYLo
+	LDA i4eb
+	EOR zPlayerYLo
 	AND #$10
 	BEQ loc_BANK1_BAB6
 
@@ -7545,7 +7208,7 @@ loc_BANK1_BA9B:
 	BCC loc_BANK1_BAB4
 
 	LDA #$00
-	STA PlayerStateTimer
+	STA zPlayerStateTimer
 	JSR KillPlayer
 
 loc_BANK1_BAB4:
@@ -7564,33 +7227,33 @@ loc_BANK1_BABC:
 
 
 PlayerTileCollision_HurtPlayer:
-	LDA DamageInvulnTime
+	LDA zDamageCooldown
 	BNE locret_BANK1_BAEC
 
-	LDA PlayerHealth
+	LDA iPlayerHP
 	SEC
 	SBC #$10
 	BCC loc_BANK1_BAED
 
-	STA PlayerHealth
+	STA iPlayerHP
 	LDA #$7F
-	STA DamageInvulnTime
-	LDA PlayerScreenX
+	STA zDamageCooldown
+	LDA iPlayerScreenX
 	SEC
-	SBC SpriteTempScreenX
+	SBC iSpriteTempScreenX
 	ASL A
 	ASL A
-	STA PlayerXVelocity
+	STA zPlayerXVelocity
 	LDA #$C0
-	LDY PlayerYVelocity
+	LDY zPlayerYVelocity
 	BPL loc_BANK1_BAE5
 
 	LDA #$00
 
 loc_BANK1_BAE5:
-	STA PlayerYVelocity
+	STA zPlayerYVelocity
 	LDA #DPCM_PlayerHurt
-	STA DPCMQueue
+	STA iDPCMSFX
 
 locret_BANK1_BAEC:
 	RTS
@@ -7599,14 +7262,14 @@ locret_BANK1_BAEC:
 
 loc_BANK1_BAED:
 	LDA #$C0
-	STA PlayerYVelocity
+	STA zPlayerYVelocity
 	LDA #$20
-	STA PlayerStateTimer
-	LDY byte_RAM_12
+	STA zPlayerStateTimer
+	LDY z12
 	BMI loc_BANK1_BAFD
 
 	LSR A
-	STA ObjectStunTimer, Y
+	STA iObjectStunTimer, Y
 
 loc_BANK1_BAFD:
 	JMP KillPlayer
@@ -7615,16 +7278,16 @@ loc_BANK1_BAFD:
 ; ---------------------------------------------------------------------------
 
 _code_3B00:
-	LDY EnemyRawDataOffset, X
+	LDY iEnemyRawDataOffset, X
 	BMI loc_BANK1_BB0B
 
-	LDA (RawEnemyData), Y
+	LDA (zRawSpriteData), Y
 	AND #$7F
-	STA (RawEnemyData), Y
+	STA (zRawSpriteData), Y
 
 loc_BANK1_BB0B:
 	LDA #$00
-	STA EnemyState, X
+	STA zEnemyState, X
 	RTS
 
 
@@ -7641,7 +7304,7 @@ loc_BANK1_BB0B:
 ; Output
 ;   N = enabled if no empty slot was found
 ;   Y = $FF if there no empty slot was found
-;   byte_RAM_0 = slot used
+;   z00 = slot used
 ;
 CreateEnemy_TryAllSlots_Bank1:
 	LDY #$08
@@ -7651,7 +7314,7 @@ CreateEnemy_Bank1:
 	LDY #$05
 
 CreateEnemy_Bank1_FindSlot:
-	LDA EnemyState, Y
+	LDA zEnemyState, Y
 	BEQ CreateEnemy_Bank1_FoundSlot
 
 	DEY
@@ -7661,381 +7324,27 @@ CreateEnemy_Bank1_FindSlot:
 
 CreateEnemy_Bank1_FoundSlot:
 	LDA #EnemyState_Alive
-	STA EnemyState, Y
+	STA zEnemyState, Y
 	LSR A
-	STA EnemyArray_SpawnsDoor, Y
+	STA iLocalBossArray, Y
 	LDA #Enemy_ShyguyRed
-	STA ObjectType, Y
-	LDA ObjectXLo, X
+	STA zObjectType, Y
+	LDA zObjectXLo, X
 	ADC #$05
-	STA ObjectXLo, Y
-	LDA ObjectXHi, X
+	STA zObjectXLo, Y
+	LDA zObjectXHi, X
 	ADC #$00
-	STA ObjectXHi, Y
-	LDA ObjectYLo, X
-	STA ObjectYLo, Y
-	LDA ObjectYHi, X
-	STA ObjectYHi, Y
-	STY byte_RAM_0
+	STA zObjectXHi, Y
+	LDA zObjectYLo, X
+	STA zObjectYLo, Y
+	LDA zObjectYHi, X
+	STA zObjectYHi, Y
+	STY z00
 	TYA
 	TAX
 
 	JSR EnemyInit_Basic_Bank1
 	JSR UnlinkEnemyFromRawData_Bank1
 
-	LDX byte_RAM_12
+	LDX z12
 	RTS
-
-
-IFDEF CONTROLLER_2_DEBUG
-ChangeCharacterOffsets:
-	.db $00 ; unused
-	.db $03 ; Mario to right
-	.db $01 ; Mario to left
-	.db $00 ; Princess to right
-	.db $02 ; Princess to left
-	.db $01 ; Toad to right
-	.db $03 ; Toad to left
-	.db $02 ; Luigi to right
-	.db $00 ; Luigi to left
-
-CheckPlayer2Joypad:
-	LDA ChangeCharacterTimer
-	BEQ CheckPlayer2Joypad_Go
-
-	DEC ChangeCharacterTimer
-
-CheckPlayer2Joypad_No:
-	RTS
-
-CheckPlayer2Joypad_Go:
-	LDA PlayerState
-	CMP #PlayerState_Dying
-	BEQ CheckPlayer2Joypad_No
-
-CheckPlayer2Joypad_CheckSelect:
-	LDA Player2JoypadPress
-	AND #ControllerInput_Select
-	BEQ CheckPlayer2Joypad_CheckUp
-
-	LDA CurrentLevel_Init
-	STA CurrentLevel
-	LDA CurrentLevelArea_Init
-	STA CurrentLevelArea
-	LDA CurrentLevelEntryPage_Init
-	STA CurrentLevelEntryPage
-	LDA TransitionType_Init
-	STA TransitionType
-
-	LDA PlayerXLo_Init
-	STA PlayerXLo
-	LDA PlayerYLo_Init
-	STA PlayerYLo
-	LDA PlayerScreenX_Init
-	STA PlayerScreenX
-	LDA PlayerScreenYLo_Init
-	STA PlayerScreenYLo
-	LDA PlayerYVelocity_Init
-	STA PlayerYVelocity
-	LDA PlayerState_Init
-	STA PlayerState
-
-	LDA #$00
-	STA PlayerXVelocity
-
-	JSR DoAreaReset
-
-	JMP StartLevel
-
-CheckPlayer2Joypad_CheckUp:
-	LDA Player2JoypadPress
-	AND #ControllerInput_Up
-	BEQ CheckPlayer2Joypad_CheckDown
-
-	LDY PlayerMaxHealth
-	LDA PlayerHealth
-	CMP PlayerHealthValueByHeartCount, Y
-	BPL CheckPlayer2Joypad_CheckDown
-
-	LDA #SoundEffect1_CherryGet
-	STA SoundEffectQueue1
-
-	LDY PlayerMaxHealth
-	LDA PlayerHealth
-	CLC
-	ADC #$10
-	STA PlayerHealth
-
-CheckPlayer2Joypad_CheckDown:
-	LDA Player2JoypadPress
-	AND #ControllerInput_Down
-	BEQ CheckPlayer2Joypad_CheckStart
-
-	LDA PlayerHealth
-	AND #$F0
-	BEQ CheckPlayer2Joypad_CheckStart
-
-	LDA #DPCM_PlayerHurt
-	STA DPCMQueue
-
-	LDA PlayerHealth
-	SEC
-	SBC #$10
-	STA PlayerHealth
-
-CheckPlayer2Joypad_CheckStart:
-	LDA Player2JoypadPress
-	AND #ControllerInput_Start
-	BEQ CheckPlayer2Joypad_CheckButtonA
-
-	LDX #$FF
-	LDA StopwatchTimer
-	BEQ CheckPlayer2Joypad_SetStopwatchTimer
-
-	INX
-
-CheckPlayer2Joypad_SetStopwatchTimer:
-	STX StopwatchTimer
-
-CheckPlayer2Joypad_CheckButtonA:
-	LDA Player2JoypadPress
-	AND #ControllerInput_A
-	BEQ CheckPlayer2Joypad_CheckLeftRight
-
-	LDA Player2JoypadHeld
-	AND #ControllerInput_B
-	BEQ CheckPlayer2Joypad_NoButtonB
-
-	JSR DebugRandomObject
-	BNE CheckPlayer2Joypad_CheckLeftRight
-
-CheckPlayer2Joypad_NoButtonB:
-	JSR RandomCarryObject
-
-CheckPlayer2Joypad_CheckLeftRight:
-	LDA Player2JoypadPress
-	AND #ControllerInput_Right | ControllerInput_Left
-	BEQ CheckPlayer2Joypad_Exit
-	CMP #ControllerInput_Right | ControllerInput_Left
-	BEQ CheckPlayer2Joypad_Exit
-
-	CLC
-	ADC CurrentCharacter
-	ADC CurrentCharacter
-
-	TAY
-	LDA ChangeCharacterOffsets, Y
-
-	LDX #$18
-	STX ChangeCharacterTimer
-	LDX #$08
-	STX ChangeCharacterPoofTimer
-
-	BNE CheckSetCurrentCharacter
-
-CheckPlayer2Joypad_Exit:
-	RTS
-
-;
-; Changes the current character
-;
-; Input
-;   A = target character
-;
-CheckSetCurrentCharacter:
-	CMP CurrentCharacter
-	BNE SetCurrentCharacter
-
-	RTS
-
-SetCurrentCharacter:
-	STA CurrentCharacter
-
-	LDA GravityWithJumpButton
-	PHA
-
-	LDX CurrentCharacter
-	LDY StatOffsetsRAM, X
-	LDX #$00
-SetCurrentCharacter_StatsLoop:
-	LDA StatOffsetsRAM + CharacterStats-StatOffsets, Y
-	STA CharacterStatsRAM, X
-	INY
-	INX
-	CPX #$17
-	BCC SetCurrentCharacter_StatsLoop
-
-	LDA CurrentCharacter
-	ASL A
-	ASL A
-	TAY
-	LDX #$00
-SetCurrentCharacter_PaletteLoop:
-	LDA StatOffsetsRAM + CharacterPalette-StatOffsets, Y
-	STA RestorePlayerPalette0, X
-	INY
-	INX
-	CPX #$04
-	BCC SetCurrentCharacter_PaletteLoop
-
-	; load carry offsets
-	LDY CurrentCharacter
-	LDA CarryYOffsetsRAM + CarryYOffsetBigLo-CarryYOffsets, Y
-	STA ItemCarryYOffsetsRAM
-	LDA CarryYOffsetsRAM + CarryYOffsetSmallLo-CarryYOffsets, Y
-	STA ItemCarryYOffsetsRAM + $07
-	LDA CarryYOffsetsRAM + CarryYOffsetBigHi-CarryYOffsets, Y
-	STA ItemCarryYOffsetsRAM + $0E
-	LDA CarryYOffsetsRAM + CarryYOffsetSmallHi-CarryYOffsets, Y
-	STA ItemCarryYOffsetsRAM + $15
-
-	; interrupt floating if this character can't do it
-	LDA JumpFloatLength
-	BEQ SetCurrentCharacter_SetJumpFloatTimer
-
-	; if already floating, keep going
-	CMP JumpFloatTimer
-	BCC SetCurrentCharacter_CheckGravityChange
-
-SetCurrentCharacter_SetJumpFloatTimer:
-	STA JumpFloatTimer
-
-SetCurrentCharacter_CheckGravityChange:
-	; check whether gravity is increasing
-	PLA
-	SEC
-	SBC GravityWithJumpButton
-	BEQ SetCurrentCharacter_Update
-
-	; stash velocity delta in X
-	TAX
-
-	; check whether y-velocity is negative
-	LDA PlayerYVelocity
-	BPL SetCurrentCharacter_Update
-
-	CPX #$00
-	BPL SetCurrentCharacter_ClampYVelocity
-
-	; scale y-velocity based on difference in gravity
-	EOR #$FF
-	CLC
-	ADC #$01
-
-	DEX
-SetCurrentCharacter_ScaleVelocityYUp_Loop:
-	ASL
-	INX
-	BEQ SetCurrentCharacter_ScaleVelocityYUp_Loop
-
-	EOR #$FF
-	STA PlayerYVelocity
-
-	JMP SetCurrentCharacter_Update
-
-SetCurrentCharacter_ClampYVelocity:
-	LDA PlayerYVelocity
-	CMP JumpHeightRunning
-
-	BPL SetCurrentCharacter_Update
-
-	LDA JumpHeightStandingCarrying
-	STA PlayerYVelocity
-
-SetCurrentCharacter_Update:
-	INC SkyFlashTimer
-
-	; update chr for character
-	JSR LoadCharacterCHRBanks
-
-	LDA #DPCM_PlayerDeath
-	STA DPCMQueue
-
-SetCurrentCharacter_Exit:
-	RTS
-
-
-RandomCarryObjectTypes:
-	.db #Enemy_VegetableSmall
-	.db #Enemy_VegetableLarge
-	.db #Enemy_Shell
-	.db #Enemy_Bomb
-	.db #Enemy_ShyguyRed
-	.db #Enemy_Tweeter
-	.db #Enemy_SnifitRed
-	.db #Enemy_Egg
-
-; bit 7: put in player's hands
-; bit 6: set enemy timer
-; bit 5: start at bottom of screen
-; bit 4:
-; bit 3:
-; bit 2:
-; bit 1: set thrown flag
-; bit 0: disable velocity reset
-RandomCarryObjectAttributes:
-	.db %10000000
-	.db %10000000
-	.db %10000000
-	.db %11000000
-	.db %10000001
-	.db %10000001
-	.db %10000001
-	.db %10000001
-
-
-RandomCarryObject:
-	LDA PlayerState
-	BNE RandomCarryObject_Exit
-	LDA HoldingItem
-	BNE RandomCarryObject_Exit
-
-	LDA byte_RAM_10
-	LSR A
-	LSR A
-	LSR A
-	AND #$07
-	TAX
-	LDA RandomCarryObjectAttributes, X
-	STA CreateObjectAttributes
-	LDA RandomCarryObjectTypes, X
-	STA CreateObjectType
-
-RandomCarryObject_Exit:
-	RTS
-
-
-DebugRandomObjectTypes:
-	.db #Enemy_Bomb
-	.db #Enemy_Bomb
-	.db #Enemy_POWBlock
-	.db #Enemy_POWBlock
-	.db #Enemy_POWBlock
-	.db #Enemy_Starman
-	.db #Enemy_Starman
-	.db #Enemy_Starman
-
-DebugRandomObjectAttributes:
-	.db %01000010
-	.db %01000010
-	.db %00000010
-	.db %00000010
-	.db %00000010
-	.db %00100010
-	.db %00100010
-	.db %00100010
-
-
-DebugRandomObject:
-	LDA byte_RAM_10
-	LSR A
-	LSR A
-	LSR A
-	AND #$07
-	TAX
-	LDA DebugRandomObjectAttributes, X
-	STA CreateObjectAttributes
-	LDA DebugRandomObjectTypes, X
-	STA CreateObjectType
-	RTS
-ENDIF

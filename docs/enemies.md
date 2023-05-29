@@ -1,36 +1,36 @@
 ## Object/Enemy RAM
 
-### `$0015`  (`ObjectXHi`)
+### `$0015`  (`zObjectXHi`)
 - high byte for x-position
 
-### `$001F`  (`ObjectYHi`)
+### `$001F`  (`zObjectYHi`)
 - high byte for y-position
 
-### `$0029`  (`ObjectXLo`)
+### `$0029`  (`zObjectXLo`)
 - low byte for x-position
 
-### `$0032`  (`ObjectYLo`)
+### `$0032`  (`zObjectYLo`)
 - low byte for y-position
 
-### `$003D`  (`ObjectXVelocity`)
+### `$003D`  (`zObjectXVelocity`)
 - x-velocity
 
-### `$0047`  (`ObjectYVelocity`)
+### `$0047`  (`zObjectYVelocity`)
 - y-velocity
 
 ### `$0051`  (`EnemyState`)
 - enemy state (eg. alive/dead/puff of smoke)
 
-### `$005B`  (`EnemyCollision`)
+### `$005B`  (`zEnemyCollision`)
 - enemy collision flags
 
-### `$0065`  (`ObjectAttributes`)
+### `$0065`  (`zObjectAttributes`)
 - attributes used for rendering an object (eg. mirroring, size, layering)
 
-### `$006F`  (`EnemyMovementDirection`)
+### `$006F`  (`zEnemyTrajectory`)
 - direction of enemy movement (used for velocity lookups)
 
-### `$0079`  (`EnemyVariable`)
+### `$0079`  (`zObjectVariables`)
 - Birdo type
 - Whether item is attached to Birdo
 - Mushroom index
@@ -44,7 +44,7 @@
 - Whale spout timer?
 - Wart's movement cycle
 
-### `$0086`  (`ObjectTimer1`)
+### `$0086`  (`zSpriteTimer`)
 - BobOmb fuse
 - Bomb fuse
 - Panser spit
@@ -55,46 +55,46 @@
 - Pidgit dive
 - ...
 
-### `$0090`  (`ObjectType`)
+### `$0090`  (`zObjectType`)
 - enemy type ID
 
-### `$009F`  (`ObjectAnimationTimer`)
+### `$009F`  (`zObjectAnimTimer`)
 - time animation frames
 
-### `$00A8`  (`ObjectBeingCarriedTimer`)
+### `$00A8`  (`zHeldObjectTimer`)
 
-### `$00B1`  (`EnemyArray_B1`)
+### `$00B1`  (`zEnemyArray`)
 
-### `$042F` (`ObjectProjectileTimer`)
+### `$042F` (`iObjectBulletTimer`)
  - stun timer
 
-### `$0438` (`ObjectStunTimer`)
+### `$0438` (`iObjectStunTimer`)
 
-### `$0453` (`ObjectTimer2`)
+### `$0453` (`iSpriteTimer`)
 
-### `$045C` (`ObjectFlashTimer`)
+### `$045C` (`iObjectFlashTimer`)
   - flashing timer
 
-### `$0465` (`EnemyHP`)
+### `$0465` (`iEnemyHP`)
 
-### `$046E` (`EnemyArray_46E`)
+### `$046E` (`i46e`)
 
-### `$0477` (`EnemyArray_477`)
+### `$0477` (`i477`)
 
-### `$0480` (`EnemyArray_480`)
+### `$0480` (`i480`)
 
-### `$0489` (`ObjectHitbox`)
+### `$0489` (`iObjectHitbox`)
 
-### `$0492` (`EnemyArray_492`)
+### `$0492` (`i492`)
 
-### `$049B` (`EnemyArray_SpawnsDoor`)
+### `$049B` (`iLocalBossArray`)
 - if set, an end-of-level door spawns when the enemy is defeated
 
-### `$04A4` (`ObjectNonSticky`)
+### `$04A4` (`iObjectNonSticky`)
 
-### `$04CC` (`ObjectXAcceleration`)
+### `$04CC` (`iObjectXVelocity`)
 
-### `$04D6` (`ObjectYAcceleration`)
+### `$04D6` (`iObjectYVelocity`)
 
-### `$04EF` (`EndOfLevelDoorPage`)
+### `$04EF` (`iEndOfLevelDoorPage`)
 

@@ -70,7 +70,7 @@ E;
 			print "Bend start (Square only)";
 
 		} else {
-			// how the fuck
+			// how?!?
 			die("not sure how we got here ". sprintf("%02X", $val) ."\n");
 
 		}

@@ -4,8 +4,7 @@ EnemyData_Level_4_1_Area2:
 
 ; This area is unused...
 ; it has another lonely Boss Birdo...
-; and a fucking billion empty pages.
-; Nintendo, what were you on???
+; and over 40 empty pages.
 
 ; Page 0
 	distTo + ; $01 (0 enemies)

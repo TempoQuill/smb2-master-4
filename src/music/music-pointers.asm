@@ -37,8 +37,4 @@ MusicPointersLoopPart:
 	musicPart MusicPartPointers_SubSpaceLoop
 	musicPart MusicPartPointers_WartEnd
 	.db $00 ; title screen, no loop
-IFNDEF PROTOTYPE_MUSIC_ENDING
 	musicPart MusicPartPointers_EndingLoop
-ELSE
-	.db $00 ; ending, no loop
-ENDIF
