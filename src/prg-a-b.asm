@@ -143,7 +143,6 @@ CopyBonusChanceLayoutToRAM_Loop2:
 	STA wBonusLayoutBuffer + $100, Y
 	DEY
 	BNE CopyBonusChanceLayoutToRAM_Loop2
-
 	RTS
 
 ; =============== S U B R O U T I N E =======================================
@@ -523,7 +522,6 @@ loc_BANKA_84D7:
 	STA wMamuOAMOffsets, Y
 	DEY
 	BPL loc_BANKA_84D7
-
 	RTS
 
 

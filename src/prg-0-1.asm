@@ -183,7 +183,6 @@ loc_BANK0_80DB:
 	LDA zPPUScrollY
 	AND #$07
 	BEQ loc_BANK0_80E2
-
 	RTS
 
 ; ---------------------------------------------------------------------------
@@ -258,7 +257,6 @@ loc_BANK0_8138:
 	LDA zPPUScrollY
 	AND #$07
 	BEQ loc_BANK0_813F
-
 	RTS
 
 ; ---------------------------------------------------------------------------
@@ -471,7 +469,6 @@ loc_BANK0_8268:
 	STA i53a, X
 	STA i53d
 	STA i53e
-
 	RTS
 
 ; ---------------------------------------------------------------------------
@@ -985,7 +982,6 @@ loc_BANK0_84A6:
 	STA zScrollBuffer, X
 	DEX
 	BNE loc_BANK0_84A6
-
 	RTS
 
 
@@ -1243,7 +1239,6 @@ ApplyHorizontalScroll_Left:
 ApplyHorizontalScroll_CheckMoveCameraX:
 	LDA zXVelocity
 	BNE ApplyMoveCameraX
-
 	RTS
 
 
@@ -1669,7 +1664,6 @@ PrepareBackgroundDrawing_Horizontal_Exit:
 
 	; Restore original Y value
 	LDY z0f
-
 	RTS
 
 
@@ -1844,7 +1838,6 @@ CopyAttributesToHorizontalBuffer_Loop:
 	LDA z0e
 	CMP #03
 	BNE CopyAttributesToHorizontalBuffer_Loop
-
 	RTS
 
 
@@ -1897,7 +1890,6 @@ SetObjectLocks_Loop:
 	STA iObjectLock - 1, X
 	DEX
 	BPL SetObjectLocks_Loop
-
 	RTS
 
 
@@ -2336,7 +2328,7 @@ HandlePlayerState_HawkmouthEating:
 
 	JSR ApplyPlayerPhysicsY
 
-	LDA_abs zPlayerCollision
+	LDA zPlayerCollision
 
 	BEQ locret_BANK0_8BEB
 
@@ -2389,7 +2381,6 @@ HandlePlayerState_ChangingSize_Loop:
 HandlePlayerState_ChangingSize_Next:
 	DEY
 	BPL HandlePlayerState_ChangingSize_Loop
-
 	RTS
 
 ; ---------------------------------------------------------------------------
@@ -2500,9 +2491,7 @@ loc_BANK0_8C92:
 	JSR sub_BANK0_8D2C
 
 loc_BANK0_8C95:
-	JSR sub_BANK0_8DC0
-
-	RTS
+	JMP sub_BANK0_8DC0
 
 ; End of function sub_BANK0_8C1A
 
@@ -3429,7 +3418,6 @@ loc_BANK0_9076:
 	INX
 	CPX #$09
 	BCC loc_BANK0_9076
-
 	RTS
 
 ; create the sprite for the item being picked up
@@ -4603,7 +4591,6 @@ WaitForNMI_TitleScreen:
 WaitForNMI_TitleScreenLoop:
 	LDA zNMIOccurred
 	BPL WaitForNMI_TitleScreenLoop
-
 	RTS
 
 
@@ -5275,7 +5262,6 @@ WaitForNMI_Ending:
 WaitForNMI_EndingLoop:
 	LDA zNMIOccurred
 	BPL WaitForNMI_EndingLoop
-
 	RTS
 
 
@@ -5476,7 +5462,6 @@ FreeSubconsScene_Exit:
 
 	LDA ze6
 	BEQ FreeSubconsScene_JumpingLoop
-
 	RTS
 
 
@@ -5731,7 +5716,6 @@ FreeSubconsScene_Subcons_Next:
 	DEC zSpriteTimer, X
 	DEX
 	BPL FreeSubconsScene_Subcons_Loop
-
 	RTS
 
 
@@ -6200,7 +6184,6 @@ loc_BANK1_AB80:
 	LDA ze6
 	CMP #$04
 	BCC loc_BANK1_AB32
-
 	RTS
 
 
@@ -6344,7 +6327,7 @@ loc_BANK1_AC0A:
 	CMP #$20
 	BCC loc_BANK1_AC37
 
-	INC_abs ze6
+	INC ze6
 
 	LDA #$A0
 	STA z10
@@ -6412,7 +6395,6 @@ loc_BANK1_AC73:
 	INY
 	DEX
 	BPL loc_BANK1_AC4B
-
 	RTS
 
 
@@ -6449,7 +6431,7 @@ loc_BANK1_AC8B:
 	LDA #$0DA
 	STA zObjectYVelocity + 6
 
-	INC_abs ze6
+	INC ze6
 
 
 loc_BANK1_ACA4:
@@ -6500,7 +6482,6 @@ loc_BANK1_ACD6:
 	STA iVirtualOAM + $72, Y
 	DEX
 	BPL loc_BANK1_ACA6
-
 	RTS
 
 
@@ -6585,7 +6566,6 @@ ContributorCharacterAnimation_InnerLoop:
 
 	DEC z00
 	BPL ContributorCharacterAnimation_OuterLoop
-
 	RTS
 
 
@@ -6708,7 +6688,7 @@ ContributorTicker:
 	CLC
 	ADC #$09
 
-	STA_abs zScreenUpdateIndex
+	STA zScreenUpdateIndex
 
 	DEC iContributorID
 	BPL ContributorTicker_Exit
@@ -7304,7 +7284,6 @@ CreateEnemy_Bank1_FindSlot:
 
 	DEY
 	BPL CreateEnemy_Bank1_FindSlot
-
 	RTS
 
 CreateEnemy_Bank1_FoundSlot:

@@ -528,7 +528,6 @@ DebugMenu_ApplyOptions:
 	SEC
 	SBC #$01
 	STA iPlayerMaxHP
-
 	RTS
 
 
@@ -541,7 +540,7 @@ DebugMenu_LoadCharacter:
 	BEQ +
 
 	STA zCurrentCharacter
-	JSR CopyCharacterStatsAndStuff
+	JMP CopyCharacterStatsAndStuff
 
 +
 	RTS
@@ -579,9 +578,7 @@ DebugMenu_ResetArea:
 	LDA #$00
 	STA zPlayerXVelocity
 
-	JSR DoAreaReset
-
-	RTS
+	JMP DoAreaReset
 
 
 DebugMenu_FullReset:
@@ -618,9 +615,7 @@ DebugMenu_Reset:
 	JSR DoAreaReset
 
 	; Initialize level stuff before custom updates
-	JSR InitializeSomeLevelStuff
-
-	RTS
+	JMP InitializeSomeLevelStuff
 
 ; Part of update menu screen loop pls ignore
 -
@@ -641,8 +636,7 @@ DebugMenu_UpdateCharacter:
 	LDA #$0C ; Load text offset of Mario (0)
 	CLC
 	ADC Debug_Character ; Add the character index ...
-	JSR DebugMenu_BufferText ; ...and draw it.
-	RTS
+	JMP DebugMenu_BufferText ; ...and draw it.
 
 DebugMenu_UpdateLives:
 	LDA #$10
@@ -686,7 +680,6 @@ DebugMenu_UpdateHealth:
 	DEX
 	DEX
 	BPL -
-
 	RTS
 
 
@@ -723,7 +716,6 @@ DebugMenu_UpdateLevel:
 	CLC
 	ADC #$D0
 	STA iPPUBuffer + 9
-
 	RTS
 
 
@@ -825,7 +817,6 @@ DebugMenu_UpdateCursorWithTileOffset:
 	ASL A
 	EOR Debug_Temp
 	STA iVirtualOAM + 6
-
 	RTS
 
 
@@ -842,7 +833,6 @@ DebugMenu_SetPalette:
 	INY
 	CPY #$20
 	BCC -
-
 	RTS
 
 DebugMenu_InitCharacterSprite:
@@ -880,7 +870,6 @@ DebugMenu_InitCharacterSprite:
 	INX
 	STX iVirtualOAM + 17
 	STX iVirtualOAM + 21
-
 	RTS
 
 DebugMenu_UpdateCharacterSprite:
@@ -894,7 +883,6 @@ DebugMenu_UpdateCharacterSprite:
 	INX
 	STX iVirtualOAM + 17
 	STX iVirtualOAM + 21
-
 	RTS
 
 DebugMenu_CharacterStartTile:

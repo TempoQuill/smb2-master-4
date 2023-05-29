@@ -2330,9 +2330,7 @@ Swarm_BeezoDiving_Vertical:
 	LDY z01
 	JSR EnemyInit_BasicMovement
 
-	JSR EnemyBeezoDiveSetup
-
-	RTS
+	JMP EnemyBeezoDiveSetup
 
 
 ;
@@ -6647,7 +6645,7 @@ byte_BANK3_A1DC:
 
 
 RenderSprite_Clawgrip:
-	LDA_abs zf4
+	LDA zf4
 
 	STA zEnemyArray, X
 	LDY zEnemyState, X
@@ -6788,7 +6786,7 @@ loc_BANK3_A2AA:
 	JSR sub_BANK2_8894
 
 	LDY #$00
-	STY_abs zf4
+	STY zf4
 
 	LDA zObjectAttributes, X
 	PHA
@@ -6818,7 +6816,7 @@ loc_BANK3_A2D2:
 	AND #$04
 	BEQ loc_BANK3_A2E1
 
-	LDX_abs zf4
+	LDX zf4
 
 	DEC iVirtualOAM + $C, X
 	LDX z12
@@ -6877,7 +6875,7 @@ loc_BANK3_A320:
 ; ---------------------------------------------------------------------------
 
 RenderSprite_ClawgripRock:
-	LDA_abs_X zHeldObjectTimer ;, X
+	LDA zHeldObjectTimer , X
 
 	ORA iObjectStunTimer, X
 	BNE loc_BANK3_A362
@@ -7009,7 +7007,7 @@ loc_BANK3_A3C7:
 	LDA zInputCurrentState
 	AND #ControllerInput_Right | ControllerInput_Left
 	TAY
-	AND_abs zPlayerCollision
+	AND zPlayerCollision
 
 	BNE loc_BANK3_A3E6
 
@@ -7270,7 +7268,7 @@ RenderSprite_Pidgit:
 	; Render Pidgit's carpet
 	JSR FindSpriteSlot
 
-	STY_abs zf4
+	STY zf4
 
 	LDA #ObjAttrib_Palette1 | ObjAttrib_Horizontal | ObjAttrib_16x32
 	STA zObjectAttributes, X
@@ -7491,7 +7489,7 @@ RenderSprite_Mouser_Bomb:
 	STA iSpriteTempScreenX
 	ASL zee
 	LDY #$00
-	STY_abs zf4
+	STY zf4
 	LDA #$38 ; could have been $34 from tilemap 1 instead
 	JSR RenderSprite_DrawObject
 
@@ -7501,7 +7499,6 @@ RenderSprite_Mouser_Exit:
 	STA zObjectAttributes, X
 	LDA #%00110011
 	STA i46e, X
-
 	RTS
 
 
@@ -7772,7 +7769,7 @@ RenderSprite_Tryclyde:
 RenderSprite_Tryclyde_DrawBody:
 	TYA
 	LDY #$30
-	STY_abs zf4
+	STY zf4
 	JSR RenderSprite_DrawObject
 
 	LDA #ObjAttrib_Palette1 | ObjAttrib_FrontFacing
@@ -8462,8 +8459,7 @@ EnemyBehavior_Rocket_ApplyPhysics:
 	LDA #TransitionType_Rocket
 	STA iTransitionType
 	LDA #$00
-	STA_abs zPlayerState
-
+	STA zPlayerState
 	RTS
 
 EnemyBehavior_Rocket_DroppingOff:
@@ -8615,7 +8611,7 @@ loc_BANK3_AC4B:
 
 	JSR FindSpriteSlot
 
-	STY_abs zf4
+	STY zf4
 	PLA
 	CLC
 	LDY z07
@@ -9007,7 +9003,7 @@ loc_BANK3_AE5C:
 	LDA zEnemyArray, X
 	BNE loc_BANK3_AE7C
 
-	LDA_abs zf4
+	LDA zf4
 	PHA
 	LDA iSpriteTempScreenY
 	CLC
@@ -9015,12 +9011,12 @@ loc_BANK3_AE5C:
 	STA iSpriteTempScreenY
 	JSR FindSpriteSlot
 
-	STY_abs zf4
+	STY zf4
 	LDA #$7C
 	JSR RenderSprite_DrawObject
 
 	PLA
-	STA_abs zf4
+	STA zf4
 
 loc_BANK3_AE7C:
 	LDA zObjectYLo, X
@@ -9032,7 +9028,7 @@ loc_BANK3_AE7C:
 	TYA
 	CLC
 	ADC #$08
-	STA_abs zf4
+	STA zf4
 	LDA z00
 	STA iSpriteTempScreenY
 	LDA #%11010000
@@ -9162,7 +9158,7 @@ loc_BANK3_AF29:
 
 loc_BANK3_AF34:
 	STA iVirtualOAM + $D, Y
-	LDX_abs zf4
+	LDX zf4
 	LDA iVirtualOAM + 2, X
 	STA iVirtualOAM + 2, Y
 	STA iVirtualOAM + 6, Y
@@ -9523,7 +9519,7 @@ loc_BANK3_B13B:
 	STA iVirtualOAM + 6, Y
 	STA iVirtualOAM + $A, Y
 	STA iVirtualOAM + $E, Y
-	LDX_abs zf4
+	LDX zf4
 	LDA iVirtualOAM, X
 	STA iVirtualOAM + 8, Y
 	CLC
@@ -9805,7 +9801,7 @@ EnemyBehavior_WartBubble_Exit:
 
 
 RenderSprite_Wart:
-	LDA_abs zf4
+	LDA zf4
 	STA wMamuOAMOffsets + 2
 	STA wMamuOAMOffsets + 6
 	LDA z10
@@ -9813,7 +9809,7 @@ RenderSprite_Wart:
 	STA z07
 	TAY
 	LDA wMamuOAMOffsets, Y
-	STA_abs zf4
+	STA zf4
 	LDA zef
 	BNE EnemyBehavior_WartBubble_Exit
 
@@ -9861,7 +9857,7 @@ RenderSprite_Wart_DrawTop:
 	STA iSpriteTempScreenY
 	LDY z07
 	LDA wMamuOAMOffsets + 1, Y
-	STA_abs zf4
+	STA zf4
 	LDY #$A6 ; middle row: regular
 	LDA zEnemyArray, X
 	BNE RenderSprite_Wart_MiddleHurt
@@ -9894,7 +9890,7 @@ RenderSprite_Wart_DrawMiddle:
 	STA iSpriteTempScreenY
 	LDY z07
 	LDA wMamuOAMOffsets + 2, Y
-	STA_abs zf4
+	STA zf4
 	LDY #$BA ; bottom row: standing
 	LDA zObjectXVelocity, X
 	BEQ RenderSprite_Wart_DrawBottom

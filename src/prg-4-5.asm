@@ -265,7 +265,6 @@ ProcessSoundEffectQueue1:
 ProcessSoundEffectQueue1_None:
 	LDA iCurrentPulse2SFX
 	BNE ProcessSoundEffectQueue1_Part3
-
 	RTS
 
 ProcessSoundEffectQueue1_Part2:
@@ -313,7 +312,6 @@ ProcessSoundEffectQueue1_Note:
 ProcessSoundEffectQueue1_Exit:
 	LDA #$7F
 	STA SQ2_SWEEP
-
 	RTS
 
 
@@ -359,7 +357,6 @@ ProcessSoundEffectQueue3_Part2:
 
 	LSR A
 	BCS ProcessSoundEffectQueue3_RumblePart2
-
 	RTS
 
 ProcessSoundEffectQueue3_Rumble:
@@ -472,8 +469,6 @@ DMCFreqTable:
 	.db $0F
 	.db $0F
 
-	; unused
-	RTS
 
 ProcessMusicQueue_ThenReadNoteData:
 	JMP ProcessMusicQueue_ReadNoteData
@@ -497,7 +492,6 @@ ProcessMusicQueue:
 	LDA iCurrentMusic2
 	ORA iCurrentMusic1
 	BNE ProcessMusicQueue_ThenReadNoteData
-
 	RTS
 
 ProcessMusicQueue_EndingAndCast:
@@ -880,7 +874,6 @@ ProcessMusicQueue_NoiseEnd:
 	LDA iCurrentMusic1
 	AND #Music1_Inside | Music1_Invincible
 	BNE ProcessMusicQueue_DPCM
-
 	RTS
 
 ProcessMusicQueue_DPCM:

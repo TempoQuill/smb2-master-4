@@ -1124,7 +1124,6 @@ CreateObject_HorizontalBlocks_Loop:
 
 	DEC i50d
 	BPL CreateObject_HorizontalBlocks_Loop
-
 	RTS
 
 
@@ -1305,7 +1304,6 @@ CreateObject_VerticalBlocks_ClawGripRockLoop:
 
 	DEC i50d
 	BPL CreateObject_VerticalBlocks_ClawGripRockLoop
-
 	RTS
 
 CreateObject_VerticalBlocks_NotClawGrip:
@@ -1325,7 +1323,6 @@ CreateObject_VerticalBlocks_NextRow:
 
 	DEC i50d
 	BPL CreateObject_VerticalBlocks_Normal
-
 	RTS
 
 
@@ -2060,7 +2057,6 @@ loc_BANK6_8DD8:
 	LDA (z01), Y
 	CMP #BackgroundTile_Sky
 	BEQ loc_BANK6_8DDF
-
 	RTS
 
 ; ---------------------------------------------------------------------------
@@ -2112,7 +2108,6 @@ loc_BANK6_8E14:
 	LDA (z01), Y
 	CMP #BackgroundTile_Sky
 	BEQ loc_BANK6_8E1E
-
 	RTS
 
 ; ---------------------------------------------------------------------------
@@ -2362,7 +2357,6 @@ loc_BANK6_8F29:
 
 	LDA z08
 	BNE loc_BANK6_8F3A
-
 	RTS
 
 ; ---------------------------------------------------------------------------
@@ -2532,7 +2526,6 @@ CreateObject_TreeBackground_MiddleLoop:
 
 	DEC z07
 	BPL CreateObject_TreeBackground_MiddleLoop
-
 	RTS
 
 
@@ -2617,7 +2610,6 @@ CreateObject_RockWallEntrance_InnerLoop:
 	STA ze7
 	CPX #$1B
 	BNE CreateObject_RockWallEntrance_Loop
-
 	RTS
 
 
@@ -2784,7 +2776,7 @@ CreateObject_MushroomJumpthroughPlatform_Loop:
 	STA ze7
 	LDA #$0D
 	STA i50e
-	LDA_abs z07
+	LDA z07
 
 	STA i50d
 	LDX ze8
@@ -2913,7 +2905,6 @@ CreateObject_DrawBridgeChain_Loop:
 	TAY
 	DEC i50d
 	BNE CreateObject_DrawBridgeChain_Loop
-
 	RTS
 
 
@@ -3172,7 +3163,7 @@ ResetLevelData_Loop:
 	STA zScreenY
 	STA iBoundLeftUpper
 	STA iBoundLeftLower
-	STA_abs zScrollArray
+	STA zScrollArray
 	RTS
 
 
@@ -3328,7 +3319,6 @@ ApplyPalette_SkyLoop:
 	INY
 	DEX
 	BPL ApplyPalette_SkyLoop
-
 	RTS
 
 
@@ -3394,7 +3384,6 @@ GenerateSubspaceArea_TileRemapLoop:
 
 	DEX
 	BPL GenerateSubspaceArea_TileRemapLoop
-
 	RTS
 
 
@@ -4714,5 +4703,4 @@ CreateSubspaceMushroomObject:
 	; Restore X to its previous value
 	PLA
 	TAX
-
 	RTS

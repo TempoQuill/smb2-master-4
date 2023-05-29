@@ -53,7 +53,6 @@ sub_BANKC_801C:
 loc_BANKC_802E:
 	LDA zNMIOccurred
 	BPL loc_BANKC_802E
-
 	RTS
 
 ; End of function sub_BANKC_801C
@@ -505,7 +504,6 @@ loc_BANKC_849B:
 	STA iVirtualOAM, Y
 	DEY
 	BPL loc_BANKC_849B
-
 	RTS
 
 ; ---------------------------------------------------------------------------
@@ -515,7 +513,6 @@ loc_BANKC_84A5:
 	STA iVirtualOAM, Y
 	DEY
 	BPL loc_BANKC_84A5
-
 	RTS
 
 ; End of function sub_BANKC_8493
@@ -667,7 +664,6 @@ loc_BANKC_858A:
 	STA zEnemyState - 1, Y
 	DEY
 	BPL loc_BANKC_858A
-
 	RTS
 
 ; End of function sub_BANKC_84FB

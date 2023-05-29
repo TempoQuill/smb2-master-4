@@ -374,7 +374,6 @@ SetBlackAndWhitePalette_Loop:
 	INY
 	CPY #$14
 	BCC SetBlackAndWhitePalette_Loop
-
 	RTS
 
 
@@ -407,9 +406,7 @@ ResetScreenForTitleCard:
 	LDA #VMirror
 	JSR ChangeNametableMirroring
 
-	JSR ClearNametablesAndSprites
-
-	RTS
+	JMP ClearNametablesAndSprites
 
 
 ;
@@ -620,9 +617,7 @@ PreStartLevel:
 
 	JSR CopyCharacterStatsAndStuff
 
-	JSR EnableNMI
-
-	RTS
+	JMP EnableNMI
 
 
 ;
@@ -1817,7 +1812,6 @@ DelayFrames_Loop:
 	JSR WaitForNMI_TurnOnPPU
 	DEC z07
 	BNE DelayFrames_Loop
-
 	RTS
 
 
@@ -2084,7 +2078,6 @@ WaitForNMI:
 WaitForNMILoop:
 	LDA zNMIOccurred ; Has the NMI routine set the flag yet?
 	BPL WaitForNMILoop ; If no, wait some more
-
 	RTS ; If yes, go back to what we were doing
 
 
@@ -2141,7 +2134,6 @@ loc_BANKF_EADE:
 loc_BANKF_EAF2:
 	DEX
 	BPL loc_BANKF_EADE
-
 	RTS
 
 ; End of function sub_BANKF_EADC
@@ -2191,7 +2183,6 @@ loc_BANKF_EB1F:
 	DEX
 	DEX
 	BPL loc_BANKF_EB1F
-
 	RTS
 
 ; End of function sub_BANKF_EAF6
@@ -2209,7 +2200,6 @@ CopyUnusedCoinSpriteToSpriteArea_Loop:
 	INY
 	CPY #$08 ; Four bytes per sprite * 2 sprites = 8 bytes
 	BCC CopyUnusedCoinSpriteToSpriteArea_Loop
-
 	RTS
 ENDIF
 
@@ -2351,9 +2341,9 @@ NMI_Gameplay:
 	STA PPUCTRL
 
 NMI_DrawBackgroundTilesOuterLoop:
-	LDA_abs zBigPPUDrawer
+	LDA zBigPPUDrawer
 	STA PPUADDR
-	LDA_abs zBigPPUDrawer + 1
+	LDA zBigPPUDrawer + 1
 	STA PPUADDR
 
 NMI_DrawBackgroundTilesInnerLoop:
@@ -2364,7 +2354,7 @@ NMI_DrawBackgroundTilesInnerLoop:
 	BNE NMI_DrawBackgroundTilesInnerLoop
 
 	LDX #$1E
-	INC_abs zBigPPUDrawer + 1
+	INC zBigPPUDrawer + 1
 
 	CPY #$3C
 	BNE NMI_DrawBackgroundTilesOuterLoop
@@ -2514,7 +2504,6 @@ HideAllSpritesLoop:
 	DEY
 	DEY
 	BNE HideAllSpritesLoop
-
 	RTS
 
 
@@ -2782,7 +2771,6 @@ ChangeCHRBanks_MMC5:
 	STA MMC5_CHRBankSwitch11
 	ADC #$01
 	STA MMC5_CHRBankSwitch12
-
 	RTS
 ENDIF
 
@@ -3486,7 +3474,7 @@ DamageInvulnBlinkFrames:
 ; Renders the player sprite
 ;
 RenderPlayer:
-	LDY_abs zPlayerState
+	LDY zPlayerState
 	CPY #PlayerState_ChangingSize
 	BEQ loc_BANKF_F337
 
@@ -3505,7 +3493,6 @@ RenderPlayer:
 	LDA zDamageCooldown
 	AND DamageInvulnBlinkFrames, Y
 	BNE loc_BANKF_F345
-
 	RTS
 
 ; ---------------------------------------------------------------------------
@@ -4295,7 +4282,6 @@ UpdateJoypads_Loop:
 	STY zInputCurrentState, X
 	DEX
 	BPL UpdateJoypads_Loop
-
 	RTS
 
 
@@ -4329,7 +4315,6 @@ ReadJoypadLoop:
 	ROL iExpansionInput + 1
 	DEX
 	BNE ReadJoypadLoop
-
 	RTS
 
 
@@ -4571,7 +4556,6 @@ CopyEnemyDataToMemory_Loop:
 	INY
 	DEX
 	BNE CopyEnemyDataToMemory_Loop
-
 	RTS
 
 
@@ -5183,7 +5167,6 @@ ChangeCHRBanks_Loop:
 	STA MMC3_BankData
 	DEY
 	BPL ChangeCHRBanks_Loop
-
 	RTS
 ENDIF
 
