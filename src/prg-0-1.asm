@@ -3747,7 +3747,7 @@ DoorHandling_GoThroughDoor:
 	INC iPlayerLock
 	JSR SnapPlayerToTile
 
-	LDA #DPCM_DoorOpenBombBom
+	LDA #SoundEffect3_DoorOpen
 	STA iDPCMSFX
 
 DoorHandling_Exit:

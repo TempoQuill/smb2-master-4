@@ -2691,7 +2691,7 @@ loc_BANK2_8D7B:
 	DEC iMaskPreamble
 	BNE loc_BANK2_8D78
 
-	LDA #SoundEffect1_HawkOpen_WartBarf
+	LDA #SoundEffect3_Hawk
 	STA iPulse2SFX
 
 loc_BANK2_8D8A:
@@ -2776,7 +2776,7 @@ loc_BANK2_8DDB:
 	STA zPlayerStateTimer
 	LDA #$FC
 	STA zPlayerYVelocity
-	LDA #SoundEffect1_HawkOpen_WartBarf
+	LDA #SoundEffect3_Hawk
 	STA iPulse2SFX
 	INC iMaskClosingFlag
 
@@ -3432,7 +3432,7 @@ EnemyBehavior_Bomb_Explode:
 	LDA #$20
 	STA zSpriteTimer, X
 	STA iSkyFlashTimer
-	LDA #DPCM_DoorOpenBombBom
+	LDA #SoundEffect3_DoorOpen
 	STA iDPCMSFX
 	LSR A
 	; A = $00
@@ -3961,7 +3961,7 @@ Phanto_AfterFlashing:
 	STA iObjectShakeTimer, X
 
 	; Play Phanto activation sound effect
-	LDA #SoundEffect3_Rumble_B
+	LDA #SoundEffect3_Rumble_A
 	STA iNoiseSFX
 
 Phanto_AfterSound:
@@ -9391,7 +9391,7 @@ HawkmouthEat:
 ; =============== S U B R O U T I N E =======================================
 
 sub_BANK3_B095:
-	LDA #SoundEffect1_HawkOpen_WartBarf
+	LDA #SoundEffect3_Hawk
 	STA iPulse2SFX
 
 locret_BANK3_B09A:
@@ -9701,7 +9701,7 @@ EnemyBehavior_Wart_PhysicsX:
 
 	BMI EnemyBehavior_Wart_Exit
 
-	LDA #SoundEffect1_HawkOpen_WartBarf
+	LDA #SoundEffect3_Hawk
 	STA iPulse2SFX
 	; determines how high to spit the bubble
 	LDA i480, X
@@ -11474,7 +11474,7 @@ DoorHandling_GoThroughDoor_Bank3:
 	INC iPlayerLock
 	JSR SnapPlayerToTile_Bank3
 
-	LDA #DPCM_DoorOpenBombBom
+	LDA #SoundEffect3_DoorOpen
 	STA iDPCMSFX
 	RTS
 

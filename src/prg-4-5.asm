@@ -327,87 +327,97 @@ ProcessSoundEffectQueue1_Exit:
 ;
 .include "src/music/sound-effect-data.asm"
 
-
-ProcessSoundEffectQueue3_ShortNoise:
-	LDA #$02
-	STA iNoiseTimer
-
-ProcessSoundEffectQueue3_ShortNoisePart2:
-	LDA #$1A
-	STA NOISE_VOL
-	LDA #$04
-	STA NOISE_LO
-	STA NOISE_HI
-	BNE ProcessSoundEffectQueue3_DecrementTimer
-
+;
+; Noise Channel SFX Queue
+;
 ProcessSoundEffectQueue3:
-	LDY iNoiseSFX
+	LDA iNoiseSFX
+	BEQ ProcessSoundEffectQueue3_None
+
+	; iNoiseSFX is non-zero
+	LDX iCurrentNoiseSFX
 	BEQ ProcessSoundEffectQueue3_Part2
 
-	STY iCurrentNoiseSFX
-	LSR iNoiseSFX
-	BCS ProcessSoundEffectQueue3_ShortNoise
-
-	LSR iNoiseSFX
-	BCS ProcessSoundEffectQueue3_Rumble
-
-	LSR iNoiseSFX
-	BCS ProcessSoundEffectQueue3_Rumble
-
-ProcessSoundEffectQueue3_Part2:
+ProcessSoundEffectQueue3_None:
 	LDA iCurrentNoiseSFX
-	LSR A
-	BCS ProcessSoundEffectQueue3_ShortNoisePart2
-
-	LSR A
-	BCS ProcessSoundEffectQueue3_RumblePart2
-
-	LSR A
-	BCS ProcessSoundEffectQueue3_RumblePart2
+	BNE ProcessSoundEffectQueue3_Part3
 	RTS
 
-ProcessSoundEffectQueue3_Rumble:
-	LDA #$7F
-	STA iNoiseTimer
+ProcessSoundEffectQueue3_Part2:
+	; start a new sound effect
+	STA iCurrentNoiseSFX
+	LDY #$00
+	STY zNoiseSFXOffset
+	LSR A ; start looking now
+	BCS ProcessSoundEffectQueue3_SkipPointerLoop
 
-ProcessSoundEffectQueue3_RumblePart2:
-	LDY iNoiseTimer
-	LDA ProcessMusicQueue, Y ; weird, but i guess that's one way to get "random" noise
-	ORA #$0C
-	STA NOISE_LO
-	LDA iNoiseTimer
+; from here, loop until C is tripped, skipped if it already was
+ProcessSoundEffectQueue3_PointerLoop:
+	INY
+	INY
 	LSR A
-	LSR A
-	LSR A
-	AND #$1F
-	ORA #$10
-	STA NOISE_VOL
-	LDA #$18
-	STA NOISE_HI
+	BCC ProcessSoundEffectQueue3_PointerLoop
 
-ProcessSoundEffectQueue3_DecrementTimer:
-	DEC iNoiseTimer
-	BNE ProcessSoundEffectQueue3_Exit
+ProcessSoundEffectQueue3_SkipPointerLoop:
+	; load pointer for us to access
+	LDA NoiseSFXPointers, Y
+	STA zNoiseIndexPointer
+	LDA NoiseSFXPointers + 1, Y
+	STA zNoiseIndexPointer + 1
 
-IFNDEF FIX_MIXER_CODE
-	LDX #$07
-	STX SND_CHN
-	LDX #$0F
-	STX SND_CHN
-ELSE
-	LDX #$10
+ProcessSoundEffectQueue3_Part3:
+	; load offset and increment it
+	LDY zNoiseSFXOffset
+	INC zNoiseSFXOffset
+	; examine data
+	LDA (zNoiseIndexPointer), Y
+	; 00 = ret
+	BEQ ProcessSoundEffectQueue3_Done
+	; 7e = rest
+	CMP #$7e
+	BEQ ProcessSoundEffectQueue3_Exit
+	; 10-7f = patch
+	AND #$70
+	BNE ProcessSoundEffectQueue3_Patch
+	; 00-0f / 80-8f = note
+	BEQ ProcessSoundEffectQueue3_Note
+
+ProcessSoundEffectQueue3_Done:
+	; if it was $00, we're at the end of the data for this sound effect
+	LDX #$90
 	STX NOISE_VOL
-ENDIF
-	LDX #$00
-IFDEF FIX_MIXER_CODE
-	STX NOISE_LO
+	LDX #$18
 	STX NOISE_HI
-ENDIF
+	LDX #$00
+	STX NOISE_LO
 	STX iCurrentNoiseSFX
+	RTS
+
+ProcessSoundEffectQueue3_Patch:
+	; apply patch
+	LDA (zNoiseIndexPointer), Y
+	STA NOISE_VOL
+	LDY zNoiseSFXOffset
+	INC zNoiseSFXOffset
+
+ProcessSoundEffectQueue3_Note:
+	; apply note
+	LDA (zNoiseIndexPointer), Y
+	STA NOISE_LO
+	LDA #$08
+	STA NOISE_HI
 
 ProcessSoundEffectQueue3_Exit:
 	RTS
 
+.include "src/music/noise-sfx-pointers"
+.include "sfx/music/sound-effects/whale.asm"
+.include "sfx/music/sound-effects/pow-door.asm"
+.include "sfx/music/sound-effects/hawk-noise.asm"
+.include "sfx/music/sound-effects/rocket.asm"
+
+NoiseSFX_None:
+	.db $00
 
 ProcessDPCMQueue:
 	LDA iDPCMSFX

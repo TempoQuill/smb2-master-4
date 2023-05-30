@@ -195,6 +195,8 @@ PPUStatus_VBlankHit = %10000000
 SoundEffect3_ShortNoise = $01 ; Whale spout
 SoundEffect3_Rumble_A = $02 ; Rocket
 SoundEffect3_Rumble_B = $04 ; POW rumble
+SoundEffect3_DoorOpen = $08 ; door
+SoundEffect3_Hawk = $10 ; hawk
 
 ; ---------------------------------------------------------------------------
 
