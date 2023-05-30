@@ -10,7 +10,7 @@ MusicDataStar_Square2:
 	.db $84
 	.db $5A
 	.db $7E
-	.db $58
+	.db $56
 	.db $5A
 	.db $5C
 	.db $5C
