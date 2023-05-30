@@ -1,13 +1,13 @@
 
 MusicDataTitleScreen3:
-MusicDataTitleScreen3_Square:
+MusicDataTitleScreen3_Square2:
 	.db $AA
 	.db $56
 	.db $7E
 	.db $00
 
 ; + $04
-MusicDataTitleScreen3_Square:
+MusicDataTitleScreen3_Square1:
 	.db $AA
 	.db $46
 	.db $7E
