@@ -94,13 +94,13 @@ MusicHeaderDeath:
 ; Title screen segments
 
 MusicHeaderTitleScreen2:
-	musicHeader NoteLengthTable_225bpm, MusicDataTitleScreen2, MusicDataTitleScreen2_Triangle, MusicDataTitleScreen2_Square1, MusicDataTitleScreen2_Noise, -1
+	musicHeader NoteLengthTable_164bpm, MusicDataTitleScreen2, MusicDataTitleScreen2_Triangle, MusicDataTitleScreen2_Square1, MusicDataTitleScreen2_Noise, -1
 
 MusicHeaderTitleScreen1:
-	musicHeader NoteLengthTable_225bpm, MusicDataTitleScreen1, MusicDataTitleScreen1_Triangle, MusicDataTitleScreen1_Square1, MusicDataTitleScreen1_Noise, -1
+	musicHeader NoteLengthTable_164bpm, MusicDataTitleScreen1, MusicDataTitleScreen1_Triangle, MusicDataTitleScreen1_Square1, MusicDataTitleScreen1_Noise, -1
 
 MusicHeaderTitleScreen3:
-	musicHeader NoteLengthTable_225bpm, MusicDataTitleScreen3, MusicDataTitleScreen3_Triangle, MusicDataTitleScreen3_Square1, MusicDataTitleScreen3_Noise, -1
+	musicHeader NoteLengthTable_164bpm, MusicDataTitleScreen3, MusicDataTitleScreen3_Triangle, MusicDataTitleScreen3_Square1, MusicDataTitleScreen3_Noise, -1
 
 ; ----------------------------------------
 ; Subspace music, quite longer than normally heard
