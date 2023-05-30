@@ -112,7 +112,7 @@ MusicHeaderTitleScreen4:
 ; Subspace music, quite longer than normally heard
 
 MusicHeaderSubspace1:
-	musicHeader NoteLengthTable_200bpm, MusicDataSubspace1, 0, MusicDataSubspace1_Square1, 0, -1
+	musicHeader NoteLengthTable_200bpm, MusicDataSubspace, 0, MusicDataSubspace_Square1, 0, -1
 
 ; ----------------------------------------
 ; Ending music
