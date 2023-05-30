@@ -2692,7 +2692,7 @@ loc_BANK2_8D7B:
 	BNE loc_BANK2_8D78
 
 	LDA #SoundEffect3_Hawk
-	STA iPulse2SFX
+	STA iNoiseSFX
 
 loc_BANK2_8D8A:
 	LDA iMaskClosingFlag
@@ -2777,7 +2777,7 @@ loc_BANK2_8DDB:
 	LDA #$FC
 	STA zPlayerYVelocity
 	LDA #SoundEffect3_Hawk
-	STA iPulse2SFX
+	STA iNoiseSFX
 	INC iMaskClosingFlag
 
 RenderSprite_HawkmouthLeft:
@@ -3433,7 +3433,7 @@ EnemyBehavior_Bomb_Explode:
 	STA zSpriteTimer, X
 	STA iSkyFlashTimer
 	LDA #SoundEffect3_DoorOpen
-	STA iDPCMSFX
+	STA iNoiseSFX
 	LSR A
 	; A = $00
 	STA iObjectBulletTimer, X
@@ -9392,7 +9392,7 @@ HawkmouthEat:
 
 sub_BANK3_B095:
 	LDA #SoundEffect3_Hawk
-	STA iPulse2SFX
+	STA iNoiseSFX
 
 locret_BANK3_B09A:
 	RTS
@@ -9702,7 +9702,7 @@ EnemyBehavior_Wart_PhysicsX:
 	BMI EnemyBehavior_Wart_Exit
 
 	LDA #SoundEffect3_Hawk
-	STA iPulse2SFX
+	STA iNoiseSFX
 	; determines how high to spit the bubble
 	LDA i480, X
 	AND #$03
@@ -11475,7 +11475,7 @@ DoorHandling_GoThroughDoor_Bank3:
 	JSR SnapPlayerToTile_Bank3
 
 	LDA #SoundEffect3_DoorOpen
-	STA iDPCMSFX
+	STA iNoiseSFX
 	RTS
 
 
