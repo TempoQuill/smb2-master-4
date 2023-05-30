@@ -1,6 +1,6 @@
 
-MusicDataLDPTitleScreen2:
-MusicDataLDPTitleScreen2_Square2:
+MusicDataTitleScreen2:
+MusicDataTitleScreen2_Square2:
 	.db $B4
 	.db $5A
 	.db $7E
@@ -66,7 +66,7 @@ MusicDataLDPTitleScreen2_Square2:
 	.db $00
 
 ; + $3f
-MusicDataLDPTitleScreen2_Square1:
+MusicDataTitleScreen2_Square1:
 	.db $B4
 	.db $48
 	.db $7E
@@ -132,7 +132,7 @@ MusicDataLDPTitleScreen2_Square1:
 	.db $42
 
 ; + $7E
-MusicDataLDPTitleScreen2_Triangle:
+MusicDataTitleScreen2_Triangle:
 	.db $84
 	.db $3C
 	.db $3C
@@ -224,7 +224,7 @@ MusicDataLDPTitleScreen2_Triangle:
 	.db $3E
 
 ; + $d7
-MusicDataLDPTitleScreen2_Noise:
+MusicDataTitleScreen2_Noise:
 	.db $84
 	.db $02
 	.db $00

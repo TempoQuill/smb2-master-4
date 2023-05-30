@@ -64,10 +64,9 @@ MusicData:
 ;
 ; Title screen music
 ;
-.include "src/music/segments/title/title-1.asm"
-.include "src/music/segments/title/title-2.asm"
-.include "src/music/segments/title/title-3.asm"
-.include "src/music/segments/title/title-4.asm"
+.include "src/music/segments/exclusive/title-1.asm"
+.include "src/music/segments/exclusive/title-2.asm"
+.include "src/music/segments/exclusive/title-3.asm"
 
 ;
 ; Character Select screen music
@@ -79,17 +78,11 @@ MusicData:
 ;
 ; Overworld music segments
 ;
-.include "src/music/segments/overworld/overworld-1.asm"
-.include "src/music/segments/overworld/overworld-2.asm"
-.include "src/music/segments/overworld/overworld-3-square2.asm"
-.include "src/music/segments/overworld/overworld-4-square2.asm"
-.include "src/music/segments/overworld/overworld-3-4-noise.asm"
-.include "src/music/segments/overworld/overworld-3-square1.asm"
-.include "src/music/segments/overworld/overworld-4-square1.asm"
-.include "src/music/segments/overworld/overworld-3-triangle.asm"
-.include "src/music/segments/overworld/overworld-4-triangle.asm"
-.include "src/music/segments/overworld/overworld-5.asm"
-.include "src/music/segments/overworld/overworld-6.asm"
+.include "src/music/segments/ldp-exclusive/outside-1.asm"
+.include "src/music/segments/ldp-exclusive/outside-2.asm"
+.include "src/music/segments/ldp-exclusive/outside-3.asm"
+.include "src/music/segments/ldp-exclusive/outside-4.asm"
+.include "src/music/segments/ldp-exclusive/outside-5.asm"
 
 ;
 ; Boss music segment...

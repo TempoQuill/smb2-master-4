@@ -49,9 +49,8 @@ MusicPartPointers_OverworldLoop:
 	musicPart MusicHeaderOverworld3
 	musicPart MusicHeaderOverworld4
 	musicPart MusicHeaderOverworld3
-	musicPart MusicHeaderOverworld5
 MusicPartPointers_OverworldEnd:
-	musicPart MusicHeaderOverworld6
+	musicPart MusicHeaderOverworld5
 
 
 MusicPartPointers_Boss:
@@ -75,9 +74,8 @@ MusicPartPointers_WartEnd:
 MusicPartPointers_TitleScreen:
 	musicPart MusicHeaderTitleScreen1
 	musicPart MusicHeaderTitleScreen2
-	musicPart MusicHeaderTitleScreen3
 MusicPartPointers_TitleScreenEnd:
-	musicPart MusicHeaderTitleScreen4
+	musicPart MusicHeaderTitleScreen3
 
 
 MusicPartPointers_SubSpace:

@@ -52,9 +52,6 @@ MusicHeaderOverworld4:
 MusicHeaderOverworld5:
 	musicHeader NoteLengthTable_200bpm, MusicDataOverworld5, MusicDataOverworld5_Triangle, MusicDataOverworld5_Square1, MusicDataOverworld5_Noise, -1
 
-MusicHeaderOverworld6:
-	musicHeader NoteLengthTable_200bpm, MusicDataOverworld6, MusicDataOverworld6_Triangle, MusicDataOverworld6_Square1, MusicDataOverworld6_Noise, -1
-
 ; ----------------------------------------
 ; Underground music
 MusicHeaderUnderground:
@@ -104,9 +101,6 @@ MusicHeaderTitleScreen1:
 
 MusicHeaderTitleScreen3:
 	musicHeader NoteLengthTable_225bpm, MusicDataTitleScreen3, MusicDataTitleScreen3_Triangle, MusicDataTitleScreen3_Square1, MusicDataTitleScreen3_Noise, -1
-
-MusicHeaderTitleScreen4:
-	musicHeader NoteLengthTable_225bpm, MusicDataTitleScreen4, MusicDataTitleScreen4_Triangle, MusicDataTitleScreen4_Square1, MusicDataTitleScreen4_Noise, -1
 
 ; ----------------------------------------
 ; Subspace music, quite longer than normally heard
