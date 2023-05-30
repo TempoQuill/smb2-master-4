@@ -1254,4 +1254,4 @@ PlayTriangleNote:
 .include "src/music/music-data.asm"
 
 ; Instrument data and definitions
-.include "src/music/instruments.asm"
+.include "src/music/ldp-instruments.asm"
