@@ -410,11 +410,11 @@ ProcessSoundEffectQueue3_Note:
 ProcessSoundEffectQueue3_Exit:
 	RTS
 
-.include "src/music/noise-sfx-pointers"
-.include "sfx/music/sound-effects/whale.asm"
-.include "sfx/music/sound-effects/pow-door.asm"
-.include "sfx/music/sound-effects/hawk-noise.asm"
-.include "sfx/music/sound-effects/rocket.asm"
+.include "src/music/noise-sfx-pointers.asm"
+.include "src/music/sound-effects/whale.asm"
+.include "src/music/sound-effects/pow-door.asm"
+.include "src/music/sound-effects/hawk-noise.asm"
+.include "src/music/sound-effects/rocket.asm"
 
 NoiseSFX_None:
 	.db $00
