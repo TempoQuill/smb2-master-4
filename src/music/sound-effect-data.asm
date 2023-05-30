@@ -11,5 +11,5 @@
 .include "src/music/sound-effects/cherry-get.asm"
 .include "src/music/sound-effects/enemy-hit.asm"
 .include "src/music/sound-effects/stopwatch-tick.asm"
-.include "src/music/sound-effects/hawk-open-wart-barf.asm"
+.include "src/music/sound-effects/death.asm"
 .include "src/music/sound-effects/1up.asm"

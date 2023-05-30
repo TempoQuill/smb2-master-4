@@ -486,8 +486,8 @@ DebugMenu_Health:
 	JMP DebugMenu_MenuLoop
 
 DebugMenu_MenuStart:
-	LDA #DPCM_PlayerDeath
-	STA iDPCMSFX
+	LDA #SoundEffect1_PlayerDeath
+	STA iPulse2SFX
 	RTS
 
 DebugMenu_MenuMove:

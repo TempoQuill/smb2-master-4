@@ -113,7 +113,7 @@ SoundEffect1_ThrowItem = $08
 SoundEffect1_1UP = $10
 SoundEffect1_EnemyHit = $20
 SoundEffect1_StopwatchTick = $40
-SoundEffect1_HawkOpen_WartBarf = $80
+SoundEffect1_PlayerDeath = $80
 
 ; ---------------------------------------------------------------------------
 

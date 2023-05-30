@@ -6,4 +6,4 @@ SoundEffectPointers:
 	.db SoundEffect1Data_1UP - SoundEffectPointers
 	.db SoundEffect1Data_EnemyHit - SoundEffectPointers
 	.db SoundEffect1Data_StopwatchTick - SoundEffectPointers
-	.db SoundEffect1Data_HawkOpen_WartBarf - SoundEffectPointers
+	.db SoundEffect1Data_Death - SoundEffectPointers

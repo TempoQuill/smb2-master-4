@@ -4454,8 +4454,8 @@ loc_BANKF_F749:
 	LDA #Music2_DeathJingle
 	STA iMusic2
 	; BUG: Setting DPCM at the same time as music
-	LDA #DPCM_PlayerDeath
-	STA iDPCMSFX
+	LDA #SoundEffect1_PlayerDeath
+	STA iPulse2SFX
 	RTS
 
 
