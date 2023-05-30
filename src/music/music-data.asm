@@ -54,7 +54,7 @@ MusicData:
 ; Inside music
 ; (including prototype version)
 ;
-.include "src/music/segments/underground/underground.asm"
+.include "src/music/segments/ldp-exclusive/inside.asm"
 
 ;
 ; Subspace music

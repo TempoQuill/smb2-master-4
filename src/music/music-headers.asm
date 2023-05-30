@@ -55,7 +55,7 @@ MusicHeaderOverworld5:
 ; ----------------------------------------
 ; Underground music
 MusicHeaderUnderground:
-	musicHeader NoteLengthTable_129bpm, MusicDataUnderground, MusicDataUnderground_Triangle, MusicDataUnderground_Square1, -1, MusicDataUnderground_DPCM
+	musicHeader NoteLengthTable_150bpm, MusicDataUnderground, MusicDataUnderground_Triangle, MusicDataUnderground_Square1, -1, 0
 
 ; ----------------------------------------
 ; Boss and boss area music
