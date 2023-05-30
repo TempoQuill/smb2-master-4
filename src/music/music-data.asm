@@ -20,28 +20,14 @@
 ;   $00: Mute output (triangle channel is constant volume otherwise)
 ;   $80-$FF: second nybble is the note length from the note length lookup table
 ;
-; Noise/DPCM:
+; Noise:
 ;   $00: Restart (used for looping percussion within a segment)
 ;   $01: Rest
 ;   $02-$7F: Various note-on values, low bit is ignored
 ;   $02: Closed Hi-Hat
 ;   $04: Kick
 ;   $06: Open Hi-Hat
-;   $08: Quiet Hi-Hat
-;   $0A: Crash Cymbal
-;   $0C: Brushed Snare
-;   $0E: Muted Crash
-;   $10: Snare
-;   $12: Deep Kick
-;   $14: High Static
-;   $16: Low Static
-;   $18: Ride
-;   $1A: Closed Hi-Hat
-;   $1C: Medium Static
-;   $1E: Obnoxious Crash
 ;   $80-$FF: second nybble is the note length from the note length lookup table
-;
-; DPCM is the same as Noise, except for the following:
 ;
 ; The SMB3 disassembly is a good reference, since the format is the same:
 ; http://sonicepoch.com/sm3mix/disassembly.html#TRACK
