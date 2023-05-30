@@ -34,14 +34,6 @@ StartProcessingSoundQueue:
 
 MusicAndSFXProcessing:
 
-IFDEF FIX_MIXER_CODE
-CheckMixer:
-	LDA SND_CHN
-	AND #%11110011
-	BNE ProcessMusicAndSfxQueues
-	LDA #%00001111
-	STA SND_CHN
-ENDIF
 ProcessMusicAndSfxQueues:
 	JSR ProcessSoundEffectQueue2
 
@@ -200,9 +192,6 @@ IFNDEF FIX_MIXER_CODE
 	STX SND_CHN
 	LDX #%00001111
 	STX SND_CHN
-ELSE
-	LDX #$10
-	STA SQ1_VOL
 ENDIF
 	LDX #$00
 	STX iCurrentPulse1SFX
@@ -390,9 +379,6 @@ IFNDEF FIX_MIXER_CODE
 	STX SND_CHN
 	LDX #$0F
 	STX SND_CHN
-ELSE
-	LDX #$10
-	STX NOISE_VOL
 ENDIF
 	LDX #$00
 	STX iCurrentNoiseSFX
