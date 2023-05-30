@@ -1814,10 +1814,6 @@ SND_CHN = $4015
 JOY1 = $4016
 JOY2 = $4017
 
-; Leftover code in prg-e-f references this
-; (otherwise unused, since, well, not FDS)
-FDS_WAVETABLE_VOL = $4080
-
 
 ;
 ; Expansion chip stuff for MMC5 support

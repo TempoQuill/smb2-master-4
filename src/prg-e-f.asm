@@ -1822,10 +1822,6 @@ EndingSceneRoutine:
 	JSR SetScrollXYTo0
 
 	LDA #$80
-	; FDS leftover; $4080 is an old sound register
-	; The prototype had two writes to this address!
-	; It looks like they missed this one, though.
-	STA FDS_WAVETABLE_VOL
 	ASL A
 	STA iCurrentPulse2SFX
 	LDA #PRGBank_0_1
@@ -2772,11 +2768,6 @@ ChangeCHRBanks_MMC5:
 	ADC #$01
 	STA MMC5_CHRBankSwitch12
 	RTS
-ENDIF
-
-IFNDEF EVEN_UPPER_ROM_AREA
-	; Unused space in the original ($ED4D - $EFFF)
-	unusedSpace $F000, $FF
 ENDIF
 
 ;
@@ -4980,9 +4971,6 @@ FindSpriteSlot_CheckInactiveSlot:
 	BNE FindSpriteSlot_LoopNext
 	BEQ FindSpriteSlot_Exit
 
-; Unused space in the original ($FB36 - $FDFF)
-unusedSpace $FE00, $FF
-
 CHRBank_WorldEnemies:
 	.db CHRBank_EnemiesGrass
 	.db CHRBank_EnemiesDesert
@@ -5097,10 +5085,6 @@ LoadMarioSleepingCHRBanks:
 	RTS
 
 
-; Unused space in the original ($FE97 - $FF4F)
-unusedSpace $FF50, $FF
-
-
 ;
 ; Public RESET
 ;
@@ -5152,9 +5136,6 @@ ENDIF
 IF INES_MAPPER == MAPPER_MMC5
 ChangeCHRBanks:
 	JMP ChangeCHRBanks_MMC5
-
-	; Maintain location of the next subroutine
-	unusedSpace $FF85, $FF
 
 ELSE ; INES_MAPPER == MAPPER_MMC3
 ChangeCHRBanks:
@@ -5213,9 +5194,6 @@ IF INES_MAPPER == MAPPER_MMC5
 	STA MMC5_PRGBankSwitch3
 	RTS
 
-	; Maintain location of the next subroutine
-	unusedSpace $FFA0, $FF
-
 ELSE ; INES_MAPPER == MAPPER_MMC3
 	; Change first bank
 	PHA
@@ -5249,34 +5227,14 @@ ELSE
 ENDIF
 	RTS
 
-; Unused space in the original ($FFA4 - $FFEA)
-unusedSpace $FFEB, $FF
-
 ; Technically you can delete the stuff from here to the vector table as well,
 ; but because it looks slightly less like unused space it isn't being removed.
 
-IFDEF PRESERVE_UNUSED_SPACE
-; Not used; leftover part of FamicomBox cart title?
-UnusedTextZELDA:
-	.db 'ZELDA'
-ENDIF
 
 ; Note that this is NOT CODE.
 ; If the NES actually hits a BRK, the game will probably just explode.
 ; If you wanted, you could write some sort of crash handler though.
 IRQ:
-IFDEF PRESERVE_UNUSED_SPACE
-	.db $DF
-	.db $E6
-	.db $00
-	.db $00
-	.db $38
-	.db $04
-	.db $01
-	.db $04
-	.db $01
-	.db $BE
-ENDIF
 
 ;
 ; Vectors for the NES CPU. These must ALWAYS be at $FFFA!

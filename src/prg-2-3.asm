@@ -6351,10 +6351,6 @@ EnemyBehavior_TurnAroundExit:
 	JMP ApplyObjectPhysicsX
 
 
-; Unused space in the original ($9EBD - $A02F)
-unusedSpace $A030, $FF
-
-
 EnemyTilemap2:
 	.db $2D,$2F ; $00
 	.db $2D,$2F ; $02
@@ -9945,10 +9941,6 @@ RenderSprite_Wart_DrawBottom:
 RenderSprite_Wart_Exit:
 	LDX z12
 	RTS
-
-
-; Unused space in the original ($B39B - $B4DF)
-unusedSpace $B4E0, $FF
 
 
 byte_BANK3_B4E0:

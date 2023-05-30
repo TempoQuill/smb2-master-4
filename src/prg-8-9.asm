@@ -46,11 +46,7 @@ include "src/levels/level-data-pointers.asm"
 ; see src/levels/level-data.asm for level format details
 include "src/levels/level-data.asm"
 
-
-; Pad out any remaining space
-; Unused space in the original ($A420 - $A4FF)
 LevelData_Unused:
-unusedSpace $A500,$FF
 
 
 ; Pointers to enemy data

@@ -7,15 +7,6 @@
 ; Include COMPATIBILITY-flag-related macros
 include "src/compatibility-shims.asm"
 
-;
-; Pad out unused space used in the original, if needed
-;
-MACRO unusedSpace padTo with
-	IFDEF PRESERVE_UNUSED_SPACE
-		.pad padTo, with
-	ENDIF
-ENDM
-
 ; distTo
 ; Outputs distance (byte) to label
 ; e.g.:

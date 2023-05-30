@@ -2907,10 +2907,6 @@ CreateObject_DrawBridgeChain_Loop:
 	BNE CreateObject_DrawBridgeChain_Loop
 	RTS
 
-
-; Unused space in the original ($9126 - $91FF)
-unusedSpace $9200, $FF
-
 ;
 ; ## Ground setting data
 ;
