@@ -59,10 +59,7 @@ MusicData:
 ;
 ; Subspace music
 ;
-.include "src/music/segments/subspace/subspace-1.asm"
-.include "src/music/segments/subspace/subspace-2.asm"
-.include "src/music/segments/subspace/subspace-3.asm"
-.include "src/music/segments/subspace/subspace-4.asm"
+.include "src/music/segments/ldp-exclusive/lamp.asm"
 
 ;
 ; Title screen music
@@ -75,30 +72,9 @@ MusicData:
 ;
 ; Character Select screen music
 ;
-.include "src/music/segments/character-select/character-select-1.asm"
-
-.include "src/music/segments/character-select/character-select-2-square2.asm"
-.include "src/music/segments/character-select/character-select-3-square2.asm"
-.include "src/music/segments/character-select/character-select-4-square2.asm"
-.include "src/music/segments/character-select/character-select-2-square1.asm"
-.include "src/music/segments/character-select/character-select-3-square1.asm"
-.include "src/music/segments/character-select/character-select-4-square1.asm"
-.include "src/music/segments/character-select/character-select-2-triangle.asm"
-.include "src/music/segments/character-select/character-select-3-4-triangle.asm"
-.include "src/music/segments/character-select/character-select-2-noise.asm"
-.include "src/music/segments/character-select/character-select-3-4-noise.asm"
-
-.include "src/music/segments/character-select/character-select-5-square2.asm"
-.include "src/music/segments/character-select/character-select-6-square2.asm"
-.include "src/music/segments/character-select/character-select-5-square1.asm"
-.include "src/music/segments/character-select/character-select-6-square1.asm"
-.include "src/music/segments/character-select/character-select-5-triangle.asm"
-.include "src/music/segments/character-select/character-select-6-triangle.asm"
-.include "src/music/segments/character-select/character-select-5-noise.asm"
-.include "src/music/segments/character-select/character-select-6-noise.asm"
-
-.include "src/music/segments/character-select/character-select-7.asm"
-.include "src/music/segments/character-select/character-select-8.asm"
+.include "src/music/segments/ldp-exclusive/chr-1.asm"
+.include "src/music/segments/ldp-exclusive/chr-2.asm"
+.include "src/music/segments/ldp-exclusive/chr-3.asm"
 
 ;
 ; Overworld music segments

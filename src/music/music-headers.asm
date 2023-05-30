@@ -35,12 +35,6 @@ MusicHeaderCharacterSelect2:
 MusicHeaderCharacterSelect3:
 	musicHeader NoteLengthTable_300bpm, MusicDataCharacterSelect3, MusicDataCharacterSelect3_Triangle, MusicDataCharacterSelect3_Square1, MusicDataCharacterSelect3_Noise, -1
 
-MusicHeaderCharacterSelect4:
-	musicHeader NoteLengthTable_300bpm, MusicDataCharacterSelect4, MusicDataCharacterSelect4_Triangle, MusicDataCharacterSelect4_Square1, MusicDataCharacterSelect4_Noise, -1
-
-MusicHeaderCharacterSelect5:
-	musicHeader NoteLengthTable_300bpm, MusicDataCharacterSelect5, MusicDataCharacterSelect5_Triangle, MusicDataCharacterSelect5_Square1, MusicDataCharacterSelect5_Noise, -1
-
 ; ----------------------------------------
 ; Overworld music headers
 MusicHeaderOverworld1:
@@ -93,20 +87,11 @@ MusicHeaderGameOver:
 MusicHeaderBossBeaten:
  	musicHeader NoteLengthTable_300bpm, MusicDataBossBeaten, MusicDataBossBeaten_Triangle, MusicDataBossBeaten_Square1, -1, -1
 
-MusicHeaderCharacterSelect8:
-	musicHeader NoteLengthTable_300bpm, MusicDataCharacterSelect8, MusicDataCharacterSelect8_Triangle, MusicDataCharacterSelect8_Square1, MusicDataCharacterSelect8_Noise, -1
-
 MusicHeaderMushroomBonusChance:
  	musicHeader NoteLengthTable_150bpm, MusicDataMushroomBonusChance, $00, MusicDataMushroomBonusChance_Square1, -1, -1
 
-MusicHeaderCharacterSelect7:
-	musicHeader NoteLengthTable_300bpm, MusicDataCharacterSelect7, MusicDataCharacterSelect7_Triangle, MusicDataCharacterSelect7_Square1, MusicDataCharacterSelect7_Noise, -1
-
 MusicHeaderDeath:
  	musicHeader NoteLengthTable_200bpm, MusicDataDeath, MusicDataDeath_Triangle, MusicDataDeath_Square1, -1, -1
-
-MusicHeaderCharacterSelect6:
-	musicHeader NoteLengthTable_300bpm, MusicDataCharacterSelect6, MusicDataCharacterSelect6_Triangle, MusicDataCharacterSelect6_Square1, MusicDataCharacterSelect6_Noise, -1
 
 ; ----------------------------------------
 ; Title screen segments
@@ -127,16 +112,7 @@ MusicHeaderTitleScreen4:
 ; Subspace music, quite longer than normally heard
 
 MusicHeaderSubspace1:
-	musicHeader NoteLengthTable_200bpm, MusicDataSubspace1, MusicDataSubspace1_Triangle, MusicDataSubspace1_Square1, MusicDataSubspace1_Noise, -1
-
-MusicHeaderSubspace2:
-	musicHeader NoteLengthTable_200bpm, MusicDataSubspace2, MusicDataSubspace2_Triangle, MusicDataSubspace2_Square1, MusicDataSubspace2_Noise, -1
-
-MusicHeaderSubspace3:
-	musicHeader NoteLengthTable_200bpm, MusicDataSubspace3, MusicDataSubspace3_Triangle, MusicDataSubspace3_Square1, MusicDataSubspace3_Noise, -1
-
-MusicHeaderSubspace4:
-	musicHeader NoteLengthTable_200bpm, MusicDataSubspace4, MusicDataSubspace4_Triangle, MusicDataSubspace4_Square1, MusicDataSubspace4_Noise, -1
+	musicHeader NoteLengthTable_200bpm, MusicDataSubspace1, 0, MusicDataSubspace1_Square1, 0, -1
 
 ; ----------------------------------------
 ; Ending music

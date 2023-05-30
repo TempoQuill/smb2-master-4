@@ -38,14 +38,8 @@ MusicPartPointers_CharacterSelect:
 	musicPart MusicHeaderCharacterSelect1
 MusicPartPointers_CharacterSelectLoop:
 	musicPart MusicHeaderCharacterSelect2
-	musicPart MusicHeaderCharacterSelect3
-	musicPart MusicHeaderCharacterSelect2
-	musicPart MusicHeaderCharacterSelect4
-	musicPart MusicHeaderCharacterSelect5
-	musicPart MusicHeaderCharacterSelect6
-	musicPart MusicHeaderCharacterSelect7
 MusicPartPointers_CharacterSelectEnd:
-	musicPart MusicHeaderCharacterSelect8
+	musicPart MusicHeaderCharacterSelect3
 
 
 MusicPartPointers_Overworld:
@@ -88,12 +82,8 @@ MusicPartPointers_TitleScreenEnd:
 
 MusicPartPointers_SubSpace:
 MusicPartPointers_SubSpaceLoop:
-	musicPart MusicHeaderSubspace1
-	musicPart MusicHeaderSubspace2
-	musicPart MusicHeaderSubspace3
-	musicPart MusicHeaderSubspace2
 MusicPartPointers_SubSpaceEnd:
-	musicPart MusicHeaderSubspace4
+	musicPart MusicHeaderSubspace1
 
 MusicPartPointers_Ending:
 	musicPart MusicHeaderEnding1
