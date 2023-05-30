@@ -48,7 +48,7 @@ MusicData:
 ;
 ; Invincible Star music
 ;
-.include "src/music/segments/star/star.asm"
+.include "src/music/segments/ldp-exclusive/inv-star.asm"
 
 ;
 ; Inside music

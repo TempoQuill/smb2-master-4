@@ -1,5 +1,5 @@
-MusicDataInvStar:
-MusicDataInvStar_Square2:
+MusicDataStar:
+MusicDataStar_Square2:
 	.db $88
 	.db $54
 	.db $84
@@ -38,7 +38,7 @@ MusicDataInvStar_Square2:
 	.db $7E
 	.db $00
 
-MusicDataInvStar_Square1:
+MusicDataStar_Square1:
 	.db $88
 	.db $42
 	.db $84
@@ -76,7 +76,7 @@ MusicDataInvStar_Square1:
 	.db $4E
 	.db $7E
 
-MusicDataInvStar_Triangle:
+MusicDataStar_Triangle:
 	.db $84
 	.db $34
 	.db $42
