@@ -64,9 +64,9 @@ MusicData:
 ;
 ; Title screen music
 ;
-.include "src/music/segments/exclusive/title-1.asm"
-.include "src/music/segments/exclusive/title-2.asm"
-.include "src/music/segments/exclusive/title-3.asm"
+.include "src/music/segments/ldp-exclusive/title-1.asm"
+.include "src/music/segments/ldp-exclusive/title-2.asm"
+.include "src/music/segments/ldp-exclusive/title-3.asm"
 
 ;
 ; Character Select screen music
