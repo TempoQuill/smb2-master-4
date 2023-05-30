@@ -36,7 +36,7 @@ MusicData:
 
 ;
 ; Ending music
-; Segments 3 and 4 share a noise track (set in segment 4)
+; Segment 1-3 are at a different tempo than 4-8
 ;
 .include "src/music/segments/ending/ending-1.asm"
 .include "src/music/segments/ending/ending-3.asm"
@@ -46,20 +46,18 @@ MusicData:
 .include "src/music/segments/ending/ending-6.asm"
 
 ;
-; Starman music
+; Invincible Star music
 ;
 .include "src/music/segments/star/star.asm"
 
 ;
-; Underground music
+; Inside music
 ; (including prototype version)
 ;
 .include "src/music/segments/underground/underground.asm"
 
 ;
 ; Subspace music
-; Segments 1 and 2 share the same noise track,
-; as do segments 3 and 4 (defined in 2 and 4)
 ;
 .include "src/music/segments/subspace/subspace-1.asm"
 .include "src/music/segments/subspace/subspace-2.asm"
@@ -75,12 +73,7 @@ MusicData:
 .include "src/music/segments/title/title-4.asm"
 
 ;
-; Character Select screen music (1 through 5)
-; Segment 1 is in a single group,
-; Segments 3-6 are split by channel,
-; Segments 3 and 4 share the same triangle and noise channel
-; Segments 5 and 6 are just split by channel for some reason
-; Segments 7 and 8 are back in single groups like usual
+; Character Select screen music
 ;
 .include "src/music/segments/character-select/character-select-1.asm"
 
@@ -108,10 +101,7 @@ MusicData:
 .include "src/music/segments/character-select/character-select-8.asm"
 
 ;
-; Overworld music segments ...
-; Segments 1, 2, 5, and 6 are all separate;
-; Segments 3 and 4 have separate square2, square1, and triangle tracks,
-; but share a noise track
+; Overworld music segments
 ;
 .include "src/music/segments/overworld/overworld-1.asm"
 .include "src/music/segments/overworld/overworld-2.asm"
@@ -131,7 +121,7 @@ MusicData:
 .include "src/music/segments/boss/boss.asm"
 
 ;
-; Wart's final boss music segment
+; Mamu's final boss music segment
 ;
 .include "src/music/segments/wart/wart.asm"
 

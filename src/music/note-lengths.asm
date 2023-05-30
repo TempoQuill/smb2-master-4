@@ -41,7 +41,7 @@ NoteLengthTable_300bpm:
 NoteLengthTable_257bpm: ; rounded
 	;   $0   $1   $2   $3   $4   $5   $6   $7   $8   $9   $A   $B   $C
 	.db $03, $04, $05, $04, $07, $0A, $09, $0A, $0E, $15, $1C, $2A, $38
-	.db $0B ; junk?
+	.db $0B ; dotted quarter note rounded up
 
 ; Title Screen
 NoteLengthTable_225bpm:
@@ -56,7 +56,8 @@ NoteLengthTable_225bpm:
 NoteLengthTable_200bpm:
 	;   $0   $1   $2   $3   $4   $5   $6   $7   $8   $9   $A   $B   $C
 	.db $04, $05, $06, $06, $09, $0D, $0C, $0C, $12, $1B, $24, $36, $48
-	.db $0E, $03 ; junk?
+	.db $0E ; dotted quarter note rounded up
+	.db $03 ; quarter triplet
 
 NoteLengthTable_180bpm:
 	;   $0   $1   $2   $3   $4   $5   $6   $7   $8   $9   $A   $B   $C
@@ -65,13 +66,14 @@ NoteLengthTable_180bpm:
 NoteLengthTable_164bpm: ; rounded, 163.64 bpm
 	;   $0   $1   $2   $3   $4   $5   $6   $7   $8   $9   $A   $B   $C
 	.db $05, $06, $07, $08, $0B, $10, $0F, $0E, $16, $21, $2C, $42, $58
-	.db $11 ; junk?
+	.db $11 ; dotted quarter note rounded up
 
 ; Bonus Chance
 NoteLengthTable_150bpm:
 	;   $0   $1   $2   $3   $4   $5   $6   $7   $8   $9   $A   $B   $C
 	.db $06, $06, $08, $08, $0C, $12, $10, $10, $18, $24, $30, $48, $60
-	.db $02 ; junk?
+	.db $3c ; custom - half note <> eighth note
+	.db $90 ; custom - dotted whole note
 
 NoteLengthTable_138bpm: ; rounded, 138.46 bpm
 	;   $0   $1   $2   $3   $4   $5   $6   $7   $8   $9   $A   $B   $C
@@ -83,12 +85,12 @@ NoteLengthTable_138bpm: ; rounded, 138.46 bpm
 NoteLengthTable_129bpm: ; rounded, 128.57
 	;   $0   $1   $2   $3   $4   $5   $6   $7   $8   $9   $A   $B   $C
 	.db $07, $07, $09, $0A, $0E, $15, $13, $12, $1C, $2A, $38, $54, $70
-	.db $03, $04 ; junk?
+	.db $03, $04 ; thirty second notes
 
 NoteLengthTable_120bpm:
 	;   $0   $1   $2   $3   $4   $5   $6   $7   $8   $9   $A   $B   $C
 	.db $07, $08, $0A, $0A, $0F, $16, $14, $14, $1E, $2D, $3C, $5A, $78
-	.db $17 ; junk?
+	.db $17 ; dotted quarter note rounded up
 
 NoteLengthTable_112bpm: ; rounded, 112.5 bpm
 	;   $0   $1   $2   $3   $4   $5   $6   $7   $8   $9   $A   $B   $C
@@ -97,7 +99,7 @@ NoteLengthTable_112bpm: ; rounded, 112.5 bpm
 NoteLengthTable_106bpm: ; rounded, 105.88 bpm
 	;   $0   $1   $2   $3   $4   $5   $6   $7   $8   $9   $A   $B   $C
 	.db $08, $09, $0B, $0C, $11, $19, $15, $16, $22, $33, $44, $60, $88
-	.db $1A ; junk?
+	.db $1A ; dotted quarter note rounded up
 
 NoteLengthTable_100bpm:
 	;   $0   $1   $2   $3   $4   $5   $6   $7   $8   $9   $A   $B   $C
