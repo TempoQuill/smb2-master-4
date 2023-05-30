@@ -19,17 +19,6 @@
 ; build -dREV_A
 
 ; ----------------------------------------
-; Compatibility fixes for the disassembly
-; In some locations, Nintendo used absolute addressing instead of
-; zero-page for addresses in the zero page.
-; This flag adds in raw bytes to match the opcodes,
-; as this assembler isn't capable of forcing absolute addressing for zp.
-;
-; Note that if you use this, you should probably use
-; PRESERVE_FREE_SPACE, too.
-COMPATIBILITY = 1
-
-; ----------------------------------------
 ; Preserve unused space.
 ; Free space in the original ROM will continue to be padded outwards,
 ; to the extent that it was in the original.
@@ -39,7 +28,7 @@ COMPATIBILITY = 1
 ; within them to the end, making it easier to add your own code anywhere.
 ; ...but it might also cause problems if data gets relocated
 ; when it isn't properly pointed to.
-PRESERVE_UNUSED_SPACE = 1
+; PRESERVE_UNUSED_SPACE = 1
 
 
 ; ----------------------------------------
