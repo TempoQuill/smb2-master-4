@@ -1,5 +1,5 @@
-MusicDataSubSpace:
-MusicDataSubSpace_Square2:
+MusicDataSubspace:
+MusicDataSubspace_Square2:
 	.db $80
 	.db $7e
 	.db $84
@@ -24,7 +24,7 @@ MusicDataSubSpace_Square2:
 	.db $4e
 	.db $00
 
-MusicDataSubSpace_Square1:
+MusicDataSubspace_Square1:
 	.db $84
 	.db $50
 	.db $58
