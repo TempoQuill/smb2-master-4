@@ -349,13 +349,12 @@ zPulse2Index:
 	.dsb 1 ; $00c1
 zPulse2RawPitch: ; (unused)
 	.dsb 1 ; $00c2
+zNoiseSFXOffset:
 	.dsb 1 ; $00c3
 zPulse1Timer:
 	.dsb 1 ; $00c4
-; FOR RENT
-	.dsb 1 ; $00c5
-; FOR RENT
-	.dsb 1 ; $00c6
+zNoiseIndexPointer:
+	.dsb 2 ; $00c5
 zPlayerAnimFrame:
 	.dsb 1 ; $00c7
 zYScrollPage:
@@ -1571,10 +1570,10 @@ iPulse1SFX:
 	.dsb 1 ; $0604
 
 ; $01 Short noise
-; $02 Rumbling sound
-; $04 Rumbling sound
-; $08 -N/A-
-; $10 -N/A-
+; $02 Rumbling sound (phanto, rocket)
+; $04 Rumbling sound (POW)
+; $08 (-N/A-) Door / Bomb
+; $10 (-N/A-) Hawk / Bubbles
 ; $20 -N/A-
 ; $40 -N/A-
 ; $80 -N/A-
