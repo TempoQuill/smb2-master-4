@@ -65,7 +65,7 @@ MusicHeaderBoss:
 ; ----------------------------------------
 ; Starman music
 MusicHeaderStar:
-	musicHeader NoteLengthTable_300bpm, MusicDataStar, MusicDataStar_Triangle, MusicDataStar_Square1, -1, MusicDataStar_DPCM
+	musicHeader NoteLengthTable_200bpm, MusicDataStar, MusicDataStar_Triangle, MusicDataStar_Square1, -1, 0
 
 ; ----------------------------------------
 ; Wart's final boss music
