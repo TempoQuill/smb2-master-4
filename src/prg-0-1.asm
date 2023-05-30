@@ -1003,10 +1003,6 @@ sub_BANK0_84AC:
 	JMP SetTilePaletteInPPUAttribute
 
 
-; Unused space in the original ($84B8 - $84FF)
-unusedSpace $8500, $FF
-
-
 ;
 ; Initializes a horizontal area
 ;
@@ -1891,11 +1887,6 @@ SetObjectLocks_Loop:
 	DEX
 	BPL SetObjectLocks_Loop
 	RTS
-
-
-
-; Unused space in the original ($8966 - $89FF)
-unusedSpace $8A00, $FF
 
 
 GrowShrinkSFXIndexes:
@@ -4563,11 +4554,6 @@ PageHeightCompensation_Exit:
 	RTS
 
 
-
-; Unused space in the original ($95C3 - $95FF)
-unusedSpace $9600, $FF
-
-
 TitleScreenPPUDataPointers:
 	.dw iPPUBuffer
 	.dw TitleLayout
@@ -5216,10 +5202,6 @@ loc_BANK0_9C52:
 
 ; End of function TitleScreen
 
-
-
-; Unused space in the original ($9C58 - $A1FF)
-unusedSpace $A200, $FF
 
 
 EndingPPUDataPointers:
@@ -6748,9 +6730,6 @@ loc_BANK1_AE57:
 ; End of function sub_BANK1_AE43
 
 ; ---------------------------------------------------------------------------
-
-; Unused space in the original ($AE5A - $B8FF)
-unusedSpace $B900, $FF
 
 MysteryCharacterData3900:
 	.db $FB ; @TODO ??? Not sure what this is
