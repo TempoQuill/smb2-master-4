@@ -100,10 +100,10 @@ MusicData:
 ; Ported from the original Doki Doki Panic.
 ; TODO: Try to find a use case for this song.
 ;
-.include "src/music/segments/ldp-exclusive/subcons1.asm"
-.include "src/music/segments/ldp-exclusive/subcons2.asm"
-.include "src/music/segments/ldp-exclusive/subcons3.asm"
-.include "src/music/segments/ldp-exclusive/subcons4.asm"
+.include "src/music/segments/ldp-exclusive/subcons-1.asm"
+.include "src/music/segments/ldp-exclusive/subcons-2.asm"
+.include "src/music/segments/ldp-exclusive/subcons-3.asm"
+.include "src/music/segments/ldp-exclusive/subcons-4.asm"
 
 ;
 ; Various sound effect jingles; not really full songs...
