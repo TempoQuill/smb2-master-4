@@ -463,7 +463,8 @@ ProcessDPCMQueue_PointerLoop:
 	STA DMC_START
 	LDA DMCLengthTable - 1, Y
 	STA DMC_LEN
-	LDA #$A0
+	LSR A
+	LSR A
 	STA iDPCMTimer
 	LDA #%00001111
 	STA SND_CHN
