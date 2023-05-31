@@ -422,13 +422,13 @@ NoiseSFX_None:
 ProcessDPCMQueue_BossPriority:
 	LDA iCurrentDPCMSFX
 	BNE ProcessDPCMQueue_DecTimer
-	BEQ ProcessDPCMQueue_PlaySound
+	LDA iDPCMSFX
+	JMP ProcessDPCMQueue_Part2
 
 ProcessDPCMQueue:
 	LDA iDPCMBossPriority
 	BNE ProcessDPCMQueue_BossPriority
 
-ProcessDPCMQueue_PlaySound:
 	LDA iDPCMSFX
 	BNE ProcessDPCMQueue_Part2
 
