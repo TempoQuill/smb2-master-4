@@ -2735,41 +2735,6 @@ RESET_MMC5:
 	STA MMC5_PRGBankSwitch5 ; $E000-$FFFF
 
 	JMP RESET
-
-
-ChangeCHRBanks_MMC5:
-	LDA iObjCHR1
-	STA MMC5_CHRBankSwitch1
-
-	LDA iObjCHR2
-	STA MMC5_CHRBankSwitch2
-
-	LDA iObjCHR3
-	STA MMC5_CHRBankSwitch3
-
-	LDA iObjCHR4
-	STA MMC5_CHRBankSwitch4
-
-	LDA iBGCHR1
-	STA MMC5_CHRBankSwitch5
-	ADC #$01
-	STA MMC5_CHRBankSwitch6
-
-	LDA iBGCHR2
-	STA MMC5_CHRBankSwitch7
-	ADC #$01
-	STA MMC5_CHRBankSwitch8
-
-	LDA iBGCHR1
-	STA MMC5_CHRBankSwitch9
-	ADC #$01
-	STA MMC5_CHRBankSwitch10
-
-	LDA iBGCHR2
-	STA MMC5_CHRBankSwitch11
-	ADC #$01
-	STA MMC5_CHRBankSwitch12
-	RTS
 ENDIF
 
 ;
@@ -5117,12 +5082,6 @@ RESET_VBlank2Loop:
 IF INES_MAPPER == MAPPER_MMC5
 	LDA #MMC5_VMirror
 	STA MMC5_NametableMapping
-	; Maintain location of the next subroutine
-	NOP_compat
-	NOP_compat
-	NOP_compat
-	NOP_compat
-	NOP_compat
 ELSE ;  INES_MAPPER == MAPPER_MMC3
 	LDA #VMirror
 	STA MMC3_Mirroring
@@ -5137,7 +5096,38 @@ ENDIF
 ;
 IF INES_MAPPER == MAPPER_MMC5
 ChangeCHRBanks:
-	JMP ChangeCHRBanks_MMC5
+	LDA iObjCHR1
+	STA MMC5_CHRBankSwitch1
+
+	LDA iObjCHR2
+	STA MMC5_CHRBankSwitch2
+
+	LDA iObjCHR3
+	STA MMC5_CHRBankSwitch3
+
+	LDA iObjCHR4
+	STA MMC5_CHRBankSwitch4
+
+	LDA iBGCHR1
+	STA MMC5_CHRBankSwitch5
+	ADC #$01
+	STA MMC5_CHRBankSwitch6
+
+	LDA iBGCHR2
+	STA MMC5_CHRBankSwitch7
+	ADC #$01
+	STA MMC5_CHRBankSwitch8
+
+	LDA iBGCHR1
+	STA MMC5_CHRBankSwitch9
+	ADC #$01
+	STA MMC5_CHRBankSwitch10
+
+	LDA iBGCHR2
+	STA MMC5_CHRBankSwitch11
+	ADC #$01
+	STA MMC5_CHRBankSwitch12
+	RTS
 
 ELSE ; INES_MAPPER == MAPPER_MMC3
 ChangeCHRBanks:
