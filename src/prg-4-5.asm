@@ -441,8 +441,13 @@ ProcessDPCMQueue_Exit:
 	RTS
 
 ProcessDPCMQueue_Part2:
+	LDY iDPCMBossPriority
+	BEQ ProcessDPCMQueue_Part3
+
 	CMP iDPCMBossPriority
 	BNE ProcessDPCMQueue_DecTimer
+
+ProcessDPCMQueue_Part3:
 	STA iCurrentDPCMSFX
 	LDY #$00
 
