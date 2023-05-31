@@ -1,7 +1,11 @@
 SoundEffect1Data_PotionDoorBong:
-	.db $9F
-	.db $10, $0E, $0C, $7E, $7E, $7E
-	.db $10, $0E, $0C, $7E, $7E, $7E
-	.db $86
-	.db $10, $0E, $0C, $7E, $7E, $7E, $7E, $7E, $7E, $7E, $7E, $7E, $7E, $7E, $7E, $7E
+	.db $DF
+	.db $12, $10, $7E
+	.db $12, $10, $7E
+	.db $12, $10, $7E
+	.db $12, $10, $7E
+	.db $D0
+	.db $7E, $7E, $7E
+	.db $DF
+	.db $12, $10, $7E, $7E, $7E, $7E, $7E, $7E, $7E, $7E, $7E, $7E, $7E
 	.db $00

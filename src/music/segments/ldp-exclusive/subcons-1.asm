@@ -16,9 +16,8 @@ MusicDataSubcons1_Square2:
 	.db $54
 	.db $4E
 	.db $54
-	.db $FB
+	.db $FE
 	.db $56
-	.db $7E
 	.db $00
 MusicDataSubcons1_Square1:
 	.db $FD

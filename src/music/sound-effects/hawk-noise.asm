@@ -1,46 +1,8 @@
 NoiseSFX_Hawk:
-	.db $19
-	.db $0c
-	.db $1c
-	.db $7e
-	.db $4f
-	.db $0b
-	.db $19
-	.db $0c
-	.db $1c
-	.db $7e
-	.db $4f
-	.db $0b
-	.db $19
-	.db $0c
-	.db $1c
-	.db $7e
-	.db $4f
-	.db $0b
-	.db $19
-	.db $0c
-	.db $1c
-	.db $7e
-	.db $4f
-	.db $0b
-	.db $10
-	.db $7e
-	.db $7e
-	.db $7e
-	.db $19
-	.db $0c
-	.db $1c
-	.db $7e
-	.db $4f
-	.db $0b
-	.db $7e
-	.db $7e
-	.db $7e
-	.db $7e
-	.db $7e
-	.db $7e
-	.db $7e
-	.db $7e
-	.db $7e
-	.db $7e
+	.db $19, $0c, $1c, $7e, $4f, $0b
+	.db $19, $0c, $1c, $7e, $4f, $0b
+	.db $19, $0c, $1c, $7e, $4f, $0b
+	.db $19, $0c, $1c, $7e, $4f, $0b
+	.db $10, $7e, $7e, $7e
+	.db $19, $0c, $1c, $7e, $4f, $0b, $7e, $7e, $7e, $7e, $7e, $7e, $7e, $7e, $7e, $7e
 	.db $00
