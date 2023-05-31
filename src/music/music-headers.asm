@@ -121,10 +121,16 @@ MusicHeaderEnding2:
 	musicHeader NoteLengthTable_129bpm, MusicDataEnding2, MusicDataEnding2_Triangle, MusicDataEnding2_Square1, MusicDataEnding2_Noise, -1
 
 MusicHeaderEnding5:
-	musicHeader NoteLengthTable_129bpm, MusicDataEnding5, MusicDataEnding5_Triangle, MusicDataEnding5_Square1, MusicDataEnding5_Noise, -1
+	musicHeader NoteLengthTable_150bpm, MusicDataEnding5, MusicDataEnding5_Triangle, MusicDataEnding5_Square1, MusicDataEnding5_Noise, -1
 
 MusicHeaderEnding4:
-	musicHeader NoteLengthTable_129bpm, MusicDataEnding4, MusicDataEnding4_Triangle, MusicDataEnding4_Square1, MusicDataEnding4_Noise, -1
+	musicHeader NoteLengthTable_150bpm, MusicDataEnding4, MusicDataEnding4_Triangle, MusicDataEnding4_Square1, MusicDataEnding4_Noise, -1
 
 MusicHeaderEnding6:
-	musicHeader NoteLengthTable_129bpm, MusicDataEnding6, $00, MusicDataEnding6_Square1, $00, -1
+	musicHeader NoteLengthTable_150bpm, MusicDataEnding6, MusicDataEnding6_Triangle, MusicDataEnding6_Square1, MusicDataEnding6_Noise, -1
+
+MusicHeaderEnding7:
+	musicHeader NoteLengthTable_150bpm, MusicDataEnding7, MusicDataEnding7_Triangle, MusicDataEnding7_Square1, MusicDataEnding7_Noise, -1
+
+MusicHeaderEnding8:
+	musicHeader NoteLengthTable_150bpm, MusicDataEnding8, MusicDataEnding8_Triangle, MusicDataEnding8_Square1, MusicDataEnding8_Noise, -1

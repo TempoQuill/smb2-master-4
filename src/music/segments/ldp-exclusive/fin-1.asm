@@ -1,4 +1,3 @@
-
 MusicDataEnding1:
 MusicDataEnding1_Square2:
 	.db $CA

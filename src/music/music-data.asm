@@ -38,12 +38,14 @@ MusicData:
 ; Ending music
 ; Segment 1-3 are at a different tempo than 4-8
 ;
-.include "src/music/segments/ending/ending-1.asm"
-.include "src/music/segments/ending/ending-3.asm"
-.include "src/music/segments/ending/ending-4.asm"
-.include "src/music/segments/ending/ending-2.asm"
-.include "src/music/segments/ending/ending-5.asm"
-.include "src/music/segments/ending/ending-6.asm"
+.include "src/music/segments/ldp-exclusive/fin-1.asm"
+.include "src/music/segments/ldp-exclusive/fin-3.asm"
+.include "src/music/segments/ldp-exclusive/fin-4.asm"
+.include "src/music/segments/ldp-exclusive/fin-2.asm"
+.include "src/music/segments/ldp-exclusive/fin-5.asm"
+.include "src/music/segments/ldp-exclusive/fin-6.asm"
+.include "src/music/segments/ldp-exclusive/fin-7.asm"
+.include "src/music/segments/ldp-exclusive/fin-8.asm"
 
 ;
 ; Invincible Star music

@@ -1,4 +1,3 @@
-
 MusicDataEnding8:
 MusicDataEnding8_Square2:
 	.db $D9

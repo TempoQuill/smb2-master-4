@@ -1,4 +1,3 @@
-
 MusicDataEnding5:
 MusicDataEnding5_Square2:
 	.db $DA

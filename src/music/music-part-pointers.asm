@@ -88,10 +88,13 @@ MusicPartPointers_Ending:
 	musicPart MusicHeaderEnding2
 	musicPart MusicHeaderEnding3
 	musicPart MusicHeaderEnding4
-	musicPart MusicHeaderEnding5
 MusicPartPointers_EndingLoop:
-MusicPartPointers_EndingEnd:
+	musicPart MusicHeaderEnding5
 	musicPart MusicHeaderEnding6
+	musicPart MusicHeaderEnding5
+	musicPart MusicHeaderEnding7
+MusicPartPointers_EndingEnd:
+	musicPart MusicHeaderEnding8
 
 MusicPartPointers_Underground:
 MusicPartPointers_UndergroundLoop:
