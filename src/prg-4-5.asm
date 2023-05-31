@@ -420,12 +420,20 @@ NoiseSFX_None:
 	.db $00
 
 ProcessDPCMQueue:
+	LDA iCurrentDPCMSFX
+	CMP #DPCM_BossHurt
+	BEQ ProcessDPCMQueue_TimerDec
+
+	CMP #DPCM_BossDeath
+	BEQ ProcessDPCMQueue_TimerDec
+
 	LDA iDPCMSFX
 	BNE ProcessDPCMQueue_Part2
 
 	LDA iCurrentDPCMSFX
 	BEQ ProcessDPCMQueue_None
 
+ProcessDPCMQueue_TimerDec:
 	DEC iDPCMTimer
 	BNE ProcessDPCMQueue_Exit
 
