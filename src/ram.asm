@@ -1590,7 +1590,9 @@ iCurrentMusic1:
 	.dsb 1 ; $0609
 iDPCMTimer:
 	.dsb 1 ; $060a
-; FOR RENT
+; only ever $40, $10 or $0
+; non-zero tells driver to ignore iDPCMSFX
+iDPCMBossPriority:
 	.dsb 1 ; $060b
 iSweep:
 	.dsb 1 ; $060c

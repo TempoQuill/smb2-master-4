@@ -3520,6 +3520,7 @@ EnemyBehavior_SubspacePotion_CheckGroundCollision:
 	LDA zScrollCondition
 	BNE EnemyBehavior_SubspacePotion_CreateDoor
 
+	; subspace door fail
 	LDA #DPCM_BossHurt
 	STA iDPCMSFX
 	JSR EnemyDestroy
@@ -5077,6 +5078,7 @@ EnemyBehavior_Shell:
 	BEQ EnemyBehavior_Shell_Slide
 
 EnemyBehavior_Shell_Destroy:
+	; shell destruction
 	LDA #DPCM_BossHurt
 	STA iDPCMSFX
 	JMP TurnIntoPuffOfSmoke
@@ -5329,6 +5331,7 @@ EnemyBehavior_CheckDamagedInterrupt_SoundEffect:
 
 EnemyBehavior_CheckDamagedInterrupt_BossDeathSound:
 	STA iDPCMSFX
+	STA iDPCMBossPriority
 
 EnemyBehavior_CheckDamagedInterrupt_CheckPidgit:
 	; killing pidgit leaves a flying carpet behind
@@ -8190,6 +8193,7 @@ EnemyBehavior_CobratJar_Blocked:
 	STA zEnemyState, X
 	LDA #$E0
 	STA zObjectYVelocity, X
+	; jar blocked
 	LDA #DPCM_BossHurt
 	STA iDPCMSFX
 
@@ -8795,6 +8799,7 @@ EnemyBehavior_FryguySplit:
 	AND #$10
 	BEQ loc_BANK3_AD59
 
+	; fry guy split
 	JSR PlayBossHurtSound
 
 	LDA #%00000000
@@ -11109,6 +11114,7 @@ loc_BANK3_BA7A:
 PlayBossHurtSound:
 	LDA #DPCM_BossHurt
 	STA iDPCMSFX
+	STA iDPCMBossPriority
 	RTS
 
 ; ---------------------------------------------------------------------------
