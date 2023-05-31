@@ -128,7 +128,7 @@ MusicDataEnding8_Traingle:
 	.db $7E
 	.db $46
 	.db $7E
-MusicDataEnding7_Noise:
+MusicDataEnding8_Noise:
 	.db $84
 	.db $01
 	.db $02
