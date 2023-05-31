@@ -110,14 +110,13 @@ DPCM_Impact = $80
 ; ---------------------------------------------------------------------------
 
 ; enum SoundEffect1 (width 1 byte)
-SoundEffect1_BirdoShot = $01      ;
-SoundEffect1_PotionDoorBong = $02
-SoundEffect1_CherryGet = $04      ;
-SoundEffect1_ThrowItem = $08      ;
-SoundEffect1_1UP = $10            ; unused, SoundEffect1_ThrowItem duplicate
-SoundEffect1_EnemyHit = $20       ;
-SoundEffect1_StopwatchTick = $40
-SoundEffect1_PlayerDeath = $80
+SoundEffect1_PotionDoorBong = $01
+SoundEffect1_CherryGet = $02      ; unused, no sound
+SoundEffect1_ThrowItem = $04      ; unused, no sound
+SoundEffect1_1UP = $08            ; unused, no sound
+SoundEffect1_EnemyHit = $10       ; unused, no sound
+SoundEffect1_StopwatchTick = $20
+SoundEffect1_PlayerDeath = $40
 
 ; ---------------------------------------------------------------------------
 

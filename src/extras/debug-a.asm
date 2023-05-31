@@ -492,8 +492,8 @@ DebugMenu_MenuStart:
 
 DebugMenu_MenuMove:
 DebugMenu_MenuChange:
-	LDA #SoundEffect1_CherryGet
-	STA iPulse2SFX
+	LDA #DPCM_Select
+	STA iDPCMSFX
 	RTS
 
 DebugMenu_MenuConfirm:

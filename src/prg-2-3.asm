@@ -3176,8 +3176,8 @@ BirdoBehavior_SpitProjectile:
 	CPY #$08
 	BNE loc_BANK2_901B
 
-	LDA #SoundEffect1_BirdoShot
-	STA iPulse2SFX
+	LDA #DPCM_Egg
+	STA iDPCMSFX
 	JSR sub_BANK2_95E5
 
 	BMI loc_BANK2_901B
@@ -5077,8 +5077,8 @@ EnemyBehavior_Shell:
 	BEQ EnemyBehavior_Shell_Slide
 
 EnemyBehavior_Shell_Destroy:
-	LDA #SoundEffect1_EnemyHit
-	STA iPulse2SFX
+	LDA #DPCM_BossHurt
+	STA iDPCMSFX
 	JMP TurnIntoPuffOfSmoke
 
 
@@ -5323,8 +5323,8 @@ EnemyBehavior_CheckDamagedInterrupt_SoundEffect:
 	LDA iDPCMSFX
 	BNE EnemyBehavior_CheckDamagedInterrupt_CheckPidgit
 
-	LDA #SoundEffect1_EnemyHit
-	STA iPulse2SFX
+	LDA #DPCM_Impact
+	STA iDPCMSFX
 	BNE EnemyBehavior_CheckDamagedInterrupt_CheckPidgit
 
 EnemyBehavior_CheckDamagedInterrupt_BossDeathSound:
@@ -7930,8 +7930,8 @@ EnemyBehavior_Tryclyde_SpitFireball:
 
 	BMI RenderSprite_Tryclyde_Exit
 
-	LDA #SoundEffect1_BirdoShot
-	STA iPulse2SFX
+	LDA #DPCM_Egg
+	STA iDPCMSFX
 	LDY z00
 	LDA #Enemy_Fireball
 	STA zObjectType, Y
@@ -10586,8 +10586,8 @@ CheckCollisionWithPlayer:
 
 	; accept the heart into your life
 	STA zEnemyState, Y
-	LDA #SoundEffect1_CherryGet
-	STA iPulse2SFX
+	LDA #DPCM_Select
+	STA iDPCMSFX
 	LDY iPlayerMaxHP
 	LDA iPlayerHP
 	CLC

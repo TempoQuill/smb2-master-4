@@ -693,8 +693,8 @@ CharacterSelect_ChangeCharacter:
 	BEQ loc_BANKF_E2FE
 
 	DEC zCurrentCharacter
-	LDA #SoundEffect1_CherryGet
-	STA iPulse2SFX
+	LDA #DPCM_Select
+	STA iDPCMSFX
 
 loc_BANKF_E2FE:
 	LDA zInputBottleneck
@@ -702,8 +702,8 @@ loc_BANKF_E2FE:
 	BEQ loc_BANKF_E30B
 
 	INC zCurrentCharacter
-	LDA #SoundEffect1_CherryGet
-	STA iPulse2SFX
+	LDA #DPCM_Select
+	STA iDPCMSFX
 
 loc_BANKF_E30B:
 	LDA zCurrentCharacter
@@ -792,8 +792,8 @@ CharacterSelectMenuLoop:
 ; ---------------------------------------------------------------------------
 
 loc_BANKF_E3AE:
-	LDA #SoundEffect1_CherryGet
-	STA iPulse2SFX
+	LDA #DPCM_Select
+	STA iDPCMSFX
 	LDX iCurrentWorld
 	LDY iCurrentLvl
 	JSR DisplayLevelTitleCardText
@@ -2103,8 +2103,8 @@ locret_BANKF_EAD1:
 loc_BANKF_EAD2:
 	LDA #$00
 	STA zObjectXLo, X
-	LDA #SoundEffect1_CherryGet
-	STA iPulse2SFX
+	LDA #DPCM_Select
+	STA iDPCMSFX
 	RTS
 
 ; End of function sub_BANKF_EAC2

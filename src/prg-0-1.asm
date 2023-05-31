@@ -2892,8 +2892,8 @@ loc_BANK0_8E42:
 	LDA #$0A
 	STA zWalkCycleTimer
 	DEC zHeldItem
-	LDA #SoundEffect1_ThrowItem
-	STA iPulse2SFX
+	LDA #DPCM_Throw
+	STA iDPCMSFX
 	LDA #$00
 	STA zPlayerHitBoxHeight
 	STA zInputBottleneck
@@ -3305,8 +3305,8 @@ PlayerTileCollision_CheckCherryAndClimbable_AfterTick:
 	JSR CreateStarman
 
 PlayerTileCollision_Cherry:
-	LDA #SoundEffect1_CherryGet
-	STA iPulse2SFX
+	LDA #DPCM_Select
+	STA iDPCMSFX
 	LDA #BackgroundTile_Sky
 	JMP loc_BANK0_937C
 
@@ -5666,8 +5666,8 @@ FreeSubconsScene_Subcons_Loop:
 	CMP #$01
 	BNE FreeSubconsScene_Subcons_Next
 
-	LDA #SoundEffect1_ThrowItem
-	STA iPulse2SFX
+	LDA #DPCM_Throw
+	STA iDPCMSFX
 	BNE FreeSubconsScene_Subcons_Next
 
 FreeSubconsScene_Subcons_Movement:

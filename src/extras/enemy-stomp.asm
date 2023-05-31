@@ -44,8 +44,8 @@ CheckCollisionWithPlayer_StompEnemy:
 	PLA
 	TAY
 
-	LDA #SoundEffect1_EnemyHit
-	STA iPulse2SFX
+	LDA #DPCM_Impact
+	STA iDPCMSFX
 
 CheckCollisionWithPlayer_ExitStompEnemy:
 	RTS

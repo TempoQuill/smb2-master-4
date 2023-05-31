@@ -6,9 +6,8 @@
 ; Sound effects themselves
 ;
 .include "src/music/sound-effects/potion-door-bong.asm"
-.include "src/music/sound-effects/throw-item.asm"
-.include "src/music/sound-effects/birdo-shot.asm"
-.include "src/music/sound-effects/cherry-get.asm"
-.include "src/music/sound-effects/enemy-hit.asm"
 .include "src/music/sound-effects/stopwatch-tick.asm"
 .include "src/music/sound-effects/death.asm"
+
+SoundEffect1Data_None:
+	.db $00
