@@ -62,7 +62,7 @@ MusicDataEnding8_Square1:
 	.db $DA
 	.db $3A
 	.db $3E
-MusicDataEnding8_Traingle:
+MusicDataEnding8_Triangle:
 	.db $80
 	.db $22
 	.db $7E
