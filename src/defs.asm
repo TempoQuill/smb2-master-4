@@ -123,11 +123,11 @@ SoundEffect1_PlayerDeath = $40
 ; enum PRGBank (width 1 byte)
 PRGBank_0_1 = $00
 PRGBank_2_3 = $01
-PRGBank_4_5 = $02
-PRGBank_6_7 = $03
+PRGBank_4_5 = $02 ; second half empty
+PRGBank_6_7 = $03 ; second half empty
 PRGBank_8_9 = $04
-PRGBank_A_B = $05
-PRGBank_C_D = $06
+PRGBank_A_B = $05 ; second half empty
+PRGBank_C_D = $06 ; second half empty
 PRGBank_E_F = $07
 
 ; ---------------------------------------------------------------------------

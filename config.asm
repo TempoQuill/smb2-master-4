@@ -70,9 +70,6 @@
 ; Fixes green platform tiles in Subspace
 ; FIX_SUBSPACE_TILES = 1
 
-; DPCM is not interrupted when sound effects end or when songs start
-FIX_MIXER_CODE = 1
-
 ; ----------------------------------------
 ; Patches that alter the game in
 ; interesting or useful ways

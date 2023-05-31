@@ -5219,14 +5219,11 @@ ELSE
 ENDIF
 	RTS
 
-; Technically you can delete the stuff from here to the vector table as well,
-; but because it looks slightly less like unused space it isn't being removed.
-
-
 ; Note that this is NOT CODE.
 ; If the NES actually hits a BRK, the game will probably just explode.
 ; If you wanted, you could write some sort of crash handler though.
 IRQ:
+	RTI
 
 ;
 ; Vectors for the NES CPU. These must ALWAYS be at $FFFA!
