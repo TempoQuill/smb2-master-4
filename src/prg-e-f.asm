@@ -22,11 +22,7 @@
 ;
 
 ; Include DPCM samples
-.incbin "src/music/default-sample-area.bin"
-
-IFDEF EVEN_UPPER_ROM_AREA
-	.pad $e000, $ff
-ENDIF
+.incbin "src/music/ldp-sample-area.bin"
 
 ; PPU update buffers used to update the screen
 ScreenUpdateBufferPointers:

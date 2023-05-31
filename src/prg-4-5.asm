@@ -464,28 +464,28 @@ ProcessDPCMQueue_PointerLoop:
 
 
 DMCStartTable:
-	.db $4F ; $d3c0
-	.db $60 ; $d800
-	.db $4B ; $d2c0
+	.db $68 ; $da00
+	.db $5b ; $d6c0
+	.db $57 ; $d5c0
+	.db $4a ; $d280
+	.db $30 ; $cc00
+	.db $25 ; $c940
+	.db $18 ; $c600
 	.db $00 ; $c000
-	.db $31 ; $cc40
-	.db $60 ; $d800
-	.db $0E ; $c380
-	.db $1D ; $c740
 
 DMCLengthTable:
-	.db $43 ; $44
-	.db $14 ; $40
-	.db $10 ; $10
-	.db $38 ; $38
-	.db $48 ; $68
-	.db $28 ; $40
-	.db $3C ; $3c
-	.db $50 ; $50
+	.db $81 ; door -> throw
+	.db $34 ; bongo short -> egg
+	.db $0d ; injury
+	.db $34 ; hold
+	.db $67 ; boss death
+	.db $2b ; bongo -> select
+	.db $34 ; boss hit / shell disappear
+	.db $5f ; player death -> impact
 
 DMCFreqTable:
-	.db $0E
-	.db $0E
+	.db $0F
+	.db $0F
 	.db $0F
 	.db $0F
 	.db $0F

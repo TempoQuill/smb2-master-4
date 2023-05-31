@@ -95,13 +95,17 @@ ControllerInput_A = %10000000
 
 ; enum DPCM (width 1 byte)
 DPCM_DoorOpenBombBom = $01
+DPCM_Throw = $01
 DPCM_DrumSample_A = $02
+DPCM_Egg = $02
 DPCM_PlayerHurt = $04
 DPCM_ItemPull = $08
 DPCM_BossDeath = $10
 DPCM_DrumSample_B = $20
+DPCM_Select = $20
 DPCM_BossHurt = $40
 DPCM_PlayerDeath = $80
+DPCM_Impact = $80
 
 ; ---------------------------------------------------------------------------
 

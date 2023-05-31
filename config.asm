@@ -105,8 +105,4 @@ FIX_MIXER_CODE = 1
 ; Skip unnecessary bonus chance RAM copy
 ; BONUS_CHANCE_RAM_CLEANUP = 1
 
-; Condense data in Home ROM to 8K rather than 9K
-; Expand DPCM area to 8K
-; EVEN_UPPER_ROM_AREA = 1
-
 .endinl
