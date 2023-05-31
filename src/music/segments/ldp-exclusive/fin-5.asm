@@ -28,7 +28,7 @@ MusicDataEnding5_Square2:
 	.db $4E
 	.db $D4
 	.db $4C
-	.db $46
+	.db $44
 	.db $D0
 	.db $48
 	.db $7E
@@ -52,7 +52,7 @@ MusicDataEnding5_Square1:
 	.db $3E
 	.db $38
 	.db $D0
-	.db $3E
+	.db $3A
 	.db $7E
 	.db $7E
 	.db $46
