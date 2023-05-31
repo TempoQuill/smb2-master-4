@@ -3276,8 +3276,8 @@ Award1upMushroom:
 	DEC iExtraMen
 
 loc_BANK2_9050:
-	LDA #SoundEffect1_1UP
-	STA iPulse2SFX
+	LDA #Music2_CrystalGetFanfare
+	STA iMusic2
 	RTS
 
 ; ---------------------------------------------------------------------------
