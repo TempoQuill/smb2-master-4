@@ -100,3 +100,12 @@ MusicPartPointers_Underground:
 MusicPartPointers_UndergroundLoop:
 MusicPartPointers_UndergroundEnd:
 	musicPart MusicHeaderUnderground
+
+MusicPartPointers_Subcons:
+	musicPart MusicHeaderSubcons1
+MusicPartPointers_SubconsLoop:
+	musicPart MusicHeaderSubcons2
+	musicPart MusicHeaderSubcons3
+	musicPart MusicHeaderSubcons4
+MusicPartPointers_SubconsEnd:
+	musicPart MusicHeaderSubcons3

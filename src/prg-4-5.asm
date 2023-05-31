@@ -493,6 +493,12 @@ DMCFreqTable:
 	.db $0F
 	.db $0F
 
+ProcessMusicQueue_SpecialSong:
+	STA iCurrentMusic2
+	LDY #$00
+	STY iCurrentMusic1
+	LDY #$08 ; index of ending music pointer
+	RTS
 
 ProcessMusicQueue_ThenReadNoteData:
 	JMP ProcessMusicQueue_ReadNoteData
@@ -507,6 +513,9 @@ ProcessMusicQueue:
 	CMP #Music2_EndingAndCast
 	BEQ ProcessMusicQueue_EndingAndCast
 
+	CMP #Music2_SubconsFreed
+	BEQ ProcessMusicQueue_Subcons
+
 	LDA iMusic2
 	BNE ProcessMusicQueue_Part2
 
@@ -518,11 +527,13 @@ ProcessMusicQueue:
 	BNE ProcessMusicQueue_ThenReadNoteData
 	RTS
 
+ProcessMusicQueue_Subcons:
+	JSR ProcessMusicQueue_SpecialSong
+	INY
+	BNE ProcessMusicQueue_ReadFirstPointer
+
 ProcessMusicQueue_EndingAndCast:
-	STA iCurrentMusic2
-	LDY #$00
-	STY iCurrentMusic1
-	LDY #$08 ; index of ending music pointer
+	JSR ProcessMusicQueue_SpecialSong
 	BNE ProcessMusicQueue_ReadFirstPointer
 
 ProcessMusicQueue_MusicQueue1:

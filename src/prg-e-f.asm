@@ -1482,7 +1482,10 @@ DoWorldWarp:
 
 	LDA #ScreenUpdateBuffer_WarpToWorld
 	STA zScreenUpdateIndex
-	LDA #Music2_SlotWarpFanfare
+	LDA #Music2_StopMusic
+	STA iMusic2
+	JSR WaitForNMI
+	LDA #Music2_MushroomGetJingle
 	STA iMusic2
 	JSR Delay160Frames
 
@@ -1553,8 +1556,12 @@ ENDIF
 
 	JSR sub_BANKF_EA33
 
-	LDA #Music2_SlotWarpFanfare
+	LDA #Music2_StopMusic
 	STA iMusic2
+	JSR WaitForNMI
+	LDA #Music2_MushroomGetJingle
+	STA iMusic2
+	JSR Delay80Frames
 	LDA iTotalCoins
 	BNE loc_BANKF_E7F2
 
@@ -1773,7 +1780,6 @@ SlotMachineTextFlashIndex:
 
 
 NoCoinsForSlotMachine:
-	JSR Delay80Frames
 
 	LDA #Music2_DeathJingle
 	STA iMusic2

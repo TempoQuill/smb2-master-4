@@ -134,3 +134,20 @@ MusicHeaderEnding7:
 
 MusicHeaderEnding8:
 	musicHeader NoteLengthTable_150bpm, MusicDataEnding8, MusicDataEnding8_Triangle, MusicDataEnding8_Square1, MusicDataEnding8_Noise, -1
+
+;
+; Subcons Freed Music
+; Uses new custom note lengths
+;
+
+MusicHeaderSubcons1:
+	musicHeader NoteLengthTable_150bpm, MusicDataSubcons1, MusicDataSubcons1_Triangle, MusicDataSubcons1_Square1, MusicDataSubcons1_Noise, -1
+
+MusicHeaderSubcons2:
+	musicHeader NoteLengthTable_150bpm, MusicDataSubcons2, MusicDataSubcons2_Triangle, MusicDataSubcons2_Square1, MusicDataSubcons2_Noise, -1
+
+MusicHeaderSubcons3:
+	musicHeader NoteLengthTable_150bpm, MusicDataSubcons3, MusicDataSubcons3_Triangle, MusicDataSubcons3_Square1, MusicDataSubcons3_Noise, -1
+
+MusicHeaderSubcons4:
+	musicHeader NoteLengthTable_150bpm, MusicDataSubcons4, MusicDataSubcons4_Triangle, MusicDataSubcons4_Square1, MusicDataSubcons4_Noise, -1

@@ -76,7 +76,7 @@ Music2_EndingAndCast = $04
 Music2_DeathJingle = $08
 Music2_GameOver = $10
 Music2_CrystalGetFanfare = $20
-Music2_SlotWarpFanfare = $40
+Music2_SubconsFreed = $40
 Music2_StopMusic = $80
 
 ; ---------------------------------------------------------------------------
