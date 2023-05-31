@@ -92,13 +92,13 @@ MusicData:
 ;
 ; Mamu's final boss music segment
 ;
-.include "src/music/segments/wart/wart.asm"
+.include "src/music/segments/ldp-exclusive/mamu.asm"
 
 ;
 ; Various sound effect jingles; not really full songs...
 ;
 .include "src/music/segments/jingles/mushroom-bonus-chance.asm"
-.include "src/music/segments/jingles/game-over.asm"
-.include "src/music/segments/jingles/boss-beaten.asm"
-.include "src/music/segments/jingles/crystal.asm"
+.include "src/music/segments/ldp-exclusive/over.asm"
+.include "src/music/segments/ldp-exclusive/vic.asm"
+.include "src/music/segments/ldp-exclusive/extra.asm"
 .include "src/music/segments/jingles/death.asm"
