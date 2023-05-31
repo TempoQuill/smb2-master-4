@@ -68,7 +68,7 @@ ProcessSoundEffectQueue2_Jump:
 	LDA #$42
 	LDX #$82
 	LDY #$A8
-	JSR PlaySquare1Sweep
+	JSR PlaySquare2Sweep
 
 	LDA #$22
 	STA zPulse1Timer
@@ -80,7 +80,7 @@ ProcessSoundEffectQueue2_JumpPart2:
 
 	LDX #$DF
 	LDY #$F6
-	BNE ProcessSoundEffectQueue2_SetSquare1ThenDecrementTimer
+	BNE ProcessSoundEffectQueue2_SetSquare2ThenDecrementTimer
 
 ProcessSoundEffectQueue2_JumpPart3:
 	CMP #$1A
@@ -89,8 +89,8 @@ ProcessSoundEffectQueue2_JumpPart3:
 	LDX #$C1
 	LDY #$BC
 
-ProcessSoundEffectQueue2_SetSquare1ThenDecrementTimer:
-	JSR SetSquare1VolumeAndSweep
+ProcessSoundEffectQueue2_SetSquare2ThenDecrementTimer:
+	JSR SetSquare2VolumeAndSweep
 
 	BNE ProcessSoundEffectQueue2_ThenDecrementTimer
 
@@ -101,7 +101,7 @@ ProcessSoundEffectQueue2_CoinGet:
 
 	LDY #$7F
 	LDA #$5E
-	JSR PlaySquare1Sweep
+	JSR PlaySquare2Sweep
 
 ProcessSoundEffectQueue2_CoinGetPart2:
 	LDA zPulse1Timer
@@ -109,7 +109,7 @@ ProcessSoundEffectQueue2_CoinGetPart2:
 	BNE ProcessSoundEffectQueue2_ThenDecrementTimer
 
 	LDA #$54
-	STA SQ1_LO
+	STA SQ2_LO
 
 ProcessSoundEffectQueue2_ThenDecrementTimer:
 	BNE ProcessSoundEffectQueue2_DecrementTimer
@@ -188,17 +188,17 @@ ProcessSoundEffectQueue2_SingleSweep:
 	LDX #$9E
 	STA zPulse1Timer
 	LDA #$60
-	JSR PlaySquare1Sweep
+	JSR PlaySquare2Sweep
 
 ProcessSoundEffectQueue2_DecrementTimer:
 	DEC zPulse1Timer
 	BNE ProcessSoundEffectQueue2_Exit
 
 	LDX #$10
-	STA SQ1_VOL
+	STA SQ2_VOL
 	LDX #$00
-	STX SQ1_LO
-	STX SQ1_HI
+	STX SQ2_LO
+	STX SQ2_HI
 	STX iCurrentPulse1SFX
 
 ProcessSoundEffectQueue2_Exit:
@@ -222,7 +222,7 @@ ProcessSoundEffectQueue2_ShrinkingPart2:
 	LDY #$91
 	LDX #$9A
 	LDA #$68
-	JSR PlaySquare1Sweep
+	JSR PlaySquare2Sweep
 
 ProcessSoundEffectQueue2_ShrinkingPart3:
 	JMP ProcessSoundEffectQueue2_DecrementTimer
@@ -240,7 +240,7 @@ ProcessSoundEffectQueue2_GrowingPart2:
 	LDA MushroomSoundData - 1, Y
 	LDX #$5D
 	LDY #$7F
-	JSR PlaySquare1Sweep
+	JSR PlaySquare2Sweep
 
 	JMP ProcessSoundEffectQueue2_DecrementTimer
 
@@ -769,7 +769,13 @@ ProcessMusicQueue_Square1StartNote:
 ProcessMusicQueue_Square1UpdateNoteOffset:
 	STA iMusicPulse1InstrumentOffset
 
-	JSR SetSquare1VolumeAndSweep
+; Sets volume/sweep on Square 1 channel
+;
+; Input
+;   X = duty/volume/envelope
+;   Y = sweep
+	STY SQ1_SWEEP
+	STX SQ1_VOL
 
 ProcessMusicQueue_Square1ContinueNote:
 	LDA iPulse1NoteLength
@@ -1099,17 +1105,6 @@ LoadSquareInstrumentDVE_D0:
 LoadSquareInstrumentDVE_D0_Short:
 	LDA InstrumentDVE_D0_Short, Y
 LoadSquareInstrumentDVE_D0_Exit:
-	RTS
-
-
-; Sets volume/sweep on Square 1 channel
-;
-; Input
-;   X = duty/volume/envelope
-;   Y = sweep
-SetSquare1VolumeAndSweep:
-	STY SQ1_SWEEP
-	STX SQ1_VOL
 	RTS
 
 ; Sets volume/sweep on Square 2 channel
