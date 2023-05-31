@@ -419,16 +419,7 @@ ProcessSoundEffectQueue3_Exit:
 NoiseSFX_None:
 	.db $00
 
-ProcessDPCMQueue_BossPriority:
-	LDA iCurrentDPCMSFX
-	BNE ProcessDPCMQueue_DecTimer
-	LDA iDPCMSFX
-	JMP ProcessDPCMQueue_Part2
-
 ProcessDPCMQueue:
-	LDA iDPCMBossPriority
-	BNE ProcessDPCMQueue_BossPriority
-
 	LDA iDPCMSFX
 	BNE ProcessDPCMQueue_Part2
 
@@ -450,6 +441,8 @@ ProcessDPCMQueue_Exit:
 	RTS
 
 ProcessDPCMQueue_Part2:
+	CMP iDPCMBossPriority
+	BNE ProcessDPCMQueue_DecTimer
 	STA iCurrentDPCMSFX
 	LDY #$00
 
