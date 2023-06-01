@@ -299,7 +299,7 @@ ToadStats:
 	.db $01 ; Pick-up Speed, frame 4/6 - ducking
 	.db $01 ; Pick-up Speed, frame 5/6 - ducking
 	.db $02 ; Pick-up Speed, frame 6/6 - ducking
-IFBDEF STATS_TESTING_PURPOSES
+IFNDEF STATS_TESTING_PURPOSES
 	.db $B2 ; Jump Speed, still - no object
 	.db $B2 ; Jump Speed, still - with object
 	.db $98 ; Jump Speed, charged - no object
