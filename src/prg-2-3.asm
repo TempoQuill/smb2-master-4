@@ -270,8 +270,16 @@ AreaInitialization_HorizontalArea_Next:
 AreaMainRoutine_Gameplay:
 	JSR CheckObjectSpawnBoundaries
 
+IFDEF SIXTEEN_BIT_WATCH_TIMER
+	LDA iWatchTimer + 1
+	BNE AreaMainRoutine_HandleStopwatch
 	LDA iWatchTimer
 	BEQ AreaMainRoutine_CalculateScreenBoundaryRight
+AreaMainRoutine_HandleStopwatch:
+ELSE
+	LDA iWatchTimer
+	BEQ AreaMainRoutine_CalculateScreenBoundaryRight
+ENDIF
 
 	; Handle the stopwatch
 	LDA z10
