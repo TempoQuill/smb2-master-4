@@ -673,7 +673,7 @@ ProcessMusicQueue_Square2NextOffset:
 ProcessMusicQueue_Square2Note:
 	LDX iCurrentPulse2SFX
 	BNE ProcessMusicQueue_Square2ContinueNote
-	LDY iCurrentPulse1SFX
+	LDX iCurrentPulse1SFX
 	BNE ProcessMusicQueue_Square2ContinueNote
 
 	JSR PlaySquare2Note
