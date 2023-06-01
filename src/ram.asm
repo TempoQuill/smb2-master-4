@@ -1166,10 +1166,8 @@ iPokeyTempScreenX:
 	.dsb 1 ; $04fd
 ; FOR RENT
 	.dsb 1 ; $04fe
-iWatchTimer:
-	.dsb 1 ; $04ff
-; FOR RENT
-	.dsb 1 ; $0500
+iWatchTimer: ; $ff (normal), $1ff (testing)
+	.dsb 2 ; $04ff
 ; FOR RENT
 	.dsb 1 ; $0501
 ; Flag enabled while the area is rendering on initialization

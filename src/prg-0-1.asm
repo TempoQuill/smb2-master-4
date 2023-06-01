@@ -4503,7 +4503,11 @@ AreaTransitionPlacement_Subspace:
 	LDA iPlayerScreenY
 	STA zPlayerYLo
 	DEC iPlayerLock
+IFNDEF STATS_TESTING_PURPOSES
 	LDA #$60
+ELSE
+	LDA #$FF
+ENDIF
 	STA iSubTimeLeft
 	RTS
 

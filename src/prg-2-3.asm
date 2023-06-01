@@ -287,6 +287,13 @@ AreaMainRoutine_DecrementStopwatch:
 
 	DEC iWatchTimer
 
+IFDEF 16_BIT_WATCH_TIMER
+	BNE AreaMainRoutine_CalculateScreenBoundaryRight
+	LDA iWatchTimer + 1
+	BEQ AreaMainRoutine_CalculateScreenBoundaryRight
+	DEC iWatchTimer + 1
+ENDIF
+
 	; Calculate the screen boundary on the right
 AreaMainRoutine_CalculateScreenBoundaryRight:
 	LDA iBoundLeftLower
@@ -339,6 +346,10 @@ AreaMainRoutine_SetObjectDMAOffset:
 	; If the stopwatch is running, freeze object timers 1 and 2.
 	LDA iWatchTimer
 	BNE AreaMainRoutine_DecrementObjectFlashTimer
+IFDEF 16_BIT_WATCH_TIMER
+	LDA iWatchTimer + 1
+	BNE AreaMainRoutine_DecrementObjectFlashTimer
+ENDIF
 
 	; General-purpose time-based behavior
 AreaMainRoutine_DecrementObjectTimer1:
@@ -1964,6 +1975,10 @@ loc_BANK2_89C9:
 
 	LDA iWatchTimer
 	BNE loc_BANK2_89E2
+IFDEF 16_BIT_WATCH_TIMER
+	LDA iWatchTimer + 1
+	BNE loc_BANK2_89E2
+ENDIF
 
 	LDA iObjectStunTimer, X
 	BEQ loc_BANK2_8A0A
@@ -2345,6 +2360,10 @@ Swarm_CreateEnemy:
 	; Pause for the Stopwatch
 	LDA iWatchTimer
 	BNE Swarm_CreateEnemy_Fail
+IFDEF 16_BIT_WATCH_TIMER
+	LDA iWatchTimer + 1
+	BNE Swarm_CreateEnemy_Fail
+ENDIF
 
 	; Generate an enemy when the counter overflows
 	LDA iSwarmTimer
@@ -3360,6 +3379,9 @@ EnemyBehavior_PickUpNotMushroom:
 EnemyBehavior_PickUpStopwatch:
 	LDA #$FF
 	STA iWatchTimer
+IFDEF 16_BIT_WATCH_TIMER
+	INC iWatchTimer + 1
+ENDIF
 	RTS
 
 
@@ -10616,7 +10638,11 @@ CheckCollisionWithPlayer_NotPhanto:
 	CMP #Enemy_Starman
 	BNE CheckCollisionWithPlayer_NotStarman
 
+IFNDEF STATS_TESTING_PURPOSES
 	LDA #$3F
+ELSE
+	LDA #$FF
+ENDIF
 	STA iStarTimer
 	LDA #Music1_Invincible
 	STA iMusic1

@@ -528,6 +528,9 @@ InitializeSomeLevelStuff:
 	STA iSubAreaFlags
 	STA iInJarType
 	STA iWatchTimer
+IFDEF 16_BIT_WATCH_TIMER
+	STA iWatchTimer + 1
+ENDIF
 	STA iCurrentPlayerSize
 	RTS
 
@@ -1297,6 +1300,9 @@ ShowCardAfterTransition:
 	STA iLargeVeggieAmount
 	STA iCherryAmount
 	STA iWatchTimer
+IFDEF 16_BIT_WATCH_TIMER
+	STA iWatchTimer + 1
+ENDIF
 	DEY ; Initial `iGameMode` minus 1
 	BNE ResetAreaAndProcessGameMode_NotTitleCard
 

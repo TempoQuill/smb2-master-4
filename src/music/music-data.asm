@@ -89,7 +89,7 @@ MusicData:
 ;
 ; Boss music segment...
 ;
-.include "src/music/segments/boss/boss.asm"
+.include "src/music/segments/ldp-exclusive/boss.asm"
 
 ;
 ; Mamu's final boss music segment

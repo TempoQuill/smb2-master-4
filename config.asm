@@ -105,4 +105,7 @@
 ; Make Toad good at jumping and running for testing purposes
 ; STATS_TESTING_PURPOSES = 1
 
+; extra time on the stopwatch
+; 16_BIT_WATCH_TIMER = 1
+
 .endinl
