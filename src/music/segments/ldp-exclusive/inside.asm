@@ -1,18 +1,14 @@
 MusicDataUnderground:
 MusicDataUnderground_Square2:
-	.db $94
-	.db $0A
-	.db $18
-	.db $22
+	.db $99
+	.db $7E
 	.db $94
 	.db $40
 	.db $7E
 	.db $99
 	.db $42
-	.db $94
-	.db $0A
-	.db $18
-	.db $22
+	.db $99
+	.db $7E
 	.db $94
 	.db $40
 	.db $7E
@@ -44,14 +40,19 @@ MusicDataUnderground_Square2:
 	.db $00
 
 MusicDataUnderground_Square1:
-	.db $99
-	.db $7E
+	.db $94
+	.db $0A
+	.db $18
+	.db $22
 	.db $94
 	.db $36
 	.db $7E
 	.db $99
 	.db $38
-	.db $7E
+	.db $94
+	.db $0A
+	.db $18
+	.db $22
 	.db $94
 	.db $36
 	.db $7E
