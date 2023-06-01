@@ -299,6 +299,7 @@ ToadStats:
 	.db $01 ; Pick-up Speed, frame 4/6 - ducking
 	.db $01 ; Pick-up Speed, frame 5/6 - ducking
 	.db $02 ; Pick-up Speed, frame 6/6 - ducking
+IFBDEF STATS_TESTING_PURPOSES
 	.db $B2 ; Jump Speed, still - no object
 	.db $B2 ; Jump Speed, still - with object
 	.db $98 ; Jump Speed, charged - no object
@@ -315,6 +316,34 @@ ToadStats:
 	.db $04 ; Running Speed, right - in quicksand
 	.db $E8 ; Running Speed, left - no object
 	.db $E3 ; Running Speed, left - with object
+ELSE
+	.db $a1
+;	.db $B2 ; Jump Speed, still - no object
+	.db $a1
+;	.db $B2 ; Jump Speed, still - with object
+	.db $81
+;	.db $98 ; Jump Speed, charged - no object
+	.db $81
+;	.db $98 ; Jump Speed, charged - with object
+	.db $9B
+;	.db $AD ; Jump Speed, running - no object
+	.db $9B
+;	.db $AD ; Jump Speed, running - with object
+	.db $E0 ; Jump Speed - in quicksand
+	.db $00 ; Floating Time
+	.db $07 ; Gravity without Jump button pressed
+	.db $04 ; Gravity with Jump button pressed
+	.db $08 ; Gravity in quicksand
+	.db $1F
+;	.db $18 ; Running Speed, right - no object
+	.db $1F
+;	.db $1D ; Running Speed, right - with object
+	.db $04 ; Running Speed, right - in quicksand
+	.db $E1
+;	.db $E8 ; Running Speed, left - no object
+	.db $E1
+;	.db $E3 ; Running Speed, left - with object
+ENDIF
 	.db $FC ; Running Speed, left - in quicksand
 
 LuigiStats:

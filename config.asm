@@ -102,4 +102,7 @@
 ; Skip unnecessary bonus chance RAM copy
 ; BONUS_CHANCE_RAM_CLEANUP = 1
 
+; Make Toad good at jumping and running for testing purposes
+; STATS_TESTING_PURPOSES = 1
+
 .endinl
