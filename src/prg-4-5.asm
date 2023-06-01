@@ -702,6 +702,8 @@ ProcessMusicQueue_Square2ContinueNote:
 ProcessMusicQueue_Square2SustainNote:
 	LDX iCurrentPulse2SFX
 	BNE ProcessMusicQueue_Square1
+	LDX iCurrentPulse1SFX
+	BNE ProcessMusicQueue_Square1
 
 ProcessMusicQueue_LoadSquare2InstrumentOffset:
 	LDY iMusicPulse2InstrumentOffset
@@ -753,7 +755,6 @@ ProcessMusicQueue_Square1AfterPatch:
 	BNE ProcessMusicQueue_Square1Patch
 
 ProcessMusicQueue_Square1Note:
-
 	JSR PlaySquare1Note
 
 	BNE ProcessMusicQueue_Square1StartNote
@@ -782,8 +783,6 @@ ProcessMusicQueue_Square1ContinueNote:
 	STA iMusicPulse1NoteLength
 
 ProcessMusicQueue_Square1SustainNote:
-	LDA iCurrentPulse1SFX
-	BNE ProcessMusicQueue_Triangle
 
 ProcessMusicQueue_LoadSquare1InstrumentOffset:
 	LDY iMusicPulse1InstrumentOffset
