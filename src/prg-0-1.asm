@@ -3460,13 +3460,17 @@ loc_BANK0_90C5:
 	CMP #Enemy_Mushroom1up
 	BNE loc_BANK0_90D5
 
+IFNDEF STATS_TESTING_PURPOSES
 	LDA iLifeUpEventFlag
+ENDIF
 	BEQ loc_BANK0_90EA
 
+IFNDEF STATS_TESTING_PURPOSES
 	LDA #Enemy_VegetableSmall
 	STA zObjectType, X
 
 	JMP loc_BANK0_90EA
+ENDIF
 
 loc_BANK0_90D5:
 	CMP #Enemy_VegetableLarge
@@ -3680,11 +3684,13 @@ loc_BANK0_91CF:
 	CPX #$02
 	BNE loc_BANK0_91E3
 
+IFNDEF STATS_TESTING_PURPOSES
 	LDA iSubspaceVisitCount
 	CMP #$02
 	BCS loc_BANK0_91E2 ; skip if we've already visited Subspace twice
 
 	INC iSubspaceCoinCount
+ENDIF
 	LDX #$00
 
 loc_BANK0_91E2:

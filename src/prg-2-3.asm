@@ -3298,7 +3298,9 @@ EnemyBehavior_Mushroom1up:
 ; ---------------------------------------------------------------------------
 
 Award1upMushroom:
+IFNDEF STATS_TESTING_PURPOSES
 	INC iLifeUpEventFlag
+ENDIF
 	INC iExtraMen
 	BNE loc_BANK2_9050 ; Check if lives overflow. If so, reduce by one again
 
