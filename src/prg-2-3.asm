@@ -288,6 +288,8 @@ AreaMainRoutine_DecrementStopwatch:
 	DEC iWatchTimer
 
 IFDEF SIXTEEN_BIT_WATCH_TIMER
+	LDA iWatchTimer
+	CMP #$ff
 	BNE AreaMainRoutine_CalculateScreenBoundaryRight
 	LDA iWatchTimer + 1
 	BEQ AreaMainRoutine_CalculateScreenBoundaryRight
