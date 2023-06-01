@@ -123,6 +123,9 @@ ProcessSoundEffectQueue2:
 	BEQ ProcessSoundEffectQueue2_None
 
 	STY iCurrentPulse1SFX
+	; Pulse 1 + 2 queues now share a channel
+	LDA #0
+	STA iCurrentPulse2SFX
 	LSR iPulse1SFX
 	BCS ProcessSoundEffectQueue2_Jump
 
@@ -250,12 +253,15 @@ MushroomSoundData:
 
 
 ProcessSoundEffectQueue1:
+	; is the queue active?
 	LDA iPulse2SFX
 	BEQ ProcessSoundEffectQueue1_None
 
+	; yes, but is it playing a stopwatch SFX?
 	CMP #SoundEffect1_StopwatchTick
 	BNE ProcessSoundEffectQueue1_Part2
 
+	; yes, so are currently playing a sound effect?
 	LDX iCurrentPulse2SFX
 	BEQ ProcessSoundEffectQueue1_Part2
 
@@ -265,10 +271,15 @@ ProcessSoundEffectQueue1_None:
 	RTS
 
 ProcessSoundEffectQueue1_Part2:
+	; Stopwatch is not on cue nor are we playing sound effects
+	; let's fix the latter
 	STA iCurrentPulse2SFX
 	LDY #$00
+	; Pulse 1 + 2 queues now share a channel
+	STY iCurrentPulse1SFX
 
 ProcessSoundEffectQueue1_PointerLoop:
+; loop until we hit a carry (Y = 1-8)
 	INY
 	LSR A
 	BCC ProcessSoundEffectQueue1_PointerLoop
