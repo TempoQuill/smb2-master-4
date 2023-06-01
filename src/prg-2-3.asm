@@ -287,7 +287,7 @@ AreaMainRoutine_DecrementStopwatch:
 
 	DEC iWatchTimer
 
-IFDEF 16_BIT_WATCH_TIMER
+IFDEF SIXTEEN_BIT_WATCH_TIMER
 	BNE AreaMainRoutine_CalculateScreenBoundaryRight
 	LDA iWatchTimer + 1
 	BEQ AreaMainRoutine_CalculateScreenBoundaryRight
@@ -346,7 +346,7 @@ AreaMainRoutine_SetObjectDMAOffset:
 	; If the stopwatch is running, freeze object timers 1 and 2.
 	LDA iWatchTimer
 	BNE AreaMainRoutine_DecrementObjectFlashTimer
-IFDEF 16_BIT_WATCH_TIMER
+IFDEF SIXTEEN_BIT_WATCH_TIMER
 	LDA iWatchTimer + 1
 	BNE AreaMainRoutine_DecrementObjectFlashTimer
 ENDIF
@@ -1975,7 +1975,7 @@ loc_BANK2_89C9:
 
 	LDA iWatchTimer
 	BNE loc_BANK2_89E2
-IFDEF 16_BIT_WATCH_TIMER
+IFDEF SIXTEEN_BIT_WATCH_TIMER
 	LDA iWatchTimer + 1
 	BNE loc_BANK2_89E2
 ENDIF
@@ -2360,7 +2360,7 @@ Swarm_CreateEnemy:
 	; Pause for the Stopwatch
 	LDA iWatchTimer
 	BNE Swarm_CreateEnemy_Fail
-IFDEF 16_BIT_WATCH_TIMER
+IFDEF SIXTEEN_BIT_WATCH_TIMER
 	LDA iWatchTimer + 1
 	BNE Swarm_CreateEnemy_Fail
 ENDIF
@@ -3379,7 +3379,7 @@ EnemyBehavior_PickUpNotMushroom:
 EnemyBehavior_PickUpStopwatch:
 	LDA #$FF
 	STA iWatchTimer
-IFDEF 16_BIT_WATCH_TIMER
+IFDEF SIXTEEN_BIT_WATCH_TIMER
 	INC iWatchTimer + 1
 ENDIF
 	RTS
