@@ -4700,3 +4700,36 @@ CreateSubspaceMushroomObject:
 	PLA
 	TAX
 	RTS
+
+GetCurrentArea:
+	JSR LoadCurrentArea
+
+	JSR LoadCurrentPalette
+
+	JSR HideAllSprites
+
+	JSR WaitForNMI
+
+	JSR SetStack100Gameplay
+
+	LDA #PPUCtrl_Base2000 | PPUCtrl_WriteHorizontal | PPUCtrl_Sprite0000 | PPUCtrl_Background1000 | PPUCtrl_SpriteSize8x16 | PPUCtrl_NMIEnabled
+	STA zPPUControl
+	RTS
+
+ClearLayoutAndPokeMusic:
+	JSR ClearSubAreaTileLayout
+
+	LDA #Music1_Inside
+	STA iMusic1
+	LDA #$01
+	STA iMusicID
+	JMP loc_BANKF_E5E1
+
+SubspaceGeneration:
+	JSR GenerateSubspaceArea
+
+	LDA #Music1_Subspace
+	STA iMusic1
+	LDA #$04
+	STA iMusicID
+	RTS

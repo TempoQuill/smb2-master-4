@@ -573,41 +573,7 @@ DisplayLevelTitleCardAndMore:
 
 	JSR HideAllSprites
 
-	LDY #$23
-DisplayLevelTitleCardAndMore_TitleCardPaletteLoop:
-	LDA TitleCardPalettes, Y
-	STA iStartingPalettes, Y
-	DEY
-	BPL DisplayLevelTitleCardAndMore_TitleCardPaletteLoop
-
-	LDA #ScreenUpdateBuffer_RAM_TitleCardPalette ; Then tell it to dump that into the PPU
-	STA zScreenUpdateIndex
-	JSR WaitForNMI
-
-	LDA #ScreenUpdateBuffer_TitleCardLeftover
-	STA zScreenUpdateIndex
-	JSR WaitForNMI
-
-	JSR DrawTitleCardWorldImage
-
-	JSR WaitForNMI_TurnOnPPU
-
-	JSR RestorePlayerToFullHealth
-
-	; Pause for the title card
-	LDA #$50
-	STA z02
-PreLevelTitleCard_PauseLoop:
-	JSR WaitForNMI
-	DEC z02
-	BPL PreLevelTitleCard_PauseLoop
-
-PreStartLevel:
-	JSR SetStack100Gameplay
-
-	JSR WaitForNMI_TurnOffPPU
-
-	JSR DisableNMI
+	JSR PreLevelTitleCard
 
 	JSR LoadWorldCHRBanks
 
@@ -649,35 +615,7 @@ DoCharacterSelectMenu:
 	STA iCHR_A5
 
 loc_BANKF_E2B2:
-	JSR EnableNMI_PauseTitleCard
-
-	JSR DisableNMI
-
-	LDA #Music1_CharacterSelect
-	STA iMusic1
-	LDA zCurrentCharacter
-	STA iCHRBackup
-	LDA iCurrentWorld
-	STA iWorldBackup
-
-	LDY #$3F
-loc_BANKF_E2CA:
-	LDA PlayerSelectMarioSprites1, Y
-	STA iVirtualOAM + $10, Y
-	DEY
-	BPL loc_BANKF_E2CA
-
-	JSR EnableNMI
-
-	JSR WaitForNMI
-
-	LDX iCurrentWorld
-	LDY iCurrentLvl
-	JSR DisplayLevelTitleCardText
-
-	JSR WaitForNMI
-
-	JMP loc_BANKF_E311
+	JMP LoadCHRSelect
 
 ; ---------------------------------------------------------------------------
 
@@ -861,11 +799,6 @@ StartGame:
 
 	JSR TitleScreen ; The whole title screen is a subroutine, lol
 
-	INC iMainGameState
-SetNumContinues:
-	LDA #$02 ; Number of continues on start
-	STA iNumContinues
-
 ; We return here after picking "CONTINUE" from the game over menu.
 ContinueGame:
 	LDA #$03 ; Number of lives to start
@@ -916,18 +849,7 @@ StartLevel_SetPPUCtrlMirror:
 	LDA #PRGBank_6_7
 	JSR ChangeMappedPRGBank
 
-	JSR LoadCurrentArea
-
-	JSR LoadCurrentPalette
-
-	JSR HideAllSprites
-
-	JSR WaitForNMI
-
-	JSR SetStack100Gameplay
-
-	LDA #PPUCtrl_Base2000 | PPUCtrl_WriteHorizontal | PPUCtrl_Sprite0000 | PPUCtrl_Background1000 | PPUCtrl_SpriteSize8x16 | PPUCtrl_NMIEnabled
-	STA zPPUControl
+	JSR GetCurrentArea
 
 	LDA zScrollCondition
 	BEQ VerticalLevel_Loop
@@ -939,8 +861,6 @@ HorizontalLevel_Loop:
 	JSR ChangeMappedPRGBank
 
 	JSR InitializeAreaHorizontal
-
-	JSR EnsureCorrectMusic
 
 	LDA zBreakStartLevelLoop
 	BEQ HorizontalLevel_Loop
@@ -999,8 +919,6 @@ VerticalLevel_Loop:
 	JSR ChangeMappedPRGBank
 
 	JSR InitializeAreaVertical
-
-	JSR EnsureCorrectMusic
 
 	LDA zBreakStartLevelLoop
 	BEQ VerticalLevel_Loop
@@ -1112,46 +1030,7 @@ HidePauseScreen:
 	LDA #PRGBank_0_1
 	JSR ChangeMappedPRGBank
 
-	JSR RestoreScreenScrollPosition
-
-	LDA zScrollCondition
-	BNE HidePauseScreen_Horizontal
-
-HidePauseScreen_Vertical:
-	LDA #HMirror
-	JSR ChangeNametableMirroring
-
-	JSR sub_BANK0_81FE
-
-HidePauseScreen_Vertical_Loop:
-	JSR WaitForNMI
-
-	JSR sub_BANK0_823D
-
-	LDA i537
-	BEQ HidePauseScreen_Vertical_Loop
-
-	JSR WaitForNMI_TurnOnPPU
-
-	JMP VerticalLevel_CheckScroll
-
-HidePauseScreen_Horizontal:
-	LDA #VMirror
-	JSR ChangeNametableMirroring
-
-	JSR sub_BANK0_8785
-
-HidePauseScreen_Horizontal_Loop:
-	JSR WaitForNMI
-
-	JSR sub_BANK0_87AA
-
-	LDA i537
-	BEQ HidePauseScreen_Horizontal_Loop
-
-	JSR WaitForNMI_TurnOnPPU
-
-	JMP HorizontalLevel_CheckScroll
+	JMP HidePauseScreen_01
 
 
 InitializeSubArea:
@@ -1177,22 +1056,10 @@ InitializeJar:
 	LDA #PRGBank_6_7
 	JSR ChangeMappedPRGBank
 
-	JSR ClearSubAreaTileLayout
-
-	LDA #Music1_Inside
-	STA iMusic1
-	LDA #$01
-	STA iMusicID
-	JMP loc_BANKF_E5E1
-
+	JMP ClearLayoutAndPokeMusic
 
 InitializeSubspace:
-	JSR GenerateSubspaceArea
-
-	LDA #Music1_Subspace
-	STA iMusic1
-	LDA #$04
-	STA iMusicID
+	JSR SubspaceGeneration
 
 loc_BANKF_E5E1:
 	LDA #PRGBank_0_1
@@ -1270,19 +1137,7 @@ loc_BANKF_E64C:
 	LDA #PRGBank_0_1
 	JSR ChangeMappedPRGBank
 
-	JSR UseMainAreaScreenBoundaries
-
-ExitSubArea_Loop:
-	JSR WaitForNMI
-
-	JSR sub_BANK0_87AA
-
-	LDA i537
-	BEQ ExitSubArea_Loop
-
-	JSR WaitForNMI_TurnOnPPU
-
-	JMP HorizontalLevel_CheckScroll
+	JMP ExitSubArea
 
 
 ;
@@ -1829,8 +1684,7 @@ DelayFrames_Loop:
 EndingSceneRoutine:
 	JSR SetScrollXYTo0
 
-	LDA #$80
-	ASL A
+	LDA #0
 	STA iCurrentPulse2SFX
 	LDA #PRGBank_0_1
 	JSR ChangeMappedPRGBank
@@ -1850,8 +1704,6 @@ EndingSceneRoutine:
 	LDA #PRGBank_0_1
 	JSR ChangeMappedPRGBank
 
-	INC iMainGameState
-
 	JSR ContributorScene
 
 	JSR WaitForNMI_TurnOffPPU
@@ -1868,7 +1720,6 @@ SetupMarioSleepingScene:
 	LDA #PRGBank_C_D
 	JSR ChangeMappedPRGBank
 
-	INC iMainGameState
 	JMP MarioSleepingScene
 
 
@@ -4305,36 +4156,6 @@ FollowCurrentAreaPointer:
 
 
 
-;
-; Checks that we're playing the correct music and switches if necessary, unless
-; we're playing the invincibility music.
-;
-; ##### Input
-; - `iLevelMusic`: music we should be playing
-; - `iMusicID`: music we're actually playing
-; - `iStarTimer`: whether the player is invincible
-;
-; ##### Output
-; - `iMusicID`: music we should be plathing
-; - `iMusic1`: song to play if we need to change the music
-;
-EnsureCorrectMusic:
-	LDA iLevelMusic
-	CMP iMusicID
-	BEQ EnsureCorrectMusic_Exit
-
-	TAX
-	STX iMusicID
-	LDA iStarTimer
-	CMP #$08
-	BCS EnsureCorrectMusic_Exit
-
-	LDA LevelMusicIndexes, X
-	STA iMusic1
-
-EnsureCorrectMusic_Exit:
-	RTS
-
 
 DoAreaReset:
 	LDA #$00
@@ -4429,141 +4250,6 @@ loc_BANKF_F749:
 	; BUG: Setting DPCM at the same time as music
 	LDA #SoundEffect1_PlayerDeath
 	STA iPulse2SFX
-	RTS
-
-
-;
-; Copies the raw level data to memory.
-;
-CopyLevelDataToMemory:
-	; Determine the global area index from the current level and area.
-	LDY iCurrentLvl
-	LDA LevelAreaStartIndexes, Y
-	CLC
-	ADC iCurrentLvlArea
-	TAY
-
-	; Calculate the pointer for the start of the level data.
-	LDA LevelDataPointersLo, Y
-	STA z05
-	LDA LevelDataPointersHi, Y
-	STA z06
-
-	; Blindly copy 255 bytes of data, which is presumed to contain the full area.
-	LDX #$FF
-
-	; Set the destination address in RAM for copying level data.
-	LDA #>wRawLevelData
-	STA z02
-	LDY #<wRawLevelData
-	STY z01
-
-	; `Y = $00`
-CopyLevelDataToMemory_Loop:
-	LDA (z05), Y
-	STA (z01), Y
-	INY
-	DEX
-	BNE CopyLevelDataToMemory_Loop
-
-	; We end up copying the first byte twice!
-	STA (z01), Y
-
-
-;
-; Copies the raw enemy data to memory.
-;
-CopyEnemyDataToMemory:
-	; Determine the address of the level's enemy pointer tables.
-	LDY iCurrentLvl
-	LDA EnemyPointersByLevel_HiHi, Y
-	STA z01
-	LDA EnemyPointersByLevel_HiLo, Y
-	STA z00
-	LDA EnemyPointersByLevel_LoHi, Y
-	STA z03
-	LDA EnemyPointersByLevel_LoLo, Y
-	STA z02
-
-	; Determine whether we want the enemy data for the area or for the jar.
-	LDA iSubAreaFlags
-	CMP #$01
-	BNE CopyEnemyDataToMemory_Area
-
-CopyEnemyDataToMemory_Jar:
-	LDY #AreaIndex_Jar
-	JMP CopyEnemyDataToMemory_SetAddress
-
-CopyEnemyDataToMemory_Area:
-	LDY iCurrentLvlArea
-
-CopyEnemyDataToMemory_SetAddress:
-	; Calculate the pointer for the start of the enemy data.
-	LDA (z00), Y
-	STA z01
-	LDA (z02), Y
-	STA z00
-
-	; Blindly copy 255 bytes of data, which is presumed to contain the full area.
-	LDX #$FF
-
-	; Set the destination address in RAM for copying level data.
-	LDA #>wRawEnemyPointer
-	STA z03
-	LDY #<wRawEnemyPointer
-	STY z02
-
-	; `Y = $00`
-CopyEnemyDataToMemory_Loop:
-	LDA (z00), Y
-	STA (z02), Y
-	INY
-	DEX
-	BNE CopyEnemyDataToMemory_Loop
-	RTS
-
-
-;
-; Copies the raw level data for a jar to memory.
-;
-CopyJarDataToMemory:
-	; Determine the global area index from the current level and area.
-	LDY iCurrentLvl
-	LDA LevelAreaStartIndexes, Y
-	CLC
-	ADC #AreaIndex_Jar
-	TAY
-
-	; Calculate the pointer for the start of the level data.
-	LDA LevelDataPointersLo, Y
-	STA z05
-	LDA LevelDataPointersHi, Y
-	STA z06
-
-	; Set the destination address in RAM for copying level data.
-	LDA #>wRawJarData
-	STA z02
-	LDY #<wRawJarData
-	STY z01
-
-	; `Y = $00`
-CopyJarDataToMemory_Loop:
-	LDA (z05), Y
-	; Unlike `CopyLevelDataToMemory`, which always copies 255 bytes, this stops on any `$FF` read!
-	;
-	; This isn't technically "correct", but in practice it's not the most devastating limitation.
-	; Just don't expect to use a waterfall object that is exactly 16 tiles wide inside a jar.
-	;
-	; Fun fact: The largest possible waterfall objects are only used in two areas of World 5!
-	CMP #$FF ; This one actually terminates on any $FF read! Welp.
-	BEQ CopyJarDataToMemory_Exit
-
-	STA (z01), Y
-	INY
-	JMP CopyJarDataToMemory_Loop
-
-CopyJarDataToMemory_Exit:
-	STA (z01), Y
 	RTS
 
 

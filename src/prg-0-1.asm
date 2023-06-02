@@ -105,7 +105,7 @@ loc_BANK0_805D:
 	STA i502
 
 InitializeAreaVertical_Exit:
-	RTS
+	JMP EnsureCorrectMusic
 
 
 ;
@@ -1078,7 +1078,7 @@ loc_BANK0_855C:
 	INC zBreakStartLevelLoop
 
 InitializeAreaHorizontal_Exit:
-	RTS
+	JMP EnsureCorrectMusic
 
 
 ; =============== S U B R O U T I N E =======================================
@@ -5177,7 +5177,12 @@ loc_BANK0_9C2A:
 	CPY #$F0
 	BCC loc_BANK0_9C2A
 
-	JMP HideAllSprites
+	JSR HideAllSprites
+
+	INC iMainGameState
+	LDA #$02 ; Number of continues on start
+	STA iNumContinues
+	RTS
 
 ; ---------------------------------------------------------------------------
 
@@ -5991,6 +5996,7 @@ ContributorCharacterOAMData:
 ; fate while the characters stand and wave
 ;
 ContributorScene:
+	INC iMainGameState
 	JSR WaitForNMI_Ending_TurnOffPPU
 
 	LDA #VMirror
@@ -7300,4 +7306,128 @@ CreateEnemy_Bank1_FoundSlot:
 	JSR UnlinkEnemyFromRawData_Bank1
 
 	LDX z12
+	RTS
+
+PreLevelTitleCard:
+	LDY #$23
+PreLevelTitleCard_PaletteLoop:
+	LDA TitleCardPalettes, Y
+	STA iStartingPalettes, Y
+	DEY
+	BPL PreLevelTitleCard_PaletteLoop
+
+	LDA #ScreenUpdateBuffer_RAM_TitleCardPalette ; Then tell it to dump that into the PPU
+	STA zScreenUpdateIndex
+	JSR WaitForNMI
+
+	LDA #ScreenUpdateBuffer_TitleCardLeftover
+	STA zScreenUpdateIndex
+	JSR WaitForNMI
+
+	JSR DrawTitleCardWorldImage
+
+	JSR WaitForNMI_TurnOnPPU
+
+	JSR RestorePlayerToFullHealth
+
+	; Pause for the title card
+	LDA #$50
+	STA z02
+PreLevelTitleCard_PauseLoop:
+	JSR WaitForNMI
+	DEC z02
+	BPL PreLevelTitleCard_PauseLoop
+
+PreStartLevel:
+	JSR SetStack100Gameplay
+
+	JSR WaitForNMI_TurnOffPPU
+
+	JMP DisableNMI
+
+HidePauseScreen_01:
+	JSR RestoreScreenScrollPosition
+
+	LDA zScrollCondition
+	BNE HidePauseScreen_Horizontal
+
+HidePauseScreen_Vertical:
+	LDA #HMirror
+	JSR ChangeNametableMirroring
+
+	JSR sub_BANK0_81FE
+
+HidePauseScreen_Vertical_Loop:
+	JSR WaitForNMI
+
+	JSR sub_BANK0_823D
+
+	LDA i537
+	BEQ HidePauseScreen_Vertical_Loop
+
+	JSR WaitForNMI_TurnOnPPU
+
+	JMP VerticalLevel_CheckScroll
+
+HidePauseScreen_Horizontal:
+	LDA #VMirror
+	JSR ChangeNametableMirroring
+
+	JSR sub_BANK0_8785
+
+HidePauseScreen_Horizontal_Loop:
+	JSR WaitForNMI
+
+	JSR sub_BANK0_87AA
+
+	LDA i537
+	BEQ HidePauseScreen_Horizontal_Loop
+
+	JSR WaitForNMI_TurnOnPPU
+
+	JMP HorizontalLevel_CheckScroll
+
+ExitSubArea:
+	JSR UseMainAreaScreenBoundaries
+
+ExitSubArea_Loop:
+	JSR WaitForNMI
+
+	JSR sub_BANK0_87AA
+
+	LDA i537
+	BEQ ExitSubArea_Loop
+
+	JSR WaitForNMI_TurnOnPPU
+
+	JMP HorizontalLevel_CheckScroll
+
+;
+; Checks that we're playing the correct music and switches if necessary, unless
+; we're playing the invincibility music.
+;
+; ##### Input
+; - `iLevelMusic`: music we should be playing
+; - `iMusicID`: music we're actually playing
+; - `iStarTimer`: whether the player is invincible
+;
+; ##### Output
+; - `iMusicID`: music we should be plathing
+; - `iMusic1`: song to play if we need to change the music
+;
+EnsureCorrectMusic:
+	LDA iLevelMusic
+	CMP iMusicID
+	BEQ EnsureCorrectMusic_Exit
+
+	TAX
+	STX iMusicID
+	LDA iStarTimer
+	CMP #$08
+	BCS EnsureCorrectMusic_Exit
+
+	LDA LevelMusicIndexes, X
+	STA iMusic1
+
+EnsureCorrectMusic_Exit:
 	RTS

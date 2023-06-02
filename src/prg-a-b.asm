@@ -729,3 +729,64 @@ UnusedText_Blank214D:
 	.db $21, $4D, $06
 	.db $FB, $FB, $FB, $FB, $FB, $FB
 	.db $00
+
+LoadCHRSelect:
+	JSR EnableNMI_PauseTitleCard
+
+	JSR DisableNMI
+
+	LDA #Music1_CharacterSelect
+	STA iMusic1
+	LDA zCurrentCharacter
+	STA iCHRBackup
+	LDA iCurrentWorld
+	STA iWorldBackup
+
+	LDY #$3F
+loc_BANKF_E2CA:
+	LDA PlayerSelectMarioSprites1, Y
+	STA iVirtualOAM + $10, Y
+	DEY
+	BPL loc_BANKF_E2CA
+
+	JSR EnableNMI
+
+	JSR WaitForNMI
+
+	LDX iCurrentWorld
+	LDY iCurrentLvl
+	JSR DisplayLevelTitleCardText
+
+	JSR WaitForNMI
+
+	JMP loc_BANKF_E311
+
+EndOfLevelSlotMachine_AB:
+	JSR CopyBonusChanceLayoutToRAM
+
+	LDA #ScreenUpdateBuffer_RAM_BonusChanceLayout
+	STA zScreenUpdateIndex
+	LDA #Stack100_Menu
+	STA iStack
+	JSR EnableNMI
+
+	JSR WaitForNMI
+
+	LDA #Stack100_Gameplay
+	STA iStack
+	JSR DisableNMI
+
+	JSR sub_BANKF_EA33
+
+	LDA #Music2_StopMusic
+	STA iMusic2
+	JSR WaitForNMI
+	LDA #Music2_MushroomGetJingle
+	STA iMusic2
+	JSR Delay80Frames
+	LDA iTotalCoins
+	BEQ EndOfLevelSlotMachine_Exit
+	JMP loc_BANKF_E7F2
+
+EndOfLevelSlotMachine_Exit:
+	JMP NoCoinsForSlotMachine

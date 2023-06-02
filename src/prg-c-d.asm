@@ -276,6 +276,7 @@ MarioDream_WakingFrames:
 
 
 MarioSleepingScene:
+	INC iMainGameState
 	JSR sub_BANKC_8014
 
 	LDA #VMirror
