@@ -3754,7 +3754,7 @@ DoorHandling_GoThroughDoor:
 	JSR SnapPlayerToTile
 
 	LDA #SoundEffect3_DoorOpen
-	STA iNoiseSFX
+	STA iDPCMSFX2
 
 DoorHandling_Exit:
 	RTS

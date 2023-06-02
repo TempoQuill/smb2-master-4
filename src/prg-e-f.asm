@@ -4297,7 +4297,7 @@ loc_BANKF_F749:
 	STA iMusic2
 	; BUG: Setting DPCM at the same time as music
 	LDA #SoundEffect1_PlayerDeath
-	STA iPulse2SFX
+	STA iDPCMSFX2
 	RTS
 
 

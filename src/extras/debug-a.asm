@@ -487,7 +487,7 @@ DebugMenu_Health:
 
 DebugMenu_MenuStart:
 	LDA #SoundEffect1_PlayerDeath
-	STA iPulse2SFX
+	STA iDPCMSFX2
 	RTS
 
 DebugMenu_MenuMove:

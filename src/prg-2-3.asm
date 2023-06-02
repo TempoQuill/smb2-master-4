@@ -287,7 +287,7 @@ ENDIF
 	BNE AreaMainRoutine_DecrementStopwatch
 
 	LDY #SoundEffect1_StopwatchTick
-	STY iPulse2SFX
+	STY iDPCMSFX2
 
 AreaMainRoutine_DecrementStopwatch:
 	LSR A
@@ -2721,7 +2721,7 @@ loc_BANK2_8D7B:
 	BNE loc_BANK2_8D78
 
 	LDA #SoundEffect3_Hawk
-	STA iNoiseSFX
+	STA iDPCMSFX2
 
 loc_BANK2_8D8A:
 	LDA iMaskClosingFlag
@@ -2806,7 +2806,7 @@ loc_BANK2_8DDB:
 	LDA #$FC
 	STA zPlayerYVelocity
 	LDA #SoundEffect3_Hawk
-	STA iNoiseSFX
+	STA iDPCMSFX2
 	INC iMaskClosingFlag
 
 RenderSprite_HawkmouthLeft:
@@ -3467,7 +3467,7 @@ EnemyBehavior_Bomb_Explode:
 	STA zSpriteTimer, X
 	STA iSkyFlashTimer
 	LDA #SoundEffect3_DoorOpen
-	STA iNoiseSFX
+	STA iDPCMSFX2
 	LSR A
 	; A = $00
 	STA iObjectBulletTimer, X
@@ -3541,7 +3541,7 @@ EnemyBehavior_SubspacePotion_CheckGroundCollision:
 	LDA #$10
 	STA iSpriteTimer, X
 	LDA #SoundEffect1_PotionDoorBong
-	STA iPulse2SFX
+	STA iDPCMSFX2
 	INC zEnemyArray, X
 	LDA #Enemy_SubspaceDoor
 	STA zObjectType, X
@@ -3997,7 +3997,7 @@ Phanto_AfterFlashing:
 
 	; Play Phanto activation sound effect
 	LDA #SoundEffect3_Rumble_A
-	STA iNoiseSFX
+	STA iDPCMSFX2
 
 Phanto_AfterSound:
 	DEC iPhantoTimer
@@ -4764,7 +4764,7 @@ loc_BANK2_96EC:
 	LDA #$20
 	STA iPOWTimer
 	LDA #SoundEffect3_Rumble_B
-	STA iNoiseSFX
+	STA iDPCMSFX2
 	JMP sub_BANK2_98C4
 
 ; ---------------------------------------------------------------------------
@@ -8571,7 +8571,7 @@ EnemyBehavior_Rocket_Launching:
 	STA zEnemyArray, X
 	STA iIsInRocket
 	LDA #SoundEffect3_Rumble_A
-	STA iNoiseSFX
+	STA iDPCMSFX2
 	LDA #$FE
 	STA zObjectYVelocity, X
 
@@ -9431,7 +9431,7 @@ HawkmouthEat:
 
 sub_BANK3_B095:
 	LDA #SoundEffect3_Hawk
-	STA iNoiseSFX
+	STA iDPCMSFX2
 
 locret_BANK3_B09A:
 	RTS
@@ -9741,7 +9741,7 @@ EnemyBehavior_Wart_PhysicsX:
 	BMI EnemyBehavior_Wart_Exit
 
 	LDA #SoundEffect3_Hawk
-	STA iNoiseSFX
+	STA iDPCMSFX2
 	; determines how high to spit the bubble
 	LDA i480, X
 	AND #$03
@@ -11519,7 +11519,7 @@ DoorHandling_GoThroughDoor_Bank3:
 	JSR SnapPlayerToTile_Bank3
 
 	LDA #SoundEffect3_DoorOpen
-	STA iNoiseSFX
+	STA iDPCMSFX2
 	RTS
 
 

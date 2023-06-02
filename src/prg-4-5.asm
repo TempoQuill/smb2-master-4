@@ -44,8 +44,6 @@ CheckMixer:
 ProcessMusicAndSfxQueues:
 	JSR ProcessSoundEffectQueue2
 
-	JSR ProcessSoundEffectQueue1
-
 	JSR ProcessSoundEffectQueue3
 
 	JSR ProcessDPCMQueue1
@@ -57,7 +55,6 @@ ProcessOnlyMusicQueue2:
 	LDA #$00
 	STA iPulse1SFX
 	STA iMusic2
-	STA iPulse2SFX
 	STA iDPCMSFX1
 	STA iDPCMSFX2
 	STA iMusic1
@@ -421,12 +418,23 @@ ProcessSoundEffectQueue3_Exit:
 NoiseSFX_None:
 	.db $00
 
+ProcessDPCMQueue2_DecTimer:
+	DEC iDPCMTimer2
+	BNE ProcessDPCMQueue1_Exit
+	BEQ ProcessDPCMQueue1_None
+
 ProcessDPCMQueue1:
 	LDA iDPCMSFX1
 	BNE ProcessDPCMQueue1_Part2
 
+	LDA iDPCMSFX2
+	BNE ProcessDPCMQueue2_Part2
+
 	LDA iCurrentDPCMSFX1
-	BEQ ProcessDPCMQueue1_None
+	BNE ProcessDPCMQueue1_DecTimer
+
+	LDA iCurrentDPCMSFX2
+	BNE ProcessDPCMQueue2_DecTimer
 
 ProcessDPCMQueue1_DecTimer:
 	DEC iDPCMTimer1
@@ -435,6 +443,7 @@ ProcessDPCMQueue1_DecTimer:
 ProcessDPCMQueue1_None:
 	LDA #$00
 	STA iCurrentDPCMSFX1
+	STA iCurrentDPCMSFX2
 	STA iDPCMBossPriority
 	LDA #%00001111
 	STA SND_CHN
@@ -473,6 +482,48 @@ ENDIF
 	STA DMC_LEN
 	LSR A
 	LSR A
+	STA iDPCMTimer1
+	LDA #0
+	STA iDPCMTimer2
+	LDA #%00001111
+	STA SND_CHN
+	LDA #%00011111
+	STA SND_CHN
+	RTS
+
+ProcessDPCMQueue2_Part2:
+	LDY iDPCMBossPriority
+	BEQ ProcessDPCMQueue2_Part3
+
+	CMP iDPCMBossPriority
+	BNE ProcessDPCMQueue1_DecTimer
+
+ProcessDPCMQueue2_Part3:
+	STA iCurrentDPCMSFX2
+	LDY #$00
+
+ProcessDPCMQueue2_PointerLoop:
+	INY
+	LSR A
+	BCC ProcessDPCMQueue2_PointerLoop
+
+IF INES_MAPPER = MAPPER_MMC5
+	LDA DMCBankTable2 - 1, Y
+	ORA #$80
+	STA MMC5_PRGBankSwitch4
+ENDIF
+
+	LDA DMCFreqTable2 - 1, Y
+	STA DMC_FREQ
+
+	LDA DMCStartTable2 - 1, Y
+	STA DMC_START
+	LDA DMCLengthTable2 - 1, Y
+	STA DMC_LEN
+	LSR A
+	LSR A
+	STA iDPCMTimer2
+	LDA #0
 	STA iDPCMTimer1
 	LDA #%00001111
 	STA SND_CHN

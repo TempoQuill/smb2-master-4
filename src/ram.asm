@@ -1642,7 +1642,7 @@ iSwarmTimer:
 	.dsb 1 ; $0623
 iFriction:
 	.dsb 1 ; $0624
-; FOR RENT
+iDPCMTimer2:
 	.dsb 1 ; $0625
 ; FOR RENT
 	.dsb 1 ; $0626
