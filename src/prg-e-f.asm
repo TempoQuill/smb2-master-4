@@ -565,7 +565,11 @@ DisplayLevelTitleCardAndMore:
 	JSR ChangeTitleCardCHR
 
 	LDA #PRGBank_A_B
+IFNDEF BANK_MIRRORING
 	JSR ChangeMappedPRGBank
+ELSE
+	JSR ChangeMappedMirroredPRGBank
+ENDIF
 
 	JSR CopyCharacterStatsAndStuff
 
@@ -578,7 +582,11 @@ DisplayLevelTitleCardAndMore:
 	JSR LoadWorldCHRBanks
 
 	LDA #PRGBank_A_B
+IFNDEF BANK_MIRRORING
 	JSR ChangeMappedPRGBank
+ELSE
+	JSR ChangeMappedMirroredPRGBank
+ENDIF
 
 	JSR CopyCharacterStatsAndStuff
 
@@ -598,7 +606,11 @@ DoCharacterSelectMenu:
 	JSR LoadCharacterSelectCHRBanks
 
 	LDA #PRGBank_A_B
+IFNDEF BANK_MIRRORING
 	JSR ChangeMappedPRGBank
+ELSE
+	JSR ChangeMappedMirroredPRGBank
+ENDIF
 
 	JSR CopyCharacterStatsAndStuff
 
@@ -609,7 +621,11 @@ DoCharacterSelectMenu:
 	BEQ loc_BANKF_E2B2
 
 	LDA #PRGBank_A_B
+IFNDEF BANK_MIRRORING
 	JSR ChangeMappedPRGBank
+ELSE
+	JSR ChangeMappedMirroredPRGBank
+ENDIF
 
 	LDA #$A5
 	STA iCHR_A5
@@ -847,7 +863,11 @@ StartLevel_SetPPUCtrlMirror:
 	JSR CopyLevelDataToMemory
 
 	LDA #PRGBank_6_7
+IFNDEF BANK_MIRRORING
 	JSR ChangeMappedPRGBank
+ELSE
+	JSR ChangeMappedMirroredPRGBank
+ENDIF
 
 	JSR GetCurrentArea
 
@@ -1017,7 +1037,11 @@ HidePauseScreen:
 	JSR LoadWorldCHRBanks
 
 	LDA #PRGBank_6_7
+IFNDEF BANK_MIRRORING
 	JSR ChangeMappedPRGBank
+ELSE
+	JSR ChangeMappedMirroredPRGBank
+ENDIF
 
 	JSR LoadCurrentPalette
 
@@ -1037,7 +1061,11 @@ InitializeSubArea:
 	JSR ClearNametablesAndSprites
 
 	LDA #PRGBank_6_7
+IFNDEF BANK_MIRRORING
 	JSR ChangeMappedPRGBank
+ELSE
+	JSR ChangeMappedMirroredPRGBank
+ENDIF
 
 	LDA #$00
 	STA iSubspaceCoinCount
@@ -1054,7 +1082,11 @@ InitializeJar:
 	JSR CopyEnemyDataToMemory
 
 	LDA #PRGBank_6_7
+IFNDEF BANK_MIRRORING
 	JSR ChangeMappedPRGBank
+ELSE
+	JSR ChangeMappedMirroredPRGBank
+ENDIF
 
 	JMP ClearLayoutAndPokeMusic
 
@@ -1082,7 +1114,11 @@ SubArea_Loop:
 	BEQ loc_BANKF_E606
 
 	LDA #PRGBank_6_7
+IFNDEF BANK_MIRRORING
 	JSR ChangeMappedPRGBank
+ELSE
+	JSR ChangeMappedMirroredPRGBank
+ENDIF
 
 	JSR LoadCurrentPalette
 
@@ -1117,7 +1153,11 @@ loc_BANKF_E627:
 	LDA iCurrentAreaBackup
 	STA iCurrentLvlArea
 	LDA #PRGBank_6_7
+IFNDEF BANK_MIRRORING
 	JSR ChangeMappedPRGBank
+ELSE
+	JSR ChangeMappedMirroredPRGBank
+ENDIF
 
 	JSR LoadCurrentPalette
 
@@ -1395,7 +1435,11 @@ IFNDEF BONUS_CHANCE_RAM_CLEANUP
 ENDIF
 
 	LDA #PRGBank_A_B
+IFNDEF BANK_MIRRORING
 	JSR ChangeMappedPRGBank
+ELSE
+	JSR ChangeMappedMirroredPRGBank
+ENDIF
 
 	JSR CopyBonusChanceLayoutToRAM
 
@@ -1718,7 +1762,11 @@ SetupMarioSleepingScene:
 	JSR WaitForNMI
 
 	LDA #PRGBank_C_D
+IFNDEF BANK_MIRRORING
 	JSR ChangeMappedPRGBank
+ELSE
+	JSR ChangeMappedMirroredPRGBank
+ENDIF
 
 	JMP MarioSleepingScene
 
@@ -4910,6 +4958,36 @@ ELSE
 	STA MMC3_Mirroring
 ENDIF
 	RTS
+
+IFDEF BANK_MIRRORING
+ChangeMappedMirroredPRGBank:
+	STA iCurrentROMBank
+ChangeMappedMirroredPRGBankWithoutSaving:
+	ASL A
+
+	IF INES_MAPPER == MAPPER_MMC5
+		ORA #$80
+		STA MMC5_PRGBankSwitch2
+		STA MMC5_PRGBankSwitch3
+		RTS
+
+	ELSE ; INES_MAPPER == MAPPER_MMC3
+		; Change first bank
+		PHA
+		LDA #CHR_A12_INVERSION | $06
+		STA MMC3_BankSelect
+		PLA
+		STA MMC3_BankData
+		; Change second bank
+		PHA
+		LDA #CHR_A12_INVERSION | $07
+		STA MMC3_BankSelect
+		PLA
+		STA MMC3_BankData
+		RTS
+
+	ENDIF
+ENDIF
 
 ; Note that this is NOT CODE.
 ; If the NES actually hits a BRK, the game will probably just explode.
