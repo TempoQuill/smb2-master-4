@@ -45,7 +45,7 @@ CheckCollisionWithPlayer_StompEnemy:
 	TAY
 
 	LDA #DPCM_Impact
-	STA iDPCMSFX
+	STA iDPCMSFX1
 
 CheckCollisionWithPlayer_ExitStompEnemy:
 	RTS

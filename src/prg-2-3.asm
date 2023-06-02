@@ -3206,7 +3206,7 @@ BirdoBehavior_SpitProjectile:
 	BNE loc_BANK2_901B
 
 	LDA #DPCM_Egg
-	STA iDPCMSFX
+	STA iDPCMSFX1
 	JSR sub_BANK2_95E5
 
 	BMI loc_BANK2_901B
@@ -3556,7 +3556,7 @@ EnemyBehavior_SubspacePotion_CheckGroundCollision:
 
 	; subspace door fail
 	LDA #DPCM_BossHurt
-	STA iDPCMSFX
+	STA iDPCMSFX1
 	JSR EnemyDestroy
 
 EnemyBehavior_SubspacePotion_CreateDoor:
@@ -5114,7 +5114,7 @@ EnemyBehavior_Shell:
 EnemyBehavior_Shell_Destroy:
 	; shell destruction
 	LDA #DPCM_BossHurt
-	STA iDPCMSFX
+	STA iDPCMSFX1
 	JMP TurnIntoPuffOfSmoke
 
 
@@ -5356,15 +5356,15 @@ EnemyBehavior_CheckDamagedInterrupt_SoundEffect:
 	BNE EnemyBehavior_CheckDamagedInterrupt_BossDeathSound
 
 	; normal enemy hit sound
-	LDA iDPCMSFX
+	LDA iDPCMSFX1
 	BNE EnemyBehavior_CheckDamagedInterrupt_CheckPidgit
 
 	LDA #DPCM_Impact
-	STA iDPCMSFX
+	STA iDPCMSFX1
 	BNE EnemyBehavior_CheckDamagedInterrupt_CheckPidgit
 
 EnemyBehavior_CheckDamagedInterrupt_BossDeathSound:
-	STA iDPCMSFX
+	STA iDPCMSFX1
 	STA iDPCMBossPriority
 
 EnemyBehavior_CheckDamagedInterrupt_CheckPidgit:
@@ -7968,7 +7968,7 @@ EnemyBehavior_Tryclyde_SpitFireball:
 	BMI RenderSprite_Tryclyde_Exit
 
 	LDA #DPCM_Egg
-	STA iDPCMSFX
+	STA iDPCMSFX1
 	LDY z00
 	LDA #Enemy_Fireball
 	STA zObjectType, Y
@@ -8229,7 +8229,7 @@ EnemyBehavior_CobratJar_Blocked:
 	STA zObjectYVelocity, X
 	; jar blocked
 	LDA #DPCM_BossHurt
-	STA iDPCMSFX
+	STA iDPCMSFX1
 
 EnemyBehavior_CobratJar_CheckReset:
 	LDA zObjectVariables, X
@@ -9801,7 +9801,7 @@ EnemyBehavior_Wart_DeathFall:
 	BNE EnemyBehavior_Wart_CheckDeathComplete
 
 	LDA #DPCM_BossDeath
-	STA iDPCMSFX
+	STA iDPCMSFX1
 	JSR CreateEnemy
 
 	LDX z00
@@ -10626,7 +10626,7 @@ CheckCollisionWithPlayer:
 	; accept the heart into your life
 	STA zEnemyState, Y
 	LDA #DPCM_Select
-	STA iDPCMSFX
+	STA iDPCMSFX1
 	LDY iPlayerMaxHP
 	LDA iPlayerHP
 	CLC
@@ -11078,7 +11078,7 @@ loc_BANK3_BA2A:
 
 loc_BANK3_BA2C:
 	LDA #DPCM_PlayerHurt
-	STA iDPCMSFX
+	STA iDPCMSFX1
 
 locret_BANK3_BA31:
 	RTS
@@ -11151,7 +11151,7 @@ loc_BANK3_BA7A:
 
 PlayBossHurtSound:
 	LDA #DPCM_BossHurt
-	STA iDPCMSFX
+	STA iDPCMSFX1
 	STA iDPCMBossPriority
 	RTS
 

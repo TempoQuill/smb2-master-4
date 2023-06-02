@@ -93,10 +93,12 @@ ENDIF
 ; Hmm, I wonder how this actually works when
 ; dealing with the fact the level data is
 ; in another bank...
-; Bank 7 is completely empty.
+; Bank 7 is some DPCM data
 .base $8000
 .include "src/prg-6-7.asm"
-.pad $c000, $ff
+.pad $a000, $ff
+.base $c000
+.incbin "src/music/ldp-dpcm-area-7.bin"
 
 ; ----------------------------------------
 ; Bank 8 and 9. Entirely level data.
@@ -108,18 +110,22 @@ ENDIF
 ; ----------------------------------------
 ; Banks A and B. Mostly bonus chance,
 ; character stats, and some PPU commands.
-; Lots of empty space here too
+; Lots of empty space here too... and DPCM data
 .base $8000
 .include "src/prg-a-b.asm"
-.pad $c000, $ff
+.pad $a000, $ff
+.base $c000
+.incbin "src/music/ldp-dpcm-area-b.bin"
 
 ; ----------------------------------------
 ; Banks C and D. The first half is
 ; a lot of data for the credits.
-; The second half is totally empty.
+; The second half has even more DPCM data.
 .base $8000
 .include "src/prg-c-d.asm"
-.pad $c000, $ff
+.pad $a000, $ff
+.base $c000
+.incbin "src/music/ldp-dpcm-area-d.bin"
 
 ; ----------------------------------------
 ; extra PRG-ROM pages (8 bank pairs)

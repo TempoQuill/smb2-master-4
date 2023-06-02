@@ -97,15 +97,18 @@
 
 ; Use MMC5 (mapper 5) instead of MMC3 (mapper 4)
 ; Based on RetroRain's MMC5 patch (https://www.romhacking.net/hacks/2568)
-; MMC5 = 1
+MMC5 = 1
 
 ; Skip unnecessary bonus chance RAM copy
 ; BONUS_CHANCE_RAM_CLEANUP = 1
 
 ; Make Toad good at jumping and running for testing purposes
-; STATS_TESTING_PURPOSES = 1
+STATS_TESTING_PURPOSES = 1
 
 ; extra time on the stopwatch
-; SIXTEEN_BIT_WATCH_TIMER = 1
+SIXTEEN_BIT_WATCH_TIMER = 1
+
+; mirror banks that take up less than 8K
+BANK_MIRRORING = 1
 
 .endinl

@@ -651,7 +651,7 @@ CharacterSelect_ChangeCharacter:
 
 	DEC zCurrentCharacter
 	LDA #DPCM_Select
-	STA iDPCMSFX
+	STA iDPCMSFX1
 
 loc_BANKF_E2FE:
 	LDA zInputBottleneck
@@ -660,7 +660,7 @@ loc_BANKF_E2FE:
 
 	INC zCurrentCharacter
 	LDA #DPCM_Select
-	STA iDPCMSFX
+	STA iDPCMSFX1
 
 loc_BANKF_E30B:
 	LDA zCurrentCharacter
@@ -750,7 +750,7 @@ CharacterSelectMenuLoop:
 
 loc_BANKF_E3AE:
 	LDA #DPCM_Select
-	STA iDPCMSFX
+	STA iDPCMSFX1
 	LDX iCurrentWorld
 	LDY iCurrentLvl
 	JSR DisplayLevelTitleCardText
@@ -2009,7 +2009,7 @@ loc_BANKF_EAD2:
 	LDA #$00
 	STA zObjectXLo, X
 	LDA #DPCM_Select
-	STA iDPCMSFX
+	STA iDPCMSFX1
 	RTS
 
 ; End of function sub_BANKF_EAC2

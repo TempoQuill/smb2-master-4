@@ -2019,7 +2019,7 @@ HandlePlayerState_Lifting:
 	BNE loc_BANK0_8A9D
 
 	LDA #DPCM_ItemPull
-	STA iDPCMSFX
+	STA iDPCMSFX1
 
 loc_BANK0_8A9D:
 	DEC zHeldObjectTimer, X
@@ -2893,7 +2893,7 @@ loc_BANK0_8E42:
 	STA zWalkCycleTimer
 	DEC zHeldItem
 	LDA #DPCM_Throw
-	STA iDPCMSFX
+	STA iDPCMSFX1
 	LDA #$00
 	STA zPlayerHitBoxHeight
 	STA zInputBottleneck
@@ -3306,7 +3306,7 @@ PlayerTileCollision_CheckCherryAndClimbable_AfterTick:
 
 PlayerTileCollision_Cherry:
 	LDA #DPCM_Select
-	STA iDPCMSFX
+	STA iDPCMSFX1
 	LDA #BackgroundTile_Sky
 	JMP loc_BANK0_937C
 
@@ -5612,7 +5612,7 @@ FreeSubconsScene_Phase4:
 	STA zPlayerAnimFrame
 
 	LDA #DPCM_ItemPull
-	STA iDPCMSFX
+	STA iDPCMSFX1
 
 	LDA #$A0
 	STA zObjectYVelocity + 8
@@ -5682,7 +5682,7 @@ FreeSubconsScene_Subcons_Loop:
 	BNE FreeSubconsScene_Subcons_Next
 
 	LDA #DPCM_Throw
-	STA iDPCMSFX
+	STA iDPCMSFX1
 	BNE FreeSubconsScene_Subcons_Next
 
 FreeSubconsScene_Subcons_Movement:
@@ -7213,7 +7213,7 @@ PlayerTileCollision_HurtPlayer:
 loc_BANK1_BAE5:
 	STA zPlayerYVelocity
 	LDA #DPCM_PlayerHurt
-	STA iDPCMSFX
+	STA iDPCMSFX1
 
 locret_BANK1_BAEC:
 	RTS

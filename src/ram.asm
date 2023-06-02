@@ -1531,7 +1531,7 @@ iMusic1:
 ; $20 Bongo B
 ; $40 Squawk
 ; $80 Down
-iDPCMSFX:
+iDPCMSFX1:
 	.dsb 1 ; $0601
 
 ; $01 Shot
@@ -1582,14 +1582,14 @@ iCurrentMusic2:
 	.dsb 1 ; $0606
 iCurrentPulse2SFX:
 	.dsb 1 ; $0607
-iCurrentDPCMSFX:
+iCurrentDPCMSFX1:
 	.dsb 1 ; $0608
 iCurrentMusic1:
 	.dsb 1 ; $0609
-iDPCMTimer:
+iDPCMTimer1:
 	.dsb 1 ; $060a
 ; only ever $40, $10 or $0
-; non-zero tells driver to ignore iDPCMSFX
+; non-zero tells driver to ignore iDPCMSFX1
 iDPCMBossPriority:
 	.dsb 1 ; $060b
 iSweep:
@@ -1598,8 +1598,9 @@ iCurrentPulse1SFX:
 	.dsb 1 ; $060d
 iCurrentNoiseSFX:
 	.dsb 1 ; $060e
+iDPCMSFX2:
 	.dsb 1 ; $060f
-; FOR RENT
+iCurrentDPCMSFX2:
 	.dsb 1 ; $0610
 iNoiseTimer:
 	.dsb 1 ; $0611

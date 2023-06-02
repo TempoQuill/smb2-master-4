@@ -493,7 +493,7 @@ DebugMenu_MenuStart:
 DebugMenu_MenuMove:
 DebugMenu_MenuChange:
 	LDA #DPCM_Select
-	STA iDPCMSFX
+	STA iDPCMSFX1
 	RTS
 
 DebugMenu_MenuConfirm:
@@ -503,7 +503,7 @@ DebugMenu_MenuConfirm:
 
 DebugMenu_MenuError:
 	LDA #DPCM_PlayerHurt
-	STA iDPCMSFX
+	STA iDPCMSFX1
 	RTS
 
 

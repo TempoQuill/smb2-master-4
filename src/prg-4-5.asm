@@ -48,7 +48,7 @@ ProcessMusicAndSfxQueues:
 
 	JSR ProcessSoundEffectQueue3
 
-	JSR ProcessDPCMQueue
+	JSR ProcessDPCMQueue1
 
 ProcessOnlyMusicQueue2:
 	JSR ProcessMusicQueue
@@ -58,7 +58,8 @@ ProcessOnlyMusicQueue2:
 	STA iPulse1SFX
 	STA iMusic2
 	STA iPulse2SFX
-	STA iDPCMSFX
+	STA iDPCMSFX1
+	STA iDPCMSFX2
 	STA iMusic1
 	STA iNoiseSFX
 	RTS
@@ -420,42 +421,48 @@ ProcessSoundEffectQueue3_Exit:
 NoiseSFX_None:
 	.db $00
 
-ProcessDPCMQueue:
-	LDA iDPCMSFX
-	BNE ProcessDPCMQueue_Part2
+ProcessDPCMQueue1:
+	LDA iDPCMSFX1
+	BNE ProcessDPCMQueue1_Part2
 
-	LDA iCurrentDPCMSFX
-	BEQ ProcessDPCMQueue_None
+	LDA iCurrentDPCMSFX1
+	BEQ ProcessDPCMQueue1_None
 
-ProcessDPCMQueue_DecTimer:
-	DEC iDPCMTimer
-	BNE ProcessDPCMQueue_Exit
+ProcessDPCMQueue1_DecTimer:
+	DEC iDPCMTimer1
+	BNE ProcessDPCMQueue1_Exit
 
-ProcessDPCMQueue_None:
+ProcessDPCMQueue1_None:
 	LDA #$00
-	STA iCurrentDPCMSFX
+	STA iCurrentDPCMSFX1
 	STA iDPCMBossPriority
 	LDA #%00001111
 	STA SND_CHN
 
-ProcessDPCMQueue_Exit:
+ProcessDPCMQueue1_Exit:
 	RTS
 
-ProcessDPCMQueue_Part2:
+ProcessDPCMQueue1_Part2:
 	LDY iDPCMBossPriority
-	BEQ ProcessDPCMQueue_Part3
+	BEQ ProcessDPCMQueue1_Part3
 
 	CMP iDPCMBossPriority
-	BNE ProcessDPCMQueue_DecTimer
+	BNE ProcessDPCMQueue1_DecTimer
 
-ProcessDPCMQueue_Part3:
-	STA iCurrentDPCMSFX
+ProcessDPCMQueue1_Part3:
+	STA iCurrentDPCMSFX1
 	LDY #$00
 
-ProcessDPCMQueue_PointerLoop:
+ProcessDPCMQueue1_PointerLoop:
 	INY
 	LSR A
-	BCC ProcessDPCMQueue_PointerLoop
+	BCC ProcessDPCMQueue1_PointerLoop
+
+IF INES_MAPPER = MAPPER_MMC5
+	LDA #PRGBank_DMC_E
+	ORA #$80
+	STA MMC5_PRGBankSwitch4
+ENDIF
 
 	LDA DMCFreqTable - 1, Y
 	STA DMC_FREQ
@@ -466,7 +473,7 @@ ProcessDPCMQueue_PointerLoop:
 	STA DMC_LEN
 	LSR A
 	LSR A
-	STA iDPCMTimer
+	STA iDPCMTimer1
 	LDA #%00001111
 	STA SND_CHN
 	LDA #%00011111
@@ -503,6 +510,8 @@ DMCFreqTable:
 	.db $0F
 	.db $0F
 	.db $0F
+
+.include "src/music/dpcm-queue-2.asm"
 
 ProcessMusicQueue_SpecialSong:
 	STA iCurrentMusic2
@@ -948,8 +957,8 @@ ProcessMusicQueue_DPCMNote:
 	; This could be to allow $80 for a "rest" note on the DPCM track, but none of the in-game music
 	; takes advantage of that.
 	ASL A
-	STA iDPCMSFX
-	JSR ProcessDPCMQueue
+	STA iDPCMSFX1
+	JSR ProcessDPCMQueue1
 
 	LDA iDPCMNoteLength
 	STA iDPCMNoteLengthCounter

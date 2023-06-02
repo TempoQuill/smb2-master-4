@@ -94,17 +94,17 @@ ControllerInput_A = %10000000
 ; ---------------------------------------------------------------------------
 
 ; enum DPCM (width 1 byte)
-DPCM_DoorOpenBombBom = $01
 DPCM_Throw = $01
-DPCM_DrumSample_A = $02
+DPCM_Lamp = $01
 DPCM_Egg = $02
 DPCM_PlayerHurt = $04
 DPCM_ItemPull = $08
+DPCM_DoorOpenBombBom = $08
 DPCM_BossDeath = $10
-DPCM_DrumSample_B = $20
 DPCM_Select = $20
+DPCM_Watch = $20
 DPCM_BossHurt = $40
-DPCM_PlayerDeath = $80
+DPCM_PlayerDeath = $40
 DPCM_Impact = $80
 
 ; ---------------------------------------------------------------------------
@@ -129,6 +129,10 @@ PRGBank_8_9 = $04
 PRGBank_A_B = $05 ; second half empty
 PRGBank_C_D = $06 ; second half empty
 PRGBank_E_F = $07
+PRGBank_DMC_7 = $07
+PRGBank_DMC_B = $0B
+PRGBank_DMC_D = $0D
+PRGBank_DMC_E = $0E
 
 ; ---------------------------------------------------------------------------
 
