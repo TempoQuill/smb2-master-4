@@ -520,8 +520,11 @@ ENDIF
 	STA DMC_START
 	LDA DMCLengthTable2 - 1, Y
 	STA DMC_LEN
+	CPY #2 ; phanto / rocket offset
+	BEQ ProcessDPCMQueue2_SkipShift
 	LSR A
 	LSR A
+ProcessDPCMQueue2_SkipShift:
 	STA iDPCMTimer2
 	LDA #0
 	STA iDPCMTimer1
