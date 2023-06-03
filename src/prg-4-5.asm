@@ -121,9 +121,6 @@ ProcessSoundEffectQueue2:
 	BEQ ProcessSoundEffectQueue2_None
 
 	STY iCurrentPulse1SFX
-	; Pulse 1 + 2 queues now share a channel
-	LDA #0
-	STA iCurrentPulse2SFX
 	LSR iPulse1SFX
 	BCS ProcessSoundEffectQueue2_Jump
 
@@ -248,77 +245,6 @@ ProcessSoundEffectQueue2_GrowingPart2:
 MushroomSoundData:
 	.db $6A, $74, $6A, $64, $5C, $52, $5C, $52, $4C, $44, $66, $70, $66, $60, $58, $4E
 	.db $58, $4E, $48, $40, $56, $60, $56, $50, $48, $3E, $48, $3E, $38, $30 ; $10
-
-
-ProcessSoundEffectQueue1:
-	; is the queue active?
-	LDA iPulse2SFX
-	BEQ ProcessSoundEffectQueue1_None
-
-	; yes, but is it playing a stopwatch SFX?
-	CMP #SoundEffect1_StopwatchTick
-	BNE ProcessSoundEffectQueue1_Part2
-
-	; yes, so are currently playing a sound effect?
-	LDX iCurrentPulse2SFX
-	BEQ ProcessSoundEffectQueue1_Part2
-
-ProcessSoundEffectQueue1_None:
-	LDA iCurrentPulse2SFX
-	BNE ProcessSoundEffectQueue1_Part3
-	RTS
-
-ProcessSoundEffectQueue1_Part2:
-	; Stopwatch is not on cue nor are we playing sound effects
-	; let's fix the latter
-	STA iCurrentPulse2SFX
-	LDY #$00
-	; Pulse 1 + 2 queues now share a channel
-	STY iCurrentPulse1SFX
-
-ProcessSoundEffectQueue1_PointerLoop:
-; loop until we hit a carry (Y = 1-8)
-	INY
-	LSR A
-	BCC ProcessSoundEffectQueue1_PointerLoop
-
-	LDA SoundEffectPointers - 1, Y
-	STA zPulse2Index
-
-ProcessSoundEffectQueue1_Part3:
-	LDY zPulse2Index
-	INC zPulse2Index
-	LDA SoundEffectPointers, Y
-	BMI ProcessSoundEffectQueue1_Patch
-
-	BNE ProcessSoundEffectQueue1_Note
-
-	; if it was $00, we're at the end of the data for this sound effect
-	LDX #$90
-	STX SQ2_VOL
-	LDX #$18
-	STX SQ2_HI
-	LDX #$00
-	STX SQ2_LO
-	STX iCurrentPulse2SFX
-	RTS
-
-ProcessSoundEffectQueue1_Patch:
-	STA SQ2_VOL
-	LDY zPulse2Index
-	INC zPulse2Index
-	LDA SoundEffectPointers, Y
-
-ProcessSoundEffectQueue1_Note:
-	CMP #$7E
-	BEQ ProcessSoundEffectQueue1_Exit
-
-	JSR PlaySquare2Note
-
-ProcessSoundEffectQueue1_Exit:
-	LDA #$7F
-	STA SQ2_SWEEP
-	RTS
 
 
 ;
@@ -453,12 +379,8 @@ ProcessDPCMQueue1_Exit:
 
 ProcessDPCMQueue1_Part2:
 	LDY iDPCMBossPriority
-	BEQ ProcessDPCMQueue1_Part3
+	BNE ProcessDPCMQueue2_DecTimer
 
-	CMP iDPCMBossPriority
-	BNE ProcessDPCMQueue1_DecTimer
-
-ProcessDPCMQueue1_Part3:
 	STA iCurrentDPCMSFX1
 	LDY #$00
 
@@ -468,7 +390,7 @@ ProcessDPCMQueue1_PointerLoop:
 	BCC ProcessDPCMQueue1_PointerLoop
 
 IF INES_MAPPER = MAPPER_MMC5
-	LDA #PRGBank_DMC_E
+	LDA DMCBankTable - 1, Y
 	ORA #$80
 	STA MMC5_PRGBankSwitch4
 ENDIF
@@ -480,8 +402,11 @@ ENDIF
 	STA DMC_START
 	LDA DMCLengthTable - 1, Y
 	STA DMC_LEN
+	CPY #2 ; phanto / rocket offset
+	BEQ ProcessDPCMQueue1_SkipShift
 	LSR A
 	LSR A
+ProcessDPCMQueue1_SkipShift:
 	STA iDPCMTimer1
 	LDA #0
 	STA iDPCMTimer2
@@ -496,7 +421,7 @@ ProcessDPCMQueue2_Part2:
 	BEQ ProcessDPCMQueue2_Part3
 
 	CMP iDPCMBossPriority
-	BNE ProcessDPCMQueue1_DecTimer
+	BNE ProcessDPCMQueue2_DecTimer
 
 ProcessDPCMQueue2_Part3:
 	STA iCurrentDPCMSFX2
@@ -520,11 +445,8 @@ ENDIF
 	STA DMC_START
 	LDA DMCLengthTable2 - 1, Y
 	STA DMC_LEN
-	CPY #2 ; phanto / rocket offset
-	BEQ ProcessDPCMQueue2_SkipShift
 	LSR A
 	LSR A
-ProcessDPCMQueue2_SkipShift:
 	STA iDPCMTimer2
 	LDA #0
 	STA iDPCMTimer1
@@ -533,37 +455,6 @@ ProcessDPCMQueue2_SkipShift:
 	LDA #%00011111
 	STA SND_CHN
 	RTS
-
-
-DMCStartTable:
-	.db $68 ; $da00
-	.db $5b ; $d6c0
-	.db $57 ; $d5c0
-	.db $4a ; $d280
-	.db $30 ; $cc00
-	.db $25 ; $c940
-	.db $18 ; $c600
-	.db $00 ; $c000
-
-DMCLengthTable:
-	.db $81 ; door -> throw
-	.db $34 ; bongo short -> egg
-	.db $0d ; injury
-	.db $34 ; hold
-	.db $67 ; boss death
-	.db $2b ; bongo -> select
-	.db $34 ; boss hit / shell disappear
-	.db $5f ; player death -> impact
-
-DMCFreqTable:
-	.db $0F
-	.db $0F
-	.db $0F
-	.db $0F
-	.db $0F
-	.db $0F
-	.db $0F
-	.db $0F
 
 .include "src/music/dpcm-queue-2.asm"
 
@@ -745,8 +636,6 @@ ProcessMusicQueue_Square2NextOffset:
 	LDA (zCurrentMusicPointer), Y
 
 ProcessMusicQueue_Square2Note:
-	LDX iCurrentPulse2SFX
-	BNE ProcessMusicQueue_Square2ContinueNote
 	LDX iCurrentPulse1SFX
 	BNE ProcessMusicQueue_Square2ContinueNote
 
@@ -774,8 +663,6 @@ ProcessMusicQueue_Square2ContinueNote:
 	STA iMusicPulse2NoteLength
 
 ProcessMusicQueue_Square2SustainNote:
-	LDX iCurrentPulse2SFX
-	BNE ProcessMusicQueue_Square1
 	LDX iCurrentPulse1SFX
 	BNE ProcessMusicQueue_Square1
 

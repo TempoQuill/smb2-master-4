@@ -2893,7 +2893,7 @@ loc_BANK0_8E42:
 	STA zWalkCycleTimer
 	DEC zHeldItem
 	LDA #DPCM_Throw
-	STA iDPCMSFX1
+	STA iDPCMSFX2
 	LDA #$00
 	STA zPlayerHitBoxHeight
 	STA zInputBottleneck
@@ -3306,7 +3306,7 @@ PlayerTileCollision_CheckCherryAndClimbable_AfterTick:
 
 PlayerTileCollision_Cherry:
 	LDA #DPCM_Select
-	STA iDPCMSFX1
+	STA iDPCMSFX2
 	LDA #BackgroundTile_Sky
 	JMP loc_BANK0_937C
 
@@ -3753,8 +3753,8 @@ DoorHandling_GoThroughDoor:
 	INC iPlayerLock
 	JSR SnapPlayerToTile
 
-	LDA #SoundEffect3_DoorOpen
-	STA iDPCMSFX2
+	LDA #DPCM_DoorOpenBombBom
+	STA iDPCMSFX1
 
 DoorHandling_Exit:
 	RTS
@@ -5682,7 +5682,7 @@ FreeSubconsScene_Subcons_Loop:
 	BNE FreeSubconsScene_Subcons_Next
 
 	LDA #DPCM_Throw
-	STA iDPCMSFX1
+	STA iDPCMSFX2
 	BNE FreeSubconsScene_Subcons_Next
 
 FreeSubconsScene_Subcons_Movement:

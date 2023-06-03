@@ -94,29 +94,22 @@ ControllerInput_A = %10000000
 ; ---------------------------------------------------------------------------
 
 ; enum DPCM (width 1 byte)
-DPCM_Throw = $01
-DPCM_Lamp = $01
-DPCM_Egg = $02
-DPCM_PlayerHurt = $04
+DPCM_DoorOpenBombBom = $01
+DPCM_Rocket = $02
+DPCM_POW = $04
 DPCM_ItemPull = $08
-DPCM_DoorOpenBombBom = $08
+DPCM_PlayerHurt = $10
+DPCM_Unused = $20
+DPCM_Watch = $40
+DPCM_Hawk = $80
+DPCM_Egg = $01
+DPCM_Lamp = $02
+DPCM_Select = $04
+DPCM_Throw = $08
 DPCM_BossDeath = $10
-DPCM_Select = $20
-DPCM_Watch = $20
-DPCM_BossHurt = $40
-DPCM_PlayerDeath = $40
-DPCM_Impact = $80
-
-; ---------------------------------------------------------------------------
-
-; enum SoundEffect1 (width 1 byte)
-SoundEffect1_PotionDoorBong = $01
-SoundEffect1_CherryGet = $02      ; unused, no sound
-SoundEffect1_ThrowItem = $04      ; unused, no sound
-SoundEffect1_1UP = $08            ; unused, no sound
-SoundEffect1_EnemyHit = $10       ; unused, no sound
-SoundEffect1_StopwatchTick = $20
-SoundEffect1_PlayerDeath = $40
+DPCM_BossHurt = $20
+DPCM_Impact = $40
+DPCM_PlayerDeath = $80
 
 ; ---------------------------------------------------------------------------
 
@@ -200,10 +193,6 @@ PPUStatus_VBlankHit = %10000000
 
 ; enum SoundEffect3
 SoundEffect3_ShortNoise = $01 ; Whale spout
-SoundEffect3_Rumble_A = $02 ; Rocket
-SoundEffect3_Rumble_B = $04 ; POW rumble
-SoundEffect3_DoorOpen = $08 ; door
-SoundEffect3_Hawk = $10 ; hawk
 
 ; ---------------------------------------------------------------------------
 

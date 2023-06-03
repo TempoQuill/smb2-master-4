@@ -1542,7 +1542,7 @@ iDPCMSFX1:
 ; $20 Impact
 ; $40 Watch
 ; $80 Exit
-iPulse2SFX:
+iDPCMSFX2:
 	.dsb 1 ; $0602
 
 ; $01 Warp fanfare, slot entry jingle
@@ -1580,9 +1580,9 @@ iNoiseSFX:
 
 iCurrentMusic2:
 	.dsb 1 ; $0606
-iCurrentPulse2SFX:
-	.dsb 1 ; $0607
 iCurrentDPCMSFX1:
+	.dsb 1 ; $0607
+iCurrentDPCMSFX2:
 	.dsb 1 ; $0608
 iCurrentMusic1:
 	.dsb 1 ; $0609
@@ -1598,9 +1598,8 @@ iCurrentPulse1SFX:
 	.dsb 1 ; $060d
 iCurrentNoiseSFX:
 	.dsb 1 ; $060e
-iDPCMSFX2:
+iDPCMTimer2:
 	.dsb 1 ; $060f
-iCurrentDPCMSFX2:
 	.dsb 1 ; $0610
 iNoiseTimer:
 	.dsb 1 ; $0611
@@ -1642,7 +1641,7 @@ iSwarmTimer:
 	.dsb 1 ; $0623
 iFriction:
 	.dsb 1 ; $0624
-iDPCMTimer2:
+; FOR RENT
 	.dsb 1 ; $0625
 ; FOR RENT
 	.dsb 1 ; $0626

@@ -651,7 +651,7 @@ CharacterSelect_ChangeCharacter:
 
 	DEC zCurrentCharacter
 	LDA #DPCM_Select
-	STA iDPCMSFX1
+	STA iDPCMSFX2
 
 loc_BANKF_E2FE:
 	LDA zInputBottleneck
@@ -660,7 +660,7 @@ loc_BANKF_E2FE:
 
 	INC zCurrentCharacter
 	LDA #DPCM_Select
-	STA iDPCMSFX1
+	STA iDPCMSFX2
 
 loc_BANKF_E30B:
 	LDA zCurrentCharacter
@@ -750,7 +750,7 @@ CharacterSelectMenuLoop:
 
 loc_BANKF_E3AE:
 	LDA #DPCM_Select
-	STA iDPCMSFX1
+	STA iDPCMSFX2
 	LDX iCurrentWorld
 	LDY iCurrentLvl
 	JSR DisplayLevelTitleCardText
@@ -1728,8 +1728,6 @@ DelayFrames_Loop:
 EndingSceneRoutine:
 	JSR SetScrollXYTo0
 
-	LDA #0
-	STA iCurrentPulse2SFX
 	LDA #PRGBank_0_1
 	JSR ChangeMappedPRGBank
 
@@ -2009,7 +2007,7 @@ loc_BANKF_EAD2:
 	LDA #$00
 	STA zObjectXLo, X
 	LDA #DPCM_Select
-	STA iDPCMSFX1
+	STA iDPCMSFX2
 	RTS
 
 ; End of function sub_BANKF_EAC2
@@ -4296,7 +4294,7 @@ loc_BANKF_F749:
 	LDA #Music2_DeathJingle
 	STA iMusic2
 	; BUG: Setting DPCM at the same time as music
-	LDA #SoundEffect1_PlayerDeath
+	LDA #DPCM_PlayerDeath
 	STA iDPCMSFX2
 	RTS
 

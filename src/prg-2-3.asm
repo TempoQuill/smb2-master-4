@@ -286,8 +286,8 @@ ENDIF
 	AND #$1F
 	BNE AreaMainRoutine_DecrementStopwatch
 
-	LDY #SoundEffect1_StopwatchTick
-	STY iDPCMSFX2
+	LDY #DPCM_Watch
+	STY iDPCMSFX1
 
 AreaMainRoutine_DecrementStopwatch:
 	LSR A
@@ -2720,8 +2720,8 @@ loc_BANK2_8D7B:
 	DEC iMaskPreamble
 	BNE loc_BANK2_8D78
 
-	LDA #SoundEffect3_Hawk
-	STA iDPCMSFX2
+	LDA #DPCM_Hawk
+	STA iDPCMSFX1
 
 loc_BANK2_8D8A:
 	LDA iMaskClosingFlag
@@ -2805,8 +2805,8 @@ loc_BANK2_8DDB:
 	STA zPlayerStateTimer
 	LDA #$FC
 	STA zPlayerYVelocity
-	LDA #SoundEffect3_Hawk
-	STA iDPCMSFX2
+	LDA #DPCM_Hawk
+	STA iDPCMSFX1
 	INC iMaskClosingFlag
 
 RenderSprite_HawkmouthLeft:
@@ -3206,7 +3206,7 @@ BirdoBehavior_SpitProjectile:
 	BNE loc_BANK2_901B
 
 	LDA #DPCM_Egg
-	STA iDPCMSFX1
+	STA iDPCMSFX2
 	JSR sub_BANK2_95E5
 
 	BMI loc_BANK2_901B
@@ -3466,8 +3466,8 @@ EnemyBehavior_Bomb_Explode:
 	LDA #$20
 	STA zSpriteTimer, X
 	STA iSkyFlashTimer
-	LDA #SoundEffect3_DoorOpen
-	STA iDPCMSFX2
+	LDA #DPCM_DoorOpenBombBom
+	STA iDPCMSFX1
 	LSR A
 	; A = $00
 	STA iObjectBulletTimer, X
@@ -3540,7 +3540,7 @@ EnemyBehavior_SubspacePotion_CheckGroundCollision:
 	STA zObjectXHi, X
 	LDA #$10
 	STA iSpriteTimer, X
-	LDA #SoundEffect1_PotionDoorBong
+	LDA #DPCM_Lamp
 	STA iDPCMSFX2
 	INC zEnemyArray, X
 	LDA #Enemy_SubspaceDoor
@@ -3556,7 +3556,7 @@ EnemyBehavior_SubspacePotion_CheckGroundCollision:
 
 	; subspace door fail
 	LDA #DPCM_BossHurt
-	STA iDPCMSFX1
+	STA iDPCMSFX2
 	JSR EnemyDestroy
 
 EnemyBehavior_SubspacePotion_CreateDoor:
@@ -3996,8 +3996,8 @@ Phanto_AfterFlashing:
 	STA iObjectShakeTimer, X
 
 	; Play Phanto activation sound effect
-	LDA #SoundEffect3_Rumble_A
-	STA iDPCMSFX2
+	LDA #DPCM_Rocket
+	STA iDPCMSFX1
 
 Phanto_AfterSound:
 	DEC iPhantoTimer
@@ -4763,8 +4763,8 @@ loc_BANK2_96EC:
 
 	LDA #$20
 	STA iPOWTimer
-	LDA #SoundEffect3_Rumble_B
-	STA iDPCMSFX2
+	LDA #DPCM_POW
+	STA iDPCMSFX1
 	JMP sub_BANK2_98C4
 
 ; ---------------------------------------------------------------------------
@@ -5114,7 +5114,7 @@ EnemyBehavior_Shell:
 EnemyBehavior_Shell_Destroy:
 	; shell destruction
 	LDA #DPCM_BossHurt
-	STA iDPCMSFX1
+	STA iDPCMSFX2
 	JMP TurnIntoPuffOfSmoke
 
 
@@ -5356,15 +5356,15 @@ EnemyBehavior_CheckDamagedInterrupt_SoundEffect:
 	BNE EnemyBehavior_CheckDamagedInterrupt_BossDeathSound
 
 	; normal enemy hit sound
-	LDA iDPCMSFX1
+	LDA iDPCMSFX2
 	BNE EnemyBehavior_CheckDamagedInterrupt_CheckPidgit
 
 	LDA #DPCM_Impact
-	STA iDPCMSFX1
+	STA iDPCMSFX2
 	BNE EnemyBehavior_CheckDamagedInterrupt_CheckPidgit
 
 EnemyBehavior_CheckDamagedInterrupt_BossDeathSound:
-	STA iDPCMSFX1
+	STA iDPCMSFX2
 	STA iDPCMBossPriority
 
 EnemyBehavior_CheckDamagedInterrupt_CheckPidgit:
@@ -7968,7 +7968,7 @@ EnemyBehavior_Tryclyde_SpitFireball:
 	BMI RenderSprite_Tryclyde_Exit
 
 	LDA #DPCM_Egg
-	STA iDPCMSFX1
+	STA iDPCMSFX2
 	LDY z00
 	LDA #Enemy_Fireball
 	STA zObjectType, Y
@@ -8229,7 +8229,7 @@ EnemyBehavior_CobratJar_Blocked:
 	STA zObjectYVelocity, X
 	; jar blocked
 	LDA #DPCM_BossHurt
-	STA iDPCMSFX1
+	STA iDPCMSFX2
 
 EnemyBehavior_CobratJar_CheckReset:
 	LDA zObjectVariables, X
@@ -8570,8 +8570,8 @@ EnemyBehavior_Rocket_Launching:
 	; Setting zEnemyArray puts the rocket in the area
 	STA zEnemyArray, X
 	STA iIsInRocket
-	LDA #SoundEffect3_Rumble_A
-	STA iDPCMSFX2
+	LDA #DPCM_Rocket
+	STA iDPCMSFX1
 	LDA #$FE
 	STA zObjectYVelocity, X
 
@@ -9430,8 +9430,8 @@ HawkmouthEat:
 ; =============== S U B R O U T I N E =======================================
 
 sub_BANK3_B095:
-	LDA #SoundEffect3_Hawk
-	STA iDPCMSFX2
+	LDA #DPCM_Hawk
+	STA iDPCMSFX1
 
 locret_BANK3_B09A:
 	RTS
@@ -9740,8 +9740,8 @@ EnemyBehavior_Wart_PhysicsX:
 
 	BMI EnemyBehavior_Wart_Exit
 
-	LDA #SoundEffect3_Hawk
-	STA iDPCMSFX2
+	LDA #DPCM_Hawk
+	STA iDPCMSFX1
 	; determines how high to spit the bubble
 	LDA i480, X
 	AND #$03
@@ -9801,7 +9801,7 @@ EnemyBehavior_Wart_DeathFall:
 	BNE EnemyBehavior_Wart_CheckDeathComplete
 
 	LDA #DPCM_BossDeath
-	STA iDPCMSFX1
+	STA iDPCMSFX2
 	JSR CreateEnemy
 
 	LDX z00
@@ -10626,7 +10626,7 @@ CheckCollisionWithPlayer:
 	; accept the heart into your life
 	STA zEnemyState, Y
 	LDA #DPCM_Select
-	STA iDPCMSFX1
+	STA iDPCMSFX2
 	LDY iPlayerMaxHP
 	LDA iPlayerHP
 	CLC
@@ -11151,7 +11151,7 @@ loc_BANK3_BA7A:
 
 PlayBossHurtSound:
 	LDA #DPCM_BossHurt
-	STA iDPCMSFX1
+	STA iDPCMSFX2
 	STA iDPCMBossPriority
 	RTS
 
@@ -11518,8 +11518,8 @@ DoorHandling_GoThroughDoor_Bank3:
 	INC iPlayerLock
 	JSR SnapPlayerToTile_Bank3
 
-	LDA #SoundEffect3_DoorOpen
-	STA iDPCMSFX2
+	LDA #DPCM_DoorOpenBombBom
+	STA iDPCMSFX1
 	RTS
 
 
