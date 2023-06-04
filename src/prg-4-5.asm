@@ -607,6 +607,9 @@ ProcessMusicQueue_EndOfSegment:
 	CMP #Music2_EndingAndCast
 	BEQ ProcessMusicQueue_ThenSetNextPart
 
+	CMP #Music2_SubconsFreed
+	BEQ ProcessMusicQueue_ThenSetNextPart
+
 	AND #Music1_Overworld | Music1_Inside | Music1_Subspace
 	BEQ StopMusic
 

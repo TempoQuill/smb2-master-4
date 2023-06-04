@@ -201,10 +201,9 @@ MusicDataSubcons4_Noise:
 	.db $02
 	.db $02
 	.db $02
+	.db $84
 	.db $02
-	.db $01
-	.db $01
 	.db $02
-	.db $01
-	.db $01
+	.db $02
+	.db $02
 	.db $00

@@ -47,7 +47,7 @@ MusicDataSubcons3_Square1:
 	.db $F4
 	.db $7E
 	.db $3A
-	.db $36
+	.db $34
 	.db $3A
 	.db $FB
 	.db $38
