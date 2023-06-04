@@ -2216,6 +2216,7 @@ HandlePlayerState_GoingDownJar:
 
 	LDA #GameMode_Warp
 	STA iGameMode
+	STA iUsedWarps
 	RTS
 
 HandlePlayerState_GoingDownJar_NonWarp:
@@ -5450,6 +5451,9 @@ FreeSubconsScene_JumpingLoop:
 	CMP #$25
 	BNE FreeSubconsScene_JumpingLoop
 
+	LDY iUsedWarps
+	BNE FreeSubconsScene_JumpingLoop
+
 	LDY #Music2_EndingAndCast
 	STY iMusic2
 	BNE FreeSubconsScene_JumpingLoop
@@ -5611,6 +5615,13 @@ FreeSubconsScene_Phase4:
 	LDA #SpriteAnimation_Jumping
 	STA zPlayerAnimFrame
 
+	LDA iUsedWarps
+	BEQ FreeSubconsScene_JustPlayCorkSound
+
+	LDA #Music2_SubconsFreed
+	STA iMusic2
+
+FreeSubconsScene_JustPlayCorkSound:
 	LDA #DPCM_ItemPull
 	STA iDPCMSFX1
 

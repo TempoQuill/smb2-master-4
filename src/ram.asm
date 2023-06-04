@@ -1600,6 +1600,7 @@ iCurrentNoiseSFX:
 	.dsb 1 ; $060e
 iDPCMTimer2:
 	.dsb 1 ; $060f
+iUsedWarps:
 	.dsb 1 ; $0610
 iNoiseTimer:
 	.dsb 1 ; $0611
