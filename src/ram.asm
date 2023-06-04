@@ -1588,7 +1588,7 @@ iCurrentMusic1:
 	.dsb 1 ; $0609
 iDPCMTimer1:
 	.dsb 1 ; $060a
-; only ever $40, $10 or $0
+; only ever $20, $10 or $0
 ; non-zero tells driver to ignore iDPCMSFX1
 iDPCMBossPriority:
 	.dsb 1 ; $060b

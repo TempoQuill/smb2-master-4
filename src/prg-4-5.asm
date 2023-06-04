@@ -350,17 +350,18 @@ ProcessDPCMQueue2_DecTimer:
 	BEQ ProcessDPCMQueue1_None
 
 ProcessDPCMQueue1:
-	LDA iDPCMSFX1
-	BNE ProcessDPCMQueue1_Part2
-
 	LDA iDPCMSFX2
 	BNE ProcessDPCMQueue2_Part2
 
-	LDA iCurrentDPCMSFX1
-	BNE ProcessDPCMQueue1_DecTimer
+	LDA iDPCMSFX1
+	BNE ProcessDPCMQueue1_Part2
 
 	LDA iCurrentDPCMSFX2
 	BNE ProcessDPCMQueue2_DecTimer
+
+	LDA iCurrentDPCMSFX1
+	BNE ProcessDPCMQueue1_DecTimer
+	BEQ ProcessDPCMQueue1_None
 
 ProcessDPCMQueue1_DecTimer:
 	DEC iDPCMTimer1
@@ -379,8 +380,13 @@ ProcessDPCMQueue1_Exit:
 
 ProcessDPCMQueue1_Part2:
 	LDY iDPCMBossPriority
-	BNE ProcessDPCMQueue2_DecTimer
+	BEQ ProcessDPCMQueue1_Part3
 
+	LDY iDPCMTimer2
+	BEQ ProcessDPCMQueue1_Part3
+	BPL ProcessDPCMQueue2_DecTimer
+
+ProcessDPCMQueue1_Part3:
 	STA iCurrentDPCMSFX1
 	LDY #$00
 
@@ -421,7 +427,8 @@ ProcessDPCMQueue2_Part2:
 	BEQ ProcessDPCMQueue2_Part3
 
 	CMP iDPCMBossPriority
-	BNE ProcessDPCMQueue2_DecTimer
+	BEQ ProcessDPCMQueue2_Part3
+	JMP ProcessDPCMQueue2_DecTimer
 
 ProcessDPCMQueue2_Part3:
 	STA iCurrentDPCMSFX2
@@ -1210,7 +1217,6 @@ PlaySquare2Note:
 PlayTriangleNote:
 	LDX #APUOffset_Triangle
 	BNE PlayNote
-
 
 ;
 ; -------------------------------------------------------------------------
