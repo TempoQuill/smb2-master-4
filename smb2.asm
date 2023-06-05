@@ -74,19 +74,19 @@ ENDIF
 ; Title screen and some other stuff too.
 .base $8000
 .include "src/prg-0-1.asm"
-.pad $c000, $ff
+.pad $c000, $00
 
 ; ----------------------------------------
 ; Banks 2 and 3. Enemy/object code.
 .base $8000
 .include "src/prg-2-3.asm"
-.pad $c000, $ff
+.pad $c000, $00
 
 ; ----------------------------------------
 ; Banks 4 and 5. Music engine and song data.
 .base $8000
 .include "src/prg-4-5.asm"
-.pad $c000, $ff
+.pad $c000, $00
 
 ; ----------------------------------------
 ; Bank 6 and 7. Level handling ode, I think.
@@ -96,7 +96,7 @@ ENDIF
 ; Bank 7 is some DPCM data
 .base $8000
 .include "src/prg-6-7.asm"
-.pad $a000, $ff
+.pad $a000, $00
 .base $c000
 .incbin "src/music/ldp-dpcm-area-7.bin"
 
@@ -105,7 +105,7 @@ ENDIF
 ; Some more unused space as usual.
 .base $8000
 .include "src/prg-8-9.asm"
-.pad $c000, $ff
+.pad $c000, $00
 
 ; ----------------------------------------
 ; Banks A and B. Mostly bonus chance,
@@ -113,7 +113,7 @@ ENDIF
 ; Lots of empty space here too... and DPCM data
 .base $8000
 .include "src/prg-a-b.asm"
-.pad $a000, $ff
+.pad $a000, $00
 .base $c000
 .incbin "src/music/ldp-dpcm-area-b.bin"
 
@@ -123,7 +123,7 @@ ENDIF
 ; The second half has even more DPCM data.
 .base $8000
 .include "src/prg-c-d.asm"
-.pad $a000, $ff
+.pad $a000, $00
 .base $c000
 .incbin "src/music/ldp-dpcm-area-d.bin"
 

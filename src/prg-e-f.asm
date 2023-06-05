@@ -5006,7 +5006,7 @@ IRQ:
 ; rather than left nametable for backgrounds, which effectively prevents using
 ; the scanline counter for things like precise screen splits.
 ;
-.pad $FFFA, $FF
+.pad $FFFA, $00
 
 NESVectorTables:
 	.dw NMI
