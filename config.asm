@@ -59,7 +59,7 @@
 
 
 ; Show all 8 frames of CHR cycling animation
-; FIX_CHR_CYCLE = 1
+FIX_CHR_CYCLE = 1
 
 ; Fixes the POW falling log glitch
 ; FIX_POW_LOG_GLITCH = 1
