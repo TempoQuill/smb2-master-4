@@ -1430,10 +1430,6 @@ ENDIF
 
 	JSR LoadBonusChanceCHRBanks
 
-IFNDEF BONUS_CHANCE_RAM_CLEANUP
-	JSR CopyUnusedCoinSpriteToSpriteArea
-ENDIF
-
 	LDA #PRGBank_A_B
 IFNDEF BANK_MIRRORING
 	JSR ChangeMappedPRGBank
@@ -2087,22 +2083,6 @@ loc_BANKF_EB1F:
 	RTS
 
 ; End of function sub_BANKF_EAF6
-
-IFNDEF BONUS_CHANCE_RAM_CLEANUP
-;
-; Copies the unused coin sprite from memory into the sprite DMA area at $200
-;
-CopyUnusedCoinSpriteToSpriteArea:
-	LDY #$00
-
-CopyUnusedCoinSpriteToSpriteArea_Loop:
-	LDA i653, Y
-	STA iVirtualOAM + $28, Y
-	INY
-	CPY #$08 ; Four bytes per sprite * 2 sprites = 8 bytes
-	BCC CopyUnusedCoinSpriteToSpriteArea_Loop
-	RTS
-ENDIF
 
 ;
 ; NMI logic for during a transition

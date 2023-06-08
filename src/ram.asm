@@ -1684,7 +1684,6 @@ iReelBuffer:
 	.dsb 8 ; $063b
 	.dsb 8 ; $0643
 	.dsb 8 ; $064b
-i653: ; read, but never written to
 	.dsb 40 ; $0653
 
 iLDPBonusChanceBuffer:

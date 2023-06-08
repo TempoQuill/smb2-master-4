@@ -99,9 +99,6 @@ FIX_CHR_CYCLE = 1
 ; Based on RetroRain's MMC5 patch (https://www.romhacking.net/hacks/2568)
 MMC5 = 1
 
-; Skip unnecessary bonus chance RAM copy
-; BONUS_CHANCE_RAM_CLEANUP = 1
-
 ; Make Toad good at jumping and running for testing purposes
 STATS_TESTING_PURPOSES = 1
 
