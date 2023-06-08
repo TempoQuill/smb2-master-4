@@ -588,8 +588,10 @@ ProcessMusicQueue_ReadHeader:
 
 ProcessMusicQueue_ReadNoteData:
 	DEC iMusicPulse2NoteLength
-	BNE ProcessMusicQueue_Square2SustainNote
+	BEQ ProcessMusicQueue_Square2EndOfNote
+	JMP ProcessMusicQueue_Square2SustainNote
 
+ProcessMusicQueue_Square2EndOfNote:
 	LDY iCurrentPulse2Offset
 	INC iCurrentPulse2Offset
 	LDA (zCurrentMusicPointer), Y
@@ -617,12 +619,24 @@ ProcessMusicQueue_EndOfSegment:
 	BNE ProcessMusicQueue_ResumeMusicQueue1
 
 StopMusic:
+	LDA #$10
+	STA SQ1_VOL
+	STA SQ2_VOL
+	STA NOISE_VOL
 	LDA #$00
 	STA iCurrentMusic2
 	STA iCurrentMusic1
-	STA SND_CHN
-	LDX #%00001111
-	STX SND_CHN
+	STA SQ1_HI
+	STA SQ1_LO
+	STA SQ1_SWEEP
+	STA SQ2_HI
+	STA SQ2_LO
+	STA SQ2_SWEEP
+	STA NOISE_HI
+	STA NOISE_LO
+	STA TRI_LINEAR
+	STA TRI_HI
+	STA TRI_LO
 	RTS
 
 ProcessMusicQueue_ThenSetNextPart:
