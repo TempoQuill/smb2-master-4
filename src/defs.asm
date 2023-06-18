@@ -127,6 +127,9 @@ PRGBank_DMC_B = $0B
 PRGBank_DMC_D = $0D
 PRGBank_DMC_E = $0E
 
+PRGBank_DMC_SAW_23 = $18
+PRGBank_DMC_SAW_4 = $19
+PRGBank_DMC_SAW_5 = $1A
 PRGBank_DMC_1B = $1B
 PRGBank_DMC_1C = $1C
 PRGBank_DMC_1D = $1D

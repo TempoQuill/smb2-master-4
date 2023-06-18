@@ -118,13 +118,16 @@ ENDIF
 .pad $c000, $00
 
 ; ----------------------------------------
-; extra PRG-ROM pages (8 bank pairs)
-.dsb (13 * $2000), $00
+; extra PRG-ROM pages (5 bank pairs)
+.dsb (10 * $2000), $00
 
 ; SAWTOOTH DPCM AREA
-; .base $c000
-; .base $c000
-; .base $c000
+.base $c000
+.incbin "src/music/dpcmsaw-octave-2-3-area.bin"
+.base $c000
+.incbin "src/music/dpcmsaw-octave-4-area.bin"
+.base $c000
+.incbin "src/music/dpcmsaw-octave-5-area.bin"
 ; SFX DPCM AREA
 .base $c000
 .incbin "src/music/ldp-dpcm-area-7.bin"
