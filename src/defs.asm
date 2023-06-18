@@ -127,6 +127,11 @@ PRGBank_DMC_B = $0B
 PRGBank_DMC_D = $0D
 PRGBank_DMC_E = $0E
 
+PRGBank_DMC_1B = $1B
+PRGBank_DMC_1C = $1C
+PRGBank_DMC_1D = $1D
+PRGBank_DMC_1E = $1E
+
 ; ---------------------------------------------------------------------------
 
 ; enum ScreenUpdateBuffer

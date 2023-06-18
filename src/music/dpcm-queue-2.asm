@@ -59,21 +59,21 @@ DMCFreqTable2:
 	.db $0F
 
 DMCBankTable:
-	.db PRGBank_DMC_B
-	.db PRGBank_DMC_B
-	.db PRGBank_DMC_7
-	.db PRGBank_DMC_E
-	.db PRGBank_DMC_E
-	.db PRGBank_DMC_D
-	.db PRGBank_DMC_D
-	.db PRGBank_DMC_7
+	.db PRGBank_DMC_1C
+	.db PRGBank_DMC_1C
+	.db PRGBank_DMC_1B
+	.db PRGBank_DMC_1E
+	.db PRGBank_DMC_1E
+	.db PRGBank_DMC_1D
+	.db PRGBank_DMC_1D
+	.db PRGBank_DMC_1B
 
 DMCBankTable2:
-	.db PRGBank_DMC_E
-	.db PRGBank_DMC_D
-	.db PRGBank_DMC_E
-	.db PRGBank_DMC_E
-	.db PRGBank_DMC_E
-	.db PRGBank_DMC_E
-	.db PRGBank_DMC_E
-	.db PRGBank_DMC_D
+	.db PRGBank_DMC_1E
+	.db PRGBank_DMC_1D
+	.db PRGBank_DMC_1E
+	.db PRGBank_DMC_1E
+	.db PRGBank_DMC_1E
+	.db PRGBank_DMC_1E
+	.db PRGBank_DMC_1E
+	.db PRGBank_DMC_1D

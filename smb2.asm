@@ -20,11 +20,7 @@ ENDIF
 ; Add NES header
 	.db "NES", $1a ; identification of the iNES header
 
-IFDEF EXPAND_PRG
 	.db 16 ; this can go up to 32
-ELSE
-	.db 8 ; number of 16KB PRG-ROM pages
-ENDIF
 
 IFDEF EXPAND_CHR
 	.db 32
@@ -96,9 +92,7 @@ ENDIF
 ; Bank 7 is some DPCM data
 .base $8000
 .include "src/prg-6-7.asm"
-.pad $a000, $00
-.base $c000
-.incbin "src/music/ldp-dpcm-area-7.bin"
+.pad $c000, $00
 
 ; ----------------------------------------
 ; Bank 8 and 9. Entirely level data.
@@ -113,9 +107,7 @@ ENDIF
 ; Lots of empty space here too... and DPCM data
 .base $8000
 .include "src/prg-a-b.asm"
-.pad $a000, $00
-.base $c000
-.incbin "src/music/ldp-dpcm-area-b.bin"
+.pad $c000, $00
 
 ; ----------------------------------------
 ; Banks C and D. The first half is
@@ -123,18 +115,26 @@ ENDIF
 ; The second half has even more DPCM data.
 .base $8000
 .include "src/prg-c-d.asm"
-.pad $a000, $00
+.pad $c000, $00
+
+; ----------------------------------------
+; extra PRG-ROM pages (8 bank pairs)
+.dsb (13 * $2000), $00
+
+; SAWTOOTH DPCM AREA
+; .base $c000
+; .base $c000
+; .base $c000
+; SFX DPCM AREA
+.base $c000
+.incbin "src/music/ldp-dpcm-area-7.bin"
+.base $c000
+.incbin "src/music/ldp-dpcm-area-b.bin"
 .base $c000
 .incbin "src/music/ldp-dpcm-area-d.bin"
 
 ; ----------------------------------------
-; extra PRG-ROM pages (8 bank pairs)
-IFDEF EXPAND_PRG
-.dsb (8 * $4000), $ff
-ENDIF
-
-; ----------------------------------------
-; Banks E and F. Fixed at $C000-FFFF.
+; Banks 1E and 1F.
 ; Important things like NMI and often-used
 ; routines.
 ; Bank E also contains PCM data for the

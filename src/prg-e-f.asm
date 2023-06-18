@@ -2610,11 +2610,11 @@ RESET_MMC5:
 	STA MMC5_PRGBankSwitch3 ; $A000-$BFFF
 
 	; PRG bank 2
-	LDA #$8E ; ROM bank E
+	LDA #$9E ; ROM bank 1E
 	STA MMC5_PRGBankSwitch4 ; $C000-$DFFF
 
 	; PRG bank 3
-	LDA #$8F ; ROM bank F
+	LDA #$9F ; ROM bank 1F
 	STA MMC5_PRGBankSwitch5 ; $E000-$FFFF
 
 	JMP RESET
