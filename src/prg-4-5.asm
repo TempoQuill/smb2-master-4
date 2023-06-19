@@ -685,15 +685,10 @@ ProcessMusicQueue_Square2Note:
 	JSR PlaySquare2Note
 
 	TAY
-	BNE ProcessMusicQueue_Square2StartNote
-
-	LDA zPulseInsSize
-	JMP ProcessMusicQueue_Square2UpdateNoteOffset
+	BEQ ProcessMusicQueue_Square2UpdateNoteOffset
 
 ProcessMusicQueue_Square2StartNote:
 	LDA iMusicPulse2NoteStartLength
-	; seems like the next line should be LDX zPulseEnv based on the equivalent code for square 1?
-	LDX zPulseInsSize ; always overridden in the following subroutine...?
 	JSR SetInstrumentStartOffset
 
 ProcessMusicQueue_Square2UpdateNoteOffset:
@@ -761,14 +756,10 @@ ProcessMusicQueue_Square1AfterPatch:
 ProcessMusicQueue_Square1Note:
 	JSR PlaySquare1Note
 
-	BNE ProcessMusicQueue_Square1StartNote
-
-	LDA zPulseInsSize
-	JMP ProcessMusicQueue_Square1UpdateNoteOffset
+	BEQ ProcessMusicQueue_Square1UpdateNoteOffset
 
 ProcessMusicQueue_Square1StartNote:
 	LDA iPulse1NoteLength
-	LDX zPulseEnv ; always overridden in the following subroutine...?
 	JSR SetInstrumentStartOffset
 
 ProcessMusicQueue_Square1UpdateNoteOffset:
@@ -1277,7 +1268,6 @@ PlayNote_CheckSquareChorus:
 PlayNote_SetFrequency:
 	LDA zNextNoteLo
 	STA SQ1_LO, X
-	STA iPulse1Lo, X ; unused
 	LDA zNextNoteHi
 	ORA #$08
 	STA SQ1_HI, X
@@ -1288,7 +1278,6 @@ PlayNote_SetFrequency_Square2Detuned:
 	SEC
 	SBC #$02
 	STA SQ2_LO
-	STA zPulse2RawPitch
 	LDA zNextNoteHi
 	ORA #$08
 	STA SQ2_HI

@@ -774,10 +774,6 @@ LoadCHRSelect:
 
 	LDA #Music1_CharacterSelect
 	STA iMusic1
-	LDA zCurrentCharacter
-	STA iCHRBackup
-	LDA iCurrentWorld
-	STA iWorldBackup
 
 	LDY #$3F
 loc_BANKF_E2CA:

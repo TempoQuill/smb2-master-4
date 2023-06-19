@@ -337,17 +337,12 @@ zNextNoteLo:
 	.dsb 1 ; $00bd
 zNextNoteHi:
 	.dsb 1 ; $00be
-; $00BF and $00C0 are never written, but referenced by the music engine.
-; Seems like they were intended to be either instrument start offets or
-; duty/volume/envelope for the square channels, but it's not totally clear
-; from the code, and doesn't actually function as written?
-zPulseInsSize: ; (unused; read but never initialized)
+; FOR RENT
 	.dsb 1 ; $00bf
-zPulseEnv: ; (unused; always overwritten)
 	.dsb 1 ; $00c0
 zPulse2Index:
 	.dsb 1 ; $00c1
-zPulse2RawPitch: ; (unused)
+; FOR RENT
 	.dsb 1 ; $00c2
 zNoiseSFXOffset:
 	.dsb 1 ; $00c3
@@ -767,11 +762,9 @@ iObjectFlickerer:
 	.dsb 1 ; $0402
 ; FOR RENT
 	.dsb 1 ; $0403
-; unused? written but never read
-iCHRBackup:
+; FOR RENT
 	.dsb 1 ; $0404
-; unused? written but never read
-iWorldBackup:
+; FOR RENT
 	.dsb 1 ; $0405
 ; FOR RENT
 	.dsb 1 ; $0406
@@ -1501,15 +1494,15 @@ iDPCMNoteRatioLength:
 	.dsb 1 ; $05f7
 ; FOR RENT
 	.dsb 1 ; $05f8
-iPulse1Lo:
-	.dsb 1 ; $05f9 (unused; written to but not read)
+; FOR RENT
+	.dsb 1 ; $05f9
 iDPCMNoteLengthCounter:
 	.dsb 1 ; $05fa
 iDPCMNoteLength:
 	.dsb 1 ; $05fb
 iCurrentDPCMStartPoint:
 	.dsb 1 ; $05fc
-	.dsb 1 ; $05fd (unused; written to but not read)
+	.dsb 1 ; $05fd
 	.dsb 1 ; $05fe
 iCurrentDPCMOffset:
 	.dsb 1 ; $05ff
