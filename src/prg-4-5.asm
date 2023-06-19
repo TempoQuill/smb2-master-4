@@ -539,7 +539,7 @@ ProcessMusicQueue_PointerLoop:
 	LSR A
 	BCC ProcessMusicQueue_PointerLoop
 
-	LDA MusicChannelStack + 10, Y
+	LDA MusicChannelStack + 9, Y
 	STA iMusicChannelCount
 
 ProcessMusicQueue_ReadHeader:
