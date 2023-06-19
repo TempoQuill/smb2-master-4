@@ -12,7 +12,7 @@ DMCStartTable2:
 	.db $5B ; $D6C0
 	.db $23 ; $c8C0
 	.db $25 ; $C940
-	.db $68 ; $DA00
+	.db $53 ; $D4C0
 	.db $30 ; $cC00
 	.db $18 ; $c600
 	.db $00 ; $C000
@@ -72,7 +72,7 @@ DMCBankTable2:
 	.db PRGBank_DMC_1E
 	.db PRGBank_DMC_1D
 	.db PRGBank_DMC_1E
-	.db PRGBank_DMC_1E
+	.db PRGBank_DMC_1B
 	.db PRGBank_DMC_1E
 	.db PRGBank_DMC_1E
 	.db PRGBank_DMC_1E
