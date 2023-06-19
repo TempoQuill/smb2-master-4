@@ -1,10 +1,8 @@
 MusicDataEnding4:
 MusicDataEnding4_Square2:
-	.db $DA
+	.db $DC
 	.db $7E
-	.db $3E
-	.db $42
-	.db $46
+	.db $7E
 	.db $00
 MusicDataEnding4_Square1:
 	.db $DA
@@ -20,3 +18,9 @@ MusicDataEnding4_Noise:
 	.db $8C
 	.db $01
 	.db $00
+MusicDataEnding4_DPCM:
+	.db $8A
+	.db $7E
+	.db $3E + $18
+	.db $42 + $18
+	.db $46 + $18

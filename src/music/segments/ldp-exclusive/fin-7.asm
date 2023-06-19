@@ -1,69 +1,53 @@
 MusicDataEnding7:
 MusicDataEnding7_Square2:
 	.db $DA
-	.db $48
-	.db $D0
+	.db $40
+	.db $D2
 	.db $7E
-	.db $D5
-	.db $48
+	.db $D7
+	.db $40
 	.db $D4
-	.db $4C
-	.db $52
+	.db $40
+	.db $48
 	.db $DA
-	.db $50
+	.db $48
 	.db $D8
-	.db $48
 	.db $3E
+	.db $38
 	.db $D9
-	.db $42
+	.db $3A
 	.db $D0
-	.db $46
-	.db $48
+	.db $3A
+	.db $3A
 	.db $D9
-	.db $46
+	.db $3A
 	.db $D0
-	.db $4C
-	.db $50
+	.db $3E
+	.db $46
 	.db $DC
-	.db $48
-	.db $D9
-	.db $42
-	.db $D0
-	.db $46
-	.db $48
-	.db $D8
-	.db $46
-	.db $42
 	.db $3E
+	.db $D9
+	.db $3A
+	.db $D0
+	.db $3E
+	.db $42
+	.db $D8
+	.db $3C
+	.db $3C
+	.db $34
 	.db $D4
-	.db $3C
-	.db $3E
+	.db $34
+	.db $34
 	.db $D8
-	.db $42
-	.db $3E
-	.db $D9
-	.db $3A
-	.db $D0
-	.db $3E
-	.db $42
-	.db $D8
-	.db $3E
-	.db $3A
-	.db $D9
 	.db $38
-	.db $D0
 	.db $38
-	.db $3A
-	.db $D8
-	.db $3C
-	.db $3E
 	.db $00
 MusicDataEnding7_Square1:
 	.db $DA
 	.db $36
-	.db $D0
+	.db $D2
 	.db $7E
-	.db $D5
+	.db $D7
 	.db $36
 	.db $D4
 	.db $3A
@@ -105,22 +89,6 @@ MusicDataEnding7_Square1:
 	.db $D8
 	.db $32
 	.db $32
-	.db $D9
-	.db $2A
-	.db $D0
-	.db $2E
-	.db $30
-	.db $D8
-	.db $2E
-	.db $2A
-	.db $D9
-	.db $26
-	.db $D0
-	.db $26
-	.db $2A
-	.db $D8
-	.db $2C
-	.db $2E
 MusicDataEnding7_Triangle:
 	.db $80
 	.db $28
@@ -219,40 +187,51 @@ MusicDataEnding7_Triangle:
 	.db $7E
 	.db $42
 	.db $7E
-	.db $34
-	.db $7E
-	.db $4C
-	.db $7E
-	.db $34
-	.db $7E
-	.db $4C
-	.db $7E
-	.db $26
-	.db $7E
-	.db $3E
-	.db $7E
-	.db $26
-	.db $7E
-	.db $3E
-	.db $7E
-	.db $30
-	.db $7E
-	.db $48
-	.db $7E
-	.db $30
-	.db $7E
-	.db $30
-	.db $34
-	.db $36
-	.db $7E
-	.db $4E
-	.db $7E
-	.db $38
-	.db $7E
-	.db $50
-	.db $7E
 MusicDataEnding7_Noise:
 	.db $84
 	.db $01
 	.db $02
 	.db $00
+MusicDataEnding7_DPCM:
+	.db $8A
+	.db $48 + $18
+	.db $82
+	.db $7E
+	.db $87
+	.db $48 + $18
+	.db $84
+	.db $4C + $18
+	.db $52 + $18
+	.db $8A
+	.db $50 + $18
+	.db $88
+	.db $48 + $18
+	.db $3E + $18
+	.db $89
+	.db $42 + $18
+	.db $80
+	.db $46 + $18
+	.db $48 + $18
+	.db $89
+	.db $46 + $18
+	.db $80
+	.db $4C + $18
+	.db $50 + $18
+	.db $8A
+	.db $48 + $18
+	.db $7E
+	.db $89
+	.db $42 + $18
+	.db $80
+	.db $46 + $18
+	.db $48 + $18
+	.db $88
+	.db $46 + $18
+	.db $42 + $18
+	.db $3E + $18
+	.db $84
+	.db $3C + $18
+	.db $3E + $18
+	.db $88
+	.db $42 + $18
+	.db $3E + $18
