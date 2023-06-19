@@ -344,11 +344,6 @@ ProcessSoundEffectQueue3_Exit:
 NoiseSFX_None:
 	.db $00
 
-ProcessDPCMQueue2_DecTimer:
-	DEC iDPCMTimer2
-	BNE ProcessDPCMQueue1_Exit
-	BEQ ProcessDPCMQueue1_None
-
 ProcessDPCMQueue1:
 	LDA iDPCMSFX2
 	BNE ProcessDPCMQueue2_Part2
@@ -357,16 +352,18 @@ ProcessDPCMQueue1:
 	BNE ProcessDPCMQueue1_Part2
 
 	LDA iCurrentDPCMSFX2
-	BNE ProcessDPCMQueue2_DecTimer
+	BNE ProcessDPCMQueue2_SoundCheck
 
 	LDA iCurrentDPCMSFX1
-	BNE ProcessDPCMQueue1_DecTimer
+	BNE ProcessDPCMQueue1_SoundCheck
 	LDA iCurrentDPCMOffset
 	BEQ ProcessDPCMQueue1_None
 	RTS
 
-ProcessDPCMQueue1_DecTimer:
-	DEC iDPCMTimer1
+ProcessDPCMQueue2_SoundCheck:
+ProcessDPCMQueue1_SoundCheck:
+	LDA SND_CHN
+	AND #$10
 	BNE ProcessDPCMQueue1_Exit
 
 ProcessDPCMQueue1_None:
@@ -382,13 +379,8 @@ ProcessDPCMQueue1_Exit:
 
 ProcessDPCMQueue1_Part2:
 	LDY iDPCMBossPriority
-	BEQ ProcessDPCMQueue1_Part3
+	BNE ProcessDPCMQueue2_SoundCheck
 
-	LDY iDPCMTimer2
-	BEQ ProcessDPCMQueue1_Part3
-	BPL ProcessDPCMQueue2_DecTimer
-
-ProcessDPCMQueue1_Part3:
 	STA iCurrentDPCMSFX1
 	LDY #$00
 
@@ -410,14 +402,6 @@ ENDIF
 	STA DMC_START
 	LDA DMCLengthTable - 1, Y
 	STA DMC_LEN
-	CPY #2 ; phanto / rocket offset
-	BEQ ProcessDPCMQueue1_SkipShift
-	LSR A
-	LSR A
-ProcessDPCMQueue1_SkipShift:
-	STA iDPCMTimer1
-	LDA #0
-	STA iDPCMTimer2
 	LDA #%00001111
 	STA SND_CHN
 	LDA #%00011111
@@ -430,7 +414,7 @@ ProcessDPCMQueue2_Part2:
 
 	CMP iDPCMBossPriority
 	BEQ ProcessDPCMQueue2_Part3
-	JMP ProcessDPCMQueue2_DecTimer
+	JMP ProcessDPCMQueue2_SoundCheck
 
 ProcessDPCMQueue2_Part3:
 	STA iCurrentDPCMSFX2
@@ -454,11 +438,6 @@ ENDIF
 	STA DMC_START
 	LDA DMCLengthTable2 - 1, Y
 	STA DMC_LEN
-	LSR A
-	LSR A
-	STA iDPCMTimer2
-	LDA #0
-	STA iDPCMTimer1
 	LDA #%00001111
 	STA SND_CHN
 	LDA #%00011111
@@ -652,6 +631,13 @@ ProcessMusicQueue_EndOfSegment:
 	BNE ProcessMusicQueue_ResumeMusicQueue1
 
 StopMusic:
+	LDA iCurrentDPCMSFX1
+	BNE LeaveDPCMAlone
+	LDA iCurrentDPCMSFX2
+	BNE LeaveDPCMAlone
+	JSR ProcessMusicQueue_DPCMDisable
+
+LeaveDPCMAlone:
 	LDA #$10
 	STA SQ1_VOL
 	STA SQ2_VOL
@@ -917,9 +903,6 @@ ProcessMusicQueue_NoiseLoopSegment:
 	STA iCurrentNoiseOffset
 	JMP ProcessMusicQueue_NoiseByte
 
-ProcessMusicQueue_DPCMExit:
-	RTS
-
 ProcessMusicQueue_DPCM:
 	LDA iCurrentDPCMOffset
 	BNE ProcessMusicQueue_DPCMlength
@@ -937,12 +920,8 @@ ProcessMusicQueue_DPCMlength:
 	LDA iCurrentDPCMSFX2
 	BNE ProcessMusicQueue_DPCMExit
 	; Disable
-	LDX #%00001111
-	STX SND_CHN
-	LDX #0
-	STX DMC_FREQ
-	STX DMC_START
-	STX DMC_LEN
+	JMP ProcessMusicQueue_DPCMDisable
+ProcessMusicQueue_DPCMExit:
 	RTS
 
 ProcessMusicQueue_DPCMByte:
@@ -1020,11 +999,16 @@ ProcessMusicQueue_DPCMSFXExit:
 	RTS
 
 ProcessMusicQueue_DPCMEnd:
+	LDX #iCurrentDPCMSFX1
+	BNE ProcessMusicQueue_DPCMExit
+	LDX #iCurrentDPCMSFX2
+	BEQ ProcessMusicQueue_DPCMDisable
+	JMP ProcessMusicQueue_DPCMExit
+
+ProcessMusicQueue_DPCMDisable:
 	; Disable
 	LDX #%00001111
 	STX SND_CHN
-	LDX #$80 | PRGBank_DMC_1E
-	STX MMC5_PRGBankSwitch4
 	LDX #0
 	STX DMC_FREQ
 	STX DMC_START

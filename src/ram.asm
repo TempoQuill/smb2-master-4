@@ -1588,10 +1588,10 @@ iCurrentDPCMSFX2:
 	.dsb 1 ; $0608
 iCurrentMusic1:
 	.dsb 1 ; $0609
-iDPCMTimer1:
+; FOR RENT
 	.dsb 1 ; $060a
 ; only ever $20, $10 or $0
-; non-zero tells driver to ignore iDPCMSFX1
+; non-zero tells driver to ignore new SFX
 iDPCMBossPriority:
 	.dsb 1 ; $060b
 iSweep:
@@ -1600,7 +1600,7 @@ iCurrentPulse1SFX:
 	.dsb 1 ; $060d
 iCurrentNoiseSFX:
 	.dsb 1 ; $060e
-iDPCMTimer2:
+; FOR RENT
 	.dsb 1 ; $060f
 iUsedWarps:
 	.dsb 1 ; $0610
