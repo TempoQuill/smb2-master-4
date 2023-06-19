@@ -75,11 +75,11 @@ MusicDataTitleScreen1_Square2:
 	.db $4C
 	.db $56
 	.db $B4
-	.db $48
-	.db $46
-	.db $44
+	.db $3C
+	.db $3A
+	.db $38
 	.db $BC
-	.db $42
+	.db $36
 	.db $BA
 	.db $7E
 	.db $B4
@@ -188,3 +188,26 @@ MusicDataTitleScreen1_Noise:
 	.db $02
 	.db $02
 	.db $02
+
+MusicDataTitleScreen1_DPCM:
+	.db $8C
+	.db $7E
+	.db $7E
+	.db $7E
+	.db $7E
+	.db $7E
+	.db $7E
+	.db $7E
+	.db $7E
+	.db $7E
+	.db $84
+	.db $60
+	.db $5E
+	.db $5C
+	.db $8C
+	.db $5A
+	.db $8A
+	.db $7E
+	.db $84
+	.db $7E
+	.db $00

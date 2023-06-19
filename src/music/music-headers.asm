@@ -55,58 +55,58 @@ MusicHeaderOverworld5:
 ; ----------------------------------------
 ; Underground music
 MusicHeaderUnderground:
-	musicHeader NoteLengthTable_150bpm, MusicDataUnderground, MusicDataUnderground_Triangle, MusicDataUnderground_Square1, -1, 0
+	musicHeader NoteLengthTable_150bpm, MusicDataUnderground, MusicDataUnderground_Triangle, MusicDataUnderground_Square1, -1, -1
 
 ; ----------------------------------------
 ; Boss and boss area music
 MusicHeaderBoss:
-	musicHeader NoteLengthTable_200bpm, MusicDataBoss, MusicDataBoss_Triangle, MusicDataBoss_Square1, $00, -1
+	musicHeader NoteLengthTable_200bpm, MusicDataBoss, MusicDataBoss_Triangle, MusicDataBoss_Square1, -1, -1
 
 ; ----------------------------------------
 ; Starman music
 MusicHeaderStar:
-	musicHeader NoteLengthTable_200bpm, MusicDataStar, MusicDataStar_Triangle, MusicDataStar_Square1, -1, 0
+	musicHeader NoteLengthTable_200bpm, MusicDataStar, MusicDataStar_Triangle, MusicDataStar_Square1, -1, -1
 
 ; ----------------------------------------
 ; Wart's final boss music
 MusicHeaderWart:
-	musicHeader NoteLengthTable_200bpm, MusicDataWart, MusicDataWart_Triangle, MusicDataWart_Square1, $00, -1
+	musicHeader NoteLengthTable_200bpm, MusicDataWart, MusicDataWart_Triangle, MusicDataWart_Square1, -1, -1
 
 ; ----------------------------------------
 ; Various shorter jingles, extra character select segments (8, 7, 6), and other potpourri
 
 MusicHeaderCrystal:
-	musicHeader NoteLengthTable_300bpm, MusicDataCrystal, MusicDataCrystal_Triangle, MusicDataCrystal_Square1, 0, -1
+	musicHeader NoteLengthTable_300bpm, MusicDataCrystal, MusicDataCrystal_Triangle, MusicDataCrystal_Square1, -1, -1
 
 MusicHeaderGameOver:
- 	musicHeader NoteLengthTable_300bpm, MusicDataGameOver, MusicDataGameOver_Triangle, MusicDataGameOver_Square1, 0, -1
+ 	musicHeader NoteLengthTable_300bpm, MusicDataGameOver, MusicDataGameOver_Triangle, MusicDataGameOver_Square1, -1, -1
 
 MusicHeaderBossBeaten:
- 	musicHeader NoteLengthTable_300bpm, MusicDataBossBeaten, MusicDataBossBeaten_Triangle, MusicDataBossBeaten_Square1, 0, -1
+ 	musicHeader NoteLengthTable_300bpm, MusicDataBossBeaten, MusicDataBossBeaten_Triangle, MusicDataBossBeaten_Square1, -1, -1
 
 MusicHeaderMushroomBonusChance:
- 	musicHeader NoteLengthTable_150bpm, MusicDataMushroomBonusChance, $00, MusicDataMushroomBonusChance_Square1, 0, -1
+ 	musicHeader NoteLengthTable_150bpm, MusicDataMushroomBonusChance, $00, MusicDataMushroomBonusChance_Square1, -1, -1
 
 MusicHeaderDeath:
- 	musicHeader NoteLengthTable_200bpm, MusicDataDeath, MusicDataDeath_Triangle, MusicDataDeath_Square1, 0, -1
+ 	musicHeader NoteLengthTable_200bpm, MusicDataDeath, MusicDataDeath_Triangle, MusicDataDeath_Square1, -1, -1
 
 ; ----------------------------------------
 ; Title screen segments
 
 MusicHeaderTitleScreen2:
-	musicHeader NoteLengthTable_164bpm, MusicDataTitleScreen2, MusicDataTitleScreen2_Triangle, MusicDataTitleScreen2_Square1, MusicDataTitleScreen2_Noise, -1
+	musicHeader NoteLengthTable_164bpm, MusicDataTitleScreen2, MusicDataTitleScreen2_Triangle, MusicDataTitleScreen2_Square1, MusicDataTitleScreen2_Noise, MusicDataTitleScreen2_DPCM
 
 MusicHeaderTitleScreen1:
-	musicHeader NoteLengthTable_164bpm, MusicDataTitleScreen1, MusicDataTitleScreen1_Triangle, MusicDataTitleScreen1_Square1, MusicDataTitleScreen1_Noise, -1
+	musicHeader NoteLengthTable_164bpm, MusicDataTitleScreen1, MusicDataTitleScreen1_Triangle, MusicDataTitleScreen1_Square1, MusicDataTitleScreen1_Noise, MusicDataTitleScreen1_DPCM
 
 MusicHeaderTitleScreen3:
-	musicHeader NoteLengthTable_164bpm, MusicDataTitleScreen3, MusicDataTitleScreen3_Triangle, MusicDataTitleScreen3_Square1, MusicDataTitleScreen3_Noise, -1
+	musicHeader NoteLengthTable_164bpm, MusicDataTitleScreen3, MusicDataTitleScreen3_Triangle, MusicDataTitleScreen3_Square1, MusicDataTitleScreen3_Noise, MusicDataTitleScreen3_DPCM
 
 ; ----------------------------------------
 ; Subspace music, quite longer than normally heard
 
 MusicHeaderSubspace1:
-	musicHeader NoteLengthTable_200bpm, MusicDataSubspace, 0, MusicDataSubspace_Square1, 0, -1
+	musicHeader NoteLengthTable_200bpm, MusicDataSubspace, 0, MusicDataSubspace_Square1, -1, -1
 
 ; ----------------------------------------
 ; Ending music

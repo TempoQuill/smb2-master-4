@@ -361,7 +361,9 @@ ProcessDPCMQueue1:
 
 	LDA iCurrentDPCMSFX1
 	BNE ProcessDPCMQueue1_DecTimer
+	LDA iCurrentDPCMOffset
 	BEQ ProcessDPCMQueue1_None
+	RTS
 
 ProcessDPCMQueue1_DecTimer:
 	DEC iDPCMTimer1
@@ -520,6 +522,8 @@ ProcessMusicQueue_FirstPointerLoop:
 	BCC ProcessMusicQueue_FirstPointerLoop
 
 ProcessMusicQueue_ReadFirstPointer:
+	LDA MusicChannelStack, Y
+	STA iMusicChannelCount
 	LDA MusicPointersFirstPart, Y
 	STA iMusicStartPoint
 	LDA MusicPointersEndPart, Y
@@ -556,7 +560,11 @@ ProcessMusicQueue_PointerLoop:
 	LSR A
 	BCC ProcessMusicQueue_PointerLoop
 
+	LDA MusicChannelStack + 10, Y
+	STA iMusicChannelCount
+
 ProcessMusicQueue_ReadHeader:
+	LDX iMusicChannelCount
 	LDA MusicPartPointers - 1, Y
 	TAY
 	LDA MusicPartPointers, Y
@@ -565,22 +573,47 @@ ProcessMusicQueue_ReadHeader:
 	STA zCurrentMusicPointer
 	LDA MusicPartPointers + 2, Y
 	STA zCurrentMusicPointer + 1
+	DEX
 	LDA MusicPartPointers + 3, Y
 	STA iCurrentHillOffset
+	DEX
 	LDA MusicPartPointers + 4, Y
 	STA iCurrentPulse1Offset
-	LDA MusicPartPointers + 5, Y
+	DEX
+	BNE ProcessMusicQueue_ReadHeaderNoise
+
+	LDA #0
 	STA iCurrentNoiseOffset
 	STA iCurrentNoiseStartPoint
 	STA iCurrentDPCMOffset
 	STA iCurrentDPCMStartPoint
+	BEQ ProcessMusicQueue_DefaultNotelength
 
+ProcessMusicQueue_ReadHeaderNoise:
+	LDA MusicPartPointers + 5, Y
+	STA iCurrentNoiseOffset
+	STA iCurrentNoiseStartPoint
+	DEX
+	BNE ProcessMusicQueue_ReadHeaderDPCM
+
+	LDA #0
+	STA iCurrentDPCMOffset
+	STA iCurrentDPCMStartPoint
+	BEQ ProcessMusicQueue_DefaultNotelength
+
+ProcessMusicQueue_ReadHeaderDPCM:
+	LDA MusicPartPointers + 6, Y
+	STA iCurrentDPCMOffset
+	STA iCurrentDPCMStartPoint
+
+ProcessMusicQueue_DefaultNotelength:
 	LDA #$01
 	STA iMusicPulse2NoteLength
 	STA iMusicPulse1NoteLength
 	STA iMusicHillNoteLength
 	STA iMusicNoiseNoteLength
 	STA iDPCMNoteLengthCounter
+	STA iDPCMNoteRatioLength
 
 	LDA #$00
 	STA iCurrentPulse2Offset
@@ -840,10 +873,6 @@ ProcessMusicQueue_TriangleSetLength:
 	STA TRI_LINEAR
 
 ProcessMusicQueue_NoiseDPCM:
-	; skip to DPCM for underground/invincibility music
-	LDA iCurrentMusic1
-	AND #Music1_Inside | Music1_Invincible
-	BNE ProcessMusicQueue_DPCM
 
 ProcessMusicQueue_Noise:
 	LDA iCurrentNoiseOffset
@@ -889,17 +918,34 @@ ProcessMusicQueue_NoiseLoopSegment:
 	JMP ProcessMusicQueue_NoiseByte
 
 ProcessMusicQueue_NoiseEnd:
-	LDA iCurrentMusic1
-	AND #Music1_Inside | Music1_Invincible
-	BNE ProcessMusicQueue_DPCM
+	LDA iCurrentDPCMSFX1
+	BNE ProcessMusicQueue_DPCMExit
+	LDA iCurrentDPCMSFX2
+	BEQ ProcessMusicQueue_DPCM
+
+ProcessMusicQueue_DPCMExit:
 	RTS
 
 ProcessMusicQueue_DPCM:
 	LDA iCurrentDPCMOffset
-	BEQ ProcessMusicQueue_DPCMEnd
+	BNE ProcessMusicQueue_DPCMlength
+	JMP ProcessMusicQueue_DPCMEnd
 
+ProcessMusicQueue_DPCMlength:
 	DEC iDPCMNoteLengthCounter
-	BNE ProcessMusicQueue_DPCMEnd
+	BEQ ProcessMusicQueue_DPCMByte
+	LDA iDPCMNoteRatioLength
+	BEQ ProcessMusicQueue_DPCMExit
+	DEC iDPCMNoteRatioLength
+	BNE ProcessMusicQueue_DPCMExit
+	; Disable
+	LDX #%00001111
+	STX SND_CHN
+	LDX #0
+	STX DMC_FREQ
+	STX DMC_START
+	STX DMC_LEN
+	RTS
 
 ProcessMusicQueue_DPCMByte:
 	LDY iCurrentDPCMOffset
@@ -918,17 +964,59 @@ ProcessMusicQueue_DPCMByte:
 	BEQ ProcessMusicQueue_DPCMLoopSegment
 
 ProcessMusicQueue_DPCMNote:
-	; POI: This left shift precludes using the first DPCM sample (bomb explosion) in the DPCM track.
-	; This could be to allow $80 for a "rest" note on the DPCM track, but none of the in-game music
-	; takes advantage of that.
-	ASL A
-	STA iDPCMSFX1
-	JSR ProcessDPCMQueue1
+	; mute for now
+	; initialize X
+	LDX #0
+	SEC
+ProcessMusicQueue_DPCMNoteLoop:
+	; find octave in X
+	INX
+	SBC #(12 << 1)
+	BCS ProcessMusicQueue_DPCMNoteLoop
+	STX iOctave
+	DEX
 
+	LDA DPCMOctaves, X
+	ORA #$80
+	STA MMC5_PRGBankSwitch4
+
+	LDA (zCurrentMusicPointer), Y
+	SEC
+	SBC #(12 << 1)
+	BCC ProcessMusicQueue_DPCMEnd
+	LSR A
+	TAY
+	LDA DMCPitchTable, Y
+	ORA #$40
+	STA DMC_FREQ
+	LDA DMCSamplePointers, Y
+	STA DMC_START
+	LDA DMCSampleLengths, Y
+	STA DMC_LEN
+
+	LDX #%00001111
+	STX SND_CHN
+	LDA #%00011111
+	STA SND_CHN
 	LDA iDPCMNoteLength
 	STA iDPCMNoteLengthCounter
+	LDX #$F0 ; pitch lasts 15 / 16 frames rounded down
+	STA MMC5_Multiplier
+	STX MMC5_Multiplier + 1
+	LDA MMC5_Multiplier + 1
+	STA iDPCMNoteRatioLength
+	RTS
 
 ProcessMusicQueue_DPCMEnd:
+	; Disable
+	LDX #%00001111
+	STX SND_CHN
+	LDX #$80 | PRGBank_DMC_1E
+	STX MMC5_PRGBankSwitch4
+	LDX #0
+	STX DMC_FREQ
+	STX DMC_START
+	STX DMC_LEN
 	RTS
 
 ProcessMusicQueue_DPCMLoopSegment:
@@ -955,6 +1043,8 @@ NoiseHiTable:
 	.db $18
 	.db $58
 
+; DPCM sawtooth configuration data
+.include "src/music/dmc-data.asm"
 
 ; Input
 ;   A = full patch byte
@@ -1255,6 +1345,9 @@ PlayTriangleNote:
 
 ; More music pointers
 .include "src/music/music-pointers.asm"
+
+; Channels active in the music
+.include "src/music/music-channel-count.asm"
 
 ; Music and track data
 .include "src/music/music-data.asm"

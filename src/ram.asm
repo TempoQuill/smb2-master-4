@@ -1495,9 +1495,11 @@ iOctave:
 	.dsb 1 ; $05f4
 iCurrentNoiseStartPoint:
 	.dsb 1 ; $05f5
-; FOR RENT
+iMusicChannelCount:
 	.dsb 1 ; $05f6
+iDPCMNoteRatioLength:
 	.dsb 1 ; $05f7
+; FOR RENT
 	.dsb 1 ; $05f8
 iPulse1Lo:
 	.dsb 1 ; $05f9 (unused; written to but not read)
@@ -1865,6 +1867,7 @@ MMC5_CHRBankSwitchUpper = $5130
 MMC5_IRQScanlineCompare = $5203
 MMC5_IRQStatus = $5204
 
+MMC5_Multiplier = $5205
 
 ;
 ; Cartridge on-board RAM
