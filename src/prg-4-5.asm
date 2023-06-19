@@ -910,18 +910,12 @@ ProcessMusicQueue_NoiseNote:
 	STA iMusicNoiseNoteLength
 
 ProcessMusicQueue_ThenNoiseEnd:
-	JMP ProcessMusicQueue_NoiseEnd
+	JMP ProcessMusicQueue_DPCM
 
 ProcessMusicQueue_NoiseLoopSegment:
 	LDA iCurrentNoiseStartPoint
 	STA iCurrentNoiseOffset
 	JMP ProcessMusicQueue_NoiseByte
-
-ProcessMusicQueue_NoiseEnd:
-	LDA iCurrentDPCMSFX1
-	BNE ProcessMusicQueue_DPCMExit
-	LDA iCurrentDPCMSFX2
-	BEQ ProcessMusicQueue_DPCM
 
 ProcessMusicQueue_DPCMExit:
 	RTS
@@ -938,6 +932,10 @@ ProcessMusicQueue_DPCMlength:
 	BEQ ProcessMusicQueue_DPCMExit
 	DEC iDPCMNoteRatioLength
 	BNE ProcessMusicQueue_DPCMExit
+	LDA iCurrentDPCMSFX1
+	BNE ProcessMusicQueue_DPCMExit
+	LDA iCurrentDPCMSFX2
+	BNE ProcessMusicQueue_DPCMExit
 	; Disable
 	LDX #%00001111
 	STX SND_CHN
@@ -951,8 +949,10 @@ ProcessMusicQueue_DPCMByte:
 	LDY iCurrentDPCMOffset
 	INC iCurrentDPCMOffset
 	LDA (zCurrentMusicPointer), Y
-	BEQ ProcessMusicQueue_DPCMLoopSegment
+	BNE ProcessMusicQueue_DPCMNotLoop
+	JMP ProcessMusicQueue_DPCMLoopSegment
 
+ProcessMusicQueue_DPCMNotLoop:
 	BPL ProcessMusicQueue_DPCMNote
 
 	JSR ProcessMusicQueue_PatchNoteLength
@@ -964,6 +964,10 @@ ProcessMusicQueue_DPCMByte:
 	BEQ ProcessMusicQueue_DPCMLoopSegment
 
 ProcessMusicQueue_DPCMNote:
+	LDX #iCurrentDPCMSFX1
+	BNE ProcessMusicQueue_DPCMSFXExit
+	LDX #iCurrentDPCMSFX2
+	BNE ProcessMusicQueue_DPCMSFXExit
 	; mute for now
 	; initialize X
 	LDX #0
@@ -976,28 +980,36 @@ ProcessMusicQueue_DPCMNoteLoop:
 	STX iOctave
 	DEX
 
+	; get octave bank
 	LDA DPCMOctaves, X
 	ORA #$80
 	STA MMC5_PRGBankSwitch4
 
+	; relead the note for offset
 	LDA (zCurrentMusicPointer), Y
 	SEC
 	SBC #(12 << 1)
 	BCC ProcessMusicQueue_DPCMEnd
 	LSR A
 	TAY
+	; pitch
 	LDA DMCPitchTable, Y
 	ORA #$40
 	STA DMC_FREQ
+	; address
 	LDA DMCSamplePointers, Y
 	STA DMC_START
+	; length
 	LDA DMCSampleLengths, Y
 	STA DMC_LEN
 
+	; mixer
 	LDX #%00001111
 	STX SND_CHN
 	LDA #%00011111
 	STA SND_CHN
+
+ProcessMusicQueue_DPCMSFXExit:
 	LDA iDPCMNoteLength
 	STA iDPCMNoteLengthCounter
 	LDX #$F0 ; pitch lasts 15 / 16 frames rounded down
