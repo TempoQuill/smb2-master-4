@@ -4271,7 +4271,7 @@ loc_BANKF_F749:
 	; Set music to death jingle
 	LDA #Music2_DeathJingle
 	STA iMusic2
-	; BUG: Setting DPCM at the same time as music
+	; Play the SFX
 	LDA #DPCM_PlayerDeath
 	STA iDPCMSFX2
 	RTS

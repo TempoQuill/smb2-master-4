@@ -2,31 +2,31 @@
 ; Custom debug menu for SMB2, probably to help with speedrunners
 ; or just testing this disassembly.
 
-Debug_Stash = $7F30
+wDebugBackup = $7F30
 
-Debug_World = $7FD0
-Debug_Level = $7FD1
-Debug_Area = $7FD2
+wDebugWorld = $7FD0
+wDebugLevel = $7FD1
+wDebugArea = $7FD2
 ; @TODO: page, X/Y, transition type
-Debug_Character = $7FD3
-Debug_Lives = $7FD4
-Debug_Continues = $7FD5
-Debug_Health = $7FD6
-Debug_MaxHealth = $7FD7
+wDebugCharacter = $7FD3
+wDebugLives = $7FD4
+wDebugContinues = $7FD5
+wDebugHealth = $7FD6
+wDebugMaxHealth = $7FD7
 
-Debug_JumpAddressLo = $7FE0
-Debug_JumpAddressHi = $7FE1
+wDebugJumpAddressLo = $7FE0
+wDebugJumpAddressHi = $7FE1
 
-Debug_StashA = $7FE2
-Debug_StashX = $7FE3
-Debug_StashY = $7FE4
-Debug_StashP = $7FE5
+wDebugBackupA = $7FE2
+wDebugBackupX = $7FE3
+wDebugBackupY = $7FE4
+wDebugBackupP = $7FE5
 
-Debug_CursorTileOffset = $7FEB
-Debug_Temp = $7FEC
-Debug_PPUPointerOffset = $7FED
-Debug_CurrentMenuOption = $7FEE
-Debug_InMenu = $7FEF
+wDebugCursorTileOffset = $7FEB
+wDebugTemp = $7FEC
+wDebugPPUPointerOffset = $7FED
+wDebugCurrentMenuOption = $7FEE
+wDebugInMenu = $7FEF
 
 .ignorenl
 
@@ -37,24 +37,24 @@ Debug_MenuOptionCount = $08
 
 DebugMenu_Init:
 	LDA #$00
-	STA Debug_CursorTileOffset
-	STA Debug_PPUPointerOffset
+	STA wDebugCursorTileOffset
+	STA wDebugPPUPointerOffset
 	LDA #$04
-	STA Debug_CurrentMenuOption
+	STA wDebugCurrentMenuOption
 
 	; Copy current stats
 	LDA zCurrentCharacter
-	STA Debug_Character
+	STA wDebugCharacter
 	LDA iExtraMen
-	STA Debug_Lives
+	STA wDebugLives
 	LDA iNumContinues
-	STA Debug_Continues
+	STA wDebugContinues
 	LDA iPlayerHP
 	LSR A
 	LSR A
 	LSR A
 	LSR A
-	STA Debug_Health
+	STA wDebugHealth
 	LDA iPlayerMaxHP
 	CLC
 	ADC #$01
@@ -62,11 +62,11 @@ DebugMenu_Init:
 	BCC +
 	LDA #$03
 	+
-	STA Debug_MaxHealth
+	STA wDebugMaxHealth
 
 	; Set current level
 	LDA iCurrentLvl
-	STA Debug_Level
+	STA wDebugLevel
 	; Set current area
 	LDA iCurrentLvlArea
 	LDY iSubAreaFlags
@@ -74,7 +74,7 @@ DebugMenu_Init:
 	LDA iCurrentLevelArea_Init
 	BPL +
 	+
-	STA Debug_Area
+	STA wDebugArea
 
 	JSR EnableNMI
 
@@ -111,12 +111,12 @@ DebugMenu_Init:
 
 	; Draw debug menu text
 	LDA #$00
-	STA Debug_PPUPointerOffset
+	STA wDebugPPUPointerOffset
 -
 	JSR DebugMenu_BufferText
 	JSR WaitForNMI
-	INC Debug_PPUPointerOffset
-	LDA Debug_PPUPointerOffset
+	INC wDebugPPUPointerOffset
+	LDA wDebugPPUPointerOffset
 	CMP #$0A
 	BCC -
 
@@ -155,7 +155,7 @@ DebugMenu_MenuLoop:
 	CMP #ControllerInput_Up ; Maybe up instead?
 	BEQ DebugMenu_MenuUp
 
-	LDA Debug_CurrentMenuOption
+	LDA wDebugCurrentMenuOption
 	JSR JumpToTableAfterJump
 
 	.dw DebugMenu_Character
@@ -169,23 +169,23 @@ DebugMenu_MenuLoop:
 
 
 DebugMenu_MenuUp:
-	DEC Debug_CurrentMenuOption
+	DEC wDebugCurrentMenuOption
 	BPL +
 
 	LDA #Debug_MenuOptionCount - 1
-	STA Debug_CurrentMenuOption
+	STA wDebugCurrentMenuOption
 
 	BNE +
 
 DebugMenu_MenuDown:
-	INC Debug_CurrentMenuOption
+	INC wDebugCurrentMenuOption
 
-	LDA Debug_CurrentMenuOption
+	LDA wDebugCurrentMenuOption
 	CMP #Debug_MenuOptionCount
 	BCC +
 
 	LDA #$00
-	STA Debug_CurrentMenuOption
+	STA wDebugCurrentMenuOption
 
 +
 	JSR DebugMenu_MenuMove
@@ -261,14 +261,14 @@ DebugMenu_DoStartLevel:
 	JSR DebugMenu_ApplyOptions
 
 	; Set the current character
-	LDA Debug_Character
+	LDA wDebugCharacter
 	STA zCurrentCharacter
 
 	; Set the current level/area
-	LDA Debug_Level
+	LDA wDebugLevel
 	STA iCurrentLvl
 	STA iCurrentLevel_Init
-	LDA Debug_Area
+	LDA wDebugArea
 	STA iCurrentLvlArea
 	STA iCurrentLevelArea_Init
 	LDA #$00
@@ -277,7 +277,7 @@ DebugMenu_DoStartLevel:
 	STA iCurrentLevelEntryPage_Init
 
 	; Determine the world the level is in
-	LDA Debug_Level
+	LDA wDebugLevel
 	JSR DebugMenu_GetWorld
 	STY iCurrentWorld
 
@@ -288,12 +288,12 @@ DebugMenu_DoStartLevel:
 
 DebugMenu_CursorRestartArea:
 	LDA #$04
-	STA Debug_CurrentMenuOption
+	STA wDebugCurrentMenuOption
 	JMP DebugMenu_MenuLoop
 
 DebugMenu_CursorStartLevel:
 	LDA #$07
-	STA Debug_CurrentMenuOption
+	STA wDebugCurrentMenuOption
 	JMP DebugMenu_MenuLoop
 
 DebugMenu_Level:
@@ -308,24 +308,24 @@ DebugMenu_Level:
 	BEQ +r
 	BNE +q
 +l
-	LDA Debug_Level ; Check current level...
+	LDA wDebugLevel ; Check current level...
 	BEQ +f ; Level is already 0, go away
-	DEC Debug_Level ; Decrease
+	DEC wDebugLevel ; Decrease
 	JMP +s ; Skip ahead
 +r
-	LDA Debug_Level
+	LDA wDebugLevel
 	CLC
 	ADC #$01
 	CMP #WorldStartingLevel + 7
 	BEQ +f ; Already at last level, go away
-	INC Debug_Level ; Otherwise increase
+	INC wDebugLevel ; Otherwise increase
 +s
-	LDA Debug_Level
+	LDA wDebugLevel
 	JSR DebugMenu_GetWorld
-	STY Debug_World
+	STY wDebugWorld
 
 	LDA #$00
-	STA Debug_Area
+	STA wDebugArea
 
 	JSR DebugMenu_MenuChange
 	JSR DebugMenu_UpdateLevel
@@ -352,15 +352,15 @@ DebugMenu_Area:
 	BEQ +r
 	BNE +q
 +l
-	LDA Debug_Area ; Check current area...
+	LDA wDebugArea ; Check current area...
 	BEQ -f ; Area is already 0, go away
-	DEC Debug_Area ; Decrease
+	DEC wDebugArea ; Decrease
 	JMP +s ; Skip ahead
 +r
-	LDA Debug_Area
+	LDA wDebugArea
 	CMP #$09
 	BEQ -f ; Already at area 9, go away
-	INC Debug_Area ; Otherwise increase
+	INC wDebugArea ; Otherwise increase
 +s
 	JSR DebugMenu_MenuChange
 	JSR DebugMenu_UpdateArea
@@ -376,14 +376,14 @@ DebugMenu_Character:
 	BEQ +r
 	BNE +q
 +l
-	DEC Debug_Character ; Decrease
+	DEC wDebugCharacter ; Decrease
 	JMP +s ; Skip ahead
 +r
-	INC Debug_Character ; Otherwise increase
+	INC wDebugCharacter ; Otherwise increase
 +s
-	LDA Debug_Character
+	LDA wDebugCharacter
 	AND #$03
-	STA Debug_Character
+	STA wDebugCharacter
 
 	JSR DebugMenu_MenuChange
 	JSR DebugMenu_UpdateCharacter
@@ -398,16 +398,16 @@ DebugMenu_Lives:
 	BEQ +r
 	BNE +q
 +l
-	LDA Debug_Lives
+	LDA wDebugLives
 	CMP #$02
 	BCC -f
-	DEC Debug_Lives ; Decrease
+	DEC wDebugLives ; Decrease
 	JMP +s ; Skip ahead
 +r
-	LDA Debug_Lives
+	LDA wDebugLives
 	CMP #$64
 	BEQ -f ; Already maxed out
-	INC Debug_Lives ; Otherwise increase
+	INC wDebugLives ; Otherwise increase
 +s
 	JSR DebugMenu_MenuChange
 	JSR DebugMenu_UpdateLives
@@ -422,15 +422,15 @@ DebugMenu_Continues:
 	BEQ +r
 	BNE +q
 +l
-	LDA Debug_Continues
+	LDA wDebugContinues
 	BEQ +f
-	DEC Debug_Continues ; Decrease
+	DEC wDebugContinues ; Decrease
 	JMP +s ; Skip ahead
 +r
-	LDA Debug_Continues
+	LDA wDebugContinues
 	CMP #$09
 	BEQ +f ; Already maxed out
-	INC Debug_Continues ; Otherwise increase
+	INC wDebugContinues ; Otherwise increase
 +s
 	JSR DebugMenu_MenuChange
 	JSR DebugMenu_UpdateContinues
@@ -446,33 +446,33 @@ DebugMenu_Health:
 	BEQ +r
 	BNE +q
 +l
-	LDA Debug_Health
-	CMP Debug_MaxHealth
+	LDA wDebugHealth
+	CMP wDebugMaxHealth
 	BCC +
 	; Increase max health, if we can
-	LDA Debug_MaxHealth
+	LDA wDebugMaxHealth
 	CMP #$03
 	BCS +f ; Already 4 max health
-	INC Debug_MaxHealth
-	LDA Debug_MaxHealth
-	STA Debug_Health
+	INC wDebugMaxHealth
+	LDA wDebugMaxHealth
+	STA wDebugHealth
 	BNE +s ; Skip ahead
 	+
 	; Increase health
-	INC Debug_Health
+	INC wDebugHealth
 	BNE +s ; Skip ahead
 +r
-	LDA Debug_Health
+	LDA wDebugHealth
 	BEQ +
 	; Decrease health
-	DEC Debug_Health
+	DEC wDebugHealth
 	BPL +s ; Skip ahead
 	+
 	; Decrease max health, if we can
-	LDA Debug_MaxHealth
+	LDA wDebugMaxHealth
 	CMP #$02
 	BCC +f ; Already 2 max hearts
-	DEC Debug_MaxHealth
+	DEC wDebugMaxHealth
 +s
 	JSR DebugMenu_MenuChange
 	JSR DebugMenu_UpdateHealth
@@ -486,12 +486,16 @@ DebugMenu_Health:
 	JMP DebugMenu_MenuLoop
 
 DebugMenu_MenuStart:
-	LDA #DPCM_PlayerDeath
+	LDA #DPCM_Unused
 	STA iDPCMSFX2
 	RTS
 
-DebugMenu_MenuMove:
 DebugMenu_MenuChange:
+	LDA #DPCM_ItemPull
+	STA iDPCMSFX1
+	RTS
+
+DebugMenu_MenuMove:
 	LDA #DPCM_Select
 	STA iDPCMSFX2
 	RTS
@@ -511,20 +515,20 @@ DebugMenu_MenuError:
 ; Applies the current options to the player
 ;
 DebugMenu_ApplyOptions:
-	LDA Debug_Lives
+	LDA wDebugLives
 	STA iExtraMen
-	LDA Debug_Continues
+	LDA wDebugContinues
 	STA iNumContinues
 
 	LDA #PlayerHealth_2_HP
-	LDA Debug_Health
+	LDA wDebugHealth
 	ASL A
 	ASL A
 	ASL A
 	ASL A
 	ORA #$0F
 	STA iPlayerHP
-	LDA Debug_MaxHealth
+	LDA wDebugMaxHealth
 	SEC
 	SBC #$01
 	STA iPlayerMaxHP
@@ -535,7 +539,7 @@ DebugMenu_ApplyOptions:
 ; Loads the the current character if there was a change
 ;
 DebugMenu_LoadCharacter:
-	LDA Debug_Character
+	LDA wDebugCharacter
 	CMP zCurrentCharacter
 	BEQ +
 
@@ -627,7 +631,7 @@ DebugMenu_Reset:
 	RTS
 
 DebugMenu_UpdateArea:
-	LDA Debug_Area ; Load current area
+	LDA wDebugArea ; Load current area
 	PHA ; Push onto stack
 	LDA #$0B ; Load text to update
 	BNE - ; Go do that.
@@ -635,13 +639,13 @@ DebugMenu_UpdateArea:
 DebugMenu_UpdateCharacter:
 	LDA #$0C ; Load text offset of Mario (0)
 	CLC
-	ADC Debug_Character ; Add the character index ...
+	ADC wDebugCharacter ; Add the character index ...
 	JMP DebugMenu_BufferText ; ...and draw it.
 
 DebugMenu_UpdateLives:
 	LDA #$10
 	JSR DebugMenu_BufferText
-	LDA Debug_Lives
+	LDA wDebugLives
 	SEC
 	SBC #$01
 	JSR GetTwoDigitNumberTiles
@@ -652,7 +656,7 @@ DebugMenu_UpdateLives:
 DebugMenu_UpdateContinues:
 	LDA #$12
 	JSR DebugMenu_BufferText
-	LDA Debug_Continues
+	LDA wDebugContinues
 	CLC
 	ADC #$D0
 	STA iPPUBuffer + 3
@@ -668,10 +672,10 @@ DebugMenu_UpdateHealth:
 	LDX #$04
 	-
 	LDA #$FD
-	CPY Debug_Health
+	CPY wDebugHealth
 	BCC +
 	LDA #$FC
-	CPY Debug_MaxHealth
+	CPY wDebugMaxHealth
 	BCC +
 	LDA #$CF
 	+
@@ -686,7 +690,7 @@ DebugMenu_UpdateHealth:
 DebugMenu_UpdateLevel:
 	LDX #$00 ; Set X to 0
 -
-	LDA Debug_Level ; Get the starting level index
+	LDA wDebugLevel ; Get the starting level index
 	CMP WorldStartingLevel, X ; Is it higher than our current level?
 	BCC + ; Yep, jump outta here
 	INX ; No, try next index
@@ -696,7 +700,7 @@ DebugMenu_UpdateLevel:
 	DEX ; Go down one
 	TXA ; This is current world - 1
 	PHA ; Stuff onto stack
-	LDA Debug_Level
+	LDA wDebugLevel
 	SEC
 	SBC WorldStartingLevel, X ; Get the starting level index
 	PHA
@@ -712,7 +716,7 @@ DebugMenu_UpdateLevel:
 	ADC #$D1
 	STA iPPUBuffer + 3
 
-	LDA Debug_Area ; Load current area
+	LDA wDebugArea ; Load current area
 	CLC
 	ADC #$D0
 	STA iPPUBuffer + 9
@@ -749,7 +753,7 @@ DebugMenu_GetWorld:
 
 
 DebugMenu_UpdateCursor:
-	LDA Debug_CurrentMenuOption
+	LDA wDebugCurrentMenuOption
 	JSR JumpToTableAfterJump
 
 	.dw DebugMenu_UpdateCursorWithNoOffset ; Character
@@ -764,20 +768,20 @@ DebugMenu_UpdateCursor:
 
 DebugMenu_UpdateCursorWithNoOffset:
 	LDA #$00
-	STA Debug_CursorTileOffset
+	STA wDebugCursorTileOffset
 	BEQ DebugMenu_UpdateCursorWithTileOffset
 
 DebugMenu_UpdateCursorWithWorldOffset:
-	LDY Debug_World
+	LDY wDebugWorld
 	LDA DebugMenu_WorldTileOffset, Y
-	STA Debug_CursorTileOffset
+	STA wDebugCursorTileOffset
 
 DebugMenu_UpdateCursorWithTileOffset:
-	LDA Debug_CurrentMenuOption
+	LDA wDebugCurrentMenuOption
 	ASL A
 	ASL A
 	CLC
-	ADC Debug_CurrentMenuOption
+	ADC wDebugCurrentMenuOption
 
 	; x-position
 	TAX
@@ -797,25 +801,25 @@ DebugMenu_UpdateCursorWithTileOffset:
 	INX
 	LDA DebugMenu_CursorPosition, X
 	CLC
-	ADC Debug_CursorTileOffset
+	ADC wDebugCursorTileOffset
 	STA iVirtualOAM + 1
 	INX
 	LDA DebugMenu_CursorPosition, X
 	CLC
-	ADC Debug_CursorTileOffset
+	ADC wDebugCursorTileOffset
 	STA iVirtualOAM + 5
 
 	; attributes
 	INX
 	LDA DebugMenu_CursorPosition, X
 	AND #%11100011
-	STA Debug_Temp
+	STA wDebugTemp
 	STA iVirtualOAM + 2
 	LDA DebugMenu_CursorPosition, X
 	ASL A
 	ASL A
 	ASL A
-	EOR Debug_Temp
+	EOR wDebugTemp
 	STA iVirtualOAM + 6
 	RTS
 
@@ -874,7 +878,7 @@ DebugMenu_InitCharacterSprite:
 
 DebugMenu_UpdateCharacterSprite:
 	; tile
-	LDX Debug_Character
+	LDX wDebugCharacter
 	LDA DebugMenu_CharacterStartTile, X
 	TAX
 	STX iVirtualOAM + 9

@@ -89,7 +89,7 @@ ENDIF
 ; Hmm, I wonder how this actually works when
 ; dealing with the fact the level data is
 ; in another bank...
-; Bank 7 is some DPCM data
+; Bank 7 is empty
 .base $8000
 .include "src/prg-6-7.asm"
 .pad $c000, $00
@@ -104,7 +104,7 @@ ENDIF
 ; ----------------------------------------
 ; Banks A and B. Mostly bonus chance,
 ; character stats, and some PPU commands.
-; Lots of empty space here too... and DPCM data
+; Lots of empty space here too
 .base $8000
 .include "src/prg-a-b.asm"
 .pad $c000, $00
@@ -112,7 +112,7 @@ ENDIF
 ; ----------------------------------------
 ; Banks C and D. The first half is
 ; a lot of data for the credits.
-; The second half has even more DPCM data.
+; The second half is empty.
 .base $8000
 .include "src/prg-c-d.asm"
 .pad $c000, $00
@@ -140,8 +140,7 @@ ENDIF
 ; Banks 1E and 1F.
 ; Important things like NMI and often-used
 ; routines.
-; Bank E also contains PCM data for the
-; drums and samples.
+; Bank E also contains PCM data for some samples
 .base $c000    ; Technically not needed but consistent
 .include "src/prg-e-f.asm"
 

@@ -34,7 +34,7 @@ DebugHook_Hijack:
 
 	; Enable the debug menu flag
 	LDA #$01
-	STA Debug_InMenu
+	STA wDebugInMenu
 
 	; Stash a bunch of stuff
 	JSR DebugHook_BackupScroll
@@ -52,12 +52,12 @@ DebugHook_Hijack:
 ; Similar idea to JumpToTableAfterJump
 ;
 DebugHook_ExitToAddressAfterJump:
-	STA Debug_StashA
-	STX Debug_StashX
-	STY Debug_StashY
+	STA wDebugBackupA
+	STX wDebugBackupX
+	STY wDebugBackupY
 	PHP
 	PLA
-	STA Debug_StashP
+	STA wDebugBackupP
 
 	; Save the source address
 	PLA
@@ -68,14 +68,14 @@ DebugHook_ExitToAddressAfterJump:
 	; Determine the jump address
 	LDY #$01
 	LDA (z0a), Y
-	STA Debug_JumpAddressLo
+	STA wDebugJumpAddressLo
 	INY
 	LDA (z0a), Y
-	STA Debug_JumpAddressHi
+	STA wDebugJumpAddressHi
 
 DebugHook_ExitToJumpAddress:
 	LDA #$00
-	STA Debug_InMenu
+	STA wDebugInMenu
 
 	JSR DebugHook_RestoreRAM
 
@@ -101,15 +101,15 @@ DebugHook_ExitToJumpAddress:
 	PLA
 
 	; Restore the registers and processor flags
-	LDA Debug_StashP
+	LDA wDebugBackupP
 	PHP
-	LDA Debug_StashA
-	LDX Debug_StashX
-	LDY Debug_StashY
+	LDA wDebugBackupA
+	LDX wDebugBackupX
+	LDY wDebugBackupY
 	PLP
 
 	; Jump to the destination
-	JMP (Debug_JumpAddressLo)
+	JMP (wDebugJumpAddressLo)
 
 
 ;
@@ -118,7 +118,7 @@ DebugHook_ExitToJumpAddress:
 ;
 DebugHook_CheckEligibility:
 	; Not already in debug menu
-	LDA Debug_InMenu
+	LDA wDebugInMenu
 	BNE +f
 
 	; Require current mode to be normal gameplay
@@ -202,7 +202,7 @@ DebugHook_BackupRAM:
 	; Stash the value
 	LDY #$00
 	LDA (z00), Y
-	STA Debug_Stash, X
+	STA wDebugBackup, X
 	; Next
 	INX
 	CPX #((DebugPreserveAddresses_End - DebugPreserveAddresses) / 2)
@@ -223,7 +223,7 @@ DebugHook_RestoreRAM:
 	STA z01
 	; Stash the value
 	LDY #$00
-	LDA Debug_Stash, X
+	LDA wDebugBackup, X
 	STA (z00), Y
 	; Next
 	INX
