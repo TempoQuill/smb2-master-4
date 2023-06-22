@@ -799,4 +799,13 @@ CHRBank_EndingBackground10 = $74
 CHRBank_EndingBackground11 = $78
 CHRBank_EndingBackground12 = $7C
 
+NSFBank0 = $5ff8
+NSFBank1 = $5ff9
+NSFBank2 = $5ffa
+NSFBank3 = $5ffb
+NSFBank4 = $5ffc
+NSFBank5 = $5ffd
+NSFBank6 = $5ffe
+NSFBank7 = $5fff
+
 .endinl

@@ -389,10 +389,15 @@ ProcessDPCMQueue1_PointerLoop:
 	LSR A
 	BCC ProcessDPCMQueue1_PointerLoop
 
-IF INES_MAPPER = MAPPER_MMC5
 	LDA DMCBankTable - 1, Y
-	ORA #$80
-	STA MMC5_PRGBankSwitch4
+IFNDEF NSF_FILE
+	IF INES_MAPPER = MAPPER_MMC5
+		ORA #$80
+		STA MMC5_PRGBankSwitch4
+	ENDIF
+ELSE
+	SBC #$16
+	JSR SwitchDPCMBank
 ENDIF
 
 	LDA DMCFreqTable - 1, Y
@@ -425,10 +430,15 @@ ProcessDPCMQueue2_PointerLoop:
 	LSR A
 	BCC ProcessDPCMQueue2_PointerLoop
 
-IF INES_MAPPER = MAPPER_MMC5
 	LDA DMCBankTable2 - 1, Y
-	ORA #$80
-	STA MMC5_PRGBankSwitch4
+IFNDEF NSF_FILE
+	IF INES_MAPPER = MAPPER_MMC5
+		ORA #$80
+		STA MMC5_PRGBankSwitch4
+	ENDIF
+ELSE
+	SBC #$16
+	JSR SwitchDPCMBank
 ENDIF
 
 	LDA DMCFreqTable2 - 1, Y
@@ -952,8 +962,16 @@ ProcessMusicQueue_DPCMNoteLoop:
 
 	; get octave bank
 	LDA DPCMOctaves, X
-	ORA #$80
-	STA MMC5_PRGBankSwitch4
+IFNDEF NSF_FILE
+	IF INES_MAPPER = MAPPER_MMC5
+		ORA #$80
+		STA MMC5_PRGBankSwitch4
+	ENDIF
+ELSE
+	SEC
+	SBC #$16
+	JSR SwitchDPCMBank
+ENDIF
 
 	; relead the note for offset
 	LDA (zCurrentMusicPointer), Y

@@ -21,9 +21,6 @@
 ;   - and more!
 ;
 
-; Include DPCM samples
-.incbin "src/music/ldp-sample-area.bin"
-
 ; PPU update buffers used to update the screen
 ScreenUpdateBufferPointers:
 	.dw iPPUBuffer ; Default screen update buffer

@@ -16,26 +16,10 @@ ENDIF
 	MIRROR_4SCREEN = %0000
 .endinl
 
-; -----------------------------------------
-; Add NES header
-	.db "NES", $1a ; identification of the iNES header
-
-	.db 16 ; this can go up to 32
-
-IFDEF EXPAND_CHR
-	.db 32
+IFNDEF NSF_FILE
+	.include "inesheader.asm"
 ELSE
-	.db 16 ; number of 8KB CHR-ROM pages
-ENDIF
-
-.db ((INES_MAPPER & %00001111) << 4) | MIRROR_4SCREEN ; mapper (lower nybble) and mirroring
-IF INES_MAPPER == MAPPER_MMC5
-	.dsb 3, $00
-	.db $70 ; flags 10
-	.dsb 5, $00 ; clear the remaining bytes
-ELSE ; INES_MAPPER == MAPPER_MMC3
-	.db INES_MAPPER & %11110000 ; mapper (upper nybble)
-	.dsb 8, $00 ; clear the remaining bytes
+	.include "nsf-header.asm"
 ENDIF
 
 ; -----------------------------------------
@@ -64,19 +48,21 @@ ENDIF
 ; You should split these again if you plan on making any
 ; really huge modifications...
 
-; ----------------------------------------
-; Banks 0 and 1. Basically potpourri.
-; Lots of crap everywhere.
-; Title screen and some other stuff too.
-.base $8000
-.include "src/prg-0-1.asm"
-.pad $c000, $00
+IFNDEF NSF_FILE
+	; ----------------------------------------
+	; Banks 0 and 1. Basically potpourri.
+	; Lots of crap everywhere.
+	; Title screen and some other stuff too.
+	.base $8000
+	.include "src/prg-0-1.asm"
+	.pad $c000, $00
 
-; ----------------------------------------
-; Banks 2 and 3. Enemy/object code.
-.base $8000
-.include "src/prg-2-3.asm"
-.pad $c000, $00
+	; ----------------------------------------
+	; Banks 2 and 3. Enemy/object code.
+	.base $8000
+	.include "src/prg-2-3.asm"
+	.pad $c000, $00
+ENDIF
 
 ; ----------------------------------------
 ; Banks 4 and 5. Music engine and song data.
@@ -84,42 +70,44 @@ ENDIF
 .include "src/prg-4-5.asm"
 .pad $c000, $00
 
-; ----------------------------------------
-; Bank 6 and 7. Level handling ode, I think.
-; Hmm, I wonder how this actually works when
-; dealing with the fact the level data is
-; in another bank...
-; Bank 7 is empty
-.base $8000
-.include "src/prg-6-7.asm"
-.pad $c000, $00
+IFNDEF NSF_FILE
+	; ----------------------------------------
+	; Bank 6 and 7. Level handling ode, I think.
+	; Hmm, I wonder how this actually works when
+	; dealing with the fact the level data is
+	; in another bank...
+	; Bank 7 is empty
+	.base $8000
+	.include "src/prg-6-7.asm"
+	.pad $c000, $00
 
-; ----------------------------------------
-; Bank 8 and 9. Entirely level data.
-; Some more unused space as usual.
-.base $8000
-.include "src/prg-8-9.asm"
-.pad $c000, $00
+	; ----------------------------------------
+	; Bank 8 and 9. Entirely level data.
+	; Some more unused space as usual.
+	.base $8000
+	.include "src/prg-8-9.asm"
+	.pad $c000, $00
 
-; ----------------------------------------
-; Banks A and B. Mostly bonus chance,
-; character stats, and some PPU commands.
-; Lots of empty space here too
-.base $8000
-.include "src/prg-a-b.asm"
-.pad $c000, $00
+	; ----------------------------------------
+	; Banks A and B. Mostly bonus chance,
+	; character stats, and some PPU commands.
+	; Lots of empty space here too
+	.base $8000
+	.include "src/prg-a-b.asm"
+	.pad $c000, $00
 
-; ----------------------------------------
-; Banks C and D. The first half is
-; a lot of data for the credits.
-; The second half is empty.
-.base $8000
-.include "src/prg-c-d.asm"
-.pad $c000, $00
+	; ----------------------------------------
+	; Banks C and D. The first half is
+	; a lot of data for the credits.
+	; The second half is empty.
+	.base $8000
+	.include "src/prg-c-d.asm"
+	.pad $c000, $00
 
-; ----------------------------------------
-; extra PRG-ROM pages (5 bank pairs)
-.dsb (10 * $2000), $00
+	; ----------------------------------------
+	; extra PRG-ROM pages (5 bank pairs)
+	.dsb (10 * $2000), $00
+ENDIF
 
 ; SAWTOOTH DPCM AREA
 .base $c000
@@ -142,15 +130,21 @@ ENDIF
 ; routines.
 ; Bank E also contains PCM data for some samples
 .base $c000    ; Technically not needed but consistent
-.include "src/prg-e-f.asm"
+; Include DPCM samples
+.incbin "src/music/ldp-sample-area.bin"
+IFNDEF NSF_FILE
+	.include "src/prg-e-f.asm"
 
 
-; -----------------------------------------
-; include CHR-ROM
-.incbin "smb2.chr"
+	; -----------------------------------------
+	; include CHR-ROM
+	.incbin "smb2.chr"
 
-; ----------------------------------------
-; extra CHR-ROM pages
-IFDEF EXPAND_CHR
-.dsb (16 * $2000), $00
+	; ----------------------------------------
+	; extra CHR-ROM pages
+	IFDEF EXPAND_CHR
+		.dsb (16 * $2000), $00
+	ENDIF
+ELSE
+	.include "src/nsf-home.asm"
 ENDIF
