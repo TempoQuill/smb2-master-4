@@ -1348,6 +1348,7 @@ ResetAreaAndProcessGameMode_NotGameOver:
 
 DoWorldWarp:
 	; Show warp screen
+	LDY iCurrentWorld
 	LDA WarpDestinations, Y
 	STA iCurrentWorld
 	TAY

@@ -5018,6 +5018,18 @@ loc_BANK0_9B3B:
 ; ---------------------------------------------------------------------------
 
 loc_BANK0_9B4D:
+	LDA z02
+	CMP #$22
+	BEQ TitleSFX
+	CMP #$1a
+	BEQ TitleSFX
+	CMP #$12
+	BNE SkipTitleSFX
+
+TitleSFX:
+	JSR PlayBombSFX
+
+SkipTitleSFX:
 	LDA zInputBottleneck
 	AND #ControllerInput_Start
 	BEQ loc_BANK0_9B56
@@ -7404,4 +7416,12 @@ EnsureCorrectMusic:
 	STA iMusic1
 
 EnsureCorrectMusic_Exit:
+	RTS
+
+PlayBombSFX:
+	LDA iCurrentDPCMSFX1
+	BNE PlayBombSFX_Exit
+	LDA #DPCM_DoorOpenBombBom
+	STA iDPCMSFX1
+PlayBombSFX_Exit:
 	RTS

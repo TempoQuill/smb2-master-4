@@ -31,7 +31,7 @@
 ; PRESERVE_UNUSED_SPACE = 1
 
 ; NSF Building
-NSF_FILE = 1
+; NSF_FILE = 1
 
 ; ----------------------------------------
 ; Build PRG1 / Revision A ROM.

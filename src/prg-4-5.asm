@@ -619,9 +619,8 @@ ProcessMusicQueue_Square2EndOfNote:
 	LDA (zCurrentMusicPointer), Y
 	BEQ ProcessMusicQueue_EndOfSegment
 
-	BPL ProcessMusicQueue_Square2Note
-
-	BNE ProcessMusicQueue_Square2Patch
+	BMI ProcessMusicQueue_Square2Patch
+	JMP ProcessMusicQueue_Square2Note
 
 ProcessMusicQueue_EndOfSegment:
 	LDA iCurrentMusic1
@@ -648,9 +647,19 @@ StopMusic:
 	JSR ProcessMusicQueue_DPCMDisable
 
 LeaveDPCMAlone:
+	LDA iCurrentPulse1SFX
+	BNE LeavePulseAlone
+
+	LDA #$10
+	STA SQ2_VOL
+	LDA #$00
+	STA SQ2_HI
+	STA SQ2_LO
+	STA SQ2_SWEEP
+
+LeavePulseAlone:
 	LDA #$10
 	STA SQ1_VOL
-	STA SQ2_VOL
 	STA NOISE_VOL
 	LDA #$00
 	STA iCurrentMusic2
@@ -658,9 +667,6 @@ LeaveDPCMAlone:
 	STA SQ1_HI
 	STA SQ1_LO
 	STA SQ1_SWEEP
-	STA SQ2_HI
-	STA SQ2_LO
-	STA SQ2_SWEEP
 	STA NOISE_HI
 	STA NOISE_LO
 	STA TRI_LINEAR
