@@ -204,26 +204,26 @@ MusicDataEnding3_Noise:
 	.db $02
 MusicDataEnding3_DPCM:
 	.db $8A
-	.db $50 + $18
+	.db $68
 	.db $88
-	.db $48 + $18
-	.db $3E + $18
+	.db $60
+	.db $56
 	.db $8A
-	.db $42 + $18
+	.db $5A
 	.db $84
 	.db $7E
-	.db $42 + $18
-	.db $46 + $18
-	.db $48 + $18
+	.db $5A
+	.db $5E
+	.db $60
 	.db $8A
-	.db $42 + $18
+	.db $5A
 	.db $84
 	.db $7E
-	.db $42 + $18
-	.db $46 + $18
-	.db $50 + $18
+	.db $5A
+	.db $5E
+	.db $68
 	.db $8A
-	.db $48 + $18
-	.db $48 + $18
-	.db $48 + $18
+	.db $60
+	.db $60
+	.db $60
 	.db $7E

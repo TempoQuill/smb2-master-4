@@ -157,40 +157,40 @@ MusicDataEnding5_Noise:
 	.db $00
 MusicDataEnding5_DPCM:
 	.db $8A
-	.db $50 + $18
+	.db $68
 	.db $82
 	.db $7E
 	.db $87
-	.db $52 + $18
+	.db $6A
 	.db $84
-	.db $50 + $18
-	.db $48 + $18
-	.db $4C + $18
+	.db $68
+	.db $60
+	.db $64
 	.db $80
 	.db $7E
-	.db $56 + $18
+	.db $6E
 	.db $7E
 	.db $7E
 	.db $89
-	.db $3E + $18
+	.db $56
 	.db $88
 	.db $7E
 	.db $8A
-	.db $4C + $18
+	.db $64
 	.db $82
 	.db $7E
 	.db $87
-	.db $4E + $18
+	.db $66
 	.db $84
-	.db $4C + $18
-	.db $44 + $18
-	.db $48 + $18
+	.db $64
+	.db $5C
+	.db $60
 	.db $80
 	.db $7E
-	.db $52 + $18
+	.db $6A
 	.db $7E
 	.db $7E
 	.db $89
-	.db $3A + $18
+	.db $52
 	.db $88
 	.db $7E

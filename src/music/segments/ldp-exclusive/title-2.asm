@@ -179,51 +179,51 @@ MusicDataTitleScreen2_Noise:
 
 MusicDataTitleScreen2_DPCM:
 	.db $84
-	.db $5A + $18
+	.db $72
 	.db $7E
 	.db $7E
-	.db $4E + $18
+	.db $66
 	.db $7E
 	.db $7E
-	.db $48 + $18
+	.db $60
 	.db $7E
 	.db $7E
-	.db $42 + $18
+	.db $5A
 	.db $7E
 	.db $7E
-	.db $36 + $18
-	.db $34 + $18
-	.db $36 + $18
+	.db $4E
+	.db $4C
+	.db $4E
 	.db $7E
-	.db $5A + $18
-	.db $7E
-	.db $7E
-	.db $4E + $18
+	.db $72
 	.db $7E
 	.db $7E
-	.db $48 + $18
+	.db $66
 	.db $7E
 	.db $7E
-	.db $42 + $18
+	.db $60
 	.db $7E
 	.db $7E
-	.db $36 + $18
-	.db $34 + $18
-	.db $36 + $18
+	.db $5A
+	.db $7E
+	.db $7E
+	.db $4E
+	.db $4C
+	.db $4E
 	.db $7E
 	.db $89
-	.db $3E + $18
-	.db $3E + $18
-	.db $3E + $18
-	.db $38 + $18
+	.db $56
+	.db $56
+	.db $56
+	.db $50
 	.db $88
-	.db $3A + $18
-	.db $3E + $18
+	.db $52
+	.db $56
 	.db $89
-	.db $42 + $18
-	.db $42 + $18
-	.db $42 + $18
-	.db $3A + $18
+	.db $5A
+	.db $5A
+	.db $5A
+	.db $52
 	.db $88
-	.db $3E + $18
-	.db $42 + $18
+	.db $56
+	.db $5A

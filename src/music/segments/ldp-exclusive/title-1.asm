@@ -210,4 +210,3 @@ MusicDataTitleScreen1_DPCM:
 	.db $7E
 	.db $84
 	.db $7E
-	.db $00

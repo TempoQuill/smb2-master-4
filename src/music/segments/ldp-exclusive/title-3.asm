@@ -98,19 +98,18 @@ MusicDataTitleScreen3_Noise:
 
 MusicDataTitleScreen3_DPCM:
 	.db $89
-	.db $3E + $18
-	.db $42 + $18
-	.db $48 + $18
-	.db $42 + $18
+	.db $56
+	.db $5A
+	.db $60
+	.db $5A
 	.db $88
-	.db $48 + $18
-	.db $4C + $18
+	.db $60
+	.db $64
 	.db $89
-	.db $48 + $18
-	.db $4C + $18
+	.db $60
+	.db $64
 	.db $88
-	.db $52 + $18
+	.db $6A
 	.db $8A
-	.db $56 + $18
+	.db $6E
 	.db $7E
-	.db $00

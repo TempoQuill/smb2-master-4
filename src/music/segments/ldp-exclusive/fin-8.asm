@@ -199,48 +199,48 @@ MusicDataEnding8_Noise:
 	.db $00
 MusicDataEnding8_DPCM:
 	.db $89
-	.db $3A + $18
+	.db $52
 	.db $80
-	.db $3E + $18
-	.db $42 + $18
+	.db $56
+	.db $5A
 	.db $88
-	.db $3E + $18
-	.db $3A + $18
+	.db $56
+	.db $52
 	.db $89
-	.db $38 + $18
+	.db $50
 	.db $80
-	.db $38 + $18
-	.db $3A + $18
+	.db $50
+	.db $52
 	.db $88
-	.db $3C + $18
-	.db $3E + $18
+	.db $54
+	.db $56
 	.db $89
-	.db $42 + $18
+	.db $5A
 	.db $80
-	.db $46 + $18
-	.db $48 + $18
+	.db $5E
+	.db $60
 	.db $88
-	.db $46 + $18
+	.db $5E
 	.db $84
-	.db $48 + $18
-	.db $4C + $18
+	.db $60
+	.db $64
 	.db $88
-	.db $50 + $18
+	.db $68
 	.db $84
-	.db $4E + $18
-	.db $50 + $18
+	.db $66
+	.db $68
 	.db $88
-	.db $52 + $18
-	.db $50 + $18
+	.db $6A
+	.db $68
 	.db $89
-	.db $48 + $18
+	.db $60
 	.db $80
-	.db $46 + $18
-	.db $48 + $18
+	.db $5E
+	.db $60
 	.db $86
-	.db $42 + $18
-	.db $46 + $18
-	.db $48 + $18
+	.db $5A
+	.db $5E
+	.db $60
 	.db $8A
-	.db $4C + $18
-	.db $4E + $18
+	.db $64
+	.db $66

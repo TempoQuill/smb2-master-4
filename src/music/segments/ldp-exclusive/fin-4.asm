@@ -21,6 +21,6 @@ MusicDataEnding4_Noise:
 MusicDataEnding4_DPCM:
 	.db $8A
 	.db $7E
-	.db $3E + $18
-	.db $42 + $18
-	.db $46 + $18
+	.db $56
+	.db $5A
+	.db $5E
