@@ -58,7 +58,7 @@ MusicDataSubcons1_Triangle:
 	.db $3E
 	.db $34
 	.db $26
-	.db $7e
+	.db $7E
 MusicDataSubcons1_Noise:
 	.db $89
 	.db $01

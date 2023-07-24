@@ -52,7 +52,7 @@ MusicDataSubcons3_Square1:
 	.db $FB
 	.db $38
 	.db $F8
-	.db $7e
+	.db $7E
 MusicDataSubcons3_Triangle:
 	.db $82
 	.db $30
@@ -102,7 +102,7 @@ MusicDataSubcons3_Triangle:
 	.db $7E
 	.db $30
 	.db $7E
-	.db $7e
+	.db $7E
 MusicDataSubcons3_Noise:
 	.db $82
 	.db $02
