@@ -333,16 +333,12 @@ zXVelocity:
 	.dsb 1 ; $00ba
 zCurrentMusicPointer:
 	.dsb 2 ; $00bb
-zNextNoteLo:
-	.dsb 1 ; $00bd
-zNextNoteHi:
-	.dsb 1 ; $00be
+zNextPitch:
+	.dsb 2 ; $00bd
 ; FOR RENT
 	.dsb 1 ; $00bf
 	.dsb 1 ; $00c0
-zPulse2Index:
 	.dsb 1 ; $00c1
-; FOR RENT
 	.dsb 1 ; $00c2
 zNoiseSFXOffset:
 	.dsb 1 ; $00c3
@@ -1492,13 +1488,11 @@ iMusicChannelCount:
 	.dsb 1 ; $05f6
 iDPCMNoteRatioLength:
 	.dsb 1 ; $05f7
-; FOR RENT
-	.dsb 1 ; $05f8
-; FOR RENT
-	.dsb 1 ; $05f9
+iDPCMNoteLength:
+	.dsb 2 ; $05f8
 iDPCMNoteLengthCounter:
 	.dsb 1 ; $05fa
-iDPCMNoteLength:
+; FOR RENT
 	.dsb 1 ; $05fb
 iCurrentDPCMStartPoint:
 	.dsb 1 ; $05fc
@@ -1519,13 +1513,13 @@ iMusic1:
 	.dsb 1 ; $0600
 
 ; $01 Door
-; $02 Bongo A
-; $04 Injury
+; $02 Rocket
+; $04 POW
 ; $08 Hold
-; $10 Defeat
-; $20 Bongo B
-; $40 Squawk
-; $80 Down
+; $10 Injury
+; $20 Unused
+; $40 Watch
+; $80 Exit
 iDPCMSFX1:
 	.dsb 1 ; $0601
 
@@ -1533,10 +1527,10 @@ iDPCMSFX1:
 ; $02 Lamp
 ; $04 Select
 ; $08 Throw
-; $10 Extra
-; $20 Impact
-; $40 Watch
-; $80 Exit
+; $10 Defeat
+; $20 Squawk
+; $40 Impact
+; $80 Down
 iDPCMSFX2:
 	.dsb 1 ; $0602
 
@@ -1546,7 +1540,7 @@ iDPCMSFX2:
 ; $08 Death jingle
 ; $10 Game over
 ; $20 Mini-fanfare (slot win, crystal get)
-; $40 Same as $01
+; $40 Subcons
 ; $80 Silence (stops music)
 iMusic2:
 	.dsb 1 ; $0603
@@ -1565,8 +1559,8 @@ iPulse1SFX:
 ; $01 Short noise
 ; $02 Rumbling sound (phanto, rocket)
 ; $04 Rumbling sound (POW)
-; $08 (-N/A-) Door / Bomb
-; $10 (-N/A-) Hawk / Bubbles
+; $08 Door / Bomb
+; $10 Hawk / Bubbles
 ; $20 -N/A-
 ; $40 -N/A-
 ; $80 -N/A-

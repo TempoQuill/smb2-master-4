@@ -470,74 +470,93 @@ ProcessMusicQueue_StopMusic:
 	JMP StopMusic
 
 ProcessMusicQueue:
+	; start by checking for no music
 	LDA iMusic2
 	BMI ProcessMusicQueue_StopMusic
 
+	; check for looping songs in iMusic2
 	CMP #Music2_EndingAndCast
 	BEQ ProcessMusicQueue_EndingAndCast
 
 	CMP #Music2_SubconsFreed
 	BEQ ProcessMusicQueue_Subcons
 
+	; if iMusic2 != 0, branch
 	LDA iMusic2
 	BNE ProcessMusicQueue_Part2
 
+	; if iMusic1 != 0, branch
 	LDA iMusic1
 	BNE ProcessMusicQueue_MusicQueue1
 
+	; if any music is playing, read note data
+	; else return
 	LDA iCurrentMusic2
 	ORA iCurrentMusic1
 	BNE ProcessMusicQueue_ThenReadNoteData
 	RTS
 
 ProcessMusicQueue_Subcons:
+	; subcons theme ($40) is queued up, so initialize & read pointer
 	JSR ProcessMusicQueue_SpecialSong
 	INY
 	BNE ProcessMusicQueue_ReadFirstPointer
 
 ProcessMusicQueue_EndingAndCast:
+	; credits ($04) is queued up, so initialize & read pointer
 	JSR ProcessMusicQueue_SpecialSong
 	BNE ProcessMusicQueue_ReadFirstPointer
 
 ProcessMusicQueue_MusicQueue1:
+	; iMusic1 != 0, initialize
 	STA iCurrentMusic1
 	LDY #$00
 	STY iCurrentMusic2
 	LDY #$FF
 
 ProcessMusicQueue_FirstPointerLoop:
+	; iMusic1 -> Y = bit no. 0-7
 	INY
 	LSR A
 	BCC ProcessMusicQueue_FirstPointerLoop
 
 ProcessMusicQueue_ReadFirstPointer:
+	; store the ammount of channels
 	LDA MusicChannelStack, Y
 	STA iMusicChannelCount
+	; starting point
 	LDA MusicPointersFirstPart, Y
 	STA iMusicStartPoint
+	; ending point
 	LDA MusicPointersEndPart, Y
 	CLC
 	ADC #$02
 	STA iMusicEndPoint
+	; loop point
 	LDA MusicPointersLoopPart, Y
 	STA iMusicLoopPoint
+	; store the beginning offset
 	LDA iMusicStartPoint
 
 ProcessMusicQueue_SetCurrentPart:
 	STA iCurrentMusicOffset
 
 ProcessMusicQueue_SetNextPart:
+	; Y = music offset + 1, check if we reached the end
 	INC iCurrentMusicOffset
 	LDY iCurrentMusicOffset
 	CPY iMusicEndPoint
 	BNE ProcessMusicQueue_ReadHeader
 
+	; reset offset to loop point if we reached the end
 	LDA iMusicLoopPoint
 	BNE ProcessMusicQueue_SetCurrentPart
 
+	; we're here if there's no loop, stop the music
 	JMP StopMusic
 
 ProcessMusicQueue_Part2:
+	; iMusic2 != 0, back iCurrentMusic1 up, initialize
 	STA iCurrentMusic2
 	LDY iCurrentMusic1
 	STY iMusicStack
@@ -545,32 +564,41 @@ ProcessMusicQueue_Part2:
 	STY iCurrentMusic1
 
 ProcessMusicQueue_PointerLoop:
+	; iMusic2 -> Y = bit no. 0-7
 	INY
 	LSR A
 	BCC ProcessMusicQueue_PointerLoop
 
+	; store the ammount of channels
 	LDA MusicChannelStack + 9, Y
 	STA iMusicChannelCount
 
 ProcessMusicQueue_ReadHeader:
+	; nab offset, X = channel ammount 3-5
 	LDX iMusicChannelCount
 	LDA MusicPartPointers - 1, Y
 	TAY
+	; header data
+	; byte 1 - note length
 	LDA MusicPartPointers, Y
 	STA iNoteLengthOffset
+	; byte 2-3 - music pointer, pulse 2
 	LDA MusicPartPointers + 1, Y
 	STA zCurrentMusicPointer
 	LDA MusicPartPointers + 2, Y
 	STA zCurrentMusicPointer + 1
 	DEX
+	; byte 4 - hill offset
 	LDA MusicPartPointers + 3, Y
 	STA iCurrentHillOffset
 	DEX
+	; byte 5 - pulse 1 offset
 	LDA MusicPartPointers + 4, Y
 	STA iCurrentPulse1Offset
 	DEX
 	BNE ProcessMusicQueue_ReadHeaderNoise
 
+	; no noise or DPCM
 	LDA #0
 	STA iCurrentNoiseOffset
 	STA iCurrentNoiseStartPoint
@@ -579,18 +607,21 @@ ProcessMusicQueue_ReadHeader:
 	BEQ ProcessMusicQueue_DefaultNotelength
 
 ProcessMusicQueue_ReadHeaderNoise:
+	; byte 6 - noise offset
 	LDA MusicPartPointers + 5, Y
 	STA iCurrentNoiseOffset
 	STA iCurrentNoiseStartPoint
 	DEX
 	BNE ProcessMusicQueue_ReadHeaderDPCM
 
+	; no DPCM
 	LDA #0
 	STA iCurrentDPCMOffset
 	STA iCurrentDPCMStartPoint
 	BEQ ProcessMusicQueue_DefaultNotelength
 
 ProcessMusicQueue_ReadHeaderDPCM:
+	; byte 7 - DPCM
 	LDA MusicPartPointers + 6, Y
 	STA iCurrentDPCMOffset
 	STA iCurrentDPCMStartPoint
@@ -604,28 +635,41 @@ ProcessMusicQueue_DefaultNotelength:
 	STA iDPCMNoteLengthCounter
 	STA iDPCMNoteRatioLength
 
+	; initialize pulse 2 offset
 	LDA #$00
 	STA iCurrentPulse2Offset
 	STA iSweep
 
 ProcessMusicQueue_ReadNoteData:
+	; check note length
+	; if 0, start a new note
+	; else, skip to updating
 	DEC iMusicPulse2NoteLength
 	BEQ ProcessMusicQueue_Square2EndOfNote
 	JMP ProcessMusicQueue_Square2SustainNote
 
 ProcessMusicQueue_Square2EndOfNote:
+	; new note, read next byte
 	LDY iCurrentPulse2Offset
 	INC iCurrentPulse2Offset
 	LDA (zCurrentMusicPointer), Y
+	; 0 = ret
+	; + = note
+	; - = instrument / note length
 	BEQ ProcessMusicQueue_EndOfSegment
 
 	BMI ProcessMusicQueue_Square2Patch
 	JMP ProcessMusicQueue_Square2Note
 
 ProcessMusicQueue_EndOfSegment:
+; 0 = ret
+	; check which song's playing
+	; iCurrentMusic1 always loops
 	LDA iCurrentMusic1
 	BNE ProcessMusicQueue_ThenSetNextPart
 
+	; iCurrentMusic2 typically plays a fanfare
+	; but ending and subcon themes are segmented
 	LDA iCurrentMusic2
 	CMP #Music2_EndingAndCast
 	BEQ ProcessMusicQueue_ThenSetNextPart
@@ -633,13 +677,23 @@ ProcessMusicQueue_EndOfSegment:
 	CMP #Music2_SubconsFreed
 	BEQ ProcessMusicQueue_ThenSetNextPart
 
-	AND #Music1_Overworld | Music1_Inside | Music1_Subspace
+	; here's an oddity: there's logic to play iMusicStack when credits and
+	; cast theme ends (IT NEVER DOES)
+	AND #Music2_MushroomGetJingle | Music2_EndingAndCast | Music2_CrystalGetFanfare
 	BEQ StopMusic
 
+	; non-zero after AND, song meets logic, replay last song
 	LDA iMusicStack
 	BNE ProcessMusicQueue_ResumeMusicQueue1
 
 StopMusic:
+; ways to access this routine:
+;	iMusicStack = 0, fallthrough
+;	iCurrentMusic2 does not meet logic when fanfare ends
+;	Reaching the end-offset without a loop
+;	iMusic2 is $80
+	; check for SFX, skip channels any are playing on
+	; DPCM
 	LDA iCurrentDPCMSFX1
 	BNE LeaveDPCMAlone
 	LDA iCurrentDPCMSFX2
@@ -647,6 +701,7 @@ StopMusic:
 	JSR ProcessMusicQueue_DPCMDisable
 
 LeaveDPCMAlone:
+	; Pulse 2
 	LDA iCurrentPulse1SFX
 	BNE LeavePulseAlone
 
@@ -658,6 +713,8 @@ LeaveDPCMAlone:
 	STA SQ2_SWEEP
 
 LeavePulseAlone:
+	; Noise SFX are barely used
+	; better just to clear the rest
 	LDA #$10
 	STA SQ1_VOL
 	STA NOISE_VOL
@@ -675,93 +732,116 @@ LeavePulseAlone:
 	RTS
 
 ProcessMusicQueue_ThenSetNextPart:
+; any song able to move their pointer offset
 	JMP ProcessMusicQueue_SetNextPart
 
 ProcessMusicQueue_ResumeMusicQueue1:
+; iMusicStack != 0
 	JMP ProcessMusicQueue_MusicQueue1
 
 ProcessMusicQueue_Square2Patch:
+; - = instrument / note length
+	; instrument
 	TAX
 	AND #$F0
 	STA iPulse2Ins
+	; note length
 	TXA
 	JSR ProcessMusicQueue_PatchNoteLength
 
 	STA iMusicPulse2NoteStartLength
 
-ProcessMusicQueue_Square2NextOffset:
+	; next byte, allows higher notes
 	LDY iCurrentPulse2Offset
 	INC iCurrentPulse2Offset
 	LDA (zCurrentMusicPointer), Y
 
 ProcessMusicQueue_Square2Note:
+; + = note
+	; check if sound effects are playing
 	LDX iCurrentPulse1SFX
 	BNE ProcessMusicQueue_Square2ContinueNote
 
+	; We're clear! Play the note!
 	JSR PlaySquare2Note
-
 	TAY
 	BEQ ProcessMusicQueue_Square2UpdateNoteOffset
-
-ProcessMusicQueue_Square2StartNote:
 	LDA iMusicPulse2NoteStartLength
 	JSR SetInstrumentStartOffset
 
 ProcessMusicQueue_Square2UpdateNoteOffset:
+	; set instruemnt offset, init sweep/gain
 	STA iMusicPulse2InstrumentOffset
 
 	JSR SetSquare2VolumeAndSweep
 
 ProcessMusicQueue_Square2ContinueNote:
+	; set note length
 	LDA iMusicPulse2NoteStartLength
 	STA iMusicPulse2NoteLength
 
 ProcessMusicQueue_Square2SustainNote:
+	; note update
+	; SFX playing?  If yes, skip to updating Pulse 1
 	LDX iCurrentPulse1SFX
 	BNE ProcessMusicQueue_Square1
 
 ProcessMusicQueue_LoadSquare2InstrumentOffset:
+	; load isntrument offset
 	LDY iMusicPulse2InstrumentOffset
 	BEQ ProcessMusicQueue_LoadSquare2Instrument
 
 	DEC iMusicPulse2InstrumentOffset
 
 ProcessMusicQueue_LoadSquare2Instrument:
+	; load instrument no.
 	LDA iMusicPulse2NoteStartLength
 	LDX iPulse2Ins
 	JSR LoadSquareInstrumentDVE
 
+	; update
 	STA SQ2_VOL
 	LDX #$7F
 	STX SQ2_SWEEP
 
 ProcessMusicQueue_Square1:
+; if note length != 0, sustain note
 	DEC iMusicPulse1NoteLength
 	BNE ProcessMusicQueue_Square1SustainNote
 
 ProcessMusicQueue_Square1Patch:
+; else we start here instead
+; load byte offset / data
+	; 0 - set sweep to $94
+	; - - instrument / note length
+	; + - note
 	LDY iCurrentPulse1Offset
 	INC iCurrentPulse1Offset
 	LDA (zCurrentMusicPointer), Y
 	BPL ProcessMusicQueue_Square1AfterPatch
 
+	; - - instrument / note length
+	; instrument
 	TAX
 	AND #$F0
 	STA iPulse1Ins
+	; note length
 	TXA
 	JSR ProcessMusicQueue_PatchNoteLength
 
 	STA iPulse1NoteLength
 
-ProcessMusicQueue_Square1NextOffset:
+	; next byte, allows higher notes
 	LDY iCurrentPulse1Offset
 	INC iCurrentPulse1Offset
 	LDA (zCurrentMusicPointer), Y
 
 ProcessMusicQueue_Square1AfterPatch:
+; + = note
 	TAY
 	BNE ProcessMusicQueue_Square1Note
 
+	; 0 - set sweep to $94
 	LDA #$83
 	STA SQ1_VOL
 	LDA #$94
@@ -770,42 +850,41 @@ ProcessMusicQueue_Square1AfterPatch:
 	BNE ProcessMusicQueue_Square1Patch
 
 ProcessMusicQueue_Square1Note:
+	; We're clear! Play the note!
 	JSR PlaySquare1Note
 
 	BEQ ProcessMusicQueue_Square1UpdateNoteOffset
-
-ProcessMusicQueue_Square1StartNote:
 	LDA iPulse1NoteLength
 	JSR SetInstrumentStartOffset
 
 ProcessMusicQueue_Square1UpdateNoteOffset:
+	; set instruemnt offset, init sweep/gain
 	STA iMusicPulse1InstrumentOffset
-
 ; Sets volume/sweep on Square 1 channel
-;
 ; Input
 ;   X = duty/volume/envelope
 ;   Y = sweep
 	STY SQ1_SWEEP
 	STX SQ1_VOL
-
-ProcessMusicQueue_Square1ContinueNote:
+	; set note length
 	LDA iPulse1NoteLength
 	STA iMusicPulse1NoteLength
 
 ProcessMusicQueue_Square1SustainNote:
-
-ProcessMusicQueue_LoadSquare1InstrumentOffset:
+	; note update
+	; load isntrument offset
 	LDY iMusicPulse1InstrumentOffset
 	BEQ ProcessMusicQueue_Square1AfterDecrementInstrumentOffset
 
 	DEC iMusicPulse1InstrumentOffset
 
 ProcessMusicQueue_Square1AfterDecrementInstrumentOffset:
+	; load instrument no.
 	LDA iPulse1NoteLength
 	LDX iPulse1Ins
 	JSR LoadSquareInstrumentDVE
 
+	; update
 	STA SQ1_VOL
 	LDA iSweep
 	BNE ProcessMusicQueue_Square1Sweep
@@ -816,12 +895,18 @@ ProcessMusicQueue_Square1Sweep:
 	STA SQ1_SWEEP
 
 ProcessMusicQueue_Triangle:
+	; if offset = 0, skip to next channel
 	LDA iCurrentHillOffset
 	BEQ ProcessMusicQueue_NoiseDPCM
 
+	; if note length doesn't reach 0, skip to next channel
 	DEC iMusicHillNoteLength
 	BNE ProcessMusicQueue_NoiseDPCM
 
+	; next byte
+	; 0 = mute
+	; + = note length
+	; - = note
 	LDY iCurrentHillOffset
 	INC iCurrentHillOffset
 	LDA (zCurrentMusicPointer), Y
@@ -829,19 +914,26 @@ ProcessMusicQueue_Triangle:
 
 	BPL ProcessMusicQueue_TriangleNote
 
+	; + = note length
 	JSR ProcessMusicQueue_PatchNoteLength
 
 	STA iMusicHillNoteStartLength
 	LDA #$1F
 	STA TRI_LINEAR
+	; next byte is treated like a note, or mute
 	LDY iCurrentHillOffset
 	INC iCurrentHillOffset
 	LDA (zCurrentMusicPointer), Y
 	BEQ ProcessMusicQueue_TriangleSetLength
 
 ProcessMusicQueue_TriangleNote:
+	; - = note
 	JSR PlayTriangleNote
 
+	; iMusicHillNoteLength:
+	; <10   - $18 - 6
+	; 10-23 - $24 - 9
+	; >=24  - $6f - 28
 	LDX iMusicHillNoteStartLength
 	STX iMusicHillNoteLength
 	TXA
@@ -866,15 +958,22 @@ ProcessMusicQueue_TriangleSetLength:
 	STA TRI_LINEAR
 
 ProcessMusicQueue_NoiseDPCM:
-
+; vanilla SMB2 used to treat noise and DPCM as the same channel
+; this hack lets both play with their own data sets
 ProcessMusicQueue_Noise:
+	; if offset = 0, skip to next channel
 	LDA iCurrentNoiseOffset
 	BEQ ProcessMusicQueue_ThenNoiseEnd
 
+	; if note length doesn't reach 0, skip to next channel
 	DEC iMusicNoiseNoteLength
 	BNE ProcessMusicQueue_ThenNoiseEnd
 
 ProcessMusicQueue_NoiseByte:
+; next byte
+	; 0 = loop
+	; - = note length
+	; + = note
 	LDY iCurrentNoiseOffset
 	INC iCurrentNoiseOffset
 	LDA (zCurrentMusicPointer), Y
@@ -882,15 +981,19 @@ ProcessMusicQueue_NoiseByte:
 
 	BPL ProcessMusicQueue_NoiseNote
 
+	; - = note length
 	JSR ProcessMusicQueue_PatchNoteLength
 
 	STA iMusicNoiseNoteStartLength
+	; next byte - later entries allowed
 	LDY iCurrentNoiseOffset
 	INC iCurrentNoiseOffset
 	LDA (zCurrentMusicPointer), Y
 	BEQ ProcessMusicQueue_NoiseLoopSegment
 
 ProcessMusicQueue_NoiseNote:
+; + = note
+; NOTE - only $02, $04 & $06 are valid
 	LSR A
 	TAY
 	LDA NoiseVolTable, Y
@@ -906,32 +1009,42 @@ ProcessMusicQueue_ThenNoiseEnd:
 	JMP ProcessMusicQueue_DPCM
 
 ProcessMusicQueue_NoiseLoopSegment:
+; 0 = loop
 	LDA iCurrentNoiseStartPoint
 	STA iCurrentNoiseOffset
 	JMP ProcessMusicQueue_NoiseByte
 
 ProcessMusicQueue_DPCM:
+	; if offset = 0, end
 	LDA iCurrentDPCMOffset
 	BNE ProcessMusicQueue_DPCMlength
 	JMP ProcessMusicQueue_DPCMEnd
 
 ProcessMusicQueue_DPCMlength:
+	; if note length reaches 0, read sample music data
 	DEC iDPCMNoteLengthCounter
 	BEQ ProcessMusicQueue_DPCMByte
+	; note cuts off in advance
 	LDA iDPCMNoteRatioLength
 	BEQ ProcessMusicQueue_DPCMExit
 	DEC iDPCMNoteRatioLength
 	BNE ProcessMusicQueue_DPCMExit
+
+	; if note length ratio remains non-zero, check for sound effects
 	LDA iCurrentDPCMSFX1
 	BNE ProcessMusicQueue_DPCMExit
 	LDA iCurrentDPCMSFX2
 	BNE ProcessMusicQueue_DPCMExit
-	; Disable
+	; Disable - no sound effects playing
 	JMP ProcessMusicQueue_DPCMDisable
 ProcessMusicQueue_DPCMExit:
 	RTS
 
 ProcessMusicQueue_DPCMByte:
+; next byte
+	; 0 = loop
+	; - = note length
+	; + = note
 	LDY iCurrentDPCMOffset
 	INC iCurrentDPCMOffset
 	LDA (zCurrentMusicPointer), Y
@@ -941,8 +1054,10 @@ ProcessMusicQueue_DPCMByte:
 ProcessMusicQueue_DPCMNotLoop:
 	BPL ProcessMusicQueue_DPCMNote
 
+	; - = note length
 	JSR ProcessMusicQueue_PatchNoteLength
 
+	; next byte - later entries allowed
 	STA iDPCMNoteLength
 	LDY iCurrentDPCMOffset
 	INC iCurrentDPCMOffset
@@ -950,6 +1065,7 @@ ProcessMusicQueue_DPCMNotLoop:
 	BEQ ProcessMusicQueue_DPCMLoopSegment
 
 ProcessMusicQueue_DPCMNote:
+; check for sound effects before playing a note
 	LDX #iCurrentDPCMSFX1
 	BNE ProcessMusicQueue_DPCMSFXExit
 	LDX #iCurrentDPCMSFX2
@@ -1031,6 +1147,7 @@ ProcessMusicQueue_DPCMDisable:
 	RTS
 
 ProcessMusicQueue_DPCMLoopSegment:
+	; + = note
 	LDA iCurrentDPCMStartPoint
 	STA iCurrentDPCMOffset
 	JMP ProcessMusicQueue_DPCMByte
@@ -1257,13 +1374,13 @@ PlayNote_LoadFrequencyData:
 	ADC #$18
 	TAY
 	LDA NoteFrequencyData, Y
-	STA zNextNoteLo
+	STA zNextPitch
 	LDA NoteFrequencyData + 1, Y
-	STA zNextNoteHi
+	STA zNextPitch + 1
 
 PlayNote_FrequencyOctaveLoop:
-	LSR zNextNoteHi
-	ROR zNextNoteLo
+	LSR zNextPitch + 1
+	ROR zNextPitch
 	DEC iOctave
 	BNE PlayNote_FrequencyOctaveLoop
 
@@ -1272,7 +1389,7 @@ PlayNote_FrequencyOctaveLoop:
 	BCC PlayNote_CheckSquareChorus
 
 	; tweak the frequency for notes >= $38
-	DEC zNextNoteLo
+	DEC zNextPitch
 
 ;
 ; Square 2 plays slightly detuned when Square 1 is using instrument E0
@@ -1290,19 +1407,19 @@ PlayNote_CheckSquareChorus:
 	BEQ PlayNote_SetFrequency_Square2Detuned
 
 PlayNote_SetFrequency:
-	LDA zNextNoteLo
+	LDA zNextPitch
 	STA SQ1_LO, X
-	LDA zNextNoteHi
+	LDA zNextPitch + 1
 	ORA #$08
 	STA SQ1_HI, X
 	RTS
 
 PlayNote_SetFrequency_Square2Detuned:
-	LDA zNextNoteLo
+	LDA zNextPitch
 	SEC
 	SBC #$02
 	STA SQ2_LO
-	LDA zNextNoteHi
+	LDA zNextPitch + 1
 	ORA #$08
 	STA SQ2_HI
 	RTS
