@@ -1130,6 +1130,7 @@ ProcessMusicQueue_DPCMSFXExit:
 	RTS
 
 ProcessMusicQueue_DPCMEnd:
+	; check for sound effects before disabling
 	LDX #iCurrentDPCMSFX1
 	BNE ProcessMusicQueue_DPCMExit
 	LDX #iCurrentDPCMSFX2
@@ -1147,7 +1148,7 @@ ProcessMusicQueue_DPCMDisable:
 	RTS
 
 ProcessMusicQueue_DPCMLoopSegment:
-	; + = note
+	; 0 = Loop
 	LDA iCurrentDPCMStartPoint
 	STA iCurrentDPCMOffset
 	JMP ProcessMusicQueue_DPCMByte
