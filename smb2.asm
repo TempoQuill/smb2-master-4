@@ -103,35 +103,72 @@ IFNDEF NSF_FILE
 	.base $8000
 	.include "src/prg-c-d.asm"
 	.pad $c000, $00
-
-	; ----------------------------------------
-	; extra PRG-ROM pages (5 bank pairs)
-	.dsb (10 * $2000), $00
 ENDIF
+
+.base $a000
+.include "src/music/instruments-smas-1.asm"
+.include "src/music/segments/jingles/crystal.asm"
+.include "src/music/segments/jingles/boss-beaten.asm"
+.include "src/music/segments/boss/boss.asm"
+.include "src/music/segments/character-select/character-select-smas-1-3.asm"
+.include "src/music/segments/character-select/character-select-smas-4-5.asm"
+.include "src/music/segments/overworld/overworld-smas-1.asm"
+.include "src/music/segments/overworld/overworld-smas-2.asm"
+.include "src/music/segments/overworld/overworld-smas-3-4.asm"
+.include "src/music/segments/overworld/overworld-smas-5.asm"
+.include "src/music/segments/jingles/death.asm"
+.pad $c000
+
+.base $a000
+.include "src/music/instruments-smas-2.asm"
+.include "src/music/segments/jingles/mushroom-bonus-chance.asm"
+.include "src/music/segments/ending/ending-smas-1-2.asm"
+.include "src/music/segments/ending/ending-smas-3-4.asm"
+.include "src/music/segments/ending/ending-smas-5.asm"
+.include "src/music/segments/star/star-smas.asm"
+.include "src/music/segments/underground/underground-smas.asm"
+.pad $c000
+
+.base $a000
+.include "src/music/instruments-smas-3.asm"
+.include "src/music/segments/title/title-smas.asm"
+.include "src/music/segments/jingles/game-over.asm"
+.include "src/music/segments/wart/wart-smas.asm"
+.include "src/music/segments/subspace/subspace-smas.asm"
+.pad $c000
+
+IFNDEF NSF_FILE
+	; ----------------------------------------
+	; extra PRG-ROM pages (5 banks)
+	.dsb (5 * $2000), $00
+ENDIF
+
+.base $c000
+.incbin "src/music/smas-dmc-sfx.bin"
+.base $c000
+.incbin "src/music/smas-dmc-wart-death.bin"
 
 ; SAWTOOTH DPCM AREA
 .base $c000
-.incbin "src/music/dpcmsaw-octave-2-3-area.bin"
+.incbin "src/music/dpcmsaw-octave-3-area.bin"
 .base $c000
 .incbin "src/music/dpcmsaw-octave-4-area.bin"
 .base $c000
 .incbin "src/music/dpcmsaw-octave-5-area.bin"
+.base $c000
+.incbin "src/music/dpcmsaw-octave-2-area.bin"
 ; SFX DPCM AREA
-.base $c000
-.incbin "src/music/ldp-dpcm-area-7.bin"
-.base $c000
-.incbin "src/music/ldp-dpcm-area-b.bin"
-.base $c000
-.incbin "src/music/ldp-dpcm-area-d.bin"
+IFNDEF NSF_FILE
+	; ----------------------------------------
+	; extra PRG-ROM pages (5 banks)
+	.dsb (3 * $2000), $00
+ENDIF
 
 ; ----------------------------------------
 ; Banks 1E and 1F.
 ; Important things like NMI and often-used
 ; routines.
-; Bank E also contains PCM data for some samples
-.base $c000    ; Technically not needed but consistent
-; Include DPCM samples
-.incbin "src/music/ldp-sample-area.bin"
+.base $e000    ; Technically not needed but consistent
 IFNDEF NSF_FILE
 	.include "src/prg-e-f.asm"
 

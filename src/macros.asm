@@ -41,13 +41,13 @@ MACRO musicPart label
 	.db (label - MusicPartPointers)
 ENDM
 
-MACRO noteLength label
-	.db (label - NoteLengthTable)
+MACRO musicHeaderPointer label
+	.db (label - MusicHeaders)
 ENDM
 
 ;
 ; MusicHeader macro, to replace this:
-;	noteLength NoteLengthTable_300bpm
+;	.db NoteLengthTable_Death
 ;	.dw MusicDataXXX
 ;	.db MusicDataXXX_Triangle - MusicDataXXX
 ;	.db MusicDataXXX_Square1 - MusicDataXXX
@@ -58,27 +58,15 @@ ENDM
 ; "reuse" the note length from the following header to save bytes.
 ;
 MACRO musicHeader noteLengthLabel, square2, triangle, square1, noise, dpcm
-	noteLength noteLengthLabel
+	.db noteLengthLabel
 	.dw square2
-	IF triangle <= 0
-		.db $00
-	ELSE
-		.db (triangle - square2)
-	ENDIF
-	IF square1 <= 0
-		.db $00
-	ELSE
-		.db (square1 - square2)
-	ENDIF
+	.db (triangle - square1)
+	.db (square1 - square2)
 
-	IF noise = 0
-		.db $00
-	ELSEIF noise > 0
-		.db (noise - square2)
+	IF noise > 0
+		.db (noise - triangle)
 	ENDIF
-	IF dpcm = 0
-		.db $00
-	ELSEIF dpcm > 0
-		.db (dpcm - square2)
+	IF dpcm > 0
+		.db (dpcm - noise)
 	ENDIF
 ENDM

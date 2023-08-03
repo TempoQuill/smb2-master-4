@@ -487,17 +487,17 @@ DebugMenu_Health:
 
 DebugMenu_MenuStart:
 	LDA #DPCM_Unused
-	STA iDPCMSFX2
+	STA iDPCMSFX
 	RTS
 
 DebugMenu_MenuChange:
 	LDA #DPCM_ItemPull
-	STA iDPCMSFX1
+	STA iHillSFX
 	RTS
 
 DebugMenu_MenuMove:
 	LDA #DPCM_Select
-	STA iDPCMSFX2
+	STA iDPCMSFX
 	RTS
 
 DebugMenu_MenuConfirm:
@@ -507,7 +507,7 @@ DebugMenu_MenuConfirm:
 
 DebugMenu_MenuError:
 	LDA #DPCM_PlayerHurt
-	STA iDPCMSFX1
+	STA iHillSFX
 	RTS
 
 

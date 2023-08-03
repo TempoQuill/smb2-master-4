@@ -647,8 +647,8 @@ CharacterSelect_ChangeCharacter:
 	BEQ loc_BANKF_E2FE
 
 	DEC zCurrentCharacter
-	LDA #DPCM_Select
-	STA iDPCMSFX2
+	LDA #SoundEffect2_CoinGet
+	STA iPulse1SFX
 
 loc_BANKF_E2FE:
 	LDA zInputBottleneck
@@ -656,8 +656,8 @@ loc_BANKF_E2FE:
 	BEQ loc_BANKF_E30B
 
 	INC zCurrentCharacter
-	LDA #DPCM_Select
-	STA iDPCMSFX2
+	LDA #SoundEffect2_CoinGet
+	STA iPulse1SFX
 
 loc_BANKF_E30B:
 	LDA zCurrentCharacter
@@ -746,8 +746,8 @@ CharacterSelectMenuLoop:
 ; ---------------------------------------------------------------------------
 
 loc_BANKF_E3AE:
-	LDA #DPCM_Select
-	STA iDPCMSFX2
+	LDA #Hill_Select
+	STA iHillSFX
 	LDX iCurrentWorld
 	LDY iCurrentLvl
 	JSR DisplayLevelTitleCardText
@@ -806,6 +806,8 @@ StartGame:
 	STA PPUMASK
 	JSR DisableNMI
 
+	LDA #PRGBank_Music_3
+	STA iMusicBank
 	LDA #PRGBank_0_1
 	STA iMainGameState
 	JSR ChangeMappedPRGBank
@@ -1535,6 +1537,8 @@ StartSlotMachine:
 
 	JSR sub_BANKF_EA68
 
+	LDA #7
+	STA zSFXReelTimer
 	LDA #$01 ; Set all reel timers
 	STA zObjectXLo
 	STA zObjectXLo + 1
@@ -1547,9 +1551,15 @@ StartSlotMachine:
 SpinSlots:
 	JSR WaitForNMI ; $2C-$2E: Reel change timer
 	; $2F-$31: Current reel icon
+	DEC zSFXReelTimer
+	BNE SpinSlots_Handling
 
-	LDA #SoundEffect2_Climbing ; Play "reel sound" sound effect
-	STA iPulse1SFX
+	LDA #DPCM_Slot ; Play "reel sound" sound effect
+	STA iDPCMSFX
+	LDA #7
+	STA zSFXReelTimer
+
+SpinSlots_Handling:
 	JSR sub_BANKF_EAC2
 
 	JSR sub_BANKF_EADC
@@ -1615,6 +1625,7 @@ loc_BANKF_E8D3:
 
 	ORA #$D0
 	STA iLDPBonucChanceLiveEMCount ; Update number of lives won
+	JSR SlotMachine_WaitforSFX
 	LDA #Music2_CrystalGetFanfare ; Play winner jingle
 	STA iMusic2
 	LDA #$A0
@@ -1636,6 +1647,8 @@ loc_BANKF_E8ED:
 	BEQ loc_BANKF_E90C
 
 SlotMachineLoseFanfare:
+	JSR SlotMachine_WaitforSFX
+
 	LDA #Music2_DeathJingle
 	STA iMusic2
 	JSR WaitForNMI
@@ -1651,6 +1664,13 @@ loc_BANKF_E90C:
 
 	JMP loc_BANKF_E7FD
 
+SlotMachine_WaitforSFX:
+	LDA iCurrentPulse1SFX
+	BEQ SlotMachine_SFXDone
+	JSR WaitForNMI
+	JMP SlotMachine_WaitforSFX
+SlotMachine_SFXDone
+	RTS
 
 ;
 ; Used for flashing text in Bonus Chance
@@ -1998,8 +2018,8 @@ locret_BANKF_EAD1:
 loc_BANKF_EAD2:
 	LDA #$00
 	STA zObjectXLo, X
-	LDA #DPCM_Select
-	STA iDPCMSFX2
+	LDA #SoundEffect2_StopSlot
+	STA iPulse1SFX
 	RTS
 
 ; End of function sub_BANKF_EAC2
@@ -2348,7 +2368,11 @@ ResetPPUAddress:
 
 DoSoundProcessing:
 	LDA #PRGBank_4_5
-	JSR ChangeMappedPRGBankWithoutSaving
+	ASL A
+	ORA #$80
+	STA MMC5_PRGBankSwitch2
+	LDA iMusicBank
+	STA MMC5_PRGBankSwitch3
 
 	JSR StartProcessingSoundQueue
 
@@ -4269,9 +4293,6 @@ loc_BANKF_F749:
 	; Set music to death jingle
 	LDA #Music2_DeathJingle
 	STA iMusic2
-	; Play the SFX
-	LDA #DPCM_PlayerDeath
-	STA iDPCMSFX2
 	RTS
 
 

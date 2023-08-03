@@ -81,7 +81,7 @@ FIX_CHR_CYCLE = 1
 ; DISABLE_BONUS_CHANCE = 1
 
 ; Go to the Charater Select screen after death
-; CHARACTER_SELECT_AFTER_DEATH = 1
+CHARACTER_SELECT_AFTER_DEATH = 1
 
 ; swaps out SMB2's sound engine for VulpReich's
 ; needs MMC5 to work properly

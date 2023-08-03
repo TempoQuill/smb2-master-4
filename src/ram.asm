@@ -216,7 +216,7 @@ zEnemyTrajectory:
 	.dsb 1 ; 7                ; $0076
 	.dsb 1 ; 8                ; $0077
 
-; FOR RENT
+zSFXReelTimer:
 	.dsb 1 ; $0078
 ; This is set on entering subspace, depending
 ; on which particular mushroom is on the screen
@@ -335,14 +335,13 @@ zCurrentMusicPointer:
 	.dsb 2 ; $00bb
 zNextPitch:
 	.dsb 2 ; $00bd
-; FOR RENT
-	.dsb 1 ; $00bf
-	.dsb 1 ; $00c0
-	.dsb 1 ; $00c1
-	.dsb 1 ; $00c2
+zPulse1IndexPointer:
+	.dsb 2 ; $00bf
+zHillIndexPointer:
+	.dsb 2 ; $00c1
 zNoiseSFXOffset:
 	.dsb 1 ; $00c3
-zPulse1Timer:
+zPulse1SFXOffset:
 	.dsb 1 ; $00c4
 zNoiseIndexPointer:
 	.dsb 2 ; $00c5
@@ -457,6 +456,7 @@ zInputCurrentState:
 	.dsb 1 ; $00f7
 	.dsb 1 ; $00f8
 	.dsb 1 ; $00f9
+zInstrumentPointer:
 	.dsb 1 ; $00fa
 	.dsb 1 ; $00fb
 zPPUScrollY:
@@ -1438,30 +1438,50 @@ iNumContinues:
 	.dsb 1 ; $05d0
 	.dsb 1 ; $05d1
 	.dsb 1 ; $05d2
+iPauseTrack:
 	.dsb 1 ; $05d3
+iBasePitchComplement:
 	.dsb 1 ; $05d4
+iHillPitch:
 	.dsb 1 ; $05d5
+iHillPercussionState:
 	.dsb 1 ; $05d6
+iHillIns:
 	.dsb 1 ; $05d7
+iMusicPulse2BigPointer:
 	.dsb 1 ; $05d8
 	.dsb 1 ; $05d9
+iMusicPulse1BigPointer:
 	.dsb 1 ; $05da
 	.dsb 1 ; $05db
+iMusicHillBigPointer:
 	.dsb 1 ; $05dc
 	.dsb 1 ; $05dd
+iMusicNoiseBigPointer:
 	.dsb 1 ; $05de
 	.dsb 1 ; $05df
+iMusicDPCMBigPointer:
 	.dsb 1 ; $05e0
 	.dsb 1 ; $05e1
+iMusicPulse2NoteSubFrames:
 	.dsb 1 ; $05e2
+iMusicPulse1NoteSubFrames:
 	.dsb 1 ; $05e3
+iMusicHillNoteSubFrames:
 	.dsb 1 ; $05e4
+iMusicNoiseNoteSubFrames:
 	.dsb 1 ; $05e5
+iMusicDPCMNoteSubFrames:
 	.dsb 1 ; $05e6
+iMusicPulse2NoteLengthFraction:
 	.dsb 1 ; $05e7
+iMusicPulse1NoteLengthFraction:
 	.dsb 1 ; $05e8
+iMusicHillNoteLengthFraction:
 	.dsb 1 ; $05e9
+iMusicNoiseNoteLengthFraction:
 	.dsb 1 ; $05ea
+iMusicDPCMNoteLengthFraction:
 	.dsb 1 ; $05eb
 
 iCurrentMusicOffset:
@@ -1492,10 +1512,11 @@ iDPCMNoteLength:
 	.dsb 2 ; $05f8
 iDPCMNoteLengthCounter:
 	.dsb 1 ; $05fa
-; FOR RENT
+iPulse1SFXSweep:
 	.dsb 1 ; $05fb
 iCurrentDPCMStartPoint:
 	.dsb 1 ; $05fc
+iPulse1SFXVolume:
 	.dsb 1 ; $05fd
 	.dsb 1 ; $05fe
 iCurrentDPCMOffset:
@@ -1512,15 +1533,15 @@ iCurrentDPCMOffset:
 iMusic1:
 	.dsb 1 ; $0600
 
-; $01 Door
-; $02 Rocket
-; $04 POW
-; $08 Hold
-; $10 Injury
-; $20 Unused
-; $40 Watch
-; $80 Exit
-iDPCMSFX1:
+; $01 Jump
+; $02 Vine
+; $04 Cherry
+; $08 Throw
+; $10 Fall
+; $20 Grow
+; $40 Potion / Boss defeated
+; $80 Select
+iHillSFX:
 	.dsb 1 ; $0601
 
 ; $01 Shot
@@ -1531,7 +1552,7 @@ iDPCMSFX1:
 ; $20 Squawk
 ; $40 Impact
 ; $80 Down
-iDPCMSFX2:
+iDPCMSFX:
 	.dsb 1 ; $0602
 
 ; $01 Warp fanfare, slot entry jingle
@@ -1569,13 +1590,13 @@ iNoiseSFX:
 
 iCurrentMusic2:
 	.dsb 1 ; $0606
-iCurrentDPCMSFX1:
+iCurrentHillSFX:
 	.dsb 1 ; $0607
-iCurrentDPCMSFX2:
+iCurrentDPCMSFX:
 	.dsb 1 ; $0608
 iCurrentMusic1:
 	.dsb 1 ; $0609
-; FOR RENT
+iMusicBank:
 	.dsb 1 ; $060a
 ; only ever $20, $10 or $0
 ; non-zero tells driver to ignore new SFX
@@ -1587,13 +1608,13 @@ iCurrentPulse1SFX:
 	.dsb 1 ; $060d
 iCurrentNoiseSFX:
 	.dsb 1 ; $060e
-; FOR RENT
+iMusicHillStartOffset:
 	.dsb 1 ; $060f
-iUsedWarps:
+iHillSFXOffset:
 	.dsb 1 ; $0610
 iNoiseTimer:
 	.dsb 1 ; $0611
-iNoteLengthOffset:
+iTempo:
 	.dsb 1 ; $0612
 iCurrentPulse2Offset:
 	.dsb 1 ; $0613
@@ -1631,7 +1652,7 @@ iSwarmTimer:
 	.dsb 1 ; $0623
 iFriction:
 	.dsb 1 ; $0624
-; FOR RENT
+iWartDefeated:
 	.dsb 1 ; $0625
 ; FOR RENT
 	.dsb 1 ; $0626

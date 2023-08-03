@@ -96,8 +96,8 @@ AreaInitialization_CarryYOffsetLoop:
 	ORA iCurrentLvl
 	BNE AreaInitialization_CheckObjectCarriedOver
 
-	LDA #SoundEffect2_IntroFallSlide
-	STA iPulse1SFX
+	LDA #Hill_Fall
+	STA iHillSFX
 
 AreaInitialization_CheckObjectCarriedOver:
 	LDA iObjectToUseNextRoom
@@ -286,8 +286,8 @@ ENDIF
 	AND #$1F
 	BNE AreaMainRoutine_DecrementStopwatch
 
-	LDY #DPCM_Watch
-	STY iDPCMSFX1
+	LDY #SoundEffect2_Watch
+	STY iPulse1SFX
 
 AreaMainRoutine_DecrementStopwatch:
 	LSR A
@@ -2453,7 +2453,7 @@ EnemyBehavior_PanserRedAndGray:
 	AND #CollisionFlags_Down
 	BEQ loc_BANK2_8C1A
 
-	JSR ResetzObjectYVelocity
+	JSR ResetObjectYVelocity
 
 loc_BANK2_8C1A:
 	PLA
@@ -2514,6 +2514,8 @@ loc_BANK2_8C65:
 	LDA zObjectXHi, X
 	SBC #$00
 	STA zObjectXHi, X
+	LDA #SoundEffect3_Fire
+	STA iNoiseSFX
 	LDA #Enemy_Fireball
 	STA zObjectType, X
 	JSR SetEnemyAttributes
@@ -2720,8 +2722,8 @@ loc_BANK2_8D7B:
 	DEC iMaskPreamble
 	BNE loc_BANK2_8D78
 
-	LDA #DPCM_Hawk
-	STA iDPCMSFX1
+	LDA #SoundEffect2_HawkUp
+	STA iPulse1SFX
 
 loc_BANK2_8D8A:
 	LDA iMaskClosingFlag
@@ -2805,8 +2807,8 @@ loc_BANK2_8DDB:
 	STA zPlayerStateTimer
 	LDA #$FC
 	STA zPlayerYVelocity
-	LDA #DPCM_Hawk
-	STA iDPCMSFX1
+	LDA #SoundEffect2_HawkDown
+	STA iPulse1SFX
 	INC iMaskClosingFlag
 
 RenderSprite_HawkmouthLeft:
@@ -3135,7 +3137,7 @@ EnemyBehavior_Birdo:
 	AND #CollisionFlags_Down
 	BEQ loc_BANK2_8FD2
 
-	JSR ResetzObjectYVelocity
+	JSR ResetObjectYVelocity
 
 	LDA z10
 	BNE loc_BANK2_8FA3
@@ -3206,7 +3208,7 @@ BirdoBehavior_SpitProjectile:
 	BNE loc_BANK2_901B
 
 	LDA #DPCM_Egg
-	STA iDPCMSFX2
+	STA iDPCMSFX
 	JSR sub_BANK2_95E5
 
 	BMI loc_BANK2_901B
@@ -3307,8 +3309,8 @@ ENDIF
 	DEC iExtraMen
 
 loc_BANK2_9050:
-	LDA #Music2_CrystalGetFanfare
-	STA iMusic2
+	LDA #SoundEffect2_1UP
+	STA iPulse1SFX
 	RTS
 
 ; ---------------------------------------------------------------------------
@@ -3439,7 +3441,7 @@ EnemyBehavior_CheckGround:
 	JMP EnemyBehavior_CheckBombTimer
 
 EnemyBehavior_Grounded:
-	JSR ResetzObjectYVelocity
+	JSR ResetObjectYVelocity
 
 	LDA z0b
 	BNE EnemyBehavior_CheckBombTimer
@@ -3466,8 +3468,8 @@ EnemyBehavior_Bomb_Explode:
 	LDA #$20
 	STA zSpriteTimer, X
 	STA iSkyFlashTimer
-	LDA #DPCM_DoorOpenBombBom
-	STA iDPCMSFX1
+	LDA #SoundEffect3_Bomb
+	STA iNoiseSFX
 	LSR A
 	; A = $00
 	STA iObjectBulletTimer, X
@@ -3525,7 +3527,7 @@ EnemyBehavior_SubspacePotion_CheckGroundCollision:
 	AND #CollisionFlags_Down
 	BEQ EnemyBehavior_Vegetable
 
-	JSR ResetzObjectYVelocity
+	JSR ResetObjectYVelocity
 
 	LDA zObjectYLo, X
 	SEC
@@ -3540,8 +3542,8 @@ EnemyBehavior_SubspacePotion_CheckGroundCollision:
 	STA zObjectXHi, X
 	LDA #$10
 	STA iSpriteTimer, X
-	LDA #DPCM_Lamp
-	STA iDPCMSFX2
+	LDA #Hill_LampBossDeath
+	STA iHillSFX
 	INC zEnemyArray, X
 	LDA #Enemy_SubspaceDoor
 	STA zObjectType, X
@@ -3556,7 +3558,7 @@ EnemyBehavior_SubspacePotion_CheckGroundCollision:
 
 	; subspace door fail
 	LDA #DPCM_BossHurt
-	STA iDPCMSFX2
+	STA iDPCMSFX
 	JSR EnemyDestroy
 
 EnemyBehavior_SubspacePotion_CreateDoor:
@@ -3996,8 +3998,8 @@ Phanto_AfterFlashing:
 	STA iObjectShakeTimer, X
 
 	; Play Phanto activation sound effect
-	LDA #DPCM_Rocket
-	STA iDPCMSFX1
+	LDA #SoundEffect3_RocketPhanto
+	STA iNoiseSFX
 
 Phanto_AfterSound:
 	DEC iPhantoTimer
@@ -4502,7 +4504,7 @@ EnemyInit_DisableObjectAttributeBit8:
 ;
 ; Does SetzObjectYVelocity with y-velocity of 0
 ;
-ResetzObjectYVelocity:
+ResetObjectYVelocity:
 	LDA #$00
 
 ;
@@ -4763,8 +4765,8 @@ loc_BANK2_96EC:
 
 	LDA #$20
 	STA iPOWTimer
-	LDA #DPCM_POW
-	STA iDPCMSFX1
+	LDA #SoundEffect3_POW
+	STA iNoiseSFX
 	JMP sub_BANK2_98C4
 
 ; ---------------------------------------------------------------------------
@@ -4774,7 +4776,7 @@ loc_BANK2_96FF:
 	CMP #$16
 	BCC loc_BANK2_970D
 
-	JSR ResetzObjectYVelocity
+	JSR ResetObjectYVelocity
 
 	LDA #$F5
 	JMP ApplyVelocityYAndHalfObjectVelocityX
@@ -4782,7 +4784,7 @@ loc_BANK2_96FF:
 ; ---------------------------------------------------------------------------
 
 loc_BANK2_970D:
-	JSR ResetzObjectYVelocity
+	JSR ResetObjectYVelocity
 
 	LDA zObjectVariables, X
 	JSR ReplaceTile
@@ -5113,8 +5115,8 @@ EnemyBehavior_Shell:
 
 EnemyBehavior_Shell_Destroy:
 	; shell destruction
-	LDA #DPCM_BossHurt
-	STA iDPCMSFX2
+	LDA #DPCM_Shell
+	STA iDPCMSFX
 	JMP TurnIntoPuffOfSmoke
 
 
@@ -5123,7 +5125,7 @@ EnemyBehavior_Shell_Slide:
 	AND #CollisionFlags_Down
 	BEQ EnemyBehavior_Shell_Render
 
-	JSR ResetzObjectYVelocity
+	JSR ResetObjectYVelocity
 
 EnemyBehavior_Shell_Render:
 	JSR RenderSprite
@@ -5352,20 +5354,20 @@ EnemyBehavior_CheckDamagedInterrupt_SoundEffect:
 	; is this enemy a squawker?
 	LDA EnemyArray_46E_Data, Y
 	AND #%00001000
-	ASL A ; then A = DPCM_BossDeath
+	ASL A ; then A = Hill_LampBossDeath
 	BNE EnemyBehavior_CheckDamagedInterrupt_BossDeathSound
 
 	; normal enemy hit sound
-	LDA iDPCMSFX2
+	LDA iDPCMSFX
 	BNE EnemyBehavior_CheckDamagedInterrupt_CheckPidgit
 
 	LDA #DPCM_Impact
-	STA iDPCMSFX2
+	STA iDPCMSFX
 	BNE EnemyBehavior_CheckDamagedInterrupt_CheckPidgit
 
 EnemyBehavior_CheckDamagedInterrupt_BossDeathSound:
-	STA iDPCMSFX2
-	STA iDPCMBossPriority
+	LDA #Hill_LampBossDeath
+	STA iHillSFX
 
 EnemyBehavior_CheckDamagedInterrupt_CheckPidgit:
 	; killing pidgit leaves a flying carpet behind
@@ -6550,7 +6552,7 @@ loc_BANK3_A13B:
 	CMP #$70
 	BCC loc_BANK3_A147
 
-	JSR ResetzObjectYVelocity
+	JSR ResetObjectYVelocity
 
 loc_BANK3_A147:
 	LDA zSpriteTimer, X
@@ -7398,7 +7400,7 @@ EnemyBehavior_Mouser_Active:
 	AND #CollisionFlags_Down
 	BEQ EnemyBehavior_Mouser_Falling
 
-	JSR ResetzObjectYVelocity
+	JSR ResetObjectYVelocity
 
 	LDA z10
 	AND #$FF
@@ -7661,7 +7663,7 @@ loc_BANK3_A700:
 	LDA zObjectAnimTimer, X
 	EOR #$08
 	STA zObjectAnimTimer, X
-	JSR ResetzObjectYVelocity
+	JSR ResetObjectYVelocity
 
 	LDA #$F0
 	STA zObjectYVelocity, X
@@ -7968,7 +7970,7 @@ EnemyBehavior_Tryclyde_SpitFireball:
 	BMI RenderSprite_Tryclyde_Exit
 
 	LDA #DPCM_Egg
-	STA iDPCMSFX2
+	STA iDPCMSFX
 	LDY z00
 	LDA #Enemy_Fireball
 	STA zObjectType, Y
@@ -8229,7 +8231,7 @@ EnemyBehavior_CobratJar_Blocked:
 	STA zObjectYVelocity, X
 	; jar blocked
 	LDA #DPCM_BossHurt
-	STA iDPCMSFX2
+	STA iDPCMSFX
 
 EnemyBehavior_CobratJar_CheckReset:
 	LDA zObjectVariables, X
@@ -8570,8 +8572,8 @@ EnemyBehavior_Rocket_Launching:
 	; Setting zEnemyArray puts the rocket in the area
 	STA zEnemyArray, X
 	STA iIsInRocket
-	LDA #DPCM_Rocket
-	STA iDPCMSFX1
+	LDA #SoundEffect3_RocketPhanto
+	STA iNoiseSFX
 	LDA #$FE
 	STA zObjectYVelocity, X
 
@@ -8765,6 +8767,8 @@ loc_BANK3_ACE7:
 
 	JSR CreateEnemy
 
+	LDX #SoundEffect3_Fire
+	STX iNoiseSFX
 	LDX z00
 	LDA #Enemy_Fireball
 	STA zObjectType, X
@@ -8858,7 +8862,7 @@ loc_BANK3_AD59:
 	AND #CollisionFlags_Down
 	BEQ loc_BANK3_AD7A
 
-	JSR ResetzObjectYVelocity
+	JSR ResetObjectYVelocity
 
 	LDA #$00
 	STA zObjectXVelocity, X
@@ -8963,7 +8967,7 @@ loc_BANK3_ADF9:
 	AND #CollisionFlags_Down
 	BEQ loc_BANK3_AE09
 
-	JSR ResetzObjectYVelocity
+	JSR ResetObjectYVelocity
 
 loc_BANK3_AE09:
 	PLA
@@ -9009,6 +9013,8 @@ loc_BANK3_AE28:
 	; Should have pushed it to stack instead.
 	JSR EnemyBehavior_SpitProjectile
 
+	LDX #SoundEffect3_Fire
+	STX iNoiseSFX
 	LDX z00
 	DEC zObjectYLo, X
 	DEC zObjectYLo, X
@@ -9251,7 +9257,7 @@ loc_BANK3_AF8D:
 
 	LDA zObjectYVelocity, X
 	PHA
-	JSR ResetzObjectYVelocity
+	JSR ResetObjectYVelocity
 
 	PLA
 	LDY iObjectBulletTimer, X
@@ -9426,12 +9432,15 @@ HawkmouthEat:
 	STA zPlayerStateTimer
 	LDA #$FC
 	STA zPlayerYVelocity
+	LDA #SoundEffect2_HawkDown
+	STA iPulse1SFX
+	RTS
 
 ; =============== S U B R O U T I N E =======================================
 
 sub_BANK3_B095:
-	LDA #DPCM_Hawk
-	STA iDPCMSFX1
+	LDA #SoundEffect2_HawkUp
+	STA iPulse1SFX
 
 locret_BANK3_B09A:
 	RTS
@@ -9740,8 +9749,8 @@ EnemyBehavior_Wart_PhysicsX:
 
 	BMI EnemyBehavior_Wart_Exit
 
-	LDA #DPCM_Hawk
-	STA iDPCMSFX1
+	LDA #SoundEffect3_Bubbles
+	STA iNoiseSFX
 	; determines how high to spit the bubble
 	LDA i480, X
 	AND #$03
@@ -9800,8 +9809,8 @@ EnemyBehavior_Wart_DeathFall:
 	AND #$1F
 	BNE EnemyBehavior_Wart_CheckDeathComplete
 
-	LDA #DPCM_BossDeath
-	STA iDPCMSFX2
+	LDA #SoundEffect3_WartSmokePuff
+	STA iNoiseSFX
 	JSR CreateEnemy
 
 	LDX z00
@@ -9852,6 +9861,14 @@ RenderSprite_Wart:
 	BNE RenderSprite_Wart_AfterObjAttrib
 
 	; he dead
+	LDA iWartDefeated
+	BNE RenderSprite_Wart_ObjAttrib
+
+	LDA #Music2_WartDeath
+	STA iMusic2
+	INC iWartDefeated
+
+RenderSprite_Wart_ObjAttrib:
 	LDA #ObjAttrib_Horizontal | ObjAttrib_FrontFacing | ObjAttrib_16x32 | ObjAttrib_Palette2
 	STA zObjectAttributes, X
 
@@ -10528,8 +10545,10 @@ EnemyCollisionBehavior_Exit:
 EnemyCollisionBehavior_Enemy:
 	LDY z12
 	TXA
-	BEQ CheckCollisionWithPlayer
+	BNE EnemyCollisionBehavior_FlashingTimer
+	JMP CheckCollisionWithPlayer
 
+EnemyCollisionBehavior_FlashingTimer:
 	;;;
 	LDA iObjectFlashTimer, Y
 	ORA iObjectFlashTimer - 1, X
@@ -10625,8 +10644,8 @@ CheckCollisionWithPlayer:
 
 	; accept the heart into your life
 	STA zEnemyState, Y
-	LDA #DPCM_Select
-	STA iDPCMSFX2
+	LDA #Hill_Cherry
+	STA iHillSFX
 	LDY iPlayerMaxHP
 	LDA iPlayerHP
 	CLC
@@ -11077,8 +11096,8 @@ loc_BANK3_BA2A:
 	STA zPlayerYVelocity
 
 loc_BANK3_BA2C:
-	LDA #DPCM_PlayerHurt
-	STA iDPCMSFX1
+	LDA #SoundEffect2_Injury
+	STA iPulse1SFX
 
 locret_BANK3_BA31:
 	RTS
@@ -11151,7 +11170,7 @@ loc_BANK3_BA7A:
 
 PlayBossHurtSound:
 	LDA #DPCM_BossHurt
-	STA iDPCMSFX2
+	STA iDPCMSFX
 	STA iDPCMBossPriority
 	RTS
 
@@ -11518,8 +11537,8 @@ DoorHandling_GoThroughDoor_Bank3:
 	INC iPlayerLock
 	JSR SnapPlayerToTile_Bank3
 
-	LDA #DPCM_DoorOpenBombBom
-	STA iDPCMSFX1
+	LDA #SoundEffect3_Door
+	STA iNoiseSFX
 	RTS
 
 

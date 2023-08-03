@@ -5,21 +5,19 @@
 ; $05 -> 7 Bytes -> All five channels
 ;
 MusicChannelStack:
-	.db $04 ; Overworld
-	.db $04 ; CHR Select
-	.db $03 ; Inside
-	.db $03 ; Boss
-	.db $03 ; Inv. Star
-	.db $03 ; Subspace
-	.db $03 ; Mamu
+	.db $05 ; Overworld
+	.db $05 ; CHR Select
+	.db $05 ; Inside
+	.db $04 ; Boss
+	.db $05 ; Inv. Star
+	.db $05 ; Subspace
+	.db $05 ; Mamu
 	.db $05 ; Title
 	.db $05 ; Ending
-	.db $04 ; Subcons
 ; Fanfares
-	.db $03 ; Mushroom
-	.db $03 ; Boss Vic
+	.db $05 ; Mushroom
+	.db $05 ; Boss Vic
 	.db $05 ; Ending - UNUSED
-	.db $03 ; Down
-	.db $03 ; Game Over
-	.db $03 ; Crystal 1UP
-	.db $04 ; Subcons - UNUSED
+	.db $05 ; Down
+	.db $05 ; Game Over
+	.db $05 ; Crystal 1UP

@@ -79,6 +79,8 @@ Music2_CrystalGetFanfare = $20
 Music2_SubconsFreed = $40
 Music2_StopMusic = $80
 
+Music2_WartDeath = $40
+
 ; ---------------------------------------------------------------------------
 
 ; enum ControllerInput (bitfield) (width 1 byte)
@@ -92,24 +94,40 @@ ControllerInput_B = %01000000
 ControllerInput_A = %10000000
 
 ; ---------------------------------------------------------------------------
+; enum Hill (width 1 byte)
+Hill_Jump = $01
+Hill_Vine = $02
+Hill_Cherry = $04
+Hill_Throw = $08
+Hill_Fall = $10
+Hill_Grow = $20
+Hill_LampBossDeath = $40
+Hill_Select = $80
+
+; ---------------------------------------------------------------------------
 
 ; enum DPCM (width 1 byte)
 DPCM_DoorOpenBombBom = $01
 DPCM_Rocket = $02
 DPCM_POW = $04
-DPCM_ItemPull = $08
 DPCM_PlayerHurt = $10
 DPCM_Unused = $20
 DPCM_Watch = $40
 DPCM_Hawk = $80
-DPCM_Egg = $01
 DPCM_Lamp = $02
 DPCM_Select = $04
 DPCM_Throw = $08
 DPCM_BossDeath = $10
+DPCM_PlayerDeath = $80
+
+DPCM_Egg = $01
+DPCM_Uproot = $02
+DPCM_Slot = $04
+DPCM_ItemPull = $08
+DPCM_ChargeJump = $10
 DPCM_BossHurt = $20
 DPCM_Impact = $40
-DPCM_PlayerDeath = $80
+DPCM_Shell = $80
 
 ; ---------------------------------------------------------------------------
 
@@ -121,19 +139,16 @@ PRGBank_6_7 = $03 ; second half empty
 PRGBank_8_9 = $04
 PRGBank_A_B = $05 ; second half empty
 PRGBank_C_D = $06 ; second half empty
-PRGBank_E_F = $07
-PRGBank_DMC_7 = $07
-PRGBank_DMC_B = $0B
-PRGBank_DMC_D = $0D
-PRGBank_DMC_E = $0E
+PRGBank_Music_1 = $0E
+PRGBank_Music_2 = $0F
+PRGBank_Music_3 = $10
 
-PRGBank_DMC_SAW_23 = $18
+PRGBank_DMC_16 = $16
+PRGBank_DMC_17 = $17
+PRGBank_DMC_SAW_3 = $18
 PRGBank_DMC_SAW_4 = $19
 PRGBank_DMC_SAW_5 = $1A
-PRGBank_DMC_1B = $1B
-PRGBank_DMC_1C = $1C
-PRGBank_DMC_1D = $1D
-PRGBank_DMC_1E = $1E
+PRGBank_DMC_SAW_2 = $1B
 
 ; ---------------------------------------------------------------------------
 
@@ -185,10 +200,17 @@ EndingUpdateBuffer_Text_LUIGI = $0C
 ; enum SoundEffect2 (width 1 byte)
 SoundEffect2_Jump = $01
 SoundEffect2_Climbing = $02
-SoundEffect2_CoinGet = $04
-SoundEffect2_Shrinking = $08
 SoundEffect2_IntroFallSlide = $10
 SoundEffect2_Growing = $20
+
+SoundEffect2_StopSlot = $01
+SoundEffect2_1UP = $02
+SoundEffect2_CoinGet = $04
+SoundEffect2_Shrinking = $08
+SoundEffect2_Injury = $10
+SoundEffect2_Watch = $20
+SoundEffect2_HawkUp = $40
+SoundEffect2_HawkDown = $80
 
 ; ---------------------------------------------------------------------------
 
@@ -201,6 +223,13 @@ PPUStatus_VBlankHit = %10000000
 
 ; enum SoundEffect3
 SoundEffect3_ShortNoise = $01 ; Whale spout
+SoundEffect3_RocketPhanto = $02
+SoundEffect3_POW = $04
+SoundEffect3_Door = $08
+SoundEffect3_Bomb = $10
+SoundEffect3_Fire = $20
+SoundEffect3_Bubbles = $40
+SoundEffect3_WartSmokePuff = $80
 
 ; ---------------------------------------------------------------------------
 

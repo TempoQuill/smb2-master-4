@@ -16,7 +16,6 @@ MusicPointersFirstPart:
 	musicPart MusicPartPointers_Wart
 	musicPart MusicPartPointers_TitleScreen
 	musicPart MusicPartPointers_Ending
-	musicPart MusicPartPointers_Subcons
 
 MusicPointersEndPart:
 	musicPart MusicPartPointers_OverworldEnd
@@ -28,7 +27,6 @@ MusicPointersEndPart:
 	musicPart MusicPartPointers_WartEnd
 	musicPart MusicPartPointers_TitleScreenEnd
 	musicPart MusicPartPointers_EndingEnd
-	musicPart MusicPartPointers_SubconsEnd
 
 MusicPointersLoopPart:
 	musicPart MusicPartPointers_OverworldLoop
@@ -40,4 +38,4 @@ MusicPointersLoopPart:
 	musicPart MusicPartPointers_WartEnd
 	.db $00 ; title screen, no loop
 	musicPart MusicPartPointers_EndingLoop
-	musicPart MusicPartPointers_SubconsLoop
+

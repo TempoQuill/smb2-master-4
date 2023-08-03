@@ -109,55 +109,55 @@ MusicDataCharacterSelect1_Square1:
 	.db $3A
 	.db $7E
 MusicDataCharacterSelect1_Triangle:
-	.db $96
+	.db $86
 	.db $48
-	.db $92
+	.db $82
 	.db $48
-	.db $96
+	.db $86
 	.db $7E
-	.db $92
+	.db $82
 	.db $48
-	.db $96
+	.db $86
 	.db $7E
-	.db $92
+	.db $82
 	.db $48
-	.db $96
+	.db $86
 	.db $7E
-	.db $92
+	.db $82
 	.db $48
-	.db $96
+	.db $86
 	.db $48
-	.db $92
+	.db $82
 	.db $48
-	.db $96
+	.db $86
 	.db $7E
-	.db $92
+	.db $82
 	.db $48
-	.db $96
+	.db $86
 	.db $7E
-	.db $92
+	.db $82
 	.db $48
-	.db $96
+	.db $86
 	.db $7E
-	.db $92
+	.db $82
 	.db $48
-	.db $96
+	.db $86
 	.db $48
-	.db $92
+	.db $82
 	.db $48
-	.db $96
+	.db $86
 	.db $7E
-	.db $92
+	.db $82
 	.db $48
-	.db $96
+	.db $86
 	.db $7E
-	.db $92
+	.db $82
 	.db $48
-	.db $96
+	.db $86
 	.db $7E
-	.db $92
+	.db $82
 	.db $48
-	.db $98
+	.db $88
 	.db $3E
 	.db $7E
 	.db $46

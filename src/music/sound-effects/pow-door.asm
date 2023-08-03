@@ -1,68 +1,37 @@
-NoiseSFX_POW:
-	.db $1f
-	.db $8d
-	.db $1e
-	.db $8e
-	.db $8f
-	.db $1f
-	.db $8d
-	.db $1e
-	.db $8e
-	.db $8f
-	.db $1f
-	.db $8d
-	.db $1e
-	.db $8e
 NoiseSFX_Door:
-	.db $8f
-	.db $1f
-	.db $8d
-	.db $1e
-	.db $8e
-	.db $8f
-	.db $10
-	.db $7e
-	.db $7e
-	.db $7e
-	.db $1f
-	.db $8d
-	.db $1e
-	.db $8e
-	.db $8f
-	.db $1d
-	.db $0f
-	.db $0e
-	.db $1c
-	.db $0d
-	.db $7e
-	.db $1b
-	.db $0c
-	.db $1a
-	.db $0b
-	.db $7e
-	.db $19
-	.db $0a
-	.db $09
-	.db $18
-	.db $7e
-	.db $0f
-	.db $17
-	.db $7e
-	.db $16
-	.db $0e
-	.db $7e
-	.db $15
-	.db $0d
-	.db $7e
-	.db $14
-	.db $0c
-	.db $7e
-	.db $13
-	.db $7e
-	.db $12
-	.db $7e
-	.db $7e
-	.db $11
-	.db $7e
-	.db $7e
-	.db $00
+	.db $1F, $0E, $10, $7E
+	.db $1F, $0D, $10, $7E
+	.db $1F, $0C, $10, $7E
+	.db $1F, $0B, $10, $7E
+	.db $1F, $0A, $10, $7E
+	.db      $7E, $7E
+	.db      $7E, $7E
+	.db      $7E, $7E
+	.db      $7E, $7E
+	.db $1F, $0F, $10, $7E
+	.db $1F, $0E, $10, $7E
+	.db $1F, $0D, $10, $7E
+	.db $1F, $0C, $10, $7E
+	.db      $7E, $7E
+	.db      $7E, $7E
+	.db      $7E, $7E
+	.db $1F, $0E, $10, $7E
+	.db $1F, $0D, $10, $7E
+	.db $1F, $0C, $10, $7E
+	.db $1F, $0B, $10, $7E
+	.db      $7E, $7E
+	.db      $7E, $7E
+	.db      $7E, $7E
+	.db $1F, $0D, $10, $7E
+	.db $1F, $0C, $10, $7E
+	.db $1F, $0B, $10, $7E
+	.db $1F, $0A, $10, $7E
+	.db      $7E, $7E
+	.db      $7E, $7E
+	.db      $7E, $7E
+NoiseSFX_POW:
+	.db $1F, $0E, $7E
+	.db $10, $7E, $7E
+	.db $1F, $0d, $7E, $7E, $7E
+	.db      $0E, $7E, $7E, $7E
+	.DB $00

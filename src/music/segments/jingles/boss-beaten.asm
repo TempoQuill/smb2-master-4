@@ -1,90 +1,168 @@
 MusicDataBossBeaten:
 MusicDataBossBeaten_Square2:
-	.db $94
-	.db $42
-	.db $48
-	.db $4C
-	.db $42
-	.db $48
-	.db $4C
-	.db $3E
-	.db $42
-	.db $50
-	.db $3E
-	.db $42
-	.db $52
-	.db $50
-	.db $48
-	.db $42
+	.db $95
+	.db $0A
+	.db $90
 	.db $7E
-	.db $3A
-	.db $42
-	.db $48
-	.db $50
-	.db $4C
-	.db $3E
-	.db $42
+	.db $95
+	.db $22
+	.db $90
 	.db $7E
-	.db $30
+	.db $95
+	.db $0C
+	.db $90
 	.db $7E
+	.db $95
+	.db $24
+	.db $90
+	.db $7E
+	.db $95
+	.db $0E
+	.db $90
+	.db $7E
+	.db $95
 	.db $26
+	.db $90
+	.db $7E
+	.db $95
+	.db $12
+	.db $90
+	.db $7E
+	.db $95
 	.db $2A
+	.db $90
 	.db $7E
-	.db $26
-	.db $20
+	.db $95
+	.db $1C
+	.db $90
+	.db $7E
+	.db $95
+	.db $2A
+	.db $90
+	.db $7E
+	.db $95
+	.db $0E
+	.db $90
+	.db $7E
+	.db $95
+	.db $2E
+	.db $90
 	.db $7E
 	.db $98
-	.db $18
-	.db $26
 	.db $30
-	.db $7E
-	.db $00
-MusicDataBossBeaten_Square1:
-	.db $88
-	.db $7E
-	.db $30
-	.db $7E
-	.db $30
-	.db $7E
-	.db $34
-	.db $7E
-	.db $38
-	.db $7E
-	.db $42
-	.db $7E
-	.db $46
-	.db $48
-	.db $94
-	.db $3E
-	.db $98
-	.db $42
-	.db $94
-	.db $3E
-	.db $98
-	.db $38
-	.db $30
+	.db $9B
 	.db $7E
 	.db $9A
+	.db $7E
+	.db $B8
+	.db $3E
+	.db $00
+MusicDataBossBeaten_Square1:
+	.db $B4
+	.db $42
 	.db $48
+	.db $4C
+	.db $42
+	.db $48
+	.db $4C
+	.db $3E
+	.db $42
+	.db $50
+	.db $3E
+	.db $42
+	.db $52
+	.db $50
+	.db $48
+	.db $42
+	.db $7E
+	.db $3A
+	.db $42
+	.db $48
+	.db $50
+	.db $4C
+	.db $3E
+	.db $B8
+	.db $42
+	.db $48
+	.db $B4
+	.db $3E
+	.db $42
+	.db $7E
+	.db $3E
+	.db $B8
+	.db $38
+	.db $B8
+	.db $30
+	.db $26
+	.db $48
+	.db $7E
 MusicDataBossBeaten_Triangle:
 	.db $88
-	.db $3A
-	.db $52
-	.db $3C
-	.db $54
-	.db $3E
-	.db $56
-	.db $42
-	.db $5A
-	.db $4C
-	.db $3A
-	.db $3E
-	.db $4C
-	.db $48
-	.db $7E
-	.db $7E
-	.db $7E
-	.db $48
-	.db $3E
+	.db $22
 	.db $30
+	.db $24
+	.db $30
+	.db $26
+	.db $34
+	.db $2A
+	.db $38
+	.db $34
+	.db $22
+	.db $26
+	.db $34
+	.db $30
+	.db $84
+	.db $3E
+	.db $42
+	.db $7E
+	.db $3E
+	.db $88
+	.db $38
+	.db $30
+	.db $26
+	.db $18
+	.db $7E
+
+MusicDataBossBeaten_Noise:
+	.db $8C
+	.db $01
+	.db $01
+	.db $01
+	.db $01
+	.db $8B
+	.db $01
+
+MusicDataBossBeaten_DPCM:
+	.db $84
+	.db $50
+	.db $5A
+	.db $5A
+	.db $50
+	.db $5A
+	.db $5A
+	.db $50
+	.db $50
+	.db $60
+	.db $50
+	.db $50
+	.db $60
+	.db $60
+	.db $5A
+	.db $50
+	.db $7E
+	.db $4C
+	.db $52
+	.db $5A
+	.db $60
+	.db $52
+	.db $52
+	.db $52
+	.db $7E
+	.db $50
+	.db $89
+	.db $7E
+	.db $8C
+	.db $7E
+	.db $84
+	.db $50
 	.db $7E

@@ -6,5 +6,5 @@ MusicDataCharacterSelect6_Noise:
 	.db $04
 	.db $02
 	.db $02
-	.db $7E
+	.db $01
 	.db $06

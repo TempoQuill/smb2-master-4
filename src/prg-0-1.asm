@@ -1907,8 +1907,16 @@ HandlePlayerState:
 	BEQ loc_BANK0_8A26
 
 	LDY iCurrentPlayerSize
+	BEQ loc_Shrinking
+
+	LDA GrowShrinkSFXIndexes, Y
+	STA iHillSFX
+	BNE loc_ChangeSize
+loc_Shrinking:
 	LDA GrowShrinkSFXIndexes, Y
 	STA iPulse1SFX
+
+loc_ChangeSize:
 	LDA #$1E
 	STA zPlayerStateTimer
 	LDA #PlayerState_ChangingSize
@@ -1971,8 +1979,13 @@ HandlePlayerState_Dying:
 
 	LDA iPlayerScreenYPage
 	CMP #02
+	BNE HandlePlayerState_DyingPhysics
+
+	LDA iCurrentMusic2
+	BNE locret_BANK0_8A86
 	BEQ LoseALife
 
+HandlePlayerState_DyingPhysics:
 	JSR ApplyPlayerPhysicsY
 
 	LDA zPlayerYVelocity
@@ -2018,8 +2031,11 @@ HandlePlayerState_Lifting:
 	CPY #$07
 	BNE loc_BANK0_8A9D
 
-	LDA #DPCM_ItemPull
-	STA iDPCMSFX1
+	LDA zObjectType, X
+	TAX
+	LDA PickupSounds, X
+	LDX iHeldItemIndex
+	STA iDPCMSFX
 
 loc_BANK0_8A9D:
 	DEC zHeldObjectTimer, X
@@ -2078,6 +2094,136 @@ byte_BANK0_8ACE:
 	.db $10
 	.db $F0
 ; ---------------------------------------------------------------------------
+
+PickupSounds:
+	.db DPCM_Uproot   ; Enemy_Heart
+	.db DPCM_ItemPull ; Enemy_Shyguy
+	.db DPCM_ItemPull ; Enemy_Tweeter
+	.db DPCM_ItemPull ; Enemy_Shyguy
+	.db DPCM_ItemPull ; Enemy_Porcupo
+	.db DPCM_ItemPull ; Enemy_Snifit
+	.db DPCM_ItemPull ; Enemy_Snifit
+	.db DPCM_ItemPull ; Enemy_Snifit
+	.db DPCM_ItemPull ; Enemy_Ostro
+	.db DPCM_Uproot   ; Enemy_BobOmb
+	.db DPCM_ItemPull ; Enemy_Albatoss
+	.db DPCM_ItemPull ; Enemy_Albatoss
+	.db DPCM_ItemPull ; Enemy_Albatoss
+	.db DPCM_ItemPull ; Enemy_Ninji
+	.db DPCM_ItemPull ; Enemy_Ninji
+	.db DPCM_ItemPull ; Enemy_Beezo
+	.db DPCM_ItemPull ; Enemy_Beezo
+	.db DPCM_Uproot   ; Enemy_WartBubble
+	.db DPCM_ItemPull ; Enemy_Pidgit
+	.db DPCM_ItemPull ; Enemy_Trouter
+	.db DPCM_ItemPull ; Enemy_Hoopstar
+	.db DPCM_ItemPull ; Enemy_Shyguy
+	.db DPCM_ItemPull ; Enemy_BobOmb
+	.db DPCM_ItemPull ; Enemy_Phanto
+	.db DPCM_ItemPull ; Enemy_Cobrat
+	.db DPCM_ItemPull ; Enemy_Cobrat
+	.db DPCM_ItemPull ; Enemy_Pokey
+	.db DPCM_Uproot   ; Enemy_Bullet
+	.db DPCM_ItemPull ; Enemy_Birdo
+	.db DPCM_ItemPull ; Enemy_Mouser
+	.db DPCM_ItemPull ; Enemy_Egg
+	.db DPCM_ItemPull ; Enemy_Tryclyde
+	.db DPCM_ItemPull ; Enemy_Fireball
+	.db DPCM_ItemPull ; Enemy_Clawgrip
+	.db DPCM_ItemPull ; Enemy_ClawgripRock
+	.db DPCM_ItemPull ; Enemy_Panser
+	.db DPCM_ItemPull ; Enemy_Panser
+	.db DPCM_ItemPull ; Enemy_Panser
+	.db DPCM_ItemPull ; Enemy_Autobomb
+	.db DPCM_ItemPull ; Enemy_AutobombFire
+	.db DPCM_Uproot   ; Enemy_WhaleSpout
+	.db DPCM_ItemPull ; Enemy_Flurry
+	.db DPCM_ItemPull ; Enemy_Fryguy
+	.db DPCM_ItemPull ; Enemy_FryguySplit
+	.db DPCM_ItemPull ; Enemy_Wart
+	.db DPCM_ItemPull ; Enemy_Hawkmouth
+	.db DPCM_ItemPull ; Enemy_Spark
+	.db DPCM_ItemPull ; Enemy_Spark
+	.db DPCM_ItemPull ; Enemy_Spark
+	.db DPCM_ItemPull ; Enemy_Spark
+	.db DPCM_Uproot   ; Enemy_Vegetable
+	.db DPCM_Uproot   ; Enemy_Vegetable
+	.db DPCM_Uproot   ; Enemy_Vegetable
+	.db DPCM_Uproot   ; Enemy_Shell
+	.db DPCM_Uproot   ; Enemy_Coin
+	.db DPCM_Uproot   ; Enemy_Bomb
+	.db DPCM_Uproot   ; Enemy_Rocket
+	.db DPCM_ItemPull ; Enemy_MushroomBlock
+	.db DPCM_ItemPull ; Enemy_POWBlock
+	.db DPCM_ItemPull ; Enemy_FallingLogs
+	.db DPCM_ItemPull ; Enemy_SubspaceDoor
+	.db DPCM_ItemPull ; Enemy_Key
+	.db DPCM_Uproot   ; Enemy_SubspacePotion
+	.db DPCM_ItemPull ; 
+	.db DPCM_Uproot   ; 
+	.db DPCM_ItemPull ; 
+	.db DPCM_ItemPull ; 
+	.db DPCM_ItemPull ; 
+	.db DPCM_ItemPull ; 
+	.db DPCM_Uproot   ; 
+	.db DPCM_Uproot   ; 
+	.db DPCM_ItemPull ; 
+	.db DPCM_ItemPull ; 
+	.db DPCM_Uproot   ; 
+	.db DPCM_ItemPull ; 
+	.db DPCM_Uproot   ; 
+	.db DPCM_Uproot   ; 
+	.db DPCM_Uproot   ; 
+	.db DPCM_Uproot   ; 
+	.db DPCM_Uproot   ; 
+	.db DPCM_Uproot   ; 
+	.db DPCM_Uproot   ; 
+	.db DPCM_Uproot   ; 
+	.db DPCM_Uproot   ; 
+	.db DPCM_Uproot   ; 
+	.db DPCM_Uproot   ; 
+	.db DPCM_Uproot   ; 
+	.db DPCM_Uproot   ; 
+	.db DPCM_Uproot   ; 
+	.db DPCM_Uproot   ; 
+	.db DPCM_Uproot   ; 
+	.db DPCM_Uproot   ; 
+	.db DPCM_ItemPull ; 
+	.db DPCM_ItemPull ; 
+	.db DPCM_ItemPull ; 
+	.db DPCM_ItemPull ; 
+	.db DPCM_ItemPull ; 
+	.db DPCM_ItemPull ; 
+	.db DPCM_ItemPull ; 
+	.db DPCM_ItemPull ; 
+	.db DPCM_ItemPull ; 
+	.db DPCM_ItemPull ; 
+	.db DPCM_ItemPull ; 
+	.db DPCM_ItemPull ; 
+	.db DPCM_ItemPull ; 
+	.db DPCM_ItemPull ; 
+	.db DPCM_ItemPull ; 
+	.db DPCM_ItemPull ; 
+	.db DPCM_ItemPull ; 
+	.db DPCM_ItemPull ; 
+	.db DPCM_ItemPull ; 
+	.db DPCM_ItemPull ; 
+	.db DPCM_ItemPull ; 
+	.db DPCM_ItemPull ; 
+	.db DPCM_Uproot   ; 
+	.db DPCM_Uproot   ; 
+	.db DPCM_Uproot   ; 
+	.db DPCM_ItemPull ; 
+	.db DPCM_Uproot   ; 
+	.db DPCM_Uproot   ; 
+	.db DPCM_Uproot   ; 
+	.db DPCM_ItemPull ; 
+	.db DPCM_ItemPull ; 
+	.db DPCM_ItemPull ; 
+	.db DPCM_ItemPull ; 
+	.db DPCM_ItemPull ; 
+	.db DPCM_Uproot   ; 
+	.db DPCM_ItemPull ; 
 
 HandlePlayerState_Climbing:
 	LDA zInputCurrentState
@@ -2147,8 +2293,8 @@ PlayerClimbAnimation:
 	LDA zPlayerFacing
 	EOR #$01
 	STA zPlayerFacing
-	LDA #SoundEffect2_Climbing
-	STA iPulse1SFX
+	LDA #Hill_Vine
+	STA iHillSFX
 
 PlayerClimbAnimation_Exit:
 	RTS
@@ -2216,7 +2362,6 @@ HandlePlayerState_GoingDownJar:
 
 	LDA #GameMode_Warp
 	STA iGameMode
-	STA iUsedWarps
 	RTS
 
 HandlePlayerState_GoingDownJar_NonWarp:
@@ -2420,8 +2565,8 @@ loc_BANK0_8C2B:
 	STA zPlayerAnimFrame
 	JSR PlayerStartJump
 
-	LDA #SoundEffect2_Jump
-	STA iPulse1SFX
+	LDA #Hill_Jump
+	STA iHillSFX
 
 loc_BANK0_8C3D:
 	LDA iIsRidingCarpet
@@ -2444,6 +2589,8 @@ loc_BANK0_8C3D:
 	CMP #$3C
 	BCS loc_BANK0_8C92
 
+	LDA #0
+	STA zSFXReelTimer
 	INC iCrouchJumpTimer ; increment crouch jump charge
 	BNE loc_BANK0_8C92
 
@@ -2480,6 +2627,18 @@ ResetCrouchJumpTimer:
 	BEQ loc_BANK0_8C95 ; unconditional branch?
 
 loc_BANK0_8C92:
+	LDA iCrouchJumpTimer ; check if crouch jump is charged
+	CMP #$3C
+	BNE loc_skipsound
+	LDA zSFXReelTimer
+	BNE loc_skipsound
+
+	LDA #DPCM_ChargeJump
+	STA iDPCMSFX
+	LDA #1
+	STA zSFXReelTimer
+
+loc_skipsound:
 	JSR sub_BANK0_8D2C
 
 loc_BANK0_8C95:
@@ -2893,8 +3052,8 @@ loc_BANK0_8E42:
 	LDA #$0A
 	STA zWalkCycleTimer
 	DEC zHeldItem
-	LDA #DPCM_Throw
-	STA iDPCMSFX2
+	LDA #Hill_Throw
+	STA iHillSFX
 	LDA #$00
 	STA zPlayerHitBoxHeight
 	STA zInputBottleneck
@@ -3306,8 +3465,8 @@ PlayerTileCollision_CheckCherryAndClimbable_AfterTick:
 	JSR CreateStarman
 
 PlayerTileCollision_Cherry:
-	LDA #DPCM_Select
-	STA iDPCMSFX2
+	LDA #Hill_Cherry
+	STA iHillSFX
 	LDA #BackgroundTile_Sky
 	JMP loc_BANK0_937C
 
@@ -3754,8 +3913,8 @@ DoorHandling_GoThroughDoor:
 	INC iPlayerLock
 	JSR SnapPlayerToTile
 
-	LDA #DPCM_DoorOpenBombBom
-	STA iDPCMSFX1
+	LDA #SoundEffect3_Door
+	STA iNoiseSFX
 
 DoorHandling_Exit:
 	RTS
@@ -5018,18 +5177,6 @@ loc_BANK0_9B3B:
 ; ---------------------------------------------------------------------------
 
 loc_BANK0_9B4D:
-	LDA z02
-	CMP #$22
-	BEQ TitleSFX
-	CMP #$1a
-	BEQ TitleSFX
-	CMP #$12
-	BNE SkipTitleSFX
-
-TitleSFX:
-	JSR PlayBombSFX
-
-SkipTitleSFX:
 	LDA zInputBottleneck
 	AND #ControllerInput_Start
 	BEQ loc_BANK0_9B56
@@ -5463,9 +5610,6 @@ FreeSubconsScene_JumpingLoop:
 	CMP #$25
 	BNE FreeSubconsScene_JumpingLoop
 
-	LDY iUsedWarps
-	BNE FreeSubconsScene_JumpingLoop
-
 	LDY #Music2_EndingAndCast
 	STY iMusic2
 	BNE FreeSubconsScene_JumpingLoop
@@ -5528,8 +5672,8 @@ FreeSubconsScene_Phase1:
 	STA zPlayerAnimFrame
 
 FreeSubconsScene_Jump:
-	LDA #SoundEffect2_Jump
-	STA iPulse1SFX
+	LDA #Hill_Jump
+	STA iHillSFX
 	JMP PlayerStartJump
 
 
@@ -5627,15 +5771,8 @@ FreeSubconsScene_Phase4:
 	LDA #SpriteAnimation_Jumping
 	STA zPlayerAnimFrame
 
-	LDA iUsedWarps
-	BEQ FreeSubconsScene_JustPlayCorkSound
-
-	LDA #Music2_SubconsFreed
-	STA iMusic2
-
-FreeSubconsScene_JustPlayCorkSound:
-	LDA #DPCM_ItemPull
-	STA iDPCMSFX1
+	LDA #DPCM_Uproot
+	STA iDPCMSFX
 
 	LDA #$A0
 	STA zObjectYVelocity + 8
@@ -5704,8 +5841,8 @@ FreeSubconsScene_Subcons_Loop:
 	CMP #$01
 	BNE FreeSubconsScene_Subcons_Next
 
-	LDA #DPCM_Throw
-	STA iDPCMSFX2
+	LDA #Hill_Throw
+	STA iHillSFX
 	BNE FreeSubconsScene_Subcons_Next
 
 FreeSubconsScene_Subcons_Movement:
@@ -7235,8 +7372,8 @@ PlayerTileCollision_HurtPlayer:
 
 loc_BANK1_BAE5:
 	STA zPlayerYVelocity
-	LDA #DPCM_PlayerHurt
-	STA iDPCMSFX1
+	LDA #SoundEffect2_Injury
+	STA iPulse1SFX
 
 locret_BANK1_BAEC:
 	RTS
@@ -7416,12 +7553,4 @@ EnsureCorrectMusic:
 	STA iMusic1
 
 EnsureCorrectMusic_Exit:
-	RTS
-
-PlayBombSFX:
-	LDA iCurrentDPCMSFX1
-	BNE PlayBombSFX_Exit
-	LDA #DPCM_DoorOpenBombBom
-	STA iDPCMSFX1
-PlayBombSFX_Exit:
 	RTS

@@ -35,49 +35,6 @@
 MusicData:
 
 ;
-; Ending music
-; Segment 1-3 are at a different tempo than 4-8
-;
-.include "src/music/segments/ldp-exclusive/fin-1.asm"
-.include "src/music/segments/ldp-exclusive/fin-3.asm"
-.include "src/music/segments/ldp-exclusive/fin-4.asm"
-.include "src/music/segments/ldp-exclusive/fin-2.asm"
-.include "src/music/segments/ldp-exclusive/fin-5.asm"
-.include "src/music/segments/ldp-exclusive/fin-6.asm"
-.include "src/music/segments/ldp-exclusive/fin-7.asm"
-.include "src/music/segments/ldp-exclusive/fin-8.asm"
-
-;
-; Invincible Star music
-;
-.include "src/music/segments/ldp-exclusive/inv-star.asm"
-
-;
-; Inside music
-; (including prototype version)
-;
-.include "src/music/segments/ldp-exclusive/inside.asm"
-
-;
-; Subspace music
-;
-.include "src/music/segments/ldp-exclusive/lamp.asm"
-
-;
-; Title screen music
-;
-.include "src/music/segments/ldp-exclusive/title-1.asm"
-.include "src/music/segments/ldp-exclusive/title-2.asm"
-.include "src/music/segments/ldp-exclusive/title-3.asm"
-
-;
-; Character Select screen music
-;
-.include "src/music/segments/ldp-exclusive/chr-1.asm"
-.include "src/music/segments/ldp-exclusive/chr-2.asm"
-.include "src/music/segments/ldp-exclusive/chr-3.asm"
-
-;
 ; Overworld music segments
 ;
 .include "src/music/segments/ldp-exclusive/outside-1.asm"
@@ -85,31 +42,3 @@ MusicData:
 .include "src/music/segments/ldp-exclusive/outside-3.asm"
 .include "src/music/segments/ldp-exclusive/outside-4.asm"
 .include "src/music/segments/ldp-exclusive/outside-5.asm"
-
-;
-; Boss music segment...
-;
-.include "src/music/segments/ldp-exclusive/boss.asm"
-
-;
-; Mamu's final boss music segment
-;
-.include "src/music/segments/ldp-exclusive/mamu.asm"
-
-;
-; Ported from the original Doki Doki Panic.
-; TODO: Try to find a use case for this song.
-;
-.include "src/music/segments/ldp-exclusive/subcons-1.asm"
-.include "src/music/segments/ldp-exclusive/subcons-2.asm"
-.include "src/music/segments/ldp-exclusive/subcons-3.asm"
-.include "src/music/segments/ldp-exclusive/subcons-4.asm"
-
-;
-; Various sound effect jingles; not really full songs...
-;
-.include "src/music/segments/jingles/mushroom-bonus-chance.asm"
-.include "src/music/segments/ldp-exclusive/over.asm"
-.include "src/music/segments/ldp-exclusive/vic.asm"
-.include "src/music/segments/ldp-exclusive/extra.asm"
-.include "src/music/segments/jingles/death.asm"

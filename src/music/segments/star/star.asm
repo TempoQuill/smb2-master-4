@@ -80,13 +80,13 @@ MusicDataStar_Triangle:
 
 MusicDataStar_DPCM:
 	.db $94
-	.db $01
+	.db $7E
 	.db $98
 	.db $10
 	.db $94
 	.db $10
 	.db $10
 	.db $10
-	.db $01
-	.db $01
+	.db $7E
+	.db $7E
 	.db $00

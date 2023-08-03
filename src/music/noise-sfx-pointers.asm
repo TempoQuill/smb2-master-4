@@ -3,7 +3,7 @@ NoiseSFXPointers:
 	.dw NoiseSFX_Rocket
 	.dw NoiseSFX_POW
 	.dw NoiseSFX_Door
-	.dw NoiseSFX_Hawk
-	.dw NoiseSFX_None
-	.dw NoiseSFX_None
-	.dw NoiseSFX_None
+	.dw NoiseSFX_Bomb
+	.dw NoiseSFX_Fireball
+	.dw NoiseSFX_WartBubble
+	.dw NoiseSFX_WartSmokePuff

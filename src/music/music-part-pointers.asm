@@ -10,102 +10,91 @@ MusicPartPointers:
 ; These pointers correspond to iMusic2 fanfares that temporarily interrupt
 ; the current background music
 MusicPartPointers_Mushroom:
-	musicPart MusicHeaderMushroomBonusChance
+	musicHeaderPointer MusicHeaderMushroomBonusChance
 
 MusicPartPointers_BossBeaten:
-	musicPart MusicHeaderBossBeaten
+	musicHeaderPointer MusicHeaderBossBeaten
 
 ; This version of the crystal fanfare is unused, because special logic in
 ; ProcessMusicQueue uses this slot for the ending theme instead.
 MusicPartPointers_CrystalUnused:
-	musicPart MusicHeaderCrystal
+	musicHeaderPointer MusicHeaderCrystal
 
 MusicPartPointers_Death:
-	musicPart MusicHeaderDeath
+	musicHeaderPointer MusicHeaderDeath
 
 MusicPartPointers_GameOver:
-	musicPart MusicHeaderGameOver
+	musicHeaderPointer MusicHeaderGameOver
 
 MusicPartPointers_Crystal:
-	musicPart MusicHeaderCrystal
+	musicHeaderPointer MusicHeaderCrystal
 
 MusicPartPointers_BonusChance:
-	musicPart MusicHeaderMushroomBonusChance
+	musicHeaderPointer MusicHeaderMushroomBonusChance
 
 ; The rest of the pointers correspond to music that uses the pointer tables
 ; with support for segment-based looping.
 MusicPartPointers_CharacterSelect:
-	musicPart MusicHeaderCharacterSelect1
+	musicHeaderPointer MusicHeaderCharacterSelect1
 MusicPartPointers_CharacterSelectLoop:
-	musicPart MusicHeaderCharacterSelect2
+	musicHeaderPointer MusicHeaderCharacterSelect2
+	musicHeaderPointer MusicHeaderCharacterSelect3
+	musicHeaderPointer MusicHeaderCharacterSelect4
 MusicPartPointers_CharacterSelectEnd:
-	musicPart MusicHeaderCharacterSelect3
+	musicHeaderPointer MusicHeaderCharacterSelect5
 
 
 MusicPartPointers_Overworld:
-	musicPart MusicHeaderOverworld1
+	musicHeaderPointer MusicHeaderOverworld1
 MusicPartPointers_OverworldLoop:
-	musicPart MusicHeaderOverworld2
-	musicPart MusicHeaderOverworld3
-	musicPart MusicHeaderOverworld4
-	musicPart MusicHeaderOverworld3
+	musicHeaderPointer MusicHeaderOverworld2
+	musicHeaderPointer MusicHeaderOverworld3
+	musicHeaderPointer MusicHeaderOverworld4
+	musicHeaderPointer MusicHeaderOverworld3
 MusicPartPointers_OverworldEnd:
-	musicPart MusicHeaderOverworld5
+	musicHeaderPointer MusicHeaderOverworld5
 
 
 MusicPartPointers_Boss:
 MusicPartPointers_BossLoop:
 MusicPartPointers_BossEnd:
-	musicPart MusicHeaderBoss
+	musicHeaderPointer MusicHeaderBoss
 
 
 MusicPartPointers_Star:
 MusicPartPointers_StarLoop:
 MusicPartPointers_StarEnd:
-	musicPart MusicHeaderStar
+	musicHeaderPointer MusicHeaderStar
 
 
 MusicPartPointers_Wart:
 MusicPartPointers_WartLoop:
 MusicPartPointers_WartEnd:
-	musicPart MusicHeaderWart
+	musicHeaderPointer MusicHeaderWart
 
 
 MusicPartPointers_TitleScreen:
-	musicPart MusicHeaderTitleScreen1
-	musicPart MusicHeaderTitleScreen2
 MusicPartPointers_TitleScreenEnd:
-	musicPart MusicHeaderTitleScreen3
+	musicHeaderPointer MusicHeaderTitleScreen
 
 
 MusicPartPointers_SubSpace:
 MusicPartPointers_SubSpaceLoop:
 MusicPartPointers_SubSpaceEnd:
-	musicPart MusicHeaderSubspace1
+	musicHeaderPointer MusicHeaderSubspace1
 
 MusicPartPointers_Ending:
-	musicPart MusicHeaderEnding1
-	musicPart MusicHeaderEnding2
-	musicPart MusicHeaderEnding3
-	musicPart MusicHeaderEnding4
+	musicHeaderPointer MusicHeaderEnding1
+	musicHeaderPointer MusicHeaderEnding2
+	musicHeaderPointer MusicHeaderEnding3
+	musicHeaderPointer MusicHeaderEnding4
 MusicPartPointers_EndingLoop:
-	musicPart MusicHeaderEnding5
-	musicPart MusicHeaderEnding6
-	musicPart MusicHeaderEnding5
-	musicPart MusicHeaderEnding7
 MusicPartPointers_EndingEnd:
-	musicPart MusicHeaderEnding8
+	musicHeaderPointer MusicHeaderEnding5
 
 MusicPartPointers_Underground:
 MusicPartPointers_UndergroundLoop:
 MusicPartPointers_UndergroundEnd:
-	musicPart MusicHeaderUnderground
+	musicHeaderPointer MusicHeaderUnderground
 
-MusicPartPointers_Subcons:
-	musicPart MusicHeaderSubcons1
-MusicPartPointers_SubconsLoop:
-	musicPart MusicHeaderSubcons2
-	musicPart MusicHeaderSubcons3
-	musicPart MusicHeaderSubcons4
-MusicPartPointers_SubconsEnd:
-	musicPart MusicHeaderSubcons3
+.pad MusicPartPointers + $100, $FF

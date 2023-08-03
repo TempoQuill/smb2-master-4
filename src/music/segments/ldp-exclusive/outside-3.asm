@@ -35,7 +35,7 @@ MusicDataOverworld3_Square2:
 	.db $7E
 	.db $88
 	.db $4C
-	.db $80
+	.db $8E
 	.db $42
 	.db $4C
 	.db $42
@@ -44,6 +44,7 @@ MusicDataOverworld3_Square2:
 	.db $4C
 	.db $42
 	.db $4C
+	.db $8F
 	.db $42
 	.db $4C
 	.db $42
@@ -106,20 +107,20 @@ MusicDataOverworld3_Square1:
 	.db $7E
 	.db $88
 	.db $3C
-	.db $80
-	.db $34
-	.db $3C
-	.db $34
+	.db $8E
 	.db $34
 	.db $3C
 	.db $34
 	.db $3C
 	.db $34
 	.db $3C
-	.db $80
+	.db $34
+	.db $3C
+	.db $8F
 	.db $34
 	.db $3C
 	.db $34
+	.db $3C
 	.db $82
 	.db $7E
 	.db $88
