@@ -9,8 +9,7 @@
 ; The shorter version of an instrument is 23 bytes
 ;
 Audio2_IsInstrumentTranspositionOkay:
-	SEC
-	RTS
+	.db $01
 
 Audio2_InstrumentDVE_80:
 .incbin "src/music/smas-instrument-data/audio-2-80.bin"

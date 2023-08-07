@@ -1502,7 +1502,7 @@ iMusicStack:
 	.dsb 1 ; $05f3
 iOctave:
 	.dsb 1 ; $05f4
-iCurrentNoiseStartPoint:
+; FOR RENT
 	.dsb 1 ; $05f5
 iMusicChannelCount:
 	.dsb 1 ; $05f6
@@ -1514,7 +1514,7 @@ iDPCMNoteLengthCounter:
 	.dsb 1 ; $05fa
 iPulse1SFXSweep:
 	.dsb 1 ; $05fb
-iCurrentDPCMStartPoint:
+; FOR RENT
 	.dsb 1 ; $05fc
 iPulse1SFXVolume:
 	.dsb 1 ; $05fd
@@ -1608,7 +1608,7 @@ iCurrentPulse1SFX:
 	.dsb 1 ; $060d
 iCurrentNoiseSFX:
 	.dsb 1 ; $060e
-iMusicHillStartOffset:
+; FOR RENT
 	.dsb 1 ; $060f
 iHillSFXOffset:
 	.dsb 1 ; $0610

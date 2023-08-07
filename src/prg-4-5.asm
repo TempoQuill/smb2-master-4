@@ -74,10 +74,6 @@ ProcessSoundEffectQueue2:
 ProcessSoundEffectQueue2_Exit:
 	RTS
 
-ProcessSoundEffectQueue2_NoSFX:
-	STA iCurrentPulse1SFX
-	RTS
-
 ProcessSoundEffectQueue2_Part2:
 	STA iCurrentPulse1SFX
 	LDY #0
@@ -87,20 +83,18 @@ ProcessSoundEffectQueue2_Part2:
 
 ProcessSoundEffectQueue2_PointerLoop:
 	INY
-	INY
 	LSR A
 	BCC ProcessSoundEffectQueue2_PointerLoop
 
 ProcessSoundEffectQueue2_DesignatePointer:
 	LDA Pulse1SFXVolumes, Y
 	STA iPulse1SFXVolume
-	LDA Pulse1SFXVolumes + 1, Y
+	LDA Pulse1SFXEnvelopes, Y
 	STA iPulse1SFXVolume + 1
-	LDA Pulse1SFXPointers, Y
+	LDA Pulse1SFXPointersLo, Y
 	STA zPulse1IndexPointer
-	LDA Pulse1SFXPointers + 1, Y
+	LDA Pulse1SFXPointersHi, Y
 	STA zPulse1IndexPointer + 1
-	BEQ ProcessSoundEffectQueue2_NoSFX
 
 ProcessSoundEffectQueue2_Part3:
 	LDY zPulse1SFXOffset
@@ -151,25 +145,31 @@ ProcessSoundEffectQueue2_End:
 	STA SQ2_SWEEP
 	RTS
 
-Pulse1SFXPointers:
-	.dw Pulse1SFXData_StopSlot
-	.dw Pulse1SFXData_1UP
-	.dw Pulse1SFXData_Coin
-	.dw Pulse1SFXData_Shrink
-	.dw Pulse1SFXData_Injury
-	.dw Pulse1SFXData_Watch
-	.dw Pulse1SFXData_HawkUp
-	.dw Pulse1SFXData_HawkDown
+Pulse1SFXPointersLo:
+	.db <Pulse1SFXData_StopSlot
+	.db <Pulse1SFXData_1UP
+	.db <Pulse1SFXData_Coin
+	.db <Pulse1SFXData_Shrink
+	.db <Pulse1SFXData_Injury
+	.db <Pulse1SFXData_Watch
+	.db <Pulse1SFXData_HawkUp
+	.db <Pulse1SFXData_HawkDown
+
+Pulse1SFXPointersHi:
+	.db >Pulse1SFXData_StopSlot
+	.db >Pulse1SFXData_1UP
+	.db >Pulse1SFXData_Coin
+	.db >Pulse1SFXData_Shrink
+	.db >Pulse1SFXData_Injury
+	.db >Pulse1SFXData_Watch
+	.db >Pulse1SFXData_HawkUp
+	.db >Pulse1SFXData_HawkDown
 
 Pulse1SFXVolumes:
-	.db $99, $87
-	.db $9F, $81
-	.db $9F, $84
-	.db $1F, $00
-	.db $1F, $00
-	.db $9F, $81
-	.db $1C, $1C
-	.db $1C, $1C
+	.db $99, $9F, $9F, $1F, $1F, $9F, $1C, $1C
+
+Pulse1SFXEnvelopes:
+	.db $87, $81, $84, $00, $00, $81, $1C, $1C
 
 .include "src/music/sound-effects/pulse-1-sfx-data.asm"
 
@@ -189,14 +189,13 @@ ProcessHillQueue_Part2:
 
 ProcessHillQueue_PointerLoop:
 	INY
-	INY
 	LSR A
 	BCC ProcessHillQueue_PointerLoop
 
 ProcessHillQueue_DesignatePointer:
-	LDA HillSFXPointers, Y
+	LDA HillSFXPointersLo, Y
 	STA zHillIndexPointer
-	LDA HillSFXPointers + 1, Y
+	LDA HillSFXPointersHi, Y
 	STA zHillIndexPointer + 1
 
 ProcessHillQueue_Part3:
@@ -228,15 +227,25 @@ ProcessHillQueue_Done:
 	STA TRI_HI
 	RTS
 
-HillSFXPointers:
-	.dw HillSFXData_Jump
-	.dw HillSFXData_Vine
-	.dw HillSFXData_Cherry
-	.dw HillSFXData_Throw
-	.dw HillSFXData_Fall
-	.dw HillSFXData_Mushroom
-	.dw HillSFXData_LampBossDeath
-	.dw HillSFXData_Select
+HillSFXPointersLo:
+	.db <HillSFXData_Jump
+	.db <HillSFXData_Vine
+	.db <HillSFXData_Cherry
+	.db <HillSFXData_Throw
+	.db <HillSFXData_Fall
+	.db <HillSFXData_Mushroom
+	.db <HillSFXData_LampBossDeath
+	.db <HillSFXData_Select
+
+HillSFXPointersHi:
+	.db >HillSFXData_Jump
+	.db >HillSFXData_Vine
+	.db >HillSFXData_Cherry
+	.db >HillSFXData_Throw
+	.db >HillSFXData_Fall
+	.db >HillSFXData_Mushroom
+	.db >HillSFXData_LampBossDeath
+	.db >HillSFXData_Select
 
 .include "src/music/sound-effects/hill-sfx-data.asm"
 
@@ -267,15 +276,14 @@ ProcessSoundEffectQueue3_Part2:
 ; from here, loop until C is tripped, skipped if it already was
 ProcessSoundEffectQueue3_PointerLoop:
 	INY
-	INY
 	LSR A
 	BCC ProcessSoundEffectQueue3_PointerLoop
 
 ProcessSoundEffectQueue3_SkipPointerLoop:
 	; load pointer for us to access
-	LDA NoiseSFXPointers, Y
+	LDA NoiseSFXPointersLo, Y
 	STA zNoiseIndexPointer
-	LDA NoiseSFXPointers + 1, Y
+	LDA NoiseSFXPointersHi, Y
 	STA zNoiseIndexPointer + 1
 
 ProcessSoundEffectQueue3_Part3:
@@ -440,11 +448,9 @@ ENDIF
 	STA SND_CHN
 	LDA #$10
 	STA SND_CHN
-	RTS
 
 RunWartDeathSound:
 	LDA SND_CHN
-	AND #$10
 	BNE RunWartDeathSound_Running
 	STA iCurrentMusic2
 	LDA #$0f
@@ -454,15 +460,7 @@ RunWartDeathSound_Running:
 
 ProcessMusicQueue_WartDeath:
 	STA iCurrentMusic2
-	JSR PlayWartDeathSound
-	JMP RunWartDeathSound
-
-ProcessMusicQueue_SpecialSong:
-	STA iCurrentMusic2
-	LDY #$00
-	STY iCurrentMusic1
-	LDY #$08 ; index of ending music pointer
-	RTS
+	JMP PlayWartDeathSound
 
 ProcessMusicQueue_ThenReadNoteData:
 	JMP ProcessMusicQueue_ReadNoteData
@@ -504,8 +502,11 @@ ProcessMusicQueue_EndingAndCast:
 	TAY
 	JSR StopMusic
 	TYA
-	JSR ProcessMusicQueue_SpecialSong
-	JMP ProcessMusicQueue_ReadFirstPointer
+	STA iCurrentMusic2
+	LDY #$00
+	STY iCurrentMusic1
+	LDY #$08 ; index of ending music pointer
+	BNE ProcessMusicQueue_ReadFirstPointer
 
 ProcessMusicQueue_MusicQueue1:
 	; iMusic1 != 0, initialize
@@ -538,7 +539,7 @@ ELSE
 	ORA #1
 	STA NSFBank3
 ENDIF
-	; store the ammount of channels
+	; store the amount of channels
 	LDA PauseTracks1, Y
 	STA iPauseTrack
 	LDA MusicChannelStack, Y
@@ -605,17 +606,17 @@ ELSE
 ENDIF
 	LDA PauseTracks2 - 1, Y
 	STA iPauseTrack
-	; store the ammount of channels
+	; store the amount of channels
 	LDA MusicChannelStack + 8, Y
 	STA iMusicChannelCount
 
 ProcessMusicQueue_ReadHeader:
-	; nab offset, X = channel ammount 3-5
+	; nab offset, X = channel amount 3-5
 	LDX iMusicChannelCount
 	LDA MusicPartPointers - 1, Y
 	TAY
 	; header data
-	; byte 1 - note length
+	; byte 1 - base note length
 	LDA MusicHeaders, Y
 	STA iTempo
 	; byte 2-3 - music pointer, pulse 2
@@ -684,12 +685,9 @@ ProcessMusicQueue_DefaultNotelength:
 	LDA #$00
 	STA iCurrentPulse2Offset
 	STA iCurrentHillOffset
-	STA iMusicHillStartOffset
 	STA iCurrentPulse1Offset
 	STA iCurrentNoiseOffset
-	STA iCurrentNoiseStartPoint
 	STA iCurrentDPCMOffset
-	STA iCurrentDPCMStartPoint
 	STA iMusicPulse2NoteLengthFraction
 	STA iMusicPulse1NoteLengthFraction
 	STA iMusicHillNoteLengthFraction
@@ -759,32 +757,7 @@ StopMusic:
 	STA SQ1_HI
 	STA SQ1_LO
 	STA SQ1_SWEEP
-	JSR ClearPulse2
-	JSR ClearHill
-	JSR ClearNoise
 
-	LDA iCurrentDPCMSFX
-	BNE ClearChannelDone
-	JMP ProcessMusicQueue_DPCMDisable
-
-ClearNoise:
-	LDA iCurrentNoiseSFX
-	BNE ClearChannelDone
-	STA NOISE_HI
-	STA NOISE_LO
-	LDA #$10
-	STA NOISE_VOL
-	RTS
-
-ClearHill:
-	LDA iCurrentHillSFX
-	BNE ClearChannelDone
-	STA TRI_LINEAR
-	STA TRI_HI
-	STA TRI_LO
-	RTS
-
-ClearPulse2:
 	LDA iCurrentPulse1SFX
 	BNE ClearChannelDone
 	STA SQ2_HI
@@ -792,6 +765,23 @@ ClearPulse2:
 	STA SQ2_SWEEP
 	LDA #$10
 	STA SQ2_VOL
+
+	LDA iCurrentHillSFX
+	BNE ClearChannelDone
+	STA TRI_LINEAR
+	STA TRI_HI
+	STA TRI_LO
+
+	LDA iCurrentNoiseSFX
+	BNE ClearChannelDone
+	STA NOISE_HI
+	STA NOISE_LO
+	LDA #$10
+	STA NOISE_VOL
+
+	LDA iCurrentDPCMSFX
+	BNE ClearChannelDone
+	JMP ProcessMusicQueue_DPCMDisable
 
 ClearChannelDone:
 	RTS
@@ -1119,10 +1109,9 @@ ProcessMusicQueue_TriangleNoteLong:
 
 ProcessMusicQueue_TriangleSetLength:
 	STA TRI_LINEAR
-	BNE ProcessMusicQueue_NoiseDPCM
+	JMP ProcessMusicQueue_NoiseDPCM
 
 ProcessMusicQueue_TriangleLoopSegment:
-	LDA iMusicHillStartOffset
 	STA iCurrentHillOffset
 	JMP ProcessMusicQueue_TriangleByte
 
@@ -1194,7 +1183,6 @@ ProcessMusicQueue_ThenNoiseEnd:
 
 ProcessMusicQueue_NoiseLoopSegment:
 ; 0 = loop
-	LDA iCurrentNoiseStartPoint
 	STA iCurrentNoiseOffset
 	JMP ProcessMusicQueue_NoiseByte
 
@@ -1213,16 +1201,21 @@ ProcessMusicQueue_DPCMlength:
 	BEQ ProcessMusicQueue_DPCMByte
 	; note cuts off in advance
 	LDA iDPCMNoteRatioLength
-	BEQ ProcessMusicQueue_DPCMExit
+	BEQ ProcessMusicQueue_DPCMExit11
 	DEC iDPCMNoteRatioLength
-	BNE ProcessMusicQueue_DPCMExit
+	BNE ProcessMusicQueue_DPCMExit11
 
 	; if note length ratio remains non-zero, check for sound effects
 	LDA iCurrentDPCMSFX
-	BNE ProcessMusicQueue_DPCMExit
+	BNE ProcessMusicQueue_DPCMExit11
 	; Disable - no sound effects playing
-	JMP ProcessMusicQueue_DPCMDisable
-ProcessMusicQueue_DPCMExit:
+	LDX #%00001111
+	STX SND_CHN
+	LDX #0
+	STX DMC_FREQ
+	STX DMC_START
+	STX DMC_LEN
+ProcessMusicQueue_DPCMExit11:
 	RTS
 
 ProcessMusicQueue_DPCMByte:
@@ -1257,15 +1250,13 @@ ProcessMusicQueue_DPCMNote:
 	BNE ProcessMusicQueue_DPCMSFXExit
 	; mute for now
 	; initialize X
-	LDX #0
+	LDX #$FF
 	SEC
 ProcessMusicQueue_DPCMNoteLoop:
 	; find octave in X
 	INX
 	SBC #(12 << 1)
 	BCS ProcessMusicQueue_DPCMNoteLoop
-	STX iOctave
-	DEX
 
 	; get octave bank
 	LDA DPCMOctaves, X
@@ -1322,8 +1313,7 @@ ProcessMusicQueue_DPCMSFXExit:
 ProcessMusicQueue_DPCMEnd:
 	; check for sound effects before disabling
 	LDX #iCurrentDPCMSFX
-	BEQ ProcessMusicQueue_DPCMDisable
-	JMP ProcessMusicQueue_DPCMExit
+	BNE ProcessMusicQueue_DPCMExit2
 
 ProcessMusicQueue_DPCMDisable:
 	; Disable
@@ -1333,11 +1323,11 @@ ProcessMusicQueue_DPCMDisable:
 	STX DMC_FREQ
 	STX DMC_START
 	STX DMC_LEN
+ProcessMusicQueue_DPCMExit2:
 	RTS
 
 ProcessMusicQueue_DPCMLoopSegment:
 	; 0 = Loop
-	LDA iCurrentDPCMStartPoint
 	STA iCurrentDPCMOffset
 	JMP ProcessMusicQueue_DPCMByte
 
@@ -1564,16 +1554,17 @@ PlayNote_NotRest:
 	TAY
 	BMI PlayNote_LoadFrequencyData
 
+	SEC
+
 PlayNote_IncrementOctave:
 	INC iOctave
-	SEC
 	SBC #$18
-	BPL PlayNote_IncrementOctave
+	BCS PlayNote_IncrementOctave
 
-	; SEC or CLC followed by RTS
+	; 0 or 1?
 	STA iBasePitchComplement
-	JSR IsInstrumentTranspositionOkay
-	BCC PlayNote_LoadFrequencyData
+	LDA IsInstrumentTranspositionOkay
+	BEQ PlayNote_LoadFrequencyData
 	TXA
 	LSR A
 	TAY

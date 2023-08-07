@@ -10,8 +10,7 @@
 ;
 IsInstrumentTranspositionOkay:
 Audio1_IsInstrumentTranspositionOkay:
-	SEC
-	RTS
+	.db $01
 
 InstrumentSoundData:
 
