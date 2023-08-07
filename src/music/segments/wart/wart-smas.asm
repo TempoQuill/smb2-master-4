@@ -210,19 +210,19 @@ MusicDataWart_Square1:
 	.db $7E
 	.db $2A
 	.db $7E
-	.db $26
+	.db $28
 	.db $7E
 	.db $2A
 	.db $7E
-	.db $26
+	.db $28
 	.db $7E
 	.db $2A
 	.db $7E
-	.db $26
+	.db $28
 	.db $7E
 	.db $2A
 	.db $7E
-	.db $26
+	.db $28
 	.db $7E
 MusicDataWart_Triangle:
 	.db $80
@@ -242,7 +242,7 @@ MusicDataWart_Triangle:
 	.db $7E
 	.db $2A
 	.db $7E
-	.db $26
+	.db $28
 	.db $7E
 	.db $2A
 	.db $7E
@@ -258,7 +258,7 @@ MusicDataWart_Triangle:
 	.db $7E
 	.db $2A
 	.db $7E
-	.db $26
+	.db $28
 	.db $7E
 	.db $2A
 	.db $7E
@@ -274,7 +274,7 @@ MusicDataWart_Triangle:
 	.db $7E
 	.db $2A
 	.db $7E
-	.db $26
+	.db $28
 	.db $7E
 	.db $2A
 	.db $7E

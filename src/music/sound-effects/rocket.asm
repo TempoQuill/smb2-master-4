@@ -6,10 +6,21 @@ NoiseSFX_Rocket:
 	.db $10, $7E, $7E, $7E, $7E
 	.db $1F, $0E, $7E
 	.db $10, $7E, $7E, $7E, $7E
-	.db $10, $7E, $7E, $7E, $7E, $7E, $7E
 	.db $1F, $0E, $7E
 	.db $10, $7E, $7E, $7E, $7E
-	.db $10, $7E, $7E, $7E, $7E, $7E, $7E
+	.db      $7E, $7E, $7E, $7E, $7E, $7E
+	.db $1F, $0E, $7E
+	.db $10, $7E, $7E, $7E, $7E
+	.db $1F, $0E, $7E
+	.db $10, $7E, $7E, $7E, $7E
+	.db $1F, $0E, $7E
+	.db $10, $7E, $7E, $7E, $7E
+	.db      $7E, $7E, $7E, $7E, $7E, $7E
+	.db $1F, $0E, $7E
+	.db $10, $7E, $7E, $7E, $7E
+	.db $1F, $0E, $7E
+	.db $10, $7E, $7E, $7E, $7E
+	.db      $7E, $7E, $7E, $7E, $7E, $7E
 	.db $1F, $0E, $7E
 	.db $10, $7E, $7E, $7E, $7E
 	.db $1F, $0E, $7E
@@ -24,6 +35,7 @@ NoiseSFX_Rocket:
 	.db $19, $0B, $7E
 	.db $18, $0B, $7E
 	.db $17, $0B, $7E, $7E, $7E, $7E, $7E, $7E, $7E
+	.db      $7E, $7E, $7E, $7E, $7E, $7E, $7E, $7E
 	.db      $7E, $7E, $7E, $7E, $7E, $7E, $7E, $7E
 	.db      $7E, $7E, $7E, $7E, $7E, $7E, $7E, $7E
 	.db      $7E, $7E, $7E, $7E, $7E, $7E, $7E, $7E

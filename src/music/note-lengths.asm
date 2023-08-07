@@ -20,50 +20,24 @@
 ; $xA: 1/2 note
 ; $xB: dotted 1/2 note
 ; $xC: whole note
-; $xD: dotted 1/8 note / misc.
-; $xE: double note (usually note defined)
-; $xF: usually not defined
-;
-; 14400 is the number of ticks in a minute (4 ticks * 60 fps * 60 seconds), and
-; you can work out the tempo by dividing 14400 by the length of a whole note.
+; $xD: 1/16 triplet, 1/8 triplet  (underground, overworld arps, subspace arps)
+; $xE: 1/8 triplet                (overworld arps)
+; $xF: whole triplet, 1/8 triplet (overworld triangle long note)
 ;
 
-; Character Select
-; Star
-; Crystal
-; Game Over
-; Boss Beaten
-NoteLengthTable_Death = $40
+NoteLengthTable_Death = $41
 NoteLengthTable_CHR = $44
 NoteLengthTable_Crystal = $48
-NoteLengthTable_257bpm = $4B
 NoteLengthTable_BossBeaten = $4C
 NoteLengthTable_Ending123 = $50
 NoteLengthTable_Ending4 = $54
-; Title Screen
-NoteLengthTable_225bpm = $55
-; Overworld
-; Boss
-; Wart
-; Death
-; Subspace
 NoteLengthTable_Subspace = $60
 NoteLengthTable_Boss = $64
-NoteLengthTable_180bpm = $6B
-NoteLengthTable_Overworld = $6B
+NoteLengthTable_Overworld = $6C
 NoteLengthTable_Wart = $70
-NoteLengthTable_Star = $7B
-; Bonus Chance
-NoteLengthTable_150bpm = $80
+NoteLengthTable_Star = $7C
 NoteLengthTable_GameOver = $88
-; Underground
-; Ending
 NoteLengthTable_Underground = $90
-NoteLengthTable_129bpm = $95
-NoteLengthTable_120bpm = $A0
+NoteLengthTable_BonusChance = $94
 NoteLengthTable_Ending5 = $A8
-NoteLengthTable_112bpm = $AB
 NoteLengthTable_Title = $B0
-NoteLengthTable_106bpm = $B5
-NoteLengthTable_100bpm = $C0
-
