@@ -10383,9 +10383,6 @@ CheckObjectCollision_OtherObjectNotExplosion:
 	CPY #Enemy_Pokey
 	BEQ CheckObjectCollision_CheckOtherObjectAlive
 
-	LDY iObjectBulletTimer - 1, X
-	BNE CheckObjectCollision_CheckOtherObjectBeingCarried
-
 CheckObjectCollision_CheckOtherObjectAlive:
 	CMP #EnemyState_Alive
 CheckObjectCollision_NextIfNotEqual:
