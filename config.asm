@@ -64,13 +64,13 @@
 FIX_CHR_CYCLE = 1
 
 ; Fixes the POW falling log glitch
-; FIX_POW_LOG_GLITCH = 1
+FIX_POW_LOG_GLITCH = 1
 
 ; Fixes vine climbing bug when holding up and down simultaneously
-; FIX_CLIMB_ZIP = 1
+FIX_CLIMB_ZIP = 1
 
 ; Fixes green platform tiles in Subspace
-; FIX_SUBSPACE_TILES = 1
+FIX_SUBSPACE_TILES = 1
 
 ; ----------------------------------------
 ; Patches that alter the game in
