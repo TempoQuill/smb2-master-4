@@ -6337,6 +6337,11 @@ loc_BANK1_AB80:
 	CMP #$29
 	BCC loc_BANK1_AB32
 
+	LDY iMusicLoopPoint
+	INY
+	CPY iCurrentMusicOffset
+	BNE loc_BANK1_AB32
+
 	JSR EndingSceneTransition
 
 	LDA ze6
