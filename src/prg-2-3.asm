@@ -4836,6 +4836,14 @@ loc_BANK2_9741:
 	DEC iSubDoorTimer
 	BNE loc_BANK2_9753
 
+	LDY iMusicID
+	LDA LevelMusicIndexes, Y
+	CMP iCurrentMusic1
+	BEQ loc_BANK2_9750
+
+	STA iMusic1
+
+loc_BANK2_9750:
 	JMP TurnIntoPuffOfSmoke
 
 ; ---------------------------------------------------------------------------

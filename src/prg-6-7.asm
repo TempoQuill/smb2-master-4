@@ -4728,8 +4728,14 @@ ClearLayoutAndPokeMusic:
 SubspaceGeneration:
 	JSR GenerateSubspaceArea
 
+	LDA iStarTimer
+	CMP #$08
+	BCS SubspaceGeneration_Starman
+
 	LDA #Music1_Subspace
 	STA iMusic1
+
+SubspaceGeneration_Starman:
 	LDA #$04
 	STA iMusicID
 	RTS
