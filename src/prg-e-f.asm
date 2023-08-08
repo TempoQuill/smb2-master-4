@@ -900,6 +900,15 @@ HorizontalLevel_CheckScroll:
 	AND #ControllerInput_Start
 	BEQ HorizontalLevel_CheckSubArea
 
+	; Disable pause detection while in rocket
+	LDA iIsInRocket
+	CMP #$01
+	BEQ HorizontalLevel_CheckSubArea
+
+	; Disable pause detection while going through a door
+	LDA iDoorAnimTimer
+	BNE HorizontalLevel_CheckSubArea
+
 	JMP ShowPauseScreen
 
 HorizontalLevel_CheckSubArea:
@@ -955,6 +964,10 @@ VerticalLevel_CheckScroll:
 	; of the area scrolling into view.
 	LDA zScrollArray
 	AND #%00000100
+	BNE VerticalLevel_ProcessFrame
+
+	; Disable pause detection while going through a door
+	LDA iDoorAnimTimer
 	BNE VerticalLevel_ProcessFrame
 
 	LDA zInputBottleneck
