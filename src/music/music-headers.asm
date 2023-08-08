@@ -10,13 +10,12 @@
 ;   00: Note length table (from $8F00)
 ;   01: Main address / Square 2 (lo)
 ;   02: Main address / Square 2 (hi)
-;   03: Triangle offset from main
-;   04: Square 1 offset from Triangle
-;   05: Noise/DPCM offset from Square 1/Noise
+;   03: Triangle offset from Square 1
+;   04: Square 1 offset from Square 2
+;   05: Noise offset from Triangle
+;   06: DPCM offset from Noise
 ;
 ; For the musicHeader macro, specifying $00 is "none", -1 for noise/pcm is "omit".
-; Some of the music headers use the $00 from the next header's note length table,
-; to save one byte (in a ROM /full/ of unused space...)
 ;
 ; This turns out to be important because the music part pointers are stored as
 ; offsets from MusicPartPointers, which means they can't be larger than $FF!
