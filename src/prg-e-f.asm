@@ -1668,7 +1668,7 @@ SlotMachineLoseFanfare:
 
 	JSR sub_BANKF_EA68
 
-	JSR Delay160Frames
+	JSR SlotMachine_WaitforJingle
 
 loc_BANKF_E90C:
 	LDA #ScreenUpdateBuffer_RAM_EraseBonusMessageTextUnused
@@ -1682,7 +1682,15 @@ SlotMachine_WaitforSFX:
 	BEQ SlotMachine_SFXDone
 	JSR WaitForNMI
 	JMP SlotMachine_WaitforSFX
-SlotMachine_SFXDone
+SlotMachine_SFXDone:
+	RTS
+
+SlotMachine_WaitforJingle:
+	LDA iCurrentMusic2
+	BEQ SlotMachine_JingleDone
+	JSR WaitForNMI
+	JMP SlotMachine_WaitforJingle
+SlotMachine_JingleDone:
 	RTS
 
 ;
