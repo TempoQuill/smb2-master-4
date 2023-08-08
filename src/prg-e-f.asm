@@ -816,7 +816,7 @@ StartGame:
 
 ; We return here after picking "CONTINUE" from the game over menu.
 ContinueGame:
-	LDA #$03 ; Number of lives to start
+	LDA #$05 ; Number of lives to start
 	STA iExtraMen
 
 GoToWorldStartingLevel:
