@@ -41,3 +41,15 @@ NoteLengthTable_Underground = $90
 NoteLengthTable_BonusChance = $94
 NoteLengthTable_Ending5 = $A8
 NoteLengthTable_Title = $B0
+
+TriangleLinearLengths:
+	.db $00
+	.db $03, $07, $0B, $0F
+	.db $12, $16, $1A, $1E
+	.db $21, $25, $29, $2D
+	.db $30, $34, $38, $3C
+	.db $3F, $43, $47, $4B
+	.db $4E, $52, $56, $5A
+	.db $5D, $61, $65, $69
+	.db $6C, $70, $74, $78
+	.db $7B, $7F

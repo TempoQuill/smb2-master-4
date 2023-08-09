@@ -1071,10 +1071,6 @@ ProcessMusicQueue_TriangleNote:
 
 ProcessMusicQueue_TriangleSkipPitch:
 	; iMusicHillNoteLength:
-	; <5    - $07 - 2
-	; 5-10  - $18 - 6
-	; 10-23 - $24 - 9
-	; >=24  - $6f - 28
 	LDA iMusicHillNoteSubFrames
 	CLC
 	ADC iMusicHillNoteLengthFraction
@@ -1082,29 +1078,17 @@ ProcessMusicQueue_TriangleSkipPitch:
 	LDA iMusicHillNoteStartLength
 	ADC #0
 	STA iMusicHillNoteLength
-	CMP #$05
-	BCC ProcessMusicQueue_TriangleNoteArp
+	BMI ProcessMusicQueue_TriangleMax
 
-	CMP #$0A
-	BCC ProcessMusicQueue_TriangleNoteShort
+	TAY
+	CPY #$22
+	BCS ProcessMusicQueue_TriangleMax
 
-	CMP #$1E
-	BCS ProcessMusicQueue_TriangleNoteLong
+	LDA TriangleLinearLengths, Y
+	BCC ProcessMusicQueue_TriangleSetLength
 
-ProcessMusicQueue_TriangleNoteMedium:
-	LDA #$24
-	BNE ProcessMusicQueue_TriangleSetLength
-
-ProcessMusicQueue_TriangleNoteShort:
-	LDA #$18
-	BNE ProcessMusicQueue_TriangleSetLength
-
-ProcessMusicQueue_TriangleNoteArp:
-	LDA #$07
-	BNE ProcessMusicQueue_TriangleSetLength
-
-ProcessMusicQueue_TriangleNoteLong:
-	LDA #$6F
+ProcessMusicQueue_TriangleMax:
+	LDA #$7F
 
 ProcessMusicQueue_TriangleSetLength:
 	STA TRI_LINEAR
@@ -1522,7 +1506,13 @@ PlayNote:
 	CMP #$7E
 	BNE PlayNote_NotRest
 
+	CPX #APUOffset_Triangle
+	LDA #$00
+	BCS PlayNote_TriangleRest
+
 	LDA #$10
+
+PlayNote_TriangleRest:
 	STA SQ1_VOL, X
 	LDA #$00
 	RTS
