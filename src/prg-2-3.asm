@@ -4841,6 +4841,10 @@ loc_BANK2_9741:
 	CMP iCurrentMusic1
 	BEQ loc_BANK2_9750
 
+	LDA iStarTimer
+	CMP #8
+	BCS loc_BANK2_9750
+
 	STA iMusic1
 
 loc_BANK2_9750:
