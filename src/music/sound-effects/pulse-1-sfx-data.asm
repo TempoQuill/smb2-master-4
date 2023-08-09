@@ -68,7 +68,7 @@ Pulse1SFXData_HawkDown:
 	.db $00
 
 Pulse1SFXData_Shrink:
-	.db $91
+	.db $A1
 	.db $08, $FE, $40
 	.db $09, $7C, $40
 	.db $08, $FE, $40
