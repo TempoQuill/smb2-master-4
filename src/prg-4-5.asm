@@ -166,10 +166,10 @@ Pulse1SFXPointersHi:
 	.db >Pulse1SFXData_HawkDown
 
 Pulse1SFXVolumes:
-	.db $99, $9F, $9F, $1F, $1F, $9F, $1C, $1C
+	.db $99, $9F, $9F, $1F, $1F, $9F, $1F, $1F
 
 Pulse1SFXEnvelopes:
-	.db $87, $81, $84, $00, $00, $81, $1C, $1C
+	.db $87, $81, $84, $00, $00, $82, $00, $00
 
 .include "src/music/sound-effects/pulse-1-sfx-data.asm"
 

@@ -242,23 +242,7 @@ MusicDataWart_Triangle:
 	.db $7E
 	.db $2A
 	.db $7E
-	.db $28
-	.db $7E
-	.db $2A
-	.db $7E
-	.db $2C
-	.db $7E
 	.db $26
-	.db $7E
-	.db $2A
-	.db $7E
-	.db $2C
-	.db $7E
-	.db $26
-	.db $7E
-	.db $2A
-	.db $7E
-	.db $28
 	.db $7E
 	.db $2A
 	.db $7E
@@ -274,7 +258,23 @@ MusicDataWart_Triangle:
 	.db $7E
 	.db $2A
 	.db $7E
-	.db $28
+	.db $26
+	.db $7E
+	.db $2A
+	.db $7E
+	.db $2C
+	.db $7E
+	.db $26
+	.db $7E
+	.db $2A
+	.db $7E
+	.db $2C
+	.db $7E
+	.db $26
+	.db $7E
+	.db $2A
+	.db $7E
+	.db $26
 	.db $7E
 	.db $2A
 	.db $7E
