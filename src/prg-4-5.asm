@@ -681,7 +681,7 @@ ProcessMusicQueue_DefaultNotelength:
 	STA iDPCMNoteLengthCounter
 	STA iDPCMNoteRatioLength
 
-	; initialize pulse 2 offset
+	; initialize offsets / fractions
 	LDA #$00
 	STA iCurrentPulse2Offset
 	STA iCurrentHillOffset
@@ -832,7 +832,13 @@ ProcessMusicQueue_Square2UpdateNoteOffset:
 	; set instruemnt offset, init sweep/gain
 	STA iMusicPulse2InstrumentOffset
 
-	JSR SetSquare2VolumeAndSweep
+; Sets volume/sweep on Square 2 channel
+;
+; Input
+;   X = duty/volume/envelope
+;   Y = sweep
+	STX SQ2_VOL
+	STY SQ2_SWEEP
 
 ProcessMusicQueue_Square2ContinueNote:
 	; set note length
@@ -873,16 +879,16 @@ ProcessMusicQueue_Square1:
 	DEC iMusicPulse1NoteLength
 	BNE ProcessMusicQueue_Square1SustainNote
 
-ProcessMusicQueue_Square1Patch:
 ; else we start here instead
 ; load byte offset / data
-	; 0 - set sweep to $94
-	; - - instrument / note length
-	; + - note
 	LDA iMusicPulse1BigPointer
 	STA zCurrentMusicPointer + 1
 	LDA iMusicPulse1BigPointer + 1
 	STA zCurrentMusicPointer
+ProcessMusicQueue_Square1Patch:
+	; 0 - set sweep to $94
+	; - - instrument / note length
+	; + - note
 	LDY iCurrentPulse1Offset
 	INC iCurrentPulse1Offset
 	LDA (zCurrentMusicPointer), Y
@@ -910,24 +916,17 @@ ProcessMusicQueue_Square1AfterPatch:
 	TAY
 	BNE ProcessMusicQueue_Square1Note
 
-	LDA #$83
-	STA SQ1_VOL
-
 	LDA iSweep
-	CMP #$94
-	BNE ProcessMusicQueue_HandleSweep
+	BEQ ProcessMusicQueue_HandleSweep
 
 	LDA #0
 	STA iSweep
-	LDA #$7F
-	STA SQ2_SWEEP
-	BNE ProcessMusicQueue_Square1Patch
+	BEQ ProcessMusicQueue_Square1Patch
 
 ProcessMusicQueue_HandleSweep
-	; 0 - set sweep to $94
-	LDA #94
+	; 0 - set sweep to $8C
+	LDA #$8C
 	STA iSweep
-	STA SQ2_SWEEP
 	BNE ProcessMusicQueue_Square1Patch
 
 ProcessMusicQueue_Square1Note:
@@ -1501,32 +1500,12 @@ LoadSquareInstrumentDVE_D0_Short:
 LoadSquareInstrumentDVE_D0_Exit:
 	RTS
 
-; Sets volume/sweep on Square 2 channel
-;
-; Input
-;   X = duty/volume/envelope
-;   Y = sweep
-SetSquare2VolumeAndSweep:
-	STX SQ2_VOL
-	STY SQ2_SWEEP
-	RTS
-
-; Sets volume/sweep on Square 1 channel and plays a note
-;
-; Input
-;   A = note
-;   X = duty/volume/envelope
-;   Y = sweep
-PlaySquare1Sweep:
-	STX SQ1_VOL
-	STY SQ1_SWEEP
-
 ; Play a note on the Square 1 channel
 ;
 ; Input
 ;   A = note
 PlaySquare1Note:
-	LDX #$00
+	LDX #0
 
 ; Plays a note
 ;

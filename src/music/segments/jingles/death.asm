@@ -8,13 +8,15 @@ MusicDataDeath_Square2:
 
 MusicDataDeath_Square1:
 	.db $90
-	.db $70
-	.db $74
-	.db $78
+	.db $00
+	.db $64
+	.db $68
+	.db $6C
 	.db $7E
 	.db $98
 	.db $7E
 	.db $94
+	.db $00
 	.db $56
 	.db $7E
 	.db $4C
