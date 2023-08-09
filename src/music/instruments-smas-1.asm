@@ -72,4 +72,4 @@ InstrumentDVE_F0: ; $A3AF
 
 NoteLengthMultipliers:
 Audio1_NoteLengthMultipliers:
-	.db $0C, $0C, $10, $10, $18, $24, $20, $20, $30, $48, $60, $90, $C0, $04, $08, $40
+	.db $0C, $0C, $10, $10, $18, $24, $20, $50, $30, $48, $60, $90, $C0, $04, $08, $40

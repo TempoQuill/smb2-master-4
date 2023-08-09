@@ -208,14 +208,20 @@ MusicDataOverworld5_Triangle:
 	.db $6A
 	.db $88
 	.db $7E
+	.db $84
+	.db $68
+	.db $89
+	.db $7E
+	.db $84
+	.db $6A
+	.db $7E
 	.db $68
 	.db $7E
-	.db $6A
-	.db $68
 	.db $86
 	.db $7E
-	.db $88
+	.db $84
 	.db $68
+	.db $7E
 	.db $8F
 	.db $7E
 	.db $86

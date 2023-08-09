@@ -22,10 +22,10 @@ MusicDataOverworld2_Square1:
 	.db $38
 	.db $3E
 	.db $7E
-	.db $94
+	.db $96
 	.db $48
-	.db $7E
 	.db $92
+	.db $7E
 	.db $38
 	.db $3E
 	.db $7E
@@ -35,9 +35,9 @@ MusicDataOverworld2_Square1:
 	.db $46
 	.db $4E
 	.db $7E
-	.db $9F
+	.db $97
 	.db $46
-	.db $98
+	.db $96
 	.db $7E
 	.db $92
 	.db $44
@@ -45,10 +45,10 @@ MusicDataOverworld2_Square1:
 	.db $34
 	.db $3E
 	.db $7E
-	.db $94
+	.db $96
 	.db $44
-	.db $7E
 	.db $92
+	.db $7E
 	.db $34
 	.db $3E
 	.db $7E
@@ -58,10 +58,9 @@ MusicDataOverworld2_Square1:
 	.db $4A
 	.db $50
 	.db $7E
-	.db $9F
+	.db $97
 	.db $4A
 	.db $92
-	.db $7E
 	.db $7E
 	.db $50
 	.db $5A
@@ -69,10 +68,10 @@ MusicDataOverworld2_Square1:
 	.db $56
 	.db $5A
 	.db $7E
-	.db $94
+	.db $96
 	.db $54
-	.db $7E
 	.db $92
+	.db $7E
 	.db $5A
 	.db $56
 	.db $7E
@@ -82,10 +81,10 @@ MusicDataOverworld2_Square1:
 	.db $4E
 	.db $50
 	.db $7E
-	.db $94
+	.db $96
 	.db $4A
-	.db $7E
 	.db $92
+	.db $7E
 	.db $42
 	.db $46
 	.db $7E
@@ -95,16 +94,17 @@ MusicDataOverworld2_Square1:
 	.db $48
 	.db $4C
 	.db $7E
-	.db $94
+	.db $96
 	.db $3E
-	.db $7E
 	.db $92
+	.db $7E
 	.db $48
 	.db $46
 	.db $7E
-	.db $9F
+	.db $97
 	.db $3E
-	.db $9B
+	.db $9F
+	.db $7E
 	.db $7E
 
 MusicDataOverworld2_Triangle:
@@ -114,9 +114,10 @@ MusicDataOverworld2_Triangle:
 	.db $48
 	.db $50
 	.db $7E
-	.db $A8
+	.db $A6
 	.db $56
 	.db $A2
+	.db $7E
 	.db $48
 	.db $50
 	.db $7E
@@ -135,9 +136,10 @@ MusicDataOverworld2_Triangle:
 	.db $44
 	.db $4C
 	.db $7E
-	.db $A8
+	.db $A6
 	.db $56
 	.db $A2
+	.db $7E
 	.db $44
 	.db $4C
 	.db $7E
@@ -156,9 +158,10 @@ MusicDataOverworld2_Triangle:
 	.db $5E
 	.db $60
 	.db $7E
-	.db $A8
+	.db $A6
 	.db $5A
 	.db $A2
+	.db $7E
 	.db $60
 	.db $5E
 	.db $7E
@@ -168,9 +171,10 @@ MusicDataOverworld2_Triangle:
 	.db $54
 	.db $56
 	.db $7E
-	.db $A8
+	.db $A6
 	.db $50
 	.db $A2
+	.db $7E
 	.db $4A
 	.db $4C
 	.db $7E
@@ -180,9 +184,10 @@ MusicDataOverworld2_Triangle:
 	.db $50
 	.db $52
 	.db $7E
-	.db $A8
+	.db $A6
 	.db $46
 	.db $A2
+	.db $7E
 	.db $50
 	.db $4C
 	.db $7E

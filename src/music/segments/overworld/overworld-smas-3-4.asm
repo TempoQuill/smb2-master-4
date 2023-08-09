@@ -224,11 +224,17 @@ MusicDataOverworld4_Square1:
 MusicDataOverworld3_Triangle:
 	.db $88
 	.db $7E
+	.db $84
 	.db $68
+	.db $89
 	.db $7E
+	.db $84
 	.db $68
+	.db $89
 	.db $7E
+	.db $84
 	.db $68
+	.db $89
 	.db $7E
 	.db $82
 	.db $68
@@ -236,11 +242,17 @@ MusicDataOverworld3_Triangle:
 	.db $68
 	.db $88
 	.db $7E
+	.db $84
 	.db $6C
+	.db $89
 	.db $7E
+	.db $84
 	.db $6C
+	.db $89
 	.db $7E
+	.db $84
 	.db $6C
+	.db $89
 	.db $7E
 	.db $82
 	.db $6C
@@ -248,11 +260,17 @@ MusicDataOverworld3_Triangle:
 	.db $6C
 	.db $88
 	.db $7E
+	.db $84
+	.db $6A
+	.db $89
+	.db $7E
+	.db $84
+	.db $6A
+	.db $89
+	.db $7E
+	.db $84
 	.db $6A
 	.db $7E
-	.db $6A
-	.db $7E
-	.db $6A
 
 MusicDataOverworld4_Triangle:
 	.db $88
@@ -263,13 +281,21 @@ MusicDataOverworld4_Triangle:
 	.db $6A
 	.db $88
 	.db $7E
+	.db $84
+	.db $68
+	.db $89
+	.db $7E
+	.db $84
 	.db $68
 	.db $7E
-	.db $68
 	.db $66
+	.db $7E
 	.db $66
+	.db $7E
 	.db $66
+	.db $7E
 	.db $66
+	.db $7E
 
 MusicDataOverworld3_Noise:
 	.db $88

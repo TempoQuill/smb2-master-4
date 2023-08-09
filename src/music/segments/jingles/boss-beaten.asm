@@ -95,42 +95,85 @@ MusicDataBossBeaten_Square1:
 	.db $30
 	.db $26
 	.db $48
-	.db $7E
 MusicDataBossBeaten_Triangle:
-	.db $88
+	.db $85
 	.db $22
+	.db $80
+	.db $7E
+	.db $85
 	.db $30
+	.db $80
+	.db $7E
+	.db $85
 	.db $24
+	.db $80
+	.db $7E
+	.db $85
 	.db $30
+	.db $80
+	.db $7E
+	.db $85
 	.db $26
+	.db $80
+	.db $7E
+	.db $85
 	.db $34
+	.db $80
+	.db $7E
+	.db $85
 	.db $2A
+	.db $80
+	.db $7E
+	.db $85
 	.db $38
+	.db $80
+	.db $7E
+	.db $85
 	.db $34
+	.db $80
+	.db $7E
+	.db $85
 	.db $22
+	.db $80
+	.db $7E
+	.db $85
 	.db $26
+	.db $80
+	.db $7E
+	.db $85
 	.db $34
+	.db $80
+	.db $7E
+	.db $85
 	.db $30
+	.db $80
+	.db $7E
 	.db $84
 	.db $3E
 	.db $42
 	.db $7E
 	.db $3E
-	.db $88
+	.db $85
 	.db $38
+	.db $80
+	.db $7E
+	.db $85
 	.db $30
+	.db $80
+	.db $7E
+	.db $85
 	.db $26
+	.db $80
+	.db $7E
+	.db $85
 	.db $18
+	.db $80
 	.db $7E
 
 MusicDataBossBeaten_Noise:
 	.db $8C
 	.db $01
-	.db $01
-	.db $01
-	.db $01
-	.db $8B
-	.db $01
+	.db $00
 
 MusicDataBossBeaten_DPCM:
 	.db $84
