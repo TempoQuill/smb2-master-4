@@ -224,12 +224,12 @@ MusicDataCharacterSelect3_Square1:
 
 MusicDataCharacterSelect1_Triangle:
 MusicDataCharacterSelect2_Triangle:
-	.db $BC
+	.db $8C
 	.db $7E
 	.db $00
 
 MusicDataCharacterSelect3_Triangle:
-	.db $BC
+	.db $8C
 	.db $7E
 	.db $7E
 	.db $7E
@@ -237,7 +237,7 @@ MusicDataCharacterSelect3_Triangle:
 	.db $7E
 	.db $7E
 	.db $7E
-	.db $B8
+	.db $88
 	.db $7E
 	.db $60
 	.db $64
