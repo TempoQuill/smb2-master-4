@@ -3,6 +3,7 @@ MusicDataDeath_Square2:
 	.db $8C
 	.db $7E
 	.db $7E
+	.db $8B
 	.db $7E
 	.db $00
 
@@ -25,7 +26,7 @@ MusicDataDeath_Square1:
 	.db $42
 	.db $9B
 	.db $3E
-	.db $9C
+	.db $9B
 	.db $7E
 
 MusicDataDeath_Triangle:
@@ -40,7 +41,7 @@ MusicDataDeath_Triangle:
 	.db $52
 	.db $AB
 	.db $50
-	.db $AC
+	.db $AB
 	.db $7E
 
 MusicDataDeath_Noise:
@@ -61,5 +62,5 @@ MusicDataDeath_DPCM:
 	.db $7E
 	.db $8B
 	.db $18
-	.db $8C
+	.db $8B
 	.db $7E

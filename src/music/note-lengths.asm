@@ -25,19 +25,19 @@
 ; $xF: whole triplet, 1/8 triplet (overworld triangle long note)
 ;
 
-NoteLengthTable_Death = $41
+NoteLengthTable_Death = $42
 NoteLengthTable_CHR = $44
 NoteLengthTable_Crystal = $48
-NoteLengthTable_BossBeaten = $4C
+NoteLengthTable_BossBeaten = $4E
 NoteLengthTable_Ending123 = $50
 NoteLengthTable_Ending4 = $54
-NoteLengthTable_Subspace = $60
+NoteLengthTable_Subspace = $5C
 NoteLengthTable_Boss = $64
 NoteLengthTable_Overworld = $6C
 NoteLengthTable_Wart = $70
-NoteLengthTable_Star = $7C
+NoteLengthTable_Star = $78
 NoteLengthTable_GameOver = $88
-NoteLengthTable_Underground = $90
+NoteLengthTable_Underground = $8C
 NoteLengthTable_BonusChance = $94
 NoteLengthTable_Ending5 = $A8
 NoteLengthTable_Title = $B0

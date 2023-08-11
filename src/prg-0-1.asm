@@ -4670,7 +4670,7 @@ AreaTransitionPlacement_Subspace:
 	STA zPlayerYLo
 	DEC iPlayerLock
 IFNDEF STATS_TESTING_PURPOSES
-	LDA #$60
+	LDA #$63
 ELSE
 	LDA #$FF
 ENDIF

@@ -1736,6 +1736,9 @@ loc_BANKF_E938:
 	DEC z06
 	BPL loc_BANKF_E92A
 
+	LDA iCurrentMusic2
+	BNE loc_BANKF_E92A
+
 	JMP GoToNextLevel
 
 
