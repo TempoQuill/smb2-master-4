@@ -225,183 +225,99 @@ MusicDataWart_Square1:
 	.db $28
 	.db $7E
 MusicDataWart_Triangle:
-	.db $80
+	.db $B4
 	.db $26
-	.db $7E
 	.db $2A
-	.db $7E
 	.db $2C
-	.db $7E
 	.db $26
-	.db $7E
 	.db $2A
-	.db $7E
 	.db $2C
-	.db $7E
 	.db $26
-	.db $7E
 	.db $2A
-	.db $7E
 	.db $26
-	.db $7E
 	.db $2A
-	.db $7E
 	.db $2C
-	.db $7E
 	.db $26
-	.db $7E
 	.db $2A
-	.db $7E
 	.db $2C
-	.db $7E
 	.db $26
-	.db $7E
 	.db $2A
-	.db $7E
 	.db $26
-	.db $7E
 	.db $2A
-	.db $7E
 	.db $2C
-	.db $7E
 	.db $26
-	.db $7E
 	.db $2A
-	.db $7E
 	.db $2C
-	.db $7E
 	.db $26
-	.db $7E
 	.db $2A
-	.db $7E
 	.db $26
-	.db $7E
 	.db $2A
-	.db $7E
 	.db $2C
-	.db $7E
 	.db $26
-	.db $7E
 	.db $2A
-	.db $7E
 	.db $2C
-	.db $7E
 	.db $26
-	.db $7E
 	.db $2A
-	.db $7E
 	.db $24
-	.db $7E
 	.db $28
-	.db $7E
 	.db $2A
-	.db $7E
 	.db $24
-	.db $7E
 	.db $28
-	.db $7E
 	.db $2A
-	.db $7E
 	.db $24
-	.db $7E
 	.db $28
-	.db $7E
 	.db $24
-	.db $7E
 	.db $28
-	.db $7E
 	.db $2A
-	.db $7E
 	.db $24
-	.db $7E
 	.db $28
-	.db $7E
 	.db $2A
-	.db $7E
 	.db $24
-	.db $7E
 	.db $28
-	.db $7E
 	.db $24
-	.db $7E
 	.db $28
-	.db $7E
 	.db $2A
-	.db $7E
 	.db $24
-	.db $7E
 	.db $28
-	.db $7E
 	.db $2A
-	.db $7E
 	.db $24
-	.db $7E
 	.db $28
-	.db $7E
 	.db $24
-	.db $7E
 	.db $28
-	.db $7E
 	.db $2A
-	.db $7E
 	.db $24
-	.db $7E
 	.db $28
-	.db $7E
 	.db $2A
-	.db $7E
 	.db $24
-	.db $7E
 	.db $28
-	.db $7E
 	.db $22
-	.db $7E
-	.db $84
+	.db $B8
 	.db $22
-	.db $7E
 	.db $22
-	.db $7E
 	.db $22
-	.db $7E
-	.db $80
+	.db $B4
 	.db $22
-	.db $7E
 	.db $24
-	.db $7E
-	.db $84
+	.db $B8
 	.db $24
-	.db $7E
 	.db $24
-	.db $7E
 	.db $24
-	.db $7E
-	.db $80
+	.db $B4
 	.db $24
-	.db $7E
 	.db $26
-	.db $7E
-	.db $84
+	.db $B8
 	.db $26
-	.db $7E
 	.db $26
-	.db $7E
 	.db $26
-	.db $7E
-	.db $80
+	.db $B4
 	.db $26
-	.db $7E
 	.db $28
-	.db $7E
-	.db $84
+	.db $B8
 	.db $28
-	.db $7E
 	.db $28
-	.db $7E
 	.db $28
-	.db $7E
-	.db $80
+	.db $B4
 	.db $28
-	.db $7E
 
 MusicDataWart_Noise:
 	.db $84

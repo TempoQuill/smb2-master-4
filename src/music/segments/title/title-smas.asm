@@ -347,7 +347,7 @@ MusicDataTitleScreen_Square1:
 	.db $3E
 
 MusicDataTitleScreen_Triangle:
-	.db $8C
+	.db $8C ; 8/A = 15/16
 	.db $7E
 	.db $8B
 	.db $7E
@@ -355,180 +355,183 @@ MusicDataTitleScreen_Triangle:
 	.db $7E
 	.db $84
 	.db $30
-	.db $80
+	.db $B0 ; >A = 4/7
 	.db $60
 	.db $7E
 	.db $60
 	.db $7E
 	.db $84
 	.db $2E
-	.db $80
+	.db $B0
 	.db $5E
 	.db $7E
 	.db $5E
 	.db $7E
 	.db $84
 	.db $30
-	.db $80
+	.db $B0
 	.db $60
 	.db $7E
 	.db $60
 	.db $7E
 	.db $84
 	.db $26
-	.db $80
+	.db $B0
 	.db $60
 	.db $7E
 	.db $60
 	.db $7E
 	.db $84
 	.db $30
-	.db $80
+	.db $B0
 	.db $60
 	.db $7E
 	.db $60
 	.db $7E
 	.db $84
 	.db $2E
-	.db $80
+	.db $B0
 	.db $5E
 	.db $7E
 	.db $5E
 	.db $7E
 	.db $84
 	.db $30
-	.db $80
+	.db $B0
 	.db $60
 	.db $7E
 	.db $60
 	.db $7E
 	.db $84
 	.db $26
-	.db $80
+	.db $B0
 	.db $60
 	.db $7E
 	.db $60
 	.db $7E
 	.db $84
 	.db $2E
-	.db $80
+	.db $B0
 	.db $56
 	.db $7E
 	.db $56
 	.db $7E
 	.db $84
 	.db $2C
-	.db $80
+	.db $B0
 	.db $5C
 	.db $7E
 	.db $5C
 	.db $7E
 	.db $84
 	.db $2E
-	.db $80
+	.db $B0
 	.db $5E
 	.db $7E
 	.db $5E
 	.db $7E
 	.db $84
 	.db $26
-	.db $80
+	.db $B0
 	.db $64
 	.db $7E
 	.db $64
 	.db $7E
 	.db $84
 	.db $2E
-	.db $80
+	.db $B0
 	.db $5E
 	.db $7E
 	.db $5E
 	.db $7E
 	.db $84
 	.db $26
-	.db $80
+	.db $B0
 	.db $5E
 	.db $7E
 	.db $5E
 	.db $7E
 	.db $84
 	.db $30
-	.db $80
+	.db $B0
 	.db $5E
 	.db $7E
 	.db $5E
 	.db $7E
 	.db $84
 	.db $26
-	.db $80
+	.db $B0
 	.db $5E
 	.db $7E
 	.db $5E
 	.db $7E
 	.db $84
 	.db $30
-	.db $80
+	.db $B0
 	.db $68
 	.db $7E
 	.db $68
 	.db $7E
 	.db $84
 	.db $2E
-	.db $80
+	.db $B0
 	.db $68
 	.db $7E
 	.db $68
 	.db $7E
 	.db $84
 	.db $2C
-	.db $80
+	.db $B0
 	.db $68
 	.db $7E
 	.db $68
 	.db $7E
 	.db $84
 	.db $2A
+	.db $B4
 	.db $68
 	.db $7E
 	.db $84
 	.db $34
-	.db $80
+	.db $B0
 	.db $72
 	.db $7E
 	.db $72
 	.db $7E
 	.db $84
 	.db $32
-	.db $80
+	.db $B0
 	.db $72
 	.db $7E
 	.db $72
 	.db $7E
 	.db $84
 	.db $30
-	.db $80
+	.db $B0
 	.db $72
 	.db $7E
 	.db $72
 	.db $7E
 	.db $84
 	.db $2E
+	.db $B4
 	.db $72
 	.db $7E
 	.db $84
 	.db $30
-	.db $80
+	.db $B0
 	.db $60
 	.db $7E
 	.db $60
 	.db $7E
 	.db $84
 	.db $22
+	.db $B0
+	.db $5A
+	.db $7E
+	.db $5A
+	.db $7E
 	.db $80
-	.db $5A
-	.db $7E
-	.db $5A
-	.db $7E
 	.db $26
 	.db $26
 	.db $84

@@ -1081,11 +1081,15 @@ ProcessMusicQueue_TriangleSkipPitch:
 	BMI ProcessMusicQueue_TriangleMax
 
 	TAY
-	CPY #$22
+	CPY #$38
 	BCS ProcessMusicQueue_TriangleMax
 
-	LDA TriangleLinearLengths, Y
+	LDA iHillIns
+	CMP #$B0
+	LDA Triangle15Outta16Lengths, Y
 	BCC ProcessMusicQueue_TriangleSetLength
+	LDA Triangle4Outta7Lengths, Y
+	BCS ProcessMusicQueue_TriangleSetLength
 
 ProcessMusicQueue_TriangleMax:
 	LDA #$7F
