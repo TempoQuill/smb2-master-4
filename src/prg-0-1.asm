@@ -4799,27 +4799,41 @@ TitleLayout:
 	.db $22, $63, $C6, $3C
 	.db $22, $7C, $C4, $42
 	; ornate frame, bottom, characters
+;                          Snifit
 	.db $22, $C4, $02, $A6, $A8
 	.db $22, $E4, $02, $A7, $A9
+;                          Mario,    Princess
 	.db $22, $FA, $04, $80, $82, $88, $8A
-	.db $23, $04, $02, $90, $92
+;                          Luigi
+	.db $23, $04, $02, $FF, $AF
+;                          Radish
 	.db $23, $14, $02, $9E, $A0
-	.db $23, $1A, $04, $81, $83, $89, $8B
-	.db $23, $23, $03, $46, $91, $93
+;                          Mario,    Princess
+	.db $23, $1A, $04, $AC, $FF, $89, $8B
+;                               Luigi
+	.db $23, $23, $03, $46, $FF, $FF
+;                          Shyguy
 	.db $23, $2A, $02, $A2, $A4
+;                                                        Radish,  Wind, Toad
 	.db $23, $2E, $0B, $67, $6C, $6E, $70, $72, $69, $9F, $A1, $75, $98, $9A
-	.db $23, $3A, $04, $84, $86, $8C, $8E
+;                          Mario,    Princess
+	.db $23, $3A, $04, $FF, $FF, $8C, $8E
+;                               Luigi,                        Shyguy
 	.db $23, $43, $1B, $47, $94, $96, $74, $74, $74, $74, $A3, $A5, $74, $66, $68
+;                                                   Toad           Mario,    Princess
 	.db $6D, $6F, $71, $73, $6A, $6B, $74, $74, $99, $9B, $74, $85, $87, $8D, $8F
-	.db $23, $64, $05, $95, $97, $FD, $AA ,$AB
-	.db $23, $77, $04, $9C, $9D, $AA, $AB
-	.db $23, $89, $02, $AA, $AB
+;                          Luigi,         Grass
+	.db $23, $64, $05, $95, $97, $FD, $FD, $FD
+;                          Toad,     Grass
+	.db $23, $77, $04, $9C, $9D, $FD, $FD
+;                          Grass
+	.db $23, $89, $02, $FD, $FD
 
 	; SUPER
 	;                  SSSSSSSS  UUUUUUUU  PPPPPPPP  EEEEEEEE  RRRRRRRR
 	.db $20, $CB, $0A, $00, $01, $08, $08, $FC, $01, $FC, $08, $FC, $01
 	.db $20, $EB, $0A, $02, $03, $08, $08, $0A, $05, $0B, $0C, $0A, $0D
-	.db $21, $0B, $0A, $04, $05, $04, $05, $0E, $07, $FC, $08, $0E, $08
+	.db $21, $0B, $0A, $04, $7B, $04, $7B, $0E, $07, $FD, $7C, $0E, $7C
 	.db $21, $2B, $05, $06, $07, $06, $07, $09
 	.db $21, $31, $04, $76, $09, $09, $09
 
@@ -4832,8 +4846,8 @@ TitleLayout:
 	.db $21, $46, $0A, $00, $0F, $01, $00, $01, $FC, $01, $08, $00, $01
 	.db $21, $66, $0A, $10, $10, $08, $10, $08, $10, $08, $08, $10, $08
 	.db $21, $86, $0A, $08, $08, $08, $08, $08, $13, $0D, $08, $08, $08
-	.db $21, $A6, $0A, $08, $08, $08, $FC, $08, $0E, $08, $08, $08, $08
-	.db $21, $C6, $0A, $08, $08, $08, $10, $08, $08, $08, $08, $04, $05
+	.db $21, $A6, $0A, $7C, $7C, $7C, $FD, $7C, $0E, $7C, $7C, $7C, $7C
+	.db $21, $C6, $0A, $7C, $7C, $7C, $7C, $7C, $7C, $7C, $7C, $04, $7B
 	.db $21, $E6, $0A, $09, $09, $09, $09, $09, $09, $09, $09, $06, $07
 
 	; BROS
@@ -4841,8 +4855,8 @@ TitleLayout:
 	.db $21, $51, $08, $FC, $01, $FC, $01, $00, $01, $00, $01 ; BROS
 	.db $21, $71, $08, $10, $08, $10, $08, $10, $08, $10, $08
 	.db $21, $91, $08, $13, $0D, $13, $0D, $08, $08, $77, $03
-	.db $21, $B1, $08, $0E, $08, $0E, $08, $08, $08, $12, $08
-	.db $21, $D1, $09, $13, $05, $08, $08, $04, $05, $04, $05, $08
+	.db $21, $B1, $08, $0E, $7C, $0E, $7C, $7C, $7C, $12, $7C
+	.db $21, $D1, $09, $7D, $7B, $7C, $7C, $04, $7B, $04, $7B, $7C
 	.db $21, $F1, $09, $11, $07, $09, $09, $06, $07, $06, $07, $09
 
 	; 2
@@ -4850,7 +4864,7 @@ TitleLayout:
 	.db $22, $0E, $04, $14, $15, $16, $17
 	.db $22, $2E, $04, $18, $19, $1A, $1B
 	.db $22, $4E, $04, $1C, $1D, $1E, $1F
-	.db $22, $6E, $04, $FC, $FC, $FC, $20
+	.db $22, $6E, $04, $78, $79, $7A, $20
 	.db $22, $8E, $04, $76, $76, $76, $21
 
 	; (C) 1988
@@ -4863,21 +4877,71 @@ TitleLayout:
 
 	.db $23, $CA, $04, $80, $A0, $A0, $20
 	.db $23, $D1, $0E, $80, $A8, $AA, $AA, $A2, $22, $00, $00, $88, $AA, $AA, $AA, $AA, $22
-	.db $23, $E3, $02, $88, $22
-	.db $23, $EA, $04, $F0, $F8, $F2, $F0
+	.db $23, $E3, $02, $44, $11
+	.db $23, $EA, $04, $F0, $F4, $F1, $F0
+	.db $23, $F1, $01, $03
+	.db $23, $F6, $01, $0C
 	.db $00
 
 TitleBackgroundPalettes:
-	.db $22, $37, $16, $07 ; Most of screen, outline, etc.
-	.db $22, $30, $31, $0F ; Unused
-	.db $22, $30, $0F, $0F ; Logo
-	.db $22, $30, $0F, $0F ; Copyright, Story
+	.db $0F, $37, $16, $07 ; Most of screen, outline, etc.
+	.db $0F, $27, $38, $08 ; 2
+	.db $0F, $31, $2C, $01 ; Logo
+	.db $0F, $37, $27, $30 ; Copyright, Story, Sclera
 
 TitleSpritePalettes:
-	.db $22, $30, $28, $0F ; Unused DDP character palettes
-	.db $22, $30, $25, $0F ; There are no sprites on the title screen,
-	.db $22, $30, $12, $0F ; so these are totally unused
-	.db $22, $30, $23, $0F
+	.db $0F, $27, $16, $01 ; Mario, Grass
+	.db $0F, $36, $25, $06 ; Princess, Snifit
+	.db $0F, $30, $27, $01 ; Toad, Radish
+	.db $0F, $36, $2A, $01 ; Luigi
+
+TitleOAM:
+;           Y    Tile Attr X
+	; Snifit - 4
+	.db $AF, $A6, $01, $20 ; 22C4
+	.db $AF, $A8, $01, $28 ; 22C5
+	.db $B7, $A7, $01, $20 ; 22E4
+	.db $B7, $A9, $01, $28 ; 22E5
+	; Mario - 8
+	.db $B7, $80, $00, $D0 ; 22FA
+	.db $B7, $82, $00, $D8 ; 22FB
+	.db $BF, $81, $00, $D0 ; 231A
+	.db $BF, $83, $00, $D8 ; 231B
+	.db $C7, $84, $00, $D0 ; 233A
+	.db $C7, $86, $00, $D8 ; 233B
+	.db $CF, $AD, $00, $D0 ; 235A
+	.db $CF, $AE, $00, $D8 ; 235B
+	; Luigi - 8
+	.db $BF, $90, $03, $20 ; 2304
+	.db $BF, $92, $03, $28 ; 2305
+	.db $C7, $B0, $03, $20 ; 2324
+	.db $C7, $93, $03, $28 ; 2325
+	.db $CF, $B1, $03, $20 ; 2344
+	.db $CF, $B2, $03, $28 ; 2345
+	.db $D7, $B3, $03, $20 ; 2364
+	.db $D7, $B4, $03, $28 ; 2365
+	; Radish - 4
+	.db $BF, $9E, $02, $A0 ; 2314
+	.db $BF, $A0, $02, $A8 ; 2315
+	.db $C7, $9F, $02, $A0 ; 2334
+	.db $C7, $A1, $02, $A8 ; 2335
+	; Toad - 6
+	.db $C7, $98, $02, $B8 ; 2337
+	.db $C7, $9A, $02, $C0 ; 2338
+	.db $CF, $B5, $02, $B8 ; 2357
+	.db $CF, $B6, $02, $C0 ; 2358
+	.db $D7, $B7, $02, $B8 ; 2377
+	.db $D7, $B8, $02, $C0 ; 2378
+	; Grass - 2
+	.db $D7, $AA, $03, $38 ; 2367
+	.db $D7, $AB, $03, $40 ; 2368
+	; Grass - 2
+	.db $D7, $AA, $03, $C8 ; 2379
+	.db $D7, $AB, $03, $D0 ; 237A
+	; Grass - 2
+	.db $DF, $AA, $03, $48 ; 2389
+	.db $DF, $AB, $03, $50 ; 238A
+	.db $00
 
 TitleStoryText_STORY:
 	.db $EC, $ED, $E8, $EB, $F2 ; STORY
@@ -5058,14 +5122,24 @@ InitTitleBackgroundPalettesLoop:
 	STA zPPUDataBufferPointer + 1
 	LDA #Stack100_Menu
 	STA iStack
+	; PPUCtrl_Base2000
+	; PPUCtrl_WriteHorizontal
+	; PPUCtrl_Sprite0000
+	; PPUCtrl_Background1000
+	; PPUCtrl_SpriteSize8x8
+	; PPUCtrl_NMIEnabled
 	LDA #PPUCtrl_Base2000 | PPUCtrl_WriteHorizontal | PPUCtrl_Sprite0000 | PPUCtrl_Background1000 | PPUCtrl_SpriteSize8x8 | PPUCtrl_NMIEnabled
 	STA zPPUControl
 	STA PPUCTRL
+	; zScreenUpdateIndex is already 0
+	; wait to read from iPPUBuffer
 	JSR WaitForNMI_TitleScreen
 
-	LDA #$01 ; @TODO
+	LDA #$01 ; AKA BG Layout
 	STA zScreenUpdateIndex
 	JSR WaitForNMI_TitleScreen
+
+	JSR PlaceTitleSprites
 
 	LDA #Music1_Title
 	STA iMusic1
@@ -5074,7 +5148,7 @@ InitTitleBackgroundPalettesLoop:
 	LDA #$03
 	STA z10
 	LDA #$25
-	STA z02
+	STA zTitleScreenTimer
 	LDA #$20
 	STA zPlayerXHi
 	LDA #$C7
@@ -7558,4 +7632,25 @@ EnsureCorrectMusic:
 	STA iMusic1
 
 EnsureCorrectMusic_Exit:
+	RTS
+
+PlaceTitleSprites:
+	LDX #$FF
+PlaceTitleSprites_Loop:
+	INX
+	LDA TitleOAM, X
+	BEQ PlaceTitleSprites_Exit
+	STA iVirtualOAM, X
+	INX
+	LDA TitleOAM, X
+	STA iVirtualOAM, X
+	INX
+	LDA TitleOAM, X
+	STA iVirtualOAM, X
+	INX
+	LDA TitleOAM, X
+	STA iVirtualOAM, X
+	BNE PlaceTitleSprites_Loop
+
+PlaceTitleSprites_Exit:
 	RTS

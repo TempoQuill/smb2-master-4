@@ -25,6 +25,7 @@ z00:
 	.dsb 1 ; $0000
 z01:
 	.dsb 1 ; $0001
+zTitleScreenTimer:
 z02:
 	.dsb 1 ; $0002
 z03:

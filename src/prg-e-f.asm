@@ -4750,9 +4750,15 @@ LoadCharacterCHRBanks:
 
 LoadTitleScreenCHRBanks:
 	LDA #CHRBank_TitleScreenBG1
+	STA iObjCHR1
 	STA iBGCHR1
+	ORA #1
+	STA iObjCHR2
 	LDA #CHRBank_TitleScreenBG2
+	STA iObjCHR3
 	STA iBGCHR2
+	ORA #1
+	STA iObjCHR4
 	RTS
 
 
