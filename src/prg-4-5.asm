@@ -19,8 +19,14 @@ StartProcessingSoundQueue:
 	CMP #Stack100_Pause
 	BNE MusicAndSFXProcessing
 
+	LDA SND_CHN
+	CMP #$10
 	LDA iPauseTrack
+	BCS ApplyPauseChannels
+
 	AND SND_CHN
+
+ApplyPauseChannels:
 	STA SND_CHN
 	; You would think you could skip processing,
 	; since if the game is paused, nothing should
