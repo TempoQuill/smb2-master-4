@@ -539,11 +539,7 @@ IFNDEF NSF_FILE
 	ENDIF
 ELSE
 	SEC
-	SBC #$0C
-	ASL A
-	STA NSFBank2
-	ORA #1
-	STA NSFBank3
+	JSR SetMusicBank
 ENDIF
 	; store the amount of channels
 	LDA PauseTracks1, Y
@@ -604,11 +600,7 @@ IFNDEF NSF_FILE
 		STA MMC5_PRGBankSwitch3
 	ENDIF
 ELSE
-	SBC #$0C
-	ASL A
-	STA NSFBank2
-	ORA #1
-	STA NSFBank3
+	JSR SetMusicBank
 ENDIF
 	LDA PauseTracks2 - 1, Y
 	STA iPauseTrack

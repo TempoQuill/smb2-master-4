@@ -34,3 +34,11 @@ NSFMusicData:
 
 NSFIndeces:
 	.db $01, $02, $04, $08, $10, $20, $40, $80
+
+SetMusicBank:
+	SBC #$0C
+	ASL A
+	STA NSFBank2
+	ORA #1
+	STA NSFBank3
+	RTS

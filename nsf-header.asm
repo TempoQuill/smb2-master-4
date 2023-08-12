@@ -1,6 +1,6 @@
 .base 0
 	.db "NESM", $1a, $01
-	.db 46 ; total sounds
+	.db 47 ; total sounds
 	.db 1  ; track offset
 	.dw StartProcessingSoundQueue
 	.dw PLAY
