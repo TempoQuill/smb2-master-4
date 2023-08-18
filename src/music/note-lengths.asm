@@ -25,6 +25,8 @@
 ; $xF: whole triplet, 1/8 triplet (overworld triangle long note)
 ;
 
+NoteLengthTable_Warp = $22
+NoteLengthTable_SpadeGame = $3C
 NoteLengthTable_Death = $42
 NoteLengthTable_CHR = $44
 NoteLengthTable_Crystal = $48

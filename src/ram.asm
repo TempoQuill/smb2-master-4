@@ -1525,13 +1525,21 @@ iCurrentDPCMOffset:
 
 ; #01 Outside
 ; #02 CHR Select
-; #04 Inside
-; #08 Boss
-; #10 Starman
-; #20 Subspace
-; #40 Wart
-; #80 Title
-iMusic1:
+; #03 Inside
+; #04 Boss
+; #05 Starman
+; #06 Subspace
+; #07 Wart
+; #08 Title
+; $09 Warp fanfare, slot entry jingle
+; $0A Boss clear fanfare
+; $0B Celebration
+; $0C Death jingle
+; $0D Game over
+; $0E Mini-fanfare (slot win, crystal get)
+; $0F Wart Death
+; $FF Silence (stops music)
+iMusic:
 	.dsb 1 ; $0600
 
 ; $01 Jump
@@ -1556,15 +1564,6 @@ iHillSFX:
 iDPCMSFX:
 	.dsb 1 ; $0602
 
-; $01 Warp fanfare, slot entry jingle
-; $02 Boss clear fanfare
-; $04 Celebration
-; $08 Death jingle
-; $10 Game over
-; $20 Mini-fanfare (slot win, crystal get)
-; $40 Subcons
-; $80 Silence (stops music)
-iMusic2:
 	.dsb 1 ; $0603
 
 ; $01 Jump
@@ -1589,13 +1588,12 @@ iPulse1SFX:
 iNoiseSFX:
 	.dsb 1 ; $0605
 
-iCurrentMusic2:
 	.dsb 1 ; $0606
 iCurrentHillSFX:
 	.dsb 1 ; $0607
 iCurrentDPCMSFX:
 	.dsb 1 ; $0608
-iCurrentMusic1:
+iCurrentMusic:
 	.dsb 1 ; $0609
 iMusicBank:
 	.dsb 1 ; $060a
@@ -1613,7 +1611,7 @@ iCurrentNoiseSFX:
 	.dsb 1 ; $060f
 iHillSFXOffset:
 	.dsb 1 ; $0610
-iNoiseTimer:
+; FOR RENT
 	.dsb 1 ; $0611
 iTempo:
 	.dsb 1 ; $0612

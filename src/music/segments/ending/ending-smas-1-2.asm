@@ -441,10 +441,32 @@ MusicDataEnding1_Noise:
 	.db $8A
 	.db $0A
 	.db $0A
+	.db $8B
 	.db $0A
-	.db $86
-	.db $01
-	.db $00
+	.db $80
+	.db $0C
+	.db $0C
+	.db $0C
+	.db $0C
+	.db $8B
+	.db $0A
+	.db $80
+	.db $0C
+	.db $0C
+	.db $0C
+	.db $0C
+	.db $8B
+	.db $0A
+	.db $80
+	.db $0C
+	.db $0C
+	.db $0C
+	.db $0C
+	.db $8A
+	.db $0A
+	.db $0A
+	.db $8C
+	.db $0A
 
 MusicDataEnding2_Noise:
 	.db $8B
@@ -471,6 +493,25 @@ MusicDataEnding2_Noise:
 	.db $0C
 	.db $0C
 	.db $0C
+	.db $8B
+	.db $0A
+	.db $80
+	.db $0C
+	.db $0C
+	.db $0C
+	.db $0C
+	.db $8B
+	.db $0A
+	.db $80
+	.db $0C
+	.db $0C
+	.db $0C
+	.db $0C
+	.db $8A
+	.db $0A
+	.db $0A
+	.db $8C
+	.db $0A
 	.db $00
 
 MusicDataEnding1_DPCM:

@@ -125,4 +125,15 @@ MusicHeaderEnding4:
 MusicHeaderEnding5:
 	musicHeader NoteLengthTable_Ending5, MusicDataEnding5, MusicDataEnding5_Triangle, MusicDataEnding5_Square1, MusicDataEnding5_Noise, MusicDataEnding5_DPCM
 
+; ----------------------------------------
+; Unused Spade Game fanfare for SMB3
+
+MusicHeaderSpadeGameFanfare:
+	musicHeader NoteLengthTable_SpadeGame, MusicDataSpadeGameFanfare, MusicDataSpadeGameFanfare_Triangle, MusicDataSpadeGameFanfare_Square1, MusicDataSpadeGameFanfare_Noise, MusicDataSpadeGameFanfare_DPCM
+
+; ----------------------------------------
+; Warp theme ported to NES, but unused
+MusicHeaderWarp:
+	musicHeader NoteLengthTable_Warp, MusicDataWarp, MusicDataWarp_Triangle, MusicDataWarp_Square1, -1, -1
+
 .pad MusicHeaders + $100, $FF

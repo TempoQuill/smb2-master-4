@@ -1042,8 +1042,8 @@ loc_BANK2_8509:
 
 	JSR Swarm_Stop
 
-	LDA #Music2_BossClearFanfare
-	STA iMusic2
+	LDA #Music_BossClearFanfare
+	STA iMusic
 	LDA iEndOfLevelDoorPage, X
 	STA zObjectXHi, X
 	LDA #$80
@@ -2514,8 +2514,8 @@ loc_BANK2_8C65:
 	LDA zObjectXHi, X
 	SBC #$00
 	STA zObjectXHi, X
-	LDA #SoundEffect3_Fire
-	STA iNoiseSFX
+	LDA #DPCM_Fire
+	STA iDPCMSFX
 	LDA #Enemy_Fireball
 	STA zObjectType, X
 	JSR SetEnemyAttributes
@@ -3349,8 +3349,8 @@ EnemyBehavior_Mushroom_PickUp:
 	LDA iMaskDoorOpenFlag
 	BNE EnemyBehavior_CrystalBall_Exit
 
-	LDA #Music2_CrystalGetFanfare
-	STA iMusic2
+	LDA #Music_CrystalGetFanfare
+	STA iMusic
 	LDA #$60
 	STA iMaskPreamble
 	INC iMaskDoorOpenFlag
@@ -3375,8 +3375,8 @@ EnemyBehavior_PickUpMushroom:
 	INC iPlayerMaxHP
 	JSR RestorePlayerToFullHealth
 
-	LDA #Music2_MushroomGetJingle
-	STA iMusic2
+	LDA #Music_MushroomGetJingle
+	STA iMusic
 	RTS
 
 EnemyBehavior_PickUpMushroom1up:
@@ -3998,8 +3998,8 @@ Phanto_AfterFlashing:
 	STA iObjectShakeTimer, X
 
 	; Play Phanto activation sound effect
-	LDA #SoundEffect3_RocketPhanto
-	STA iNoiseSFX
+	LDA #DPCM_Phanto
+	STA iDPCMSFX
 
 Phanto_AfterSound:
 	DEC iPhantoTimer
@@ -4838,14 +4838,14 @@ loc_BANK2_9741:
 
 	LDY iMusicID
 	LDA LevelMusicIndexes, Y
-	CMP iCurrentMusic1
+	CMP iCurrentMusic
 	BEQ loc_BANK2_9750
 
 	LDY iStarTimer
 	CPY #8
 	BCS loc_BANK2_9750
 
-	STA iMusic1
+	STA iMusic
 
 loc_BANK2_9750:
 	JMP TurnIntoPuffOfSmoke
@@ -8584,7 +8584,7 @@ EnemyBehavior_Rocket_Launching:
 	; Setting zEnemyArray puts the rocket in the area
 	STA zEnemyArray, X
 	STA iIsInRocket
-	LDA #SoundEffect3_RocketPhanto
+	LDA #SoundEffect3_Rocket
 	STA iNoiseSFX
 	LDA #$FE
 	STA zObjectYVelocity, X
@@ -8779,8 +8779,8 @@ loc_BANK3_ACE7:
 
 	JSR CreateEnemy
 
-	LDX #SoundEffect3_Fire
-	STX iNoiseSFX
+	LDX #DPCM_Fire
+	STX iDPCMSFX
 	LDX z00
 	LDA #Enemy_Fireball
 	STA zObjectType, X
@@ -9025,7 +9025,7 @@ loc_BANK3_AE28:
 	; Should have pushed it to stack instead.
 	JSR EnemyBehavior_SpitProjectile
 
-	LDX #SoundEffect3_Fire
+	LDX #SoundEffect3_Autobomb
 	STX iNoiseSFX
 	LDX z00
 	DEC zObjectYLo, X
@@ -9876,8 +9876,8 @@ RenderSprite_Wart:
 	LDA iWartDefeated
 	BNE RenderSprite_Wart_ObjAttrib
 
-	LDA #Music2_WartDeath
-	STA iMusic2
+	LDA #Music_WartDeath
+	STA iMusic
 	INC iWartDefeated
 
 RenderSprite_Wart_ObjAttrib:
@@ -10684,8 +10684,8 @@ ELSE
 	LDA #$FF
 ENDIF
 	STA iStarTimer
-	LDA #Music1_Invincible
-	STA iMusic1
+	LDA #Music_Invincible
+	STA iMusic
 	LDA #EnemyState_Inactive
 	STA zEnemyState, Y
 

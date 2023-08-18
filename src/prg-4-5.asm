@@ -33,7 +33,7 @@ ApplyPauseChannels:
 	; be setting new music or whatever.
 	;
 	; You would be correct, except for the suicide code!
-	; That sets iMusic2.
+	; That sets iMusic.
 	;
 	; If not for processing it, the music would not
 	; change (or stop) when you used the code. Welp!
@@ -64,10 +64,9 @@ ProcessOnlyMusicQueue2:
 	; Reset queues
 	LDA #$00
 	STA iPulse1SFX
-	STA iMusic2
 	STA iHillSFX
 	STA iDPCMSFX
-	STA iMusic1
+	STA iMusic
 	STA iNoiseSFX
 	RTS
 
@@ -84,6 +83,7 @@ ProcessSoundEffectQueue2_Part2:
 	STA iCurrentPulse1SFX
 	LDY #0
 	STY zPulse1SFXOffset
+	STY iPulse1SFXSweep
 	LSR A
 	BCS ProcessSoundEffectQueue2_DesignatePointer
 
@@ -385,17 +385,12 @@ ProcessDPCMQueue_Part2:
 
 ProcessDPCMQueue_Part3:
 	STA iCurrentDPCMSFX
-	LDY #$00
+	TAY
+	DEY
 
-ProcessDPCMQueue_PointerLoop:
-	INY
-	LSR A
-	BCC ProcessDPCMQueue_PointerLoop
-
-	LDA #PRGBank_DMC_16
+	LDA DMCBankTable, Y
 IFNDEF NSF_FILE
 	IF INES_MAPPER = MAPPER_MMC5
-		ORA #$80
 		STA MMC5_PRGBankSwitch4
 	ENDIF
 ELSE
@@ -409,9 +404,9 @@ ENDIF
 	LDA #$0F
 	STA DMC_FREQ
 
-	LDA DMCStartTable - 1, Y
+	LDA DMCStartTable, Y
 	STA DMC_START
-	LDA DMCLengthTable - 1, Y
+	LDA DMCLengthTable, Y
 	STA DMC_LEN
 	LDA #%00001111
 	STA SND_CHN
@@ -423,7 +418,6 @@ ENDIF
 
 PlayWartDeathSound:
 	LDA #0
-	STA iCurrentMusic1
 	STA iMusicPulse2NoteLength
 	STA iMusicPulse1NoteLength
 	STA iMusicHillNoteLength
@@ -458,14 +452,14 @@ ENDIF
 RunWartDeathSound:
 	LDA SND_CHN
 	BNE RunWartDeathSound_Running
-	STA iCurrentMusic2
+	STA iCurrentMusic
 	LDA #$0f
 	STA SND_CHN
 RunWartDeathSound_Running:
 	RTS
 
 ProcessMusicQueue_WartDeath:
-	STA iCurrentMusic2
+	STA iCurrentMusic
 	JMP PlayWartDeathSound
 
 ProcessMusicQueue_ThenReadNoteData:
@@ -476,64 +470,45 @@ ProcessMusicQueue_StopMusic:
 
 ProcessMusicQueue:
 	; start by checking for no music
-	LDA iMusic2
-	BMI ProcessMusicQueue_StopMusic
+	LDY iMusic
+	TYA
+	INY
+	BEQ ProcessMusicQueue_StopMusic
 
-	CMP #Music2_WartDeath
+	CMP #Music_WartDeath
 	BEQ ProcessMusicQueue_WartDeath
 
-	; check for looping songs in iMusic2
-	CMP #Music2_EndingAndCast
-	BEQ ProcessMusicQueue_EndingAndCast
-
-	; if iMusic2 != 0, branch
-	LDA iMusic2
-	BNE ProcessMusicQueue_Part2
-
-	; if iMusic1 != 0, branch
-	LDA iMusic1
+	; if iMusic != 0, branch
+	LDA iMusic
 	BNE ProcessMusicQueue_MusicQueue1
 
 	; if any music is playing, read note data
 	; else return
-	LDA iCurrentMusic2
-	CMP #Music2_WartDeath
+	LDA iCurrentMusic
+	CMP #Music_WartDeath
 	BEQ RunWartDeathSound
-	ORA iCurrentMusic1
+	AND #$FF
 	BNE ProcessMusicQueue_ThenReadNoteData
 	RTS
 
-ProcessMusicQueue_EndingAndCast:
-	; credits ($04) is queued up, so initialize & read pointer
-	TAY
+ProcessMusicQueue_MusicQueue1:
+	; iMusic != 0, initialize
+	LDA iCurrentMusic
+	STA iMusicStack
 	JSR StopMusic
-	TYA
-	STA iCurrentMusic2
-	LDY #$00
-	STY iCurrentMusic1
-	LDY #$08 ; index of ending music pointer
+	LDY iMusic
+	STY iCurrentMusic
+	LDA MusicStackPermission, Y
 	BNE ProcessMusicQueue_ReadFirstPointer
 
-ProcessMusicQueue_MusicQueue1:
-	; iMusic1 != 0, initialize
-	JSR StopMusic
-	LDA iMusic1
-	STA iCurrentMusic1
-	LDY #0
-	STY iMusicStack
-	LDY #$FF
-
-ProcessMusicQueue_FirstPointerLoop:
-	; iMusic1 -> Y = bit no. 0-7
-	INY
-	LSR A
-	BCC ProcessMusicQueue_FirstPointerLoop
+	LDA #Music_StopMusic
+	STA iMusicStack
 
 ProcessMusicQueue_ReadFirstPointer:
+	DEY
 	LDA SongBanks, Y
 IFNDEF NSF_FILE
 	IF INES_MAPPER = MAPPER_MMC5
-		ORA #$80
 		STA iMusicBank
 		STA MMC5_PRGBankSwitch3
 	ENDIF
@@ -577,37 +552,6 @@ ProcessMusicQueue_SetNextPart:
 	; we're here if there's no loop, stop the music
 	JMP StopMusic
 
-ProcessMusicQueue_Part2:
-	; iMusic2 != 0, back iCurrentMusic1 up, initialize
-	LDY iCurrentMusic1
-	STY iMusicStack
-	JSR StopMusic
-	LDA iMusic2
-	STA iCurrentMusic2
-	LDY #$00
-
-ProcessMusicQueue_PointerLoop:
-	; iMusic2 -> Y = bit no. 0-7
-	INY
-	LSR A
-	BCC ProcessMusicQueue_PointerLoop
-
-	LDA FanfareBanks - 1, Y
-IFNDEF NSF_FILE
-	IF INES_MAPPER = MAPPER_MMC5
-		ORA #$80
-		STA iMusicBank
-		STA MMC5_PRGBankSwitch3
-	ENDIF
-ELSE
-	JSR SetMusicBank
-ENDIF
-	LDA PauseTracks2 - 1, Y
-	STA iPauseTrack
-	; store the amount of channels
-	LDA MusicChannelStack + 8, Y
-	STA iMusicChannelCount
-
 ProcessMusicQueue_ReadHeader:
 	; nab offset, X = channel amount 3-5
 	LDX iMusicChannelCount
@@ -643,7 +587,16 @@ ProcessMusicQueue_ReadHeader:
 	ADC iMusicPulse1BigPointer
 	STA iMusicHillBigPointer
 	DEX
+	BNE ProcessMusicQueue_ReadHeaderNoise
 
+	LDA #0
+	STA iMusicNoiseBigPointer + 1
+	STA iMusicNoiseBigPointer
+	STA iMusicDPCMBigPointer + 1
+	STA iMusicDPCMBigPointer
+	BEQ ProcessMusicQueue_DefaultNotelength
+
+ProcessMusicQueue_ReadHeaderNoise:
 	; byte 6 - noise offset
 	LDA MusicHeaders + 5, Y
 	CLC
@@ -721,62 +674,58 @@ ProcessMusicQueue_Square2EndOfNote:
 ProcessMusicQueue_EndOfSegment:
 ; 0 = ret
 	; check which song's playing
-	; iCurrentMusic1 always loops
-	LDA iCurrentMusic1
-	BNE ProcessMusicQueue_ThenSetNextPart
-
-	; iCurrentMusic2 typically plays a fanfare
-	; but ending and subcon themes are segmented
-	LDA iCurrentMusic2
-	CMP #Music2_EndingAndCast
+	; iCurrentMusic always loops
+	LDY iCurrentMusic
+	LDA MusicStackPermission, Y
 	BEQ ProcessMusicQueue_ThenSetNextPart
 
-	; here's an oddity: there's logic to play iMusicStack when credits and
-	; cast theme ends (IT NEVER DOES)
-	AND #Music2_MushroomGetJingle | Music2_EndingAndCast | Music2_CrystalGetFanfare
+	; non-zero value, song meets permission, replay last song
+	LDA iMusicStack
 	BEQ StopMusic
 
-	; non-zero after AND, song meets logic, replay last song
-	LDA iMusicStack
-	BNE ProcessMusicQueue_ResumeMusicQueue1
+	; iMusicStack != 0
+	STA iMusic
+	JMP ProcessMusicQueue_MusicQueue1
 
 StopMusic:
 ; ways to access this routine:
 ;	iMusicStack = 0, fallthrough
-;	iCurrentMusic2 does not meet logic when fanfare ends
+;	iCurrentMusic does not meet logic when fanfare ends
 ;	Reaching the end-offset without a loop
-;	iMusic2 is $80
+;	iMusic is $80
 ;	initializing the sound engine for a new song
 	LDA #$10
 	STA SQ1_VOL
 	LDA #$00
-	STA iCurrentMusic2
-	STA iCurrentMusic1
+	STA iCurrentMusic
 	STA SQ1_HI
 	STA SQ1_LO
 	STA SQ1_SWEEP
 
 	LDA iCurrentPulse1SFX
-	BNE ClearChannelDone
+	BNE ClearChannelTriangle
 	STA SQ2_HI
 	STA SQ2_LO
 	STA SQ2_SWEEP
 	LDA #$10
 	STA SQ2_VOL
 
+ClearChannelTriangle:
 	LDA iCurrentHillSFX
-	BNE ClearChannelDone
+	BNE ClearChannelNoise
 	STA TRI_LINEAR
 	STA TRI_HI
 	STA TRI_LO
 
+ClearChannelNoise:
 	LDA iCurrentNoiseSFX
-	BNE ClearChannelDone
+	BNE ClearChannelDPCM
 	STA NOISE_HI
 	STA NOISE_LO
 	LDA #$10
 	STA NOISE_VOL
 
+ClearChannelDPCM:
 	LDA iCurrentDPCMSFX
 	BNE ClearChannelDone
 	JMP ProcessMusicQueue_DPCMDisable
@@ -787,11 +736,6 @@ ClearChannelDone:
 ProcessMusicQueue_ThenSetNextPart:
 ; any song able to move their pointer offset
 	JMP ProcessMusicQueue_SetNextPart
-
-ProcessMusicQueue_ResumeMusicQueue1:
-; iMusicStack != 0
-	STA iMusic1
-	JMP ProcessMusicQueue_MusicQueue1
 
 ProcessMusicQueue_Square2Patch:
 ; - = instrument / note length
@@ -1106,6 +1050,7 @@ ProcessMusicQueue_NoiseDPCM:
 ProcessMusicQueue_Noise:
 	; if offset = 0, skip to next channel
 	LDA iMusicNoiseBigPointer
+	BEQ ProcessMusicQueue_ThenNoiseEnd
 	STA zCurrentMusicPointer + 1
 	LDA iMusicNoiseBigPointer + 1
 	STA zCurrentMusicPointer
@@ -1146,6 +1091,10 @@ ProcessMusicQueue_NoiseNote:
 	LSR A
 	BEQ ProcessMusicQueue_NoiseLengthCarry
 	TAY
+
+	LDA SND_CHN
+	ORA #$0C
+	STA SND_CHN
 
 	LDA NoiseVolTable, Y
 	STA NOISE_VOL
@@ -1247,7 +1196,6 @@ ProcessMusicQueue_DPCMNoteLoop:
 	LDA DPCMOctaves, X
 IFNDEF NSF_FILE
 	IF INES_MAPPER = MAPPER_MMC5
-		ORA #$80
 		STA MMC5_PRGBankSwitch4
 	ENDIF
 ELSE
@@ -1596,22 +1544,23 @@ PlayNote_SetFrequency:
 	RTS
 
 SongBanks:
-	.db PRGBank_Music_1
-	.db PRGBank_Music_1
-	.db PRGBank_Music_2
-	.db PRGBank_Music_1
-	.db PRGBank_Music_2
-	.db PRGBank_Music_3
-	.db PRGBank_Music_3
-	.db PRGBank_Music_3
-	.db PRGBank_Music_2 ; ending and cast
-FanfareBanks:
-	.db PRGBank_Music_2
-	.db PRGBank_Music_1
-	.db PRGBank_Music_2
-	.db PRGBank_Music_1
-	.db PRGBank_Music_3
-	.db PRGBank_Music_1
+	audio_bank PRGBank_Music_1
+	audio_bank PRGBank_Music_1
+	audio_bank PRGBank_Music_2
+	audio_bank PRGBank_Music_1
+	audio_bank PRGBank_Music_2
+	audio_bank PRGBank_Music_3
+	audio_bank PRGBank_Music_3
+	audio_bank PRGBank_Music_3
+	audio_bank PRGBank_Music_2
+	audio_bank PRGBank_Music_1
+	audio_bank PRGBank_Music_2
+	audio_bank PRGBank_Music_1
+	audio_bank PRGBank_Music_3
+	audio_bank PRGBank_Music_1
+	audio_bank PRGBank_Music_3
+	audio_bank PRGBank_Music_2
+	audio_bank PRGBank_Music_3
 
 PauseTracks1:
 	.db $18
@@ -1622,19 +1571,40 @@ PauseTracks1:
 	.db $18
 	.db $0C
 	.db $0C
-	.db $18 ; ending and cast
-PauseTracks2:
 	.db $10
 	.db $04
 	.db $18
 	.db $10
-	.db $18
-	.db $18
+	.db $14
+	.db $14
+	.db $10
+	.db $04
+	.db $01
 
 InstrumentRAMPointers:
 	.dw iPulse1Ins
 	.dw iPulse2Ins
 	.dw iHillIns
+
+MusicStackPermission:
+	.db $FF
+	.db $00
+	.db $00
+	.db $00
+	.db $00
+	.db $00
+	.db $00
+	.db $00
+	.db $00
+	.db $01
+	.db $00
+	.db $00
+	.db $00
+	.db $00
+	.db $01
+	.db $00
+	.db $01
+	.db $00
 
 ;
 ; -------------------------------------------------------------------------

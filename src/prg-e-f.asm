@@ -792,8 +792,8 @@ loc_BANKF_E3EC:
 	DEC z10
 	BPL loc_BANKF_E3EC
 
-	LDA #Music2_StopMusic
-	STA iMusic2
+	LDA #Music_StopMusic
+	STA iMusic
 	RTS
 
 
@@ -807,6 +807,7 @@ StartGame:
 	JSR DisableNMI
 
 	LDA #PRGBank_Music_3
+	ORA #$80
 	STA iMusicBank
 	LDA #PRGBank_0_1
 	STA iMainGameState
@@ -1183,7 +1184,7 @@ ENDIF
 	BNE loc_BANKF_E64C
 
 	LDA LevelMusicIndexes, Y
-	STA iMusic1
+	STA iMusic
 
 loc_BANKF_E64C:
 	LDA #PRGBank_0_1
@@ -1256,8 +1257,8 @@ ResetAreaAndProcessGameMode_NotTitleCard:
 
 DoGameOverStuff:
 	STY iCurrentPlayerSize
-	LDA #Music2_GameOver
-	STA iMusic2
+	LDA #Music_GameOver
+	STA iMusic
 	JSR WaitForNMI_TurnOffPPU
 
 	JSR ChangeTitleCardCHR
@@ -1390,11 +1391,11 @@ DoWorldWarp:
 
 	LDA #ScreenUpdateBuffer_WarpToWorld
 	STA zScreenUpdateIndex
-	LDA #Music2_StopMusic
-	STA iMusic2
+	LDA #Music_StopMusic
+	STA iMusic
 	JSR WaitForNMI
-	LDA #Music2_MushroomGetJingle
-	STA iMusic2
+	LDA #Music_MushroomGetJingle
+	STA iMusic
 	JSR Delay160Frames
 
 	JSR InitializeSomeLevelStuff
@@ -1405,8 +1406,8 @@ DoWorldWarp:
 
 EndOfLevel:
 	; Stop the music
-	LDA #Music2_StopMusic ; Stop music
-	STA iMusic2
+	LDA #Music_StopMusic ; Stop music
+	STA iMusic
 
 	; Increase current characters "contribution" counter
 	LDX zCurrentCharacter
@@ -1464,11 +1465,11 @@ ENDIF
 
 	JSR sub_BANKF_EA33
 
-	LDA #Music2_StopMusic
-	STA iMusic2
+	LDA #Music_StopMusic
+	STA iMusic
 	JSR WaitForNMI
-	LDA #Music2_MushroomGetJingle
-	STA iMusic2
+	LDA #Music_MushroomGetJingle
+	STA iMusic
 	JSR Delay80Frames
 	LDA iTotalCoins
 	BNE loc_BANKF_E7F2
@@ -1639,8 +1640,8 @@ loc_BANKF_E8D3:
 	ORA #$D0
 	STA iLDPBonucChanceLiveEMCount ; Update number of lives won
 	JSR SlotMachine_WaitforSFX
-	LDA #Music2_CrystalGetFanfare ; Play winner jingle
-	STA iMusic2
+	LDA #Music_CrystalGetFanfare ; Play winner jingle
+	STA iMusic
 	LDA #$A0
 	STA z06
 	JSR WaitForNMI
@@ -1662,8 +1663,8 @@ loc_BANKF_E8ED:
 SlotMachineLoseFanfare:
 	JSR SlotMachine_WaitforSFX
 
-	LDA #Music2_DeathJingle
-	STA iMusic2
+	LDA #Music_DeathJingle
+	STA iMusic
 	JSR WaitForNMI
 
 	JSR sub_BANKF_EA68
@@ -1686,7 +1687,7 @@ SlotMachine_SFXDone:
 	RTS
 
 SlotMachine_WaitforJingle:
-	LDA iCurrentMusic2
+	LDA iCurrentMusic
 	BEQ SlotMachine_JingleDone
 	JSR WaitForNMI
 	JMP SlotMachine_WaitforJingle
@@ -1715,8 +1716,8 @@ SlotMachineTextFlashIndex:
 
 NoCoinsForSlotMachine:
 
-	LDA #Music2_DeathJingle
-	STA iMusic2
+	LDA #Music_DeathJingle
+	STA iMusic
 
 	STA z06
 loc_BANKF_E92A:
@@ -1736,7 +1737,7 @@ loc_BANKF_E938:
 	DEC z06
 	BPL loc_BANKF_E92A
 
-	LDA iCurrentMusic2
+	LDA iCurrentMusic
 	BNE loc_BANKF_E92A
 
 	JMP GoToNextLevel
@@ -2864,11 +2865,11 @@ NextSpriteFlickerSlot_Exit:
 
 
 LevelMusicIndexes:
-	.db Music1_Overworld
-	.db Music1_Inside ; 1 ; Music1 indexes.
-	.db Music1_Boss ; 2
-	.db Music1_Wart ; 3
-	.db Music1_Subspace ; 4
+	.db Music_Overworld
+	.db Music_Inside ; 1 ; Music indexes.
+	.db Music_Boss ; 2
+	.db Music_Wart ; 3
+	.db Music_Subspace ; 4
 
 
 ; =============== S U B R O U T I N E =======================================
@@ -2880,8 +2881,8 @@ sub_BANKF_F0F9:
 	BNE loc_BANKF_F11B
 
 	; boss clear fanfare locks player movement
-	LDA iCurrentMusic2
-	CMP #Music2_BossClearFanfare
+	LDA iCurrentMusic
+	CMP #Music_BossClearFanfare
 	BEQ loc_BANKF_F115
 
 	LDA iPlayerLock
@@ -2918,8 +2919,8 @@ RunFrame_Horizontal:
 
 	; If the boss clear fanfare is playing or `iPlayerLock` is set, skip the
 	; player state update subroutine
-	LDA iCurrentMusic2
-	CMP #Music2_BossClearFanfare
+	LDA iCurrentMusic
+	CMP #Music_BossClearFanfare
 	BEQ RunFrame_Horizontal_AfterPlayerState
 
 	LDA iPlayerLock
@@ -2976,7 +2977,7 @@ DecrementPlayerStateTimers_Zero:
 
 	LDY iMusicID
 	LDA LevelMusicIndexes, Y
-	STA iMusic1
+	STA iMusic
 
 RunFrame_Exit:
 	RTS
@@ -2996,8 +2997,8 @@ RunFrame_Vertical:
 
 	; If the boss clear fanfare is playing or `iPlayerLock` is set, skip the
 	; player state update subroutine
-	LDA iCurrentMusic2
-	CMP #Music2_BossClearFanfare
+	LDA iCurrentMusic
+	CMP #Music_BossClearFanfare
 	BEQ RunFrame_Vertical_AfterPlayerState
 
 	LDA iPlayerLock
@@ -3182,6 +3183,8 @@ SetPlayerScreenPosition_Above:
 	STY zPlayerHitBoxHeight
 	STY zPlayerYVelocity
 	STY zPlayerXVelocity
+	LDA #DPCM_ExitingJar
+	STA iDPCMSFX
 	LDA #PlayerState_ExitingJar
 	STA zPlayerState
 	LDA #SpriteAnimation_Ducking
@@ -4315,8 +4318,8 @@ loc_BANKF_F747:
 
 loc_BANKF_F749:
 	; Set music to death jingle
-	LDA #Music2_DeathJingle
-	STA iMusic2
+	LDA #Music_DeathJingle
+	STA iMusic
 	RTS
 
 

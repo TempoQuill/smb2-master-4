@@ -1981,7 +1981,7 @@ HandlePlayerState_Dying:
 	CMP #02
 	BNE HandlePlayerState_DyingPhysics
 
-	LDA iCurrentMusic2
+	LDA iCurrentMusic
 	BNE locret_BANK0_8A86
 	BEQ LoseALife
 
@@ -3713,6 +3713,8 @@ TileBehavior_GoDownJar:
 	STA zPlayerXVelocity
 
 	; We're going down the jar!
+	LDA #DPCM_GoingDownJar
+	STA iDPCMSFX
 	LDA #PlayerState_GoingDownJar
 	STA zPlayerState
 
@@ -5141,8 +5143,8 @@ InitTitleBackgroundPalettesLoop:
 
 	JSR PlaceTitleSprites
 
-	LDA #Music1_Title
-	STA iMusic1
+	LDA #Music_Title
+	STA iMusic
 	JSR WaitForNMI_TitleScreen_TurnOnPPU
 
 	LDA #$03
@@ -5398,8 +5400,8 @@ loc_BANK0_9C19:
 	BEQ loc_BANK0_9C35
 
 loc_BANK0_9C1F:
-	LDA #Music2_StopMusic
-	STA iMusic2
+	LDA #Music_StopMusic
+	STA iMusic
 	JSR WaitForNMI_TitleScreen
 
 	LDA #$00
@@ -5684,8 +5686,8 @@ FreeSubconsScene_JumpingLoop:
 	CMP #$25
 	BNE FreeSubconsScene_JumpingLoop
 
-	LDY #Music2_EndingAndCast
-	STY iMusic2
+	LDY #Music_EndingAndCast
+	STY iMusic
 	BNE FreeSubconsScene_JumpingLoop
 
 FreeSubconsScene_Exit:
@@ -7615,7 +7617,7 @@ ExitSubArea_Loop:
 ;
 ; ##### Output
 ; - `iMusicID`: music we should be plathing
-; - `iMusic1`: song to play if we need to change the music
+; - `iMusic`: song to play if we need to change the music
 ;
 EnsureCorrectMusic:
 	LDA iLevelMusic
@@ -7629,7 +7631,7 @@ EnsureCorrectMusic:
 	BCS EnsureCorrectMusic_Exit
 
 	LDA LevelMusicIndexes, X
-	STA iMusic1
+	STA iMusic
 
 EnsureCorrectMusic_Exit:
 	RTS

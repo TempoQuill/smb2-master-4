@@ -15,7 +15,15 @@ MusicPointersFirstPart:
 	musicPart MusicPartPointers_SubSpace
 	musicPart MusicPartPointers_Wart
 	musicPart MusicPartPointers_TitleScreen
+	musicPart MusicPartPointers_BonusChance
+	musicPart MusicPartPointers_BossBeaten
 	musicPart MusicPartPointers_Ending
+	musicPart MusicPartPointers_Death
+	musicPart MusicPartPointers_GameOver
+	musicPart MusicPartPointers_Crystal
+	musicPart MusicPartPointers_SpadeGameFanfare
+	musicPart MusicPartPointers_SpadeGameFanfare
+	musicPart MusicPartPointers_Warp
 
 MusicPointersEndPart:
 	musicPart MusicPartPointers_OverworldEnd
@@ -26,7 +34,15 @@ MusicPointersEndPart:
 	musicPart MusicPartPointers_SubSpaceEnd
 	musicPart MusicPartPointers_WartEnd
 	musicPart MusicPartPointers_TitleScreenEnd
+	musicPart MusicPartPointers_BonusChance
+	musicPart MusicPartPointers_BossBeaten
 	musicPart MusicPartPointers_EndingEnd
+	musicPart MusicPartPointers_Death
+	musicPart MusicPartPointers_GameOver
+	musicPart MusicPartPointers_Crystal
+	musicPart MusicPartPointers_SpadeGameFanfare
+	musicPart MusicPartPointers_SpadeGameFanfare
+	musicPart MusicPartPointers_Warp
 
 MusicPointersLoopPart:
 	musicPart MusicPartPointers_OverworldLoop
@@ -37,5 +53,12 @@ MusicPointersLoopPart:
 	musicPart MusicPartPointers_SubSpaceLoop
 	musicPart MusicPartPointers_WartEnd
 	.db $00 ; title screen, no loop
+	.db $00
+	.db $00
 	musicPart MusicPartPointers_EndingLoop
-
+	.db $00
+	.db $00
+	.db $00
+	.db $00
+	.db $00
+	.db $00

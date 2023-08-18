@@ -3511,8 +3511,8 @@ LoadAreaMusic:
 	CMP #$08
 	BCS LoadAreaMusic_Exit
 
-	LDA #Music2_StopMusic
-	STA iMusic2
+	LDA #Music_StopMusic
+	STA iMusic
 
 LoadAreaMusic_Exit:
 	RTS
@@ -3523,11 +3523,11 @@ LoadAreaMusic_Exit:
 ; be leftover code from a previous version.
 ;
 Unused_LevelMusicIndexes:
-	.db Music1_Overworld
-	.db Music1_Inside
-	.db Music1_Boss
-	.db Music1_Wart
-	.db Music1_Subspace
+	.db Music_Overworld
+	.db Music_Inside
+	.db Music_Boss
+	.db Music_Wart
+	.db Music_Subspace
 
 Unused_ChangeAreaMusic:
 	LDA iLevelMusic
@@ -3541,7 +3541,7 @@ Unused_ChangeAreaMusic:
 	BCS LoadAreaMusic_Exit
 
 	LDA Unused_LevelMusicIndexes, X
-	STA iMusic1
+	STA iMusic
 
 Unused_ChangeAreaMusic_Exit:
 	RTS
@@ -4719,8 +4719,8 @@ GetCurrentArea:
 ClearLayoutAndPokeMusic:
 	JSR ClearSubAreaTileLayout
 
-	LDA #Music1_Inside
-	STA iMusic1
+	LDA #Music_Inside
+	STA iMusic
 	LDA #$01
 	STA iMusicID
 	JMP loc_BANKF_E5E1
@@ -4732,8 +4732,8 @@ SubspaceGeneration:
 	CMP #$08
 	BCS SubspaceGeneration_Starman
 
-	LDA #Music1_Subspace
-	STA iMusic1
+	LDA #Music_Subspace
+	STA iMusic
 
 SubspaceGeneration_Starman:
 	LDA #$04

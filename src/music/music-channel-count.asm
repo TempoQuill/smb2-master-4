@@ -13,11 +13,12 @@ MusicChannelStack:
 	.db $05 ; Subspace
 	.db $05 ; Mamu
 	.db $05 ; Title
-	.db $05 ; Ending
-; Fanfares
 	.db $05 ; Mushroom
 	.db $05 ; Boss Vic
-	.db $05 ; Ending - UNUSED
+	.db $05 ; Ending
 	.db $05 ; Down
 	.db $05 ; Game Over
 	.db $05 ; Crystal 1UP
+	.db $05 ; Wart Death
+	.db $05 ; Spade - UNUSED
+	.db $03 ; Warp - UNUSED

@@ -1,3 +1,4 @@
+.enum $0000
 .ignorenl
 
 VMirror = %00000000
@@ -48,41 +49,62 @@ Character_Mario = $00
 Character_Princess = $01
 Character_Toad = $02
 Character_Luigi = $03
+.ende
 
 ; ---------------------------------------------------------------------------
+
+.enum $0000
 
 ; enum APUOffset
 APUOffset_Square1 = $00
 APUOffset_Square2 = $04
 APUOffset_Triangle = $08
 APUOffset_Noise = $0C
+.ende
 
-; enum Music1
-Music1_Overworld = $01
-Music1_CharacterSelect = $02
-Music1_Inside = $04
-Music1_Boss = $08
-Music1_Invincible = $10
-Music1_Subspace = $20
-Music1_Wart = $40
-Music1_Title = $80
+.enum $0000
+; enum Music
+	.dsb 1
+Music_Overworld:
+	.dsb 1
+Music_CharacterSelect:
+	.dsb 1
+Music_Inside:
+	.dsb 1
+Music_Boss:
+	.dsb 1
+Music_Invincible:
+	.dsb 1
+Music_Subspace:
+	.dsb 1
+Music_Wart:
+	.dsb 1
+Music_Title:
+	.dsb 1
+Music_MushroomGetJingle:
+	.dsb 1
+Music_BossClearFanfare:
+	.dsb 1
+Music_EndingAndCast:
+	.dsb 1
+Music_DeathJingle:
+	.dsb 1
+Music_GameOver:
+	.dsb 1
+Music_CrystalGetFanfare:
+	.dsb 1
+Music_WartDeath:
+	.dsb 1
+Music_SpadeGameFanfare:
+	.dsb 1
+Music_Warp:
+Music_StopMusic = $FF
+.ende
+
 
 ; ---------------------------------------------------------------------------
 
-; enum Music2
-Music2_MushroomGetJingle = $01
-Music2_BossClearFanfare = $02
-Music2_EndingAndCast = $04
-Music2_DeathJingle = $08
-Music2_GameOver = $10
-Music2_CrystalGetFanfare = $20
-Music2_SubconsFreed = $40
-Music2_StopMusic = $80
-
-Music2_WartDeath = $40
-
-; ---------------------------------------------------------------------------
-
+.enum $0000
 ; enum ControllerInput (bitfield) (width 1 byte)
 ControllerInput_Right = %00000001
 ControllerInput_Left = %00000010
@@ -103,34 +125,46 @@ Hill_Fall = $10
 Hill_Grow = $20
 Hill_LampBossDeath = $40
 Hill_Select = $80
+.ende
 
 ; ---------------------------------------------------------------------------
 
+.enum $0001
 ; enum DPCM (width 1 byte)
-DPCM_DoorOpenBombBom = $01
-DPCM_Rocket = $02
-DPCM_POW = $04
-DPCM_PlayerHurt = $10
-DPCM_Unused = $20
-DPCM_Watch = $40
-DPCM_Hawk = $80
-DPCM_Lamp = $02
-DPCM_Select = $04
-DPCM_Throw = $08
-DPCM_BossDeath = $10
-DPCM_PlayerDeath = $80
-
-DPCM_Egg = $01
-DPCM_Uproot = $02
-DPCM_Slot = $04
-DPCM_ItemPull = $08
-DPCM_ChargeJump = $10
-DPCM_BossHurt = $20
-DPCM_Impact = $40
-DPCM_Shell = $80
+DPCM_Egg:
+	.dsb 1
+DPCM_Uproot:
+	.dsb 1
+DPCM_Slot:
+	.dsb 1
+DPCM_ItemPull:
+	.dsb 1
+DPCM_ChargeJump:
+	.dsb 1
+DPCM_BossHurt:
+	.dsb 1
+DPCM_Impact:
+	.dsb 1
+DPCM_Shell:
+	.dsb 1
+DPCM_GoingDownJar:
+	.dsb 1
+DPCM_ExitingJar:
+	.dsb 1
+DPCM_Phanto:
+	.dsb 1
+DPCM_Fire:
+	.dsb 1
+DPCM_EndingPrompt:
+	.dsb 1
+DPCM_Save:
+	.dsb 1
+DPCM_Pause:
+.ende
 
 ; ---------------------------------------------------------------------------
 
+.enum $0000
 ; enum PRGBank (width 1 byte)
 PRGBank_0_1 = $00
 PRGBank_2_3 = $01
@@ -143,6 +177,8 @@ PRGBank_Music_1 = $0E
 PRGBank_Music_2 = $0F
 PRGBank_Music_3 = $10
 
+PRGBank_DMC_14 = $14
+PRGBank_DMC_15 = $15
 PRGBank_DMC_16 = $16
 PRGBank_DMC_17 = $17
 PRGBank_DMC_SAW_3 = $18
@@ -223,11 +259,11 @@ PPUStatus_VBlankHit = %10000000
 
 ; enum SoundEffect3
 SoundEffect3_ShortNoise = $01 ; Whale spout
-SoundEffect3_RocketPhanto = $02
+SoundEffect3_Rocket = $02
 SoundEffect3_POW = $04
 SoundEffect3_Door = $08
 SoundEffect3_Bomb = $10
-SoundEffect3_Fire = $20
+SoundEffect3_Autobomb = $20
 SoundEffect3_Bubbles = $40
 SoundEffect3_WartSmokePuff = $80
 
@@ -838,3 +874,5 @@ NSFBank6 = $5ffe
 NSFBank7 = $5fff
 
 .endinl
+
+.ende

@@ -7,8 +7,6 @@
 ;
 MusicPartPointers:
 
-; These pointers correspond to iMusic2 fanfares that temporarily interrupt
-; the current background music
 MusicPartPointers_Mushroom:
 	musicHeaderPointer MusicHeaderMushroomBonusChance
 
@@ -96,5 +94,11 @@ MusicPartPointers_Underground:
 MusicPartPointers_UndergroundLoop:
 MusicPartPointers_UndergroundEnd:
 	musicHeaderPointer MusicHeaderUnderground
+
+MusicPartPointers_SpadeGameFanfare:
+	musicHeaderPointer MusicHeaderSpadeGameFanfare
+
+MusicPartPointers_Warp:
+	musicHeaderPointer MusicHeaderWarp
 
 .pad MusicPartPointers + $100, $FF

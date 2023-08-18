@@ -26,9 +26,9 @@ DMCSampleLengths:
 	.db $00, $00, $00, $00
 
 DPCMOctaves:
-	.db PRGBank_DMC_SAW_2
-	.db PRGBank_DMC_SAW_2
-	.db PRGBank_DMC_SAW_3
-	.db PRGBank_DMC_SAW_4
-	.db PRGBank_DMC_SAW_5
-	.db PRGBank_DMC_SAW_2
+	audio_bank PRGBank_DMC_SAW_2
+	audio_bank PRGBank_DMC_SAW_2
+	audio_bank PRGBank_DMC_SAW_3
+	audio_bank PRGBank_DMC_SAW_4
+	audio_bank PRGBank_DMC_SAW_5
+	audio_bank PRGBank_DMC_SAW_2

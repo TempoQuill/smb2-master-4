@@ -28,9 +28,7 @@ ENDIF
 
 ; -----------------------------------------
 ; Add definitions
-.enum $0000
 .include "src/defs.asm"
-.ende
 
 ; Add RAM definitions
 .enum $0000
@@ -127,6 +125,7 @@ ENDIF
 .include "src/music/segments/ending/ending-smas-5.asm"
 .include "src/music/segments/star/star-smas.asm"
 .include "src/music/segments/underground/underground-smas.asm"
+.include "src/music/segments/jingles/spade-game-fanfare.asm"
 .pad $c000
 
 .base $a000
@@ -135,16 +134,21 @@ ENDIF
 .include "src/music/segments/jingles/game-over.asm"
 .include "src/music/segments/wart/wart-smas.asm"
 .include "src/music/segments/subspace/subspace-smas.asm"
+.include "src/music/segments/jingles/warp.asm"
 .pad $c000
 
 IFNDEF NSF_FILE
 	; ----------------------------------------
 	; extra PRG-ROM pages (5 banks)
-	.dsb (5 * $2000), $00
+	.dsb (3 * $2000), $00
 ENDIF
 
 .base $c000
-.incbin "src/music/smas-dmc-sfx.bin"
+.incbin "src/music/smas-1-3-area-14.bin"
+.base $c000
+.incbin "src/music/smas-1-3-area-15.bin"
+.base $c000
+.incbin "src/music/smas-1-3-area-16.bin"
 .base $c000
 .incbin "src/music/smas-dmc-wart-death.bin"
 
