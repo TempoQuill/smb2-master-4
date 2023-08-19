@@ -4892,7 +4892,7 @@ TitleBackgroundPalettes:
 	.db $0F, $37, $27, $30 ; Copyright, Story, Sclera
 
 TitleSpritePalettes:
-	.db $0F, $27, $16, $01 ; Mario, Grass
+	.db $0F, $01, $16, $27 ; Mario, Grass
 	.db $0F, $36, $25, $06 ; Princess, Snifit
 	.db $0F, $30, $27, $01 ; Toad, Radish
 	.db $0F, $36, $2A, $01 ; Luigi
@@ -5253,11 +5253,21 @@ loc_BANK0_9B3B:
 ; ---------------------------------------------------------------------------
 
 loc_BANK0_9B4D:
+IFDEF ENDING_DEBUG
+	LDA zInputBottleneck
+	AND #ControllerInput_Select
+	BNE DebugEnding
+ENDIF
 	LDA zInputBottleneck
 	AND #ControllerInput_Start
 	BEQ loc_BANK0_9B56
 
 	JMP loc_BANK0_9C1F
+
+IFDEF ENDING_DEBUG
+DebugEnding:
+	JMP DoDebugEnding
+ENDIF
 
 ; ---------------------------------------------------------------------------
 
@@ -5469,6 +5479,7 @@ EndingPPUDataPointers:
 	.dw EndingCelebrationText_PRINCESS
 	.dw EndingCelebrationText_TOAD
 	.dw EndingCelebrationText_LUIGI
+	.dw EndingToadPalette
 
 
 WaitForNMI_Ending_TurnOffPPU:
@@ -5499,16 +5510,31 @@ WaitForNMI_EndingLoop:
 
 
 EndingCorkJarRoom:
+	; palettes
+	.db $3F, $00, $10
+	.db $30, $31, $21, $0F ; $50
+	.db $30, $27, $16, $0F ; $54
+	.db $30, $38, $13, $0F ; $58
+	.db $30, $27, $2A, $0F ; $5C
+	.db $3F, $14, $0C
+	.db $FF, $37, $16, $0F ; $1C
+	.db $FF, $30, $10, $0F ; $20
+	.db $30, $26, $16, $06 ; $54
+
+	; layout
+	; upper left wall
 	.db $20, $00, $9E, $72, $73, $72, $73, $72, $73, $72, $73, $72, $73, $72, $73
 	.db $72, $73, $72, $73, $72, $73, $72, $73, $72, $73, $72, $73, $72, $73, $72
 	.db $73, $72, $73
 	.db $20, $01, $9E, $73, $72, $73, $72, $73, $72, $73, $72, $73, $72, $73, $72
 	.db $73, $72, $73, $72, $73, $72, $73, $72, $73, $72, $73, $72, $73, $72, $73
 	.db $72, $73, $72
+	; lower left wall
 	.db $22, $02, $8E, $72, $73, $72, $73, $72, $73, $72, $73, $72, $73, $72, $73
 	.db $72, $73
 	.db $22, $03, $8E, $73, $72, $73, $72, $73, $72, $73, $72, $73, $72, $73, $72
 	.db $73, $72
+	; floor
 	.db $23, $44, $18, $72, $73, $72, $73, $72, $73, $72, $73, $72, $73, $72, $73
 	.db $72, $73, $72, $73, $72, $73, $72, $73, $72, $73, $72, $73
 	.db $23, $64, $18, $73, $72, $73, $72, $73, $72, $73, $72, $73, $72, $73, $72
@@ -5517,30 +5543,129 @@ EndingCorkJarRoom:
 	.db $72, $73, $72, $73, $72, $73, $72, $73, $72, $73, $72, $73
 	.db $23, $A4, $18, $73, $72, $73, $72, $73, $72, $73, $72, $73, $72, $73, $72
 	.db $73, $72, $73, $72, $73, $72, $73, $72, $73, $72, $73, $72
+	; lower right wall
 	.db $22, $1C, $8E, $72, $73, $72, $73, $72, $73, $72, $73, $72, $73, $72, $73
 	.db $72, $73
 	.db $22, $1D, $8E, $73, $72, $73, $72, $73, $72, $73, $72, $73, $72, $73, $72
 	.db $73, $72
+	; upper right wall
 	.db $20, $1E, $9E, $72, $73, $72, $73, $72, $73, $72, $73, $72, $73, $72, $73
 	.db $72, $73, $72, $73, $72, $73, $72, $73, $72, $73, $72, $73, $72, $73, $72
 	.db $73, $72, $73
 	.db $20, $1F, $9E, $73, $72, $73, $72, $73, $72, $73, $72, $73, $72, $73, $72
 	.db $73, $72, $73, $72, $73, $72, $73, $72, $73, $72, $73, $72, $73, $72, $73
 	.db $72, $73, $72
-	.db $22, $C6, $C4, $FC
-	.db $22, $C7, $C4, $FC
-	.db $22, $C8, $84, $AD, $AC, $AC, $AC
-	.db $22, $E9, $83, $AD, $AC, $AC
-	.db $23, $0A, $82, $AD, $AC
-	.db $23, $2B, $01, $AD
-	.db $22, $90, $84, $88, $89, $89, $8C
-	.db $22, $91, $84, $8A, $8B, $8B, $8D
+	; door
+	.db $22, $C6, $84, $80, $82, $84, $86
+	.db $22, $C7, $84, $81, $83, $85, $87
+	; jar platform
 	.db $23, $0E, $06, $74, $76, $74, $76, $74, $76
 	.db $23, $2E, $06, $75, $77, $75, $77, $75, $77
-	.db $23, $C0, $20, $22, $00, $00, $00, $00, $00, $00, $88, $22, $00, $00, $00, $00, $00, $00, $88, $22, $00
-	.db $00, $00, $00, $00, $00, $88, $22, $00, $00, $00, $00, $00, $00, $88
-	.db $23, $E0, $20, $AA, $00, $00, $00, $00, $00, $00, $AA, $AA, $00, $00, $00, $11, $00, $00, $AA, $AA
-	.db $A0, $A0, $A4, $A5, $A0, $A0, $AA, $0A, $0A, $0A, $0A, $0A, $0A, $0A, $0A
+
+	; upper back wall (above stain glass window)
+	.db $20, $02, $5C, $92
+	.db $20, $22, $5C, $92
+	; stain glass windows
+	.db $20, $42, $1C ; row 1
+	.db $A8, $A9, $A9, $A9, $A9, $AA
+	.db $A8, $A9, $A9, $A9, $A9, $AA
+	.db $A8, $A9, $A9, $A9, $A9, $AA
+	.db $A8, $A9, $A9, $A9, $A9, $AA
+	.db $A8, $A9, $A9, $A9
+	.db $20, $62, $1C ; row 2
+	.db $AF, $B0, $B1, $B2, $B3, $AB
+	.db $AF, $B3, $B0, $B1, $B2, $AB
+	.db $AF, $B2, $B3, $B0, $B1, $AB
+	.db $AF, $B1, $B2, $B3, $B0, $AB
+	.db $AF, $B0, $B1, $B2
+	.db $20, $82, $1C ; row 3
+	.db $AF, $BB, $BC, $BD, $B4, $AB
+	.db $AF, $B4, $BB, $BC, $BD, $AB
+	.db $AF, $BD, $B4, $BB, $BC, $AB
+	.db $AF, $BC, $BD, $B4, $BB, $AB
+	.db $AF, $BB, $BC, $BD
+	.db $20, $A2, $1C ; row 4
+	.db $AF, $BA, $BE, $BF, $B5, $AB
+	.db $AF, $B5, $BA, $BE, $BF, $AB
+	.db $AF, $BF, $B5, $BA, $BE, $AB
+	.db $AF, $BE, $BF, $B5, $BA, $AB
+	.db $AF, $BA, $BE, $BF
+	.db $20, $C2, $1C ; row 5
+	.db $AF, $B9, $B8, $B7, $B6, $AB
+	.db $AF, $B6, $B9, $B8, $B7, $AB
+	.db $AF, $B7, $B6, $B9, $B8, $AB
+	.db $AF, $B8, $B7, $B6, $B9, $AB
+	.db $AF, $B9, $B8, $B7
+	.db $20, $E2, $1C ; row 6
+	.db $AE, $AD, $AD, $AD, $AD, $AC
+	.db $AE, $AD, $AD, $AD, $AD, $AC
+	.db $AE, $AD, $AD, $AD, $AD, $AC
+	.db $AE, $AD, $AD, $AD, $AD, $AC
+	.db $AE, $AD, $AD, $AD
+
+	; lower back wall (below stain glass window)
+	.db $21, $02, $C8, $92
+	.db $21, $03, $C8, $92
+	.db $21, $1C, $C8, $92
+	.db $21, $1D, $C8, $92
+	.db $21, $04, $58, $92
+	.db $21, $24, $58, $92
+	.db $21, $44, $58, $92
+	.db $21, $64, $58, $92
+	.db $21, $84, $58, $92
+
+	; each side of the lower part of the room
+	; left
+	.db $21, $A4, $CD, $92
+	.db $21, $A5, $CD, $92
+	.db $21, $A6, $C9, $92 ; above door
+	.db $21, $A7, $C9, $92
+	.db $21, $A8, $CD, $92
+	.db $21, $A9, $CD, $92
+	.db $21, $AA, $CD, $92
+	; right
+	.db $21, $B7, $CD, $92
+	.db $21, $B8, $CD, $92
+	.db $21, $B9, $CD, $92
+	.db $21, $BA, $CD, $92
+	.db $21, $BB, $CD, $92
+
+	; window to sky
+	; left frame
+	.db $21, $AB, $85, $92, $92, $92, $95, $93
+	.db $22, $4B, $C8, $90
+	.db $21, $AC, $85, $92, $92, $9B, $96, $94
+	.db $21, $AD, $83, $92, $9B, $9C
+	; right frame
+	.db $21, $B4, $83, $92, $9D, $9E
+	.db $21, $B5, $85, $92, $92, $9D, $9A, $98
+	.db $21, $B6, $85, $92, $92, $92, $99, $97
+	.db $22, $56, $C8, $91
+	; center frame
+	.db $21, $AE, $06, $9B, $9F, $A6, $A7, $9F, $9D
+	.db $21, $CE, $06, $9C, $FD, $FD, $FD, $FD, $9E
+
+	; the sky itself
+	.db $21, $EE, $46, $FD
+	.db $22, $0D, $48, $FD
+	.db $22, $2D, $48, $FD
+	.db $22, $4C, $4A, $FD
+	.db $22, $6C, $4A, $A0
+	.db $22, $8C, $0A, $A1, $A2, $A1, $A2, $00, $00, $A1, $A2, $A1, $A2
+	.db $22, $AC, $0A, $A3, $A4, $A5, $A4, $00, $00, $A5, $A4, $A3, $A4
+
+	; attributes
+	.db $23, $C0, $20
+	.db $E2, $D0, $70, $F0, $D0, $70, $F0, $98
+	.db $E6, $D6, $71, $FD, $F6, $F3, $F5, $9A
+	.db $22, $00, $00, $00, $00, $00, $00, $88
+	.db $22, $00, $00, $00, $00, $00, $00, $88
+	.db $23, $E0, $20
+	.db $AA, $00, $00, $00, $00, $00, $00, $AA
+	.db $AA, $40, $00, $00, $00, $00, $00, $AA
+	.db $AA, $A4, $A0, $A8, $AA, $A0, $A0, $AA
+	.db $0A, $0A, $0A, $0A, $0A, $0A, $0A, $0A
+
 	.db $00
 
 EndingCelebrationUnusedText_THANK_YOU:
@@ -5597,32 +5722,43 @@ CorkRoomSpriteTargetY:
 
 CorkRoomSpriteDelay:
 	.db $00 ; player
-	.db $F0 ; subcon 8
-	.db $E0 ; subcon 7
-	.db $C0 ; subcon 6
-	.db $A0 ; subcon 5
-	.db $80 ; subcon 4
-	.db $60 ; subcon 3
-	.db $40 ; subcon 2
-	.db $20 ; subcon 1
+	.db $E0 ; subcon 8
+	.db $D0 ; subcon 7
+	.db $B0 ; subcon 6
+	.db $90 ; subcon 5
+	.db $70 ; subcon 4
+	.db $50 ; subcon 3
+	.db $30 ; subcon 2
+	.db $10 ; subcon 1
 	.db $00 ; cork
 
 CorkRoomSpriteAttributes:
 	.db $00 ; player
-	.db $21 ; subcon 8
-	.db $61 ; subcon 7
-	.db $21 ; subcon 6
-	.db $61 ; subcon 5
-	.db $21 ; subcon 4
-	.db $61 ; subcon 3
-	.db $21 ; subcon 2
-	.db $61 ; subcon 1
-	.db $22 ; cork
+	.db $01 ; subcon 8
+	.db $41 ; subcon 7
+	.db $01 ; subcon 6
+	.db $41 ; subcon 5
+	.db $01 ; subcon 4
+	.db $41 ; subcon 3
+	.db $01 ; subcon 2
+	.db $41 ; subcon 1
+	.db $02 ; cork
 
+CorkRoomJarOAMData:
+;           Y    Tile Attr X
+	.db $9F, $88, $03, $80
+	.db $9F, $8A, $03, $88
+	.db $AF, $8C, $03, $80
+	.db $AF, $8E, $03, $88
+	.db $00
 
 FreeSubconsScene:
 	JSR WaitForNMI_Ending_TurnOffPPU
 	JSR ClearNametablesAndSprites
+
+	LDA #CHRBank_SubconEndingTiles
+	STA iObjCHR3
+	STA iBGCHR2
 
 	LDA #Stack100_Menu
 	STA iStack
@@ -5669,6 +5805,8 @@ FreeSubconsScene_JumpingLoop:
 
 	INC z10
 	JSR HideAllSprites
+
+	JSR PlaceCorkRoomJar
 
 	JSR FreeSubconsScene_Player
 
@@ -5996,7 +6134,7 @@ CorkRoomSpriteOAMAddress:
 	.db $58 ; subcon 3
 	.db $60 ; subcon 2
 	.db $68 ; subcon 1
-	.db $00 ; cork
+	.db $10 ; cork
 
 
 FreeSubconsScene_Render:
@@ -6053,10 +6191,13 @@ EndingCelebrationCeilingTextAndPodium:
 	.db $20, $89, $4E, $9A
 	.db $20, $97, $01, $5C
 	.db $20, $A8, $C3, $9B
-	.db $20, $B7, $C3, $9B
+	.db $20, $B7, $C3, $56
 	.db $21, $08, $01, $5B
-	.db $21, $09, $4E, $9A
+	.db $21, $09, $4E, $57
 	.db $21, $17, $01, $5D
+	.db $20, $A9, $4E, $FE
+	.db $20, $C9, $4E, $FE
+	.db $20, $E9, $4E, $FE
 	.db $20, $AB, $0B, $DC, $E8, $E7, $ED, $EB, $E2, $DB, $EE, $ED, $E8, $EB
 	.db $20, $E3, $04, $40, $42, $44, $46
 	.db $20, $F9, $04, $40, $42, $44, $46
@@ -6076,6 +6217,10 @@ EndingCelebrationCeilingTextAndPodium:
 	.db $21, $EA, $4C, $55
 	.db $22, $0B, $0A, $50, $52, $50, $52, $50, $52, $50, $52, $50, $52
 	.db $22, $2B, $0A, $51, $53, $51, $53, $51, $53, $51, $53, $51, $53
+	.db $22, $80, $60, $58
+	.db $22, $A0, $60, $58
+	.db $22, $C0, $60, $58
+	.db $22, $E0, $60, $58
 	.db $22, $4C, $02, $3A, $3B
 	.db $22, $6C, $C5, $3C
 	.db $22, $6D, $C5, $3D
@@ -6134,11 +6279,13 @@ EndingCelebrationFloorAndSubconParade:
 	.db $81, $80, $81, $80, $81, $80, $81, $80, $81, $80, $81, $80, $81, $80, $81, $80
 
 	.db $23, $C0, $48, $AA
-	.db $23, $C8, $08, $15, $05, $FF, $FF, $FF, $FF, $15, $45
+	.db $23, $C8, $08, $00, $00, $AA, $AA, $AA, $AA, $00, $00
 
 	.db $23, $D0, $20
-	.db $31, $00, $FF, $FF, $FF, $FF, $00, $44, $33, $00, $A6, $A5, $A5, $A6, $00, $44
-	.db $F3, $F0, $59, $AA, $AA, $96, $F0, $74, $DD, $FF, $55, $AA, $AA, $95, $55, $55
+	.db $00, $00, $0A, $0A, $0A, $0A, $00, $00
+	.db $00, $00, $80, $A0, $A0, $20, $00, $00
+	.db $00, $00, $08, $2A, $8A, $02, $00, $00
+	.db $FF, $FF, $FF, $EE, $BB, $FF, $FF, $FF
 
 	.db $23, $F0, $48, $A5
 	.db $23, $F8, $48, $0A
@@ -6162,14 +6309,14 @@ EndingCelebrationUnusedText_THE_END:
 
 EndingCelebrationPaletteFade1:
 	.db $3F, $00, $20
-	.db $01, $30, $21, $0F
-	.db $01, $30, $16, $0F
-	.db $01, $28, $18, $0F
-	.db $01, $30, $30, $01
-	.db $01, $27, $16, $0F
-	.db $01, $37, $2A, $0F
-	.db $01, $27, $30, $0F
-	.db $01, $36, $25, $0F
+	.db $38, $30, $21, $0F
+	.db $38, $30, $16, $0F
+	.db $38, $28, $18, $0F
+	.db $38, $10, $00, $0F
+	.db $38, $27, $16, $01
+	.db $38, $37, $2A, $01
+	.db $38, $27, $30, $01
+	.db $38, $36, $25, $07
 	.db $00
 
 EndingCelebrationPaletteFade2:
@@ -6940,7 +7087,7 @@ ContributorTicker_Exit:
 
 
 EndingCelebrationText_MARIO:
-	.db $20, $ED, $08, $E6, $DA, $EB, $E2, $E8, $FB, $FB, $FB
+	.db $20, $ED, $08, $E6, $DA, $EB, $E2, $E8, $FE, $FE, $FE
 	.db $00
 
 EndingCelebrationText_PRINCESS:
@@ -6948,11 +7095,11 @@ EndingCelebrationText_PRINCESS:
 	.db $00
 
 EndingCelebrationText_TOAD:
-	.db $20, $ED, $08, $ED, $E8, $DA, $DD, $FB, $FB, $FB, $FB
+	.db $20, $ED, $08, $ED, $E8, $DA, $DD, $FE, $FE, $FE, $FE
 	.db $00
 
 EndingCelebrationText_LUIGI:
-	.db $20, $ED, $08, $E5, $EE, $E2, $E0, $E2, $FB, $FB, $FB
+	.db $20, $ED, $08, $E5, $EE, $E2, $E0, $E2, $FE, $FE, $FE
 	.db $00
 
 
@@ -7656,3 +7803,76 @@ PlaceTitleSprites_Loop:
 
 PlaceTitleSprites_Exit:
 	RTS
+
+PlaceCorkRoomJar:
+	LDX #$FF
+PlaceCorkRoomJar_Loop:
+	INX
+	LDA CorkRoomJarOAMData, X
+	BEQ PlaceCorkRoomJar_Exit
+	STA iVirtualOAM, X
+	INX
+	LDA CorkRoomJarOAMData, X
+	STA iVirtualOAM, X
+	INX
+	LDA CorkRoomJarOAMData, X
+	STA iVirtualOAM, X
+	INX
+	LDA CorkRoomJarOAMData, X
+	STA iVirtualOAM, X
+	BNE PlaceCorkRoomJar_Loop
+
+PlaceCorkRoomJar_Exit:
+	RTS
+
+IFDEF ENDING_DEBUG
+DoDebugEnding:
+	LDA #Music_StopMusic
+	STA iMusic
+	LDX #18
+DoDebugEnding_StatsLoop:
+	LDA Debug_ToadStats - 1, X
+	STA iStatsRAM - 1, X
+	DEX
+	BNE DoDebugEnding_StatsLoop
+	LDA #Character_Mario
+	STA zCurrentCharacter
+	LDA #CHRBank_Mario
+	STA iObjCHR1
+	LDA #CHRBank_EnemiesSky
+	STA iObjCHR4
+	LDA #CHRBank_BackgroundSky
+	STA iBGCHR1
+	LDA #EndingUpdateBuffer_Debug
+	JMP EndingSceneRoutine
+
+EndingToadPalette:
+	.db $3F, $10, $04
+	.db $30, $01, $30, $27
+	; no need for zero here, there's one the very next byte
+
+Debug_ToadStats:
+	.db $00 ; Pick-up Speed, frame 1/6 - pulling
+	.db $01 ; Pick-up Speed, frame 2/6 - pulling
+	.db $01 ; Pick-up Speed, frame 3/6 - ducking
+	.db $01 ; Pick-up Speed, frame 4/6 - ducking
+	.db $01 ; Pick-up Speed, frame 5/6 - ducking
+	.db $02 ; Pick-up Speed, frame 6/6 - ducking
+	.db $B2 ; Jump Speed, still - no object
+	.db $B2 ; Jump Speed, still - with object
+	.db $98 ; Jump Speed, charged - no object
+	.db $98 ; Jump Speed, charged - with object
+	.db $AD ; Jump Speed, running - no object
+	.db $AD ; Jump Speed, running - with object
+	.db $E0 ; Jump Speed - in quicksand
+	.db $00 ; Floating Time
+	.db $07 ; Gravity without Jump button pressed
+	.db $04 ; Gravity with Jump button pressed
+	.db $08 ; Gravity in quicksand
+	.db $18 ; Running Speed, right - no object
+	.db $1D ; Running Speed, right - with object
+	.db $04 ; Running Speed, right - in quicksand
+	.db $E8 ; Running Speed, left - no object
+	.db $E3 ; Running Speed, left - with object
+	.db $FC ; Running Speed, left - in quicksand
+ENDIF

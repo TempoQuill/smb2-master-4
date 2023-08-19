@@ -33,6 +33,9 @@
 ; NSF Building
 ; NSF_FILE = 1
 
+; debug ending
+ENDING_DEBUG = 1
+
 ; ----------------------------------------
 ; Build PRG1 / Revision A ROM.
 ;

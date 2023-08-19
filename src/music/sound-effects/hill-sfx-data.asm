@@ -148,6 +148,7 @@ HillSFXData_Cherry:
 	.db $07, $FF
 	.db $08, $29
 	.db $07, $FF
+	.db $08, $20
 	.db $00
 
 HillSFXData_Fall:

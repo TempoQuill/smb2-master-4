@@ -98,6 +98,8 @@ Music_WartDeath:
 Music_SpadeGameFanfare:
 	.dsb 1
 Music_Warp:
+	.dsb 1
+NUM_MUSIC_TRACKS:
 Music_StopMusic = $FF
 .ende
 
@@ -160,6 +162,8 @@ DPCM_EndingPrompt:
 DPCM_Save:
 	.dsb 1
 DPCM_Pause:
+	.dsb 1
+NUM_DPCM_SFX:
 .ende
 
 ; ---------------------------------------------------------------------------
@@ -230,6 +234,7 @@ EndingUpdateBuffer_Text_MARIO = $09
 EndingUpdateBuffer_Text_PRINCESS = $0A
 EndingUpdateBuffer_Text_TOAD = $0B
 EndingUpdateBuffer_Text_LUIGI = $0C
+EndingUpdateBuffer_Debug = $0D
 
 ; ---------------------------------------------------------------------------
 
@@ -834,6 +839,8 @@ CHRBank_TitleScreenBG2 = $2A
 CHRBank_CharacterSelectBG1 = $2C
 CHRBank_CharacterSelectBG2 = $2E
 CHRBank_CharacterSelectSprites = $30
+
+CHRBank_SubconEndingTiles = $32
 
 CHRBank_ChanceBG1 = $34
 CHRBank_ChanceBG2 = $36
