@@ -111,16 +111,16 @@ MusicHeaderSubspace1:
 ; Ending music
 
 MusicHeaderEnding1:
-	musicHeader NoteLengthTable_Ending123, MusicDataEnding1, MusicDataEnding1_Triangle, MusicDataEnding1_Square1, MusicDataEnding1_Noise, MusicDataEnding1_DPCM
+	musicHeader NoteLengthTable_Ending12, MusicDataEnding1, MusicDataEnding1_Triangle, MusicDataEnding1_Square1, MusicDataEnding1_Noise, MusicDataEnding1_DPCM
 
 MusicHeaderEnding2:
-	musicHeader NoteLengthTable_Ending123, MusicDataEnding2, MusicDataEnding2_Triangle, MusicDataEnding2_Square1, MusicDataEnding2_Noise, MusicDataEnding2_DPCM
+	musicHeader NoteLengthTable_Ending12, MusicDataEnding2, MusicDataEnding2_Triangle, MusicDataEnding2_Square1, MusicDataEnding2_Noise, MusicDataEnding2_DPCM
 
 MusicHeaderEnding3:
-	musicHeader NoteLengthTable_Ending123, MusicDataEnding3, MusicDataEnding3_Triangle, MusicDataEnding3_Square1, MusicDataEnding3_Noise, MusicDataEnding3_DPCM
+	musicHeader NoteLengthTable_Ending34, MusicDataEnding3, MusicDataEnding3_Triangle, MusicDataEnding3_Square1, MusicDataEnding3_Noise, MusicDataEnding3_DPCM
 
 MusicHeaderEnding4:
-	musicHeader NoteLengthTable_Ending4, MusicDataEnding4, MusicDataEnding4_Triangle, MusicDataEnding4_Square1, MusicDataEnding4_Noise, MusicDataEnding4_DPCM
+	musicHeader NoteLengthTable_Ending34, MusicDataEnding4, MusicDataEnding4_Triangle, MusicDataEnding4_Square1, MusicDataEnding4_Noise, MusicDataEnding4_DPCM
 
 MusicHeaderEnding5:
 	musicHeader NoteLengthTable_Ending5, MusicDataEnding5, MusicDataEnding5_Triangle, MusicDataEnding5_Square1, MusicDataEnding5_Noise, MusicDataEnding5_DPCM

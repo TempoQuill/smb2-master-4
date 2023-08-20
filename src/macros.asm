@@ -72,6 +72,10 @@ MACRO musicHeader noteLengthLabel, square2, triangle, square1, noise, dpcm
 ENDM
 
 ; audio bank macros
-MACRO: audio_bank label
+MACRO audio_bank label
+IFNDEF NSF_FILE
 	.db $80 + label
+ELSE
+	.db label
+ENDIF
 ENDM

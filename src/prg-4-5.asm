@@ -394,7 +394,6 @@ IFNDEF NSF_FILE
 		STA MMC5_PRGBankSwitch4
 	ENDIF
 ELSE
-	SBC #$11
 	ASL A
 	STA NSFBank4
 	ORA #1
@@ -431,8 +430,6 @@ IFNDEF NSF_FILE
 		STA MMC5_PRGBankSwitch4
 	ENDIF
 ELSE
-	SEC
-	SBC #$11
 	ASL A
 	STA NSFBank4
 	ORA #1
@@ -513,7 +510,6 @@ IFNDEF NSF_FILE
 		STA MMC5_PRGBankSwitch3
 	ENDIF
 ELSE
-	SEC
 	JSR SetMusicBank
 ENDIF
 	; store the amount of channels
@@ -1199,8 +1195,6 @@ IFNDEF NSF_FILE
 		STA MMC5_PRGBankSwitch4
 	ENDIF
 ELSE
-	SEC
-	SBC #$11
 	ASL A
 	STA NSFBank4
 	ORA #1

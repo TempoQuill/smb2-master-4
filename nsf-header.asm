@@ -1,6 +1,12 @@
 .base 0
+
+MACRO nsf_bank_define const
+	.db (const << 1)
+	.db (const << 1) + 1
+ENDM
+
 	.db "NESM", $1a, $01
-	.db 47 ; total sounds
+	.db NUM_MUSIC_TRACKS + NUM_DPCM_SFX + (NUM_BITWISE_SFX * 3)
 	.db 1  ; track offset
 	.dw StartProcessingSoundQueue
 	.dw PLAY
@@ -12,7 +18,10 @@
 	.db "'87-'88 Nintendo, 2023 T. Quill"
 .pad $6e, $00
 	.dw $411a                                  ; NTSC
-	.db $00, $01, $02, $03, $14, $15, $16, $17 ; Banks
+	nsf_bank_define 0
+	nsf_bank_define 1
+	nsf_bank_define PRGBank_NSF_HOME - 1
+	nsf_bank_define PRGBank_NSF_HOME
 	.dw 0                                      ; PAL
 	.db 0                                      ; TV option: NTSC
 	; Audio is enabled to allow multiplier to work

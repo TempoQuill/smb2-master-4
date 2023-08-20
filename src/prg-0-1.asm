@@ -5253,21 +5253,11 @@ loc_BANK0_9B3B:
 ; ---------------------------------------------------------------------------
 
 loc_BANK0_9B4D:
-IFDEF ENDING_DEBUG
-	LDA zInputBottleneck
-	AND #ControllerInput_Select
-	BNE DebugEnding
-ENDIF
 	LDA zInputBottleneck
 	AND #ControllerInput_Start
 	BEQ loc_BANK0_9B56
 
 	JMP loc_BANK0_9C1F
-
-IFDEF ENDING_DEBUG
-DebugEnding:
-	JMP DoDebugEnding
-ENDIF
 
 ; ---------------------------------------------------------------------------
 
@@ -5479,7 +5469,6 @@ EndingPPUDataPointers:
 	.dw EndingCelebrationText_PRINCESS
 	.dw EndingCelebrationText_TOAD
 	.dw EndingCelebrationText_LUIGI
-	.dw EndingToadPalette
 
 
 WaitForNMI_Ending_TurnOffPPU:
@@ -7824,55 +7813,3 @@ PlaceCorkRoomJar_Loop:
 
 PlaceCorkRoomJar_Exit:
 	RTS
-
-IFDEF ENDING_DEBUG
-DoDebugEnding:
-	LDA #Music_StopMusic
-	STA iMusic
-	LDX #18
-DoDebugEnding_StatsLoop:
-	LDA Debug_ToadStats - 1, X
-	STA iStatsRAM - 1, X
-	DEX
-	BNE DoDebugEnding_StatsLoop
-	LDA #Character_Mario
-	STA zCurrentCharacter
-	LDA #CHRBank_Mario
-	STA iObjCHR1
-	LDA #CHRBank_EnemiesSky
-	STA iObjCHR4
-	LDA #CHRBank_BackgroundSky
-	STA iBGCHR1
-	LDA #EndingUpdateBuffer_Debug
-	JMP EndingSceneRoutine
-
-EndingToadPalette:
-	.db $3F, $10, $04
-	.db $30, $01, $30, $27
-	; no need for zero here, there's one the very next byte
-
-Debug_ToadStats:
-	.db $00 ; Pick-up Speed, frame 1/6 - pulling
-	.db $01 ; Pick-up Speed, frame 2/6 - pulling
-	.db $01 ; Pick-up Speed, frame 3/6 - ducking
-	.db $01 ; Pick-up Speed, frame 4/6 - ducking
-	.db $01 ; Pick-up Speed, frame 5/6 - ducking
-	.db $02 ; Pick-up Speed, frame 6/6 - ducking
-	.db $B2 ; Jump Speed, still - no object
-	.db $B2 ; Jump Speed, still - with object
-	.db $98 ; Jump Speed, charged - no object
-	.db $98 ; Jump Speed, charged - with object
-	.db $AD ; Jump Speed, running - no object
-	.db $AD ; Jump Speed, running - with object
-	.db $E0 ; Jump Speed - in quicksand
-	.db $00 ; Floating Time
-	.db $07 ; Gravity without Jump button pressed
-	.db $04 ; Gravity with Jump button pressed
-	.db $08 ; Gravity in quicksand
-	.db $18 ; Running Speed, right - no object
-	.db $1D ; Running Speed, right - with object
-	.db $04 ; Running Speed, right - in quicksand
-	.db $E8 ; Running Speed, left - no object
-	.db $E3 ; Running Speed, left - with object
-	.db $FC ; Running Speed, left - in quicksand
-ENDIF

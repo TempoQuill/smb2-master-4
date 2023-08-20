@@ -62,9 +62,8 @@ APUOffset_Triangle = $08
 APUOffset_Noise = $0C
 .ende
 
-.enum $0000
+.enum $0001
 ; enum Music
-	.dsb 1
 Music_Overworld:
 	.dsb 1
 Music_CharacterSelect:
@@ -98,7 +97,6 @@ Music_WartDeath:
 Music_SpadeGameFanfare:
 	.dsb 1
 Music_Warp:
-	.dsb 1
 NUM_MUSIC_TRACKS:
 Music_StopMusic = $FF
 .ende
@@ -162,36 +160,66 @@ DPCM_EndingPrompt:
 DPCM_Save:
 	.dsb 1
 DPCM_Pause:
-	.dsb 1
 NUM_DPCM_SFX:
+NUM_DPCM_IDS = NUM_DPCM_SFX - 1
 .ende
 
 ; ---------------------------------------------------------------------------
 
 .enum $0000
 ; enum PRGBank (width 1 byte)
-PRGBank_0_1 = $00
-PRGBank_2_3 = $01
-PRGBank_4_5 = $02 ; second half empty
-PRGBank_6_7 = $03 ; second half empty
-PRGBank_8_9 = $04
-PRGBank_A_B = $05 ; second half empty
-PRGBank_C_D = $06 ; second half empty
-PRGBank_Music_1 = $0E
-PRGBank_Music_2 = $0F
-PRGBank_Music_3 = $10
+IFNDEF NSF_FILE
+PRGBank_0_1:
+	.dsb 1
+PRGBank_2_3:
+	.dsb 1
+ENDIF
+PRGBank_4_5:
+	.dsb 1
+IFNDEF NSF_FILE
+PRGBank_6_7:
+	.dsb 1
+PRGBank_8_9:
+	.dsb 1
+PRGBank_A_B:
+	.dsb 1
+PRGBank_C_D:
+	.dsb 7
+ENDIF
+	.dsb 1
 
-PRGBank_DMC_14 = $14
-PRGBank_DMC_15 = $15
-PRGBank_DMC_16 = $16
-PRGBank_DMC_17 = $17
-PRGBank_DMC_SAW_3 = $18
-PRGBank_DMC_SAW_4 = $19
-PRGBank_DMC_SAW_5 = $1A
-PRGBank_DMC_SAW_2 = $1B
+PRGBank_Music_1:
+	.dsb 1
+PRGBank_Music_2:
+	.dsb 1
+PRGBank_Music_3:
+	.dsb 1
+IFNDEF NSF_FILE
+	.dsb 3
+ENDIF
+PRGBank_DMC_14:
+	.dsb 1
+PRGBank_DMC_15:
+	.dsb 1
+PRGBank_DMC_16:
+	.dsb 1
+PRGBank_DMC_17:
+	.dsb 1
+PRGBank_DMC_SAW_3:
+	.dsb 1
+PRGBank_DMC_SAW_4:
+	.dsb 1
+PRGBank_DMC_SAW_5:
+	.dsb 1
+PRGBank_DMC_SAW_2:
+	.dsb 1
+PRGBank_NSF_HOME:
+.ende
+
 
 ; ---------------------------------------------------------------------------
 
+.enum $0000
 ; enum ScreenUpdateBuffer
 ScreenUpdateBuffer_RAM_301 = $00
 ScreenUpdateBuffer_RAM_BonusChanceCoinsExtraLife = $01

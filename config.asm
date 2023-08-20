@@ -33,9 +33,6 @@
 ; NSF Building
 ; NSF_FILE = 1
 
-; debug ending
-ENDING_DEBUG = 1
-
 ; ----------------------------------------
 ; Build PRG1 / Revision A ROM.
 ;
@@ -85,10 +82,6 @@ FIX_SUBSPACE_TILES = 1
 
 ; Go to the Charater Select screen after death
 CHARACTER_SELECT_AFTER_DEATH = 1
-
-; swaps out SMB2's sound engine for VulpReich's
-; needs MMC5 to work properly
-; VULPREICH_SOUND_ENGINE = 1
 
 
 ; ----------------------------------------
