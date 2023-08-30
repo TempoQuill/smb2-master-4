@@ -7984,7 +7984,7 @@ EnemyBehavior_Tryclyde_SpitFireball:
 	BMI RenderSprite_Tryclyde_Exit
 
 	LDA #SoundEffect3_Autobomb
-	STA iDPCMSFX
+	STA iNoiseSFX
 	LDY z00
 	LDA #Enemy_Fireball
 	STA zObjectType, Y
