@@ -6615,6 +6615,8 @@ loc_BANK3_A17D:
 	LDA iPRNGValue
 	AND #$07
 	TAY
+	LDA #DPCM_ClawgripChuck
+	STA iDPCMSFX
 	LDA ClawgripRock_JumpVelocityY, Y
 	STA zObjectYVelocity, X
 	DEC zObjectYLo, X
@@ -7981,7 +7983,7 @@ EnemyBehavior_Tryclyde_SpitFireball:
 
 	BMI RenderSprite_Tryclyde_Exit
 
-	LDA #DPCM_Egg
+	LDA #SoundEffect3_Autobomb
 	STA iDPCMSFX
 	LDY z00
 	LDA #Enemy_Fireball

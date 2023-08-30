@@ -127,6 +127,9 @@ ProcessSoundEffectQueue2_Volume:
 	INY
 	STA SQ2_LO
 	STX SQ2_HI
+	LDA SND_CHN
+	ORA #$02
+	STA SND_CHN
 	CPX #$08
 	BCC ProcessSoundEffectQueue2_Tie
 	LDA iPulse1SFXSweep

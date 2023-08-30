@@ -160,6 +160,8 @@ DPCM_EndingPrompt:
 DPCM_Save:
 	.dsb 1
 DPCM_Pause:
+	.dsb 1
+DPCM_ClawgripChuck:
 NUM_DPCM_SFX:
 NUM_DPCM_IDS = NUM_DPCM_SFX - 1
 .ende

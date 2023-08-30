@@ -14,6 +14,7 @@ DMCStartTable:
 	.db $00 ; $C000
 	.db $1F ; $C7C0
 	.db $39 ; $CE40
+	.db $5B ; $D6C0
 
 DMCLengthTable:
 	.db $3D ; egg
@@ -31,6 +32,7 @@ DMCLengthTable:
 	.db $7B ; Ending prompt
 	.db $67 ; Save
 	.db $85 ; Pause
+	.db $30 ; Clawgrip chuck
 
 DMCBankTable:
 	audio_bank PRGBank_DMC_16
@@ -45,6 +47,7 @@ DMCBankTable:
 	audio_bank PRGBank_DMC_15
 	audio_bank PRGBank_DMC_15
 	audio_bank PRGBank_DMC_16
+	audio_bank PRGBank_DMC_14
 	audio_bank PRGBank_DMC_14
 	audio_bank PRGBank_DMC_14
 	audio_bank PRGBank_DMC_14
