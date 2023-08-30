@@ -177,10 +177,14 @@ EnemyPointers_Level_1_3_Lo:
 	.db <EnemyData_Level_1_3_Area4
 
 EnemyPointers_Level_2_1_Hi:
+	; Overworld
 	.db >EnemyData_Level_2_1_Area0
+	; Digging area
 	.db >EnemyData_Level_2_1_Area1
+	; Boss room
 	.db >EnemyData_Level_2_1_Area2
-	.db >EnemyData_Level_2_1_Area2
+	.db >EnemyData_Level_2_1_Area2 ; duplicates
+	; Jar
 	.db >EnemyData_Level_2_1_Area4
 	.db >EnemyData_Level_2_1_Area2
 	.db >EnemyData_Level_2_1_Area2
@@ -189,10 +193,14 @@ EnemyPointers_Level_2_1_Hi:
 	.db >EnemyData_Level_2_1_Area2
 
 EnemyPointers_Level_2_1_Lo:
+	; Overworld
 	.db <EnemyData_Level_2_1_Area0
+	; Digging area
 	.db <EnemyData_Level_2_1_Area1
+	; Boss room
 	.db <EnemyData_Level_2_1_Area2
-	.db <EnemyData_Level_2_1_Area2
+	.db <EnemyData_Level_2_1_Area2 ; duplicates
+	; Jar
 	.db <EnemyData_Level_2_1_Area4
 	.db <EnemyData_Level_2_1_Area2
 	.db <EnemyData_Level_2_1_Area2
@@ -201,51 +209,79 @@ EnemyPointers_Level_2_1_Lo:
 	.db <EnemyData_Level_2_1_Area2
 
 EnemyPointers_Level_2_2_Hi:
+	; Transition room
 	.db >EnemyData_Level_2_2_Area0
+	; Overworld
 	.db >EnemyData_Level_2_2_Area1
+	; Jar
 	.db >EnemyData_Level_2_2_Area2
+	; Digging area
 	.db >EnemyData_Level_2_2_Area3
+	; Jar
 	.db >EnemyData_Level_2_2_Area4
+	; Boss room
 	.db >EnemyData_Level_2_2_Area5
-	.db >EnemyData_Level_2_2_Area5
+	.db >EnemyData_Level_2_2_Area5 ; duplicates
 	.db >EnemyData_Level_2_2_Area5
 	.db >EnemyData_Level_2_2_Area5
 	.db >EnemyData_Level_2_2_Area5
 
 EnemyPointers_Level_2_2_Lo:
+	; Transition room
 	.db <EnemyData_Level_2_2_Area0
+	; Overworld
 	.db <EnemyData_Level_2_2_Area1
+	; Mushroom den
 	.db <EnemyData_Level_2_2_Area2
+	; Digging area
 	.db <EnemyData_Level_2_2_Area3
+	; Jar
 	.db <EnemyData_Level_2_2_Area4
+	; Boss room
 	.db <EnemyData_Level_2_2_Area5
-	.db <EnemyData_Level_2_2_Area5
+	.db <EnemyData_Level_2_2_Area5 ; duplicates
 	.db <EnemyData_Level_2_2_Area5
 	.db <EnemyData_Level_2_2_Area5
 	.db <EnemyData_Level_2_2_Area5
 
 EnemyPointers_Level_2_3_Hi:
+	; Transition room
 	.db >EnemyData_Level_2_3_Area0
+	; Overworld
 	.db >EnemyData_Level_2_3_Area1
+	; Mushroom den
 	.db >EnemyData_Level_2_3_Area2
+	; Digging area
 	.db >EnemyData_Level_2_3_Area3
+	; Jar
 	.db >EnemyData_Level_2_3_Area4
+	; Gauntlet area
 	.db >EnemyData_Level_2_3_Area5
+	; Boss room
 	.db >EnemyData_Level_2_3_Area6
+	; Phanto room
 	.db >EnemyData_Level_2_3_Area7
-	.db >EnemyData_Level_2_3_Area7
+	.db >EnemyData_Level_2_3_Area7 ; duplicates
 	.db >EnemyData_Level_2_3_Area7
 
 EnemyPointers_Level_2_3_Lo:
+	; Transition room
 	.db <EnemyData_Level_2_3_Area0
+	; Overworld
 	.db <EnemyData_Level_2_3_Area1
+	; Mushroom den
 	.db <EnemyData_Level_2_3_Area2
+	; Digging area
 	.db <EnemyData_Level_2_3_Area3
+	; Jar
 	.db <EnemyData_Level_2_3_Area4
+	; Gauntlet area
 	.db <EnemyData_Level_2_3_Area5
+	; Boss room
 	.db <EnemyData_Level_2_3_Area6
+	; Phanto room
 	.db <EnemyData_Level_2_3_Area7
-	.db <EnemyData_Level_2_3_Area7
+	.db <EnemyData_Level_2_3_Area7 ; duplicates
 	.db <EnemyData_Level_2_3_Area7
 
 EnemyPointers_Level_3_1_Hi:
