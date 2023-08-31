@@ -190,6 +190,13 @@ ProcessHillQueue:
 	RTS
 
 ProcessHillQueue_Part2:
+	LDY iHillBossPriority
+	BEQ ProcessHillQueue_SkipPriority
+
+	CMP iHillBossPriority
+	BNE ProcessHillQueue_Part3
+
+ProcessHillQueue_SkipPriority
 	STA iCurrentHillSFX
 	LDY #0
 	STY iHillSFXOffset
@@ -230,6 +237,7 @@ ProcessHillQueue_Linear:
 	RTS
 
 ProcessHillQueue_Done:
+	STA iHillBossPriority
 	STA iHillSFXOffset
 	STA zHillIndexPointer
 	STA zHillIndexPointer + 1
@@ -389,8 +397,7 @@ ProcessDPCMQueue_Part2:
 	BEQ ProcessDPCMQueue_Part3
 
 	CMP iDPCMBossPriority
-	BEQ ProcessDPCMQueue_Part3
-	JMP ProcessDPCMQueue_SoundCheck
+	BNE ProcessDPCMQueue_SoundCheck
 
 ProcessDPCMQueue_Part3:
 	STA iCurrentDPCMSFX

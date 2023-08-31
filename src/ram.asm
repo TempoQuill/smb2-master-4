@@ -1607,7 +1607,7 @@ iCurrentPulse1SFX:
 	.dsb 1 ; $060d
 iCurrentNoiseSFX:
 	.dsb 1 ; $060e
-; FOR RENT
+iHillBossPriority:
 	.dsb 1 ; $060f
 iHillSFXOffset:
 	.dsb 1 ; $0610

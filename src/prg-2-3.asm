@@ -5366,7 +5366,6 @@ EnemyBehavior_CheckDamagedInterrupt_SoundEffect:
 	; is this enemy a squawker?
 	LDA EnemyArray_46E_Data, Y
 	AND #%00001000
-	ASL A ; then A = Hill_LampBossDeath
 	BNE EnemyBehavior_CheckDamagedInterrupt_BossDeathSound
 
 	; normal enemy hit sound
@@ -5380,6 +5379,7 @@ EnemyBehavior_CheckDamagedInterrupt_SoundEffect:
 EnemyBehavior_CheckDamagedInterrupt_BossDeathSound:
 	LDA #Hill_LampBossDeath
 	STA iHillSFX
+	STA iHillBossPriority
 
 EnemyBehavior_CheckDamagedInterrupt_CheckPidgit:
 	; killing pidgit leaves a flying carpet behind
