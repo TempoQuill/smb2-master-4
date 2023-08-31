@@ -128,7 +128,7 @@ ProcessSoundEffectQueue2_Volume:
 	STA SQ2_LO
 	STX SQ2_HI
 	LDA SND_CHN
-	ORA #$02
+	ORA #$0F
 	STA SND_CHN
 	CPX #$08
 	BCC ProcessSoundEffectQueue2_Tie
@@ -224,6 +224,9 @@ ProcessHillQueue_Linear:
 	STA TRI_LO
 	STX TRI_HI
 	STY iHillSFXOffset
+	LDA SND_CHN
+	ORA #$0F
+	STA SND_CHN
 	RTS
 
 ProcessHillQueue_Done:
@@ -336,6 +339,9 @@ ProcessSoundEffectQueue3_Note:
 	STA NOISE_LO
 	LDA #$08
 	STA NOISE_HI
+	LDA SND_CHN
+	ORA #$0F
+	STA SND_CHN
 
 ProcessSoundEffectQueue3_Exit:
 	RTS
@@ -710,8 +716,13 @@ StopMusic:
 	STA SQ2_VOL
 
 ClearChannelTriangle:
+	LDA iHillIns
+	CMP #$90
+	BNE SkipSFXCheck
 	LDA iCurrentHillSFX
 	BNE ClearChannelNoise
+SkipSFXCheck:
+	LDA #0
 	STA TRI_LINEAR
 	STA TRI_HI
 	STA TRI_LO
@@ -1092,7 +1103,7 @@ ProcessMusicQueue_NoiseNote:
 	TAY
 
 	LDA SND_CHN
-	ORA #$0C
+	ORA #$0F
 	STA SND_CHN
 
 	LDA NoiseVolTable, Y
@@ -1530,6 +1541,9 @@ PlayNote_FrequencyOctaveLoop:
 	STA TRI_LO
 	LDA #$0B
 	STA TRI_HI
+	LDA SND_CHN
+	ORA #$0F
+	STA SND_CHN
 	RTS
 
 PlayNote_SetFrequency:
@@ -1602,6 +1616,9 @@ MusicStackPermission:
 	.db $00
 	.db $01
 	.db $00
+
+ChannelPlayField:
+	.db $01, $02, $04
 
 ;
 ; -------------------------------------------------------------------------
