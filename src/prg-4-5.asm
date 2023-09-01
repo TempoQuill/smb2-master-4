@@ -57,9 +57,10 @@ ProcessMusicAndSfxQueues:
 
 	JSR ProcessDPCMQueue
 
+	JSR ProcessHillQueue
+
 ProcessOnlyMusicQueue2:
 	JSR ProcessMusicQueue
-	JSR ProcessHillQueue
 
 	; Reset queues
 	LDA #$00
@@ -213,6 +214,8 @@ ProcessHillQueue_DesignatePointer:
 	STA zHillIndexPointer
 	LDA HillSFXPointersHi, Y
 	STA zHillIndexPointer + 1
+	LDA HillSFXLinears, Y
+	STA iSFXLinear
 
 ProcessHillQueue_Part3:
 	LDY iHillSFXOffset
@@ -223,7 +226,7 @@ ProcessHillQueue_Part3:
 	CPX #8
 	LDA #0
 	BCC ProcessHillQueue_Linear:
-	LDA #$81
+	LDA iSFXLinear
 ProcessHillQueue_Linear:
 	STA TRI_LINEAR
 	LDA (zHillIndexPointer), Y
@@ -266,6 +269,16 @@ HillSFXPointersHi:
 	.db >HillSFXData_Mushroom
 	.db >HillSFXData_LampBossDeath
 	.db >HillSFXData_Select
+
+HillSFXLinears:
+	.db $81
+	.db $81
+	.db $03
+	.db $81
+	.db $81
+	.db $03
+	.db $03
+	.db $03
 
 .include "src/music/sound-effects/hill-sfx-data.asm"
 
@@ -723,12 +736,8 @@ StopMusic:
 	STA SQ2_VOL
 
 ClearChannelTriangle:
-	LDA iHillIns
-	CMP #$90
-	BNE SkipSFXCheck
 	LDA iCurrentHillSFX
 	BNE ClearChannelNoise
-SkipSFXCheck:
 	LDA #0
 	STA TRI_LINEAR
 	STA TRI_HI
@@ -963,6 +972,9 @@ ProcessMusicQueue_TriangleStart:
 	BEQ ProcessMusicQueue_TriangleBongoNote
 	BPL ProcessMusicQueue_TriangleDecrementNL
 
+	LDA iCurrentHillSFX
+	BNE ProcessMusicQueue_TriangleDecrementNL
+
 	LDA #0
 	STA TRI_LINEAR
 	STA TRI_LO
@@ -970,6 +982,9 @@ ProcessMusicQueue_TriangleStart:
 	BEQ ProcessMusicQueue_TriangleDecrementNL
 
 ProcessMusicQueue_TriangleBongoNote:
+	LDA iCurrentHillSFX
+	BNE ProcessMusicQueue_TriangleDecrementNL
+
 	LDA iHillPitch
 	LDX #APUOffset_Triangle
 	JSR PlayNote
@@ -1012,7 +1027,6 @@ ProcessMusicQueue_TriangleNoteLength:
 	STY iMusicHillNoteSubFrames
 	LDA #$1F
 	STA TRI_LINEAR
-	TYA
 
 	; next byte is treated like a note, or mute
 	LDY iCurrentHillOffset
@@ -1479,6 +1493,13 @@ PlayNote:
 
 PlayNote_TriangleRest:
 	STA SQ1_VOL, X
+	CPX #APUOffset_Triangle
+	BCS PlayNote_SkipTriState
+
+	LDA #$FF
+	STA iHillPercussionState
+
+PlayNote_SkipTriState:
 	LDA #$00
 	RTS
 

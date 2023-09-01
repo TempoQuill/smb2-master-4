@@ -1503,7 +1503,7 @@ iMusicStack:
 	.dsb 1 ; $05f3
 iOctave:
 	.dsb 1 ; $05f4
-; FOR RENT
+iSFXLinear:
 	.dsb 1 ; $05f5
 iMusicChannelCount:
 	.dsb 1 ; $05f6

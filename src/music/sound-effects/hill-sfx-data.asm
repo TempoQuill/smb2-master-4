@@ -11,7 +11,6 @@ HillSFXData_Jump:
 
 HillSFXData_Mushroom:
 	.db $08, $69
-	.db $07, $FF
 	.db $08, $8D
 	.db $07, $FF
 	.db $08, $69
@@ -19,7 +18,6 @@ HillSFXData_Mushroom:
 	.db $08, $53
 	.db $07, $FF
 	.db $08, $46
-	.db $07, $FF
 	.db $08, $34
 	.db $07, $FF
 	.db $08, $46
@@ -28,7 +26,6 @@ HillSFXData_Mushroom:
 	.db $08, $85
 	.db $07, $FF
 	.db $08, $69
-	.db $07, $FF
 	.db $08, $58
 	.db $07, $FF
 	.db $08, $42
@@ -36,7 +33,6 @@ HillSFXData_Mushroom:
 	.db $08, $58
 	.db $07, $FF
 	.db $08, $42
-	.db $07, $FF
 	.db $08, $34
 	.db $07, $FF
 	.db $08, $2B
@@ -44,7 +40,6 @@ HillSFXData_Mushroom:
 	.db $08, $20
 	.db $07, $FF
 	.db $08, $2B
-	.db $07, $FF
 
 	.db $08, $76
 	.db $07, $FF
@@ -53,7 +48,6 @@ HillSFXData_Mushroom:
 	.db $08, $4F
 	.db $07, $FF
 	.db $08, $3A
-	.db $07, $FF
 	.db $08, $4F
 	.db $07, $FF
 	.db $08, $3A
@@ -61,7 +55,6 @@ HillSFXData_Mushroom:
 	.db $08, $2E
 	.db $07, $FF
 	.db $08, $27
-	.db $07, $FF
 	.db $08, $1C
 	.db $07, $FF
 	.db $08, $27
@@ -69,7 +62,6 @@ HillSFXData_Mushroom:
 
 HillSFXData_LampBossDeath:
 	.db $08, $C8
-	.db $07, $FF
 	.db $08, $BD
 	.db $07, $FF
 	.db $08, $B2
@@ -77,7 +69,6 @@ HillSFXData_LampBossDeath:
 	.db $08, $A8
 	.db $07, $FF
 	.db $08, $9F
-	.db $07, $FF
 	.db $08, $96
 	.db $07, $FF
 	.db $08, $8D
@@ -85,7 +76,6 @@ HillSFXData_LampBossDeath:
 	.db $08, $85
 	.db $07, $FF
 	.db $08, $9F
-	.db $07, $FF
 	.db $08, $96
 	.db $07, $FF
 	.db $08, $8D
@@ -93,7 +83,6 @@ HillSFXData_LampBossDeath:
 	.db $08, $85
 	.db $07, $FF
 	.db $08, $9F
-	.db $07, $FF
 	.db $08, $96
 	.db $07, $FF
 	.db $08, $8D
@@ -101,7 +90,6 @@ HillSFXData_LampBossDeath:
 	.db $08, $85
 	.db $07, $FF
 	.db $08, $9F
-	.db $07, $FF
 	.db $08, $96
 	.db $07, $FF
 	.db $08, $8D
@@ -109,7 +97,6 @@ HillSFXData_LampBossDeath:
 	.db $08, $85
 	.db $07, $FF
 	.db $08, $9F
-	.db $07, $FF
 	.db $08, $96
 	.db $07, $FF
 	.db $08, $8D
