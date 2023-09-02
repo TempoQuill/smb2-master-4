@@ -539,7 +539,7 @@ World2GroundTilesVertical:
 	.db $00, $00, $00, $00 ; $07
 
 World3GroundTilesHorizontal:
-	.db $00, $99, $D5, $00 ; $00
+	.db $00, $99, $D5, $83 ; $00
 	.db $00, $99, $99, $99 ; $01
 	.db $00, $A0, $A0, $A0 ; $02
 	.db $00, $A2, $A2, $A2 ; $03
