@@ -1007,6 +1007,8 @@ ShowPauseScreen:
 	; used when running sound queues
 	LDA #Stack100_Pause
 	STA iStack
+	LDA #DPCM_Pause
+	STA iDPCMSFX
 
 PauseScreenLoop:
 	LDA #$0E
@@ -1067,6 +1069,8 @@ ENDIF
 	LDA #PRGBank_0_1
 	JSR ChangeMappedPRGBank
 
+	LDA #DPCM_Pause
+	STA iDPCMSFX
 	JMP HidePauseScreen_01
 
 

@@ -1439,7 +1439,7 @@ iNumContinues:
 	.dsb 1 ; $05d0
 	.dsb 1 ; $05d1
 	.dsb 1 ; $05d2
-iPauseTrack:
+; FOR RENT
 	.dsb 1 ; $05d3
 iBasePitchComplement:
 	.dsb 1 ; $05d4

@@ -15,40 +15,8 @@
 StartProcessingSoundQueue:
 	LDA #$FF
 	STA JOY2
-	LDA iStack
-	CMP #Stack100_Pause
-	BNE MusicAndSFXProcessing
-
-	LDA SND_CHN
-	CMP #$10
-	LDA iPauseTrack
-	BCS ApplyPauseChannels
-
-	AND SND_CHN
-
-ApplyPauseChannels:
-	STA SND_CHN
-	; You would think you could skip processing,
-	; since if the game is paused, nothing should
-	; be setting new music or whatever.
-	;
-	; You would be correct, except for the suicide code!
-	; That sets iMusic.
-	;
-	; If not for processing it, the music would not
-	; change (or stop) when you used the code. Welp!
-	JMP ProcessOnlyMusicQueue2
 
 MusicAndSFXProcessing:
-
-CheckMixer:
-	LDA SND_CHN
-	EOR #$FF
-	AND iPauseTrack
-	EOR #$FF
-	BNE ProcessMusicAndSfxQueues
-	LDA #%00001111
-	STA SND_CHN
 
 ProcessMusicAndSfxQueues:
 	JSR ProcessSoundEffectQueue2
@@ -542,8 +510,6 @@ ELSE
 	JSR SetMusicBank
 ENDIF
 	; store the amount of channels
-	LDA PauseTracks1, Y
-	STA iPauseTrack
 	LDA MusicChannelStack, Y
 	STA iMusicChannelCount
 	; starting point
@@ -1600,25 +1566,6 @@ SongBanks:
 	audio_bank PRGBank_Music_3
 	audio_bank PRGBank_Music_2
 	audio_bank PRGBank_Music_3
-
-PauseTracks1:
-	.db $18
-	.db $18
-	.db $14
-	.db $0C
-	.db $1C
-	.db $18
-	.db $0C
-	.db $0C
-	.db $10
-	.db $04
-	.db $18
-	.db $10
-	.db $14
-	.db $14
-	.db $10
-	.db $04
-	.db $01
 
 InstrumentRAMPointers:
 	.dw iPulse1Ins
