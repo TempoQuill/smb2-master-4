@@ -240,7 +240,7 @@ AreaInitialization_HorizontalArea:
 	SBC #$00
 	STA z06
 
-	; Check a screen and a half screen's worth of objects
+	; Check a screen and a half's worth of objects
 	LDA #$17
 	STA z09
 AreaInitialization_HorizontalArea_Loop:
@@ -3304,9 +3304,11 @@ IFNDEF STATS_TESTING_PURPOSES
 	INC iLifeUpEventFlag
 ENDIF
 	INC iExtraMen
+	INC sExtraMen
 	BNE loc_BANK2_9050 ; Check if lives overflow. If so, reduce by one again
 
 	DEC iExtraMen
+	DEC sExtraMen
 
 loc_BANK2_9050:
 	LDA #SoundEffect2_1UP

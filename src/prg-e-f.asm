@@ -4,7 +4,6 @@
 ;
 ; What's inside: Lots of game logic.
 ;
-;   - DPCM data
 ;   - Joypad input reading
 ;   - PPU update routines
 ;   - Game initialization routines
@@ -18,6 +17,7 @@
 ;   - Health logic
 ;   - Bottomless pit death logic
 ;   - Bounding box data for collisions
+;   - Save logic
 ;   - and more!
 ;
 
@@ -426,7 +426,7 @@ EnableNMI_PauseTitleCard:
 ; Draws world info for the title card and pause screens
 ;
 ; ##### Input
-; - `X`: iCurrentWorld
+; - `X`: iCurrentWorld / sSavedWorld
 ; - `Y`: iCurrentLvl (not actually used)
 ;
 DisplayLevelTitleCardText:
@@ -515,8 +515,10 @@ SetStack100Gameplay:
 InitializeSomeLevelStuff:
 	LDA #$00
 	STA iCurrentLvlArea
+	STA sSavedLvlArea
 	STA iCurrentLevelArea_Init
 	STA iCurrentLvlEntryPage
+	STA sSavedLvlEntryPage
 	STA iCurrentLevelEntryPage_Init
 	STA iTransitionType
 	STA iTransitionType_Init
@@ -819,11 +821,13 @@ StartGame:
 ContinueGame:
 	LDA #$05 ; Number of lives to start
 	STA iExtraMen
+	STA sExtraMen
 
 GoToWorldStartingLevel:
 	LDX iCurrentWorld
 	LDY WorldStartingLevel, X
 	STY iCurrentLvl
+	STY sSavedLvl
 	STY iCurrentLevel_Init
 	JSR DoCharacterSelectMenu
 
@@ -1169,6 +1173,7 @@ loc_BANKF_E61A:
 loc_BANKF_E627:
 	LDA iCurrentAreaBackup
 	STA iCurrentLvlArea
+	STA sSavedLvlArea
 	LDA #PRGBank_6_7
 IFNDEF BANK_MIRRORING
 	JSR ChangeMappedPRGBank
@@ -1371,10 +1376,12 @@ DoWorldWarp:
 	LDY iCurrentWorld
 	LDA WarpDestinations, Y
 	STA iCurrentWorld
+	STA sSavedWorld
 	TAY
 	LDX zCurrentCharacter
 	LDA WorldStartingLevel, Y
 	STA iCurrentLvl
+	STA sSavedLvl
 	STA iCurrentLevel_Init
 
 	; Set world number
@@ -1416,6 +1423,7 @@ EndOfLevel:
 	; Increase current characters "contribution" counter
 	LDX zCurrentCharacter
 	INC iCharacterLevelCount, X
+	INC sContributors, X
 
 	; Check if we've completed the final level
 	LDA iCurrentLvl
@@ -1507,6 +1515,7 @@ GoToNextLevel:
 	LDA #$FF
 	STA iMusicID
 	INC iCurrentWorld
+	INC sSavedWorld
 	JMP GoToWorldStartingLevel
 
 GoToNextLevel_SameWorld:
@@ -1525,6 +1534,7 @@ EnsureCorrectWorld_Loop:
 
 	DEY
 	STY iCurrentWorld
+	STY sSavedWorld
 
 	; Initialize the current area and then go to the character select menu
 	LDY iCurrentWorld
@@ -1638,6 +1648,7 @@ AddSlotMachineExtraLives:
 
 loc_BANKF_E8D3:
 	STA iExtraMen
+	STA sExtraMen
 	TYA ; Did we actually win any lives?
 	BEQ SlotMachineLoseFanfare ; No, play lose sound effect
 
@@ -2152,7 +2163,7 @@ NMI_Transition:
 ;
 ; NMI logic for during the pause menu
 ;
-NMI_PauseOrMenu:
+NMI_PauseSaveOrMenu:
 	LDA #$00
 	STA PPUMASK
 	STA OAMADDR
@@ -2230,7 +2241,7 @@ NMI:
 	PHA
 
 	BIT iStack
-	BPL NMI_PauseOrMenu ; branch if bit 7 was 0
+	BPL NMI_PauseSaveOrMenu ; branch if bit 7 was 0
 
 	BVC NMI_Transition ; branch if bit 6 was 0
 
@@ -2364,6 +2375,9 @@ NMI_ResetScreenUpdateIndex:
 
 NMI_DoSoundProcessing:
 	JSR DoSoundProcessing
+
+NMI_CheckSave:
+	JSR EngageSave
 
 NMI_Exit:
 	PLA
@@ -3069,6 +3083,10 @@ RememberAreaInitialState_Exit:
 ;
 LevelInitialization:
 	LDY #$03
+	LDA iCurrentLevel_Init
+	STA sSavedLvl
+	LDA iCurrentLevelArea_Init
+	STA sSavedLvlArea
 
 ; Loop through and set level, area, page, and transition from RAM
 LevelInitialization_AreaSetupLoop:
@@ -3206,6 +3224,7 @@ SetPlayerScreenPosition_ExitSubAreaJar:
 	STY iSubAreaFlags
 	LDA iCurrentAreaBackup
 	STA iCurrentLvlArea
+	STA sSavedLvlArea
 	LDA #PRGBank_8_9
 	JSR ChangeMappedPRGBank
 
@@ -4219,6 +4238,7 @@ FollowCurrentAreaPointer:
 	TAY
 	LDA iAreaAddresses, Y
 	STA iCurrentLvl
+	STA sSavedLvl
 	INY
 	LDA iAreaAddresses, Y
 	LSR A
@@ -4226,9 +4246,11 @@ FollowCurrentAreaPointer:
 	LSR A
 	LSR A
 	STA iCurrentLvlArea
+	STA sSavedLvlArea
 	LDA iAreaAddresses, Y
 	AND #$0F
 	STA iCurrentLvlEntryPage
+	STA sSavedLvlEntryPage
 	RTS
 
 
@@ -5026,6 +5048,91 @@ ENDIF
 ; If you wanted, you could write some sort of crash handler though.
 IRQ:
 	RTI
+
+;
+; Save logic
+;
+; 
+BackUpSaveData:
+	LDY #SAVE_DATA_WIDTH - 1
+
+BackUpSaveData_Loop:
+	LDA sSaveData, Y
+	STA sBackupSaveData, Y
+	DEY
+	BPL BackUpSaveData_Loop
+	RTS
+
+GenerateChecksum:
+	; 2 3-byte strings
+	LDY #3
+	; start with Peach's saved contributor number
+	LDA #0
+	CLC
+
+GenerateChecksum_Loop:
+	; + Toad's SCN + World
+	; + Luigi's SCN + Level Area
+	; + Mario's SCN + Level
+	ADC sContributors, Y
+	ADC sSavedLvl, Y
+	DEY
+	BPL GenerateChecksum_Loop
+	; stash the sum in byte 0, transfer to Y as well
+	STA sMultiChecksum
+	TAY
+	; put extra men in byte 1
+	LDA sExtraMen
+	STA sMultiChecksum + 1
+	; poke the multiplier
+	STY MMC5_Multiplier
+	STA MMC5_Multiplier + 1
+	; we can now pull the resulting product and stash it
+	LDA MMC5_Multiplier
+	LDY MMC5_Multiplier + 1
+	STA sMultiChecksum + 2
+	STY sMultiChecksum + 3
+	; do the backup save
+	; 2 3-byte strings
+	LDY #3
+	; start with Peach's backup contributor number
+	LDA #0
+	CLC
+GenerateChecksum_BackupLoop:
+	; + Toad's SCN + World
+	; + Luigi's SCN + Level Area
+	; + Mario's SCN + Level
+	ADC sBackupContributors, Y
+	ADC sBackupLvl, Y
+	DEY
+	BPL GenerateChecksum_BackupLoop
+	; stash the sum in byte 0, transfer to Y as well
+	STA sBackupMultiChecksum
+	TAY
+	; put extra men in byte 1
+	LDA sBackupExtraMen
+	STA sBackupMultiChecksum + 1
+	; poke the multiplier
+	STY MMC5_Multiplier
+	STA MMC5_Multiplier + 1
+	; we can now pull the resulting product and stash it
+	LDA MMC5_Multiplier
+	LDY MMC5_Multiplier + 1
+	STA sBackupMultiChecksum + 2
+	STY sBackupMultiChecksum + 3
+	RTS
+
+EngageSave:
+	LDA iStack
+	CMP #Stack100_PauseSave
+	BEQ EngageSave_Save
+	CMP #Stack100_Save
+	BNE EngageSave_Exit
+EngageSave_Save:
+	JSR BackUpSaveData
+	JMP GenerateChecksum
+EngageSave_Exit:
+	RTS
 
 ;
 ; Vectors for the NES CPU. These must ALWAYS be at $FFFA!

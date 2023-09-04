@@ -209,6 +209,7 @@ loc_BANKA_8371:
 	LDA iCurrentWorld
 	ORA #$80
 	STA iCurrentWorld
+	STA sSavedWorld
 	LDY #$80
 	BNE loc_BANKA_8338
 
@@ -216,6 +217,7 @@ loc_BANKA_8389:
 	LDA iCurrentWorld
 	AND #$F
 	STA iCurrentWorld
+	STA sSavedWorld
 	RTS
 
 ; ---------------------------------------------------------------------------
@@ -407,44 +409,6 @@ LuigiPalette:
 	.db $0F, $01, $2A, $36
 
 ;
-; What is this for? It gets copied to RAM and then...that's all.
-;
-; In Doki Doki Panic, this data loads on the level/character select screen, but doesn't seem to be
-; used for anything there either. Will we ever unravel this mystery?
-;
-MysteryData14439:
-	.db $DF
-	.db $EF
-	.db $F7
-	.db $FB
-
-	.db $00
-	.db $FF
-	.db $FF
-	.db $FF
-
-	.db $AF
-	.db $D7
-	.db $EB
-	.db $F5
-
-	.db $FB
-	.db $F7
-	.db $EF
-	.db $DF
-
-	.db $00
-	.db $FF
-	.db $FF
-	.db $FF
-
-	.db $F5
-	.db $EB
-	.db $D7
-	.db $AF
-
-
-;
 ; This copies the selected character's stats
 ; into memory for use later, but also a bunch
 ; of other unrelated crap like the
@@ -500,14 +464,6 @@ loc_BANKA_8493:
 	DEY
 	CPY #$FF
 	BNE loc_BANKA_8493
-
-	; This data is copied, but doesn't appear to be used. Its original purpose is not obvious.
-	LDY #$17
-loc_BANKA_84A0:
-	LDA MysteryData14439, Y
-	STA w7150, Y
-	DEY
-	BPL loc_BANKA_84A0
 
 	; Copy object collision hitbox table
 	LDY #$4F

@@ -21,6 +21,7 @@
 ;   - 8000-FFFF: you're in the wrong file, pal. that's rom.
 ;
 
+.enum $0000
 z00:
 	.dsb 1 ; $0000
 z01:
@@ -68,6 +69,7 @@ z12:
 zBreakStartLevelLoop:
 	.dsb 1 ; $0013
 
+; area is also used for the "Mario sleeping" animation
 zPlayerXHi:
 	.dsb 1 ; $0014
 zObjectXHi:
@@ -75,10 +77,15 @@ zObjectXHi:
 	.dsb 1 ; 1                ; $0016
 	.dsb 1 ; 2                ; $0017
 	.dsb 1 ; 3                ; $0018
+zCursiveDataOffset:
 	.dsb 1 ; 4                ; $0019
+zENDTimer:
 	.dsb 1 ; 5                ; $001a
+zCursiveDataBlock:
 	.dsb 1 ; 6                ; $001b
+zCursiveFrameTimer:
 	.dsb 1 ; 7                ; $001c
+zCursiveFramesLeft:
 	.dsb 1 ; 8                ; $001d
 
 zPlayerYHi:
@@ -97,6 +104,7 @@ zObjectYHi:
 zPlayerXLo:
 	.dsb 1 ; $0028
 zObjectXLo:
+zMarioSleepingSceneIndex:
 	.dsb 1 ; $0029
 	.dsb 1 ; 1                ; $002a
 	.dsb 1 ; 2                ; $002b
@@ -1769,7 +1777,7 @@ iBGCHR2Timer:
 ; Not sure if anything else uses this area yet
 iSubspaceLayout:
 	.dsb $100   ; $0700-$07FF
-
+.ende
 
 ;
 ; PPU registers
@@ -1885,14 +1893,50 @@ MMC5_Multiplier = $5205
 
 wLevelDataBuffer = $6000
 
+.enum $6970
+; battery RAM
+sSaveData:
+sSavedLvl:
+	.dsb 1
+sSavedLvlArea:
+	.dsb 1
+sSavedLvlEntryPage:
+	.dsb 1
+sSavedWorld:
+	.dsb 1
+sContributors:
+	.dsb 4
+sExtraMen:
+	.dsb 1
+
+sBackupSaveData:
+sBackupLvl:
+	.dsb 1
+sBackupLvlArea:
+	.dsb 1
+sBackupLvlEntryPage:
+	.dsb 1
+sBackupWorld:
+	.dsb 1
+sBackupContributors:
+	.dsb 4
+sBackupExtraMen:
+	.dsb 1
+; method:
+; byte 0: sSavedLvl + sSavedLvlArea + sSavedWorld + sContributors (bytes 0-3)
+; byte 2: sExtraMen
+; byte 3-4: Product of bytes 1 + 2
+sMultiChecksum:
+	.dsb 4
+sBackupMultiChecksum:
+	.dsb 4
+SAVE_DATA_WIDTH = sBackupSaveData - sSaveData
+
 wColBoxLeft = $7100
 wColBoxTop = $7114
 wColBoxWidth = $7128
 wColBoxHeight = $713c
 
-; Copied from bank A
-; Does anything read this???
-w7150 = $7150
 
 wTitleCardBuffer = $7168
 wTitleCardDots = $716b
@@ -1939,3 +1983,4 @@ MMC3_IRQLatch = $c000
 MMC3_IRQReload = $c001
 MMC3_IRQDisable = $e000
 MMC3_IRQEnable = $e001
+.ende

@@ -1444,6 +1444,7 @@ UseSubareaScreenBoundaries:
 	INC i53d
 	LDA SubAreaPage
 	STA iCurrentLvlEntryPage
+	STA sSavedLvlEntryPage
 	JSR ResetPPUScrollHi
 
 	LDA #$00
@@ -2006,6 +2007,7 @@ LoseALife:
 	STA zPlayerAnimFrame
 	LDY #$01 ; Set game mode to title card
 	DEC iExtraMen
+	DEC sExtraMen
 	BNE SetGameModeAfterDeath
 
 	INY ; If no lives, increase game mode
@@ -5253,12 +5255,22 @@ loc_BANK0_9B3B:
 ; ---------------------------------------------------------------------------
 
 loc_BANK0_9B4D:
+IFDEF TEST_SLEEPING_SCENE
+	LDA zInputBottleneck
+	AND #ControllerInput_Select
+	BNE DebugEnding
+ENDIF
+
 	LDA zInputBottleneck
 	AND #ControllerInput_Start
 	BEQ loc_BANK0_9B56
 
 	JMP loc_BANK0_9C1F
 
+IFDEF TEST_SLEEPING_SCENE
+DebugEnding:
+	JMP DoDebugEnding
+ENDIF
 ; ---------------------------------------------------------------------------
 
 loc_BANK0_9B56:
@@ -5395,6 +5407,11 @@ loc_BANK0_9C0B:
 	STA z10
 
 loc_BANK0_9C19:
+IFDEF TEST_SLEEPING_SCENE
+	LDA zInputCurrentState
+	AND #ControllerInput_Select
+	BNE LateDebugEnding
+ENDIF
 	LDA zInputCurrentState
 	AND #ControllerInput_Start
 	BEQ loc_BANK0_9C35
@@ -5419,6 +5436,11 @@ loc_BANK0_9C2A:
 	LDA #$02 ; Number of continues on start
 	STA iNumContinues
 	RTS
+
+IFDEF TEST_SLEEPING_SCENE
+LateDebugEnding:
+	JMP DoDebugEnding
+ENDIF
 
 ; ---------------------------------------------------------------------------
 
@@ -5469,6 +5491,9 @@ EndingPPUDataPointers:
 	.dw EndingCelebrationText_PRINCESS
 	.dw EndingCelebrationText_TOAD
 	.dw EndingCelebrationText_LUIGI
+IFDEF TEST_SLEEPING_SCENE
+	.dw EndingToadPalette
+ENDIF
 
 
 WaitForNMI_Ending_TurnOffPPU:
@@ -7813,3 +7838,65 @@ PlaceCorkRoomJar_Loop:
 
 PlaceCorkRoomJar_Exit:
 	RTS
+
+IFDEF TEST_SLEEPING_SCENE
+DoDebugEnding:
+	LDA #Music_StopMusic
+	STA iMusic
+	LDX #18
+DoDebugEnding_StatsLoop:
+	LDA Debug_ToadStats - 1, X
+	STA iStatsRAM - 1, X
+	DEX
+	BNE DoDebugEnding_StatsLoop
+	LDA #Character_Toad
+	STA zCurrentCharacter
+	LDA #CHRBank_Toad
+	STA iObjCHR1
+	LDA #CHRBank_EnemiesSky
+	STA iObjCHR4
+	LDA #CHRBank_BackgroundSky
+	STA iBGCHR1
+	LDA #EndingUpdateBuffer_Debug
+	STA zScreenUpdateIndex
+	LDA #5
+	STA iCharacterLevelCount
+	STA iCharacterLevelCount + 1
+	STA iCharacterLevelCount + 2
+	STA iCharacterLevelCount + 3
+	STA sContributors
+	STA sContributors + 1
+	STA sContributors + 2
+	STA sContributors + 3
+	JMP EndingSceneRoutine
+
+EndingToadPalette:
+	.db $3F, $10, $04
+	.db $30, $01, $30, $27
+	; no need for zero here, there's one the very next byte
+
+Debug_ToadStats:
+	.db $00 ; Pick-up Speed, frame 1/6 - pulling
+	.db $04 ; Pick-up Speed, frame 2/6 - pulling
+	.db $02 ; Pick-up Speed, frame 3/6 - ducking
+	.db $01 ; Pick-up Speed, frame 4/6 - ducking
+	.db $04 ; Pick-up Speed, frame 5/6 - ducking
+	.db $07 ; Pick-up Speed, frame 6/6 - ducking
+	.db $B0 ; Jump Speed, still - no object
+	.db $B0 ; Jump Speed, still - with object
+	.db $98 ; Jump Speed, charged - no object
+	.db $98 ; Jump Speed, charged - with object
+	.db $A6 ; Jump Speed, running - no object
+	.db $AA ; Jump Speed, running - with object
+	.db $E0 ; Jump Speed - in quicksand
+	.db $00 ; Floating Time
+	.db $07 ; Gravity without Jump button pressed
+	.db $04 ; Gravity with Jump button pressed
+	.db $08 ; Gravity in quicksand
+	.db $18 ; Running Speed, right - no object
+	.db $18 ; Running Speed, right - with object
+	.db $04 ; Running Speed, right - in quicksand
+	.db $E8 ; Running Speed, left - no object
+	.db $E8 ; Running Speed, left - with object
+	.db $FC ; Running Speed, left - in quicksand
+ENDIF

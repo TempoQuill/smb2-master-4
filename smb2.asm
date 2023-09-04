@@ -31,9 +31,7 @@ ENDIF
 .include "src/defs.asm"
 
 ; Add RAM definitions
-.enum $0000
 .include "src/ram.asm"
-.ende
 
 ; -----------------------------------------
 ; Add each of the 16 banks.

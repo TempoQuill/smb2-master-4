@@ -364,7 +364,9 @@ GameMode_Warp = $04
 
 ; enum Stack100
 Stack100_Menu = %01000000 ; static screens (eg. character select)
-Stack100_Pause = %01000001 ; static screen with muted square channels (pause)
+Stack100_Pause = %01000001 ; static screen (pause)
+Stack100_Save = %01000010 ; static screen (saving during Sleeping Mario scene)
+Stack100_PauseSave = %01000011 ; static screen (saving while paused)
 Stack100_Transition = %10000000 ; used for transitions, disable input and mirroring
 Stack100_Gameplay = %11000000 ; normal gameplay
 
@@ -804,6 +806,11 @@ Enemy_BossSubspaceDoor = $7C
 Enemy_BossKey = $7D
 Enemy_BossSubspacePotion = $7E
 Enemy_BossMushroom = $7F
+
+; ---------------------------------------------------------------------------
+; Mario Sleeping Definitions
+NumFrames_THE = $15
+NumFrames_END = $13
 
 ; ---------------------------------------------------------------------------
 

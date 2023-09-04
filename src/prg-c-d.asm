@@ -537,7 +537,7 @@ loc_BANKC_84B2:
 	DEC zObjectYLo + 8
 
 loc_BANKC_84C0:
-	LDA zObjectXLo
+	LDA zMarioSleepingSceneIndex
 	JSR JumpToTableAfterJump
 
 ; ---------------------------------------------------------------------------
@@ -550,8 +550,10 @@ loc_BANKC_84C0:
 	.dw loc_BANKC_89B6
 	.dw loc_BANKC_8A04
 	.dw loc_BANKC_8A37
-	.dw loc_BANKC_8A52
-	.dw loc_BANKC_8A82
+	.dw InitEndingCursive
+	.dw WriteEndingCursive
+	.dw DoPostCastPrompt
+	.dw PostCastMenu
 ; ---------------------------------------------------------------------------
 	RTS
 
@@ -656,7 +658,7 @@ loc_BANKC_855C:
 	LDA #$10
 	STA zPlayerXLo
 	LDA #$00
-	STA zObjectXLo
+	STA zMarioSleepingSceneIndex
 	STA zObjectXLo + 1
 	LDY #$40
 
@@ -695,7 +697,7 @@ loc_BANKC_85B2:
 	CMP #$03
 	BNE locret_BANKC_85D5
 
-	INC zObjectXLo
+	INC zMarioSleepingSceneIndex
 	LDA #$80
 	STA zPlayerXLo
 	LDA #$60
@@ -716,7 +718,7 @@ loc_BANKC_85D6:
 	DEC zPlayerXLo
 	BPL locret_BANKC_85E6
 
-	INC zObjectXLo
+	INC zMarioSleepingSceneIndex
 	LDA #0
 	STA zObjectXLo + 2
 	STA zObjectXVelocity + 2
@@ -752,7 +754,7 @@ loc_BANKC_85EB:
 	STA iVirtualOAM + $44
 	STA iVirtualOAM + $48
 	STA iVirtualOAM + $4A
-	INC zObjectXLo
+	INC zMarioSleepingSceneIndex
 	LDA #0
 	STA zObjectYLo + 5
 	STA zObjectYLo + 2
@@ -901,7 +903,7 @@ loc_BANKC_86D6:
 	CMP #$FF
 	BNE loc_BANKC_86E4
 
-	INC zObjectXLo
+	INC zMarioSleepingSceneIndex
 
 loc_BANKC_86E4:
 	LDA #$F8
@@ -1197,7 +1199,7 @@ locret_BANKC_8897:
 ; ---------------------------------------------------------------------------
 
 loc_BANKC_8898:
-	LDY #$48
+	LDY #CHRBank_EndingSprites
 	STY iObjCHR1
 	INY
 	STY iObjCHR2
@@ -1213,7 +1215,7 @@ loc_BANKC_88AB:
 	DEY
 	BPL loc_BANKC_88AB
 
-	INC zObjectXLo
+	INC zMarioSleepingSceneIndex
 	LDY #0
 	LDX #$F
 	LDA #$C0
@@ -1259,7 +1261,7 @@ loc_BANKC_88E0:
 	CMP #$50
 	BNE loc_BANKC_88F5
 
-	INC zObjectXLo
+	INC zMarioSleepingSceneIndex
 	JMP loc_BANKC_898D
 
 ; ---------------------------------------------------------------------------
@@ -1411,7 +1413,7 @@ loc_BANKC_89B6:
 	DEC zObjectXVelocity + 1
 	BPL loc_BANKC_89CD
 
-	INC zObjectXLo
+	INC zMarioSleepingSceneIndex
 	LDA #0
 	STA zPlayerXLo
 	STA zObjectXLo + 1
@@ -1493,7 +1495,7 @@ loc_BANKC_8A04:
 	CMP #$03
 	BNE locret_BANKC_8A36
 
-	INC zObjectXLo
+	INC zMarioSleepingSceneIndex
 	LDA #$16
 	STA zPlayerXLo
 
@@ -1523,133 +1525,279 @@ loc_BANKC_8A41:
 	STA zPlayerXLo
 
 loc_BANKC_8A4F:
-	INC zObjectXLo
+	INC zMarioSleepingSceneIndex
 
 locret_BANKC_8A51:
 	RTS
 
 ; ---------------------------------------------------------------------------
 
-loc_BANKC_8A52:
+InitEndingCursive:
 	DEC zPlayerXLo
-	BPL locret_BANKC_8A81
+	BPL InitEndingCursive_Quit
 
 	LDA #$00
-	STA zObjectXHi + 4
-	STA zObjectXHi + 5
+	STA zCursiveDataOffset
+	STA zENDTimer
+	STA zCursiveDataBlock
 
-loc_BANKC_8A5C:
-	STA zObjectXHi + 6
 	LDA #$05
-	STA zObjectXHi + 7
-	LDA #$14
-	STA zObjectXHi + 8
-	LDA #$3F
+	STA zCursiveFrameTimer
+
+	LDA #NumFrames_THE - 1
+	STA zCursiveFramesLeft
+
+	LDA #$3F ; HI($3f11)
 	STA iPPUBuffer
-	LDA #$11
+	LDA #$11 ; LO($3f11)
 	STA iPPUBuffer + 1
-	LDA #$01
+	LDA #$01 ; Number of bytes
 	STA iPPUBuffer + 2
-	LDA #$30
+	LDA #$30 ; White
 	STA iPPUBuffer + 3
-	LDA #$00
+	LDA #$00 ; End
 	STA iPPUBuffer + 4
-	INC zObjectXLo
 
-locret_BANKC_8A81:
+	INC zMarioSleepingSceneIndex
+
+InitEndingCursive_Quit:
 	RTS
 
 ; ---------------------------------------------------------------------------
 
-loc_BANKC_8A82:
-	LDA zObjectXHi + 5
+; Write "The End" in cursive
+WriteEndingCursive:
+	; did the timer reach $80
+	LDA zENDTimer
 	AND #$80
-	BNE locret_BANKC_8ACC
+	BNE WriteEndingCursive_Quit1
 
-	LDA zObjectXHi + 5
-	BNE loc_BANKC_8ACD
+	; no
+	; are we on the second word?
+	LDA zENDTimer
+	BNE WriteEndingCursive_END
 
-	DEC zObjectXHi + 7
-	BPL locret_BANKC_8ACC
+	; no
+	; did we hit a new frame?
+	DEC zCursiveFrameTimer
+	BPL WriteEndingCursive_Quit1
 
+	; cursive's frame rate = 12 hz
 	LDA #5
-	STA zObjectXHi + 7
+	STA zCursiveFrameTimer
+	; data block width = 8 / 2 - 1
 	LDA #3
-	STA zObjectXHi + 6
+	STA zCursiveDataBlock
+	; start reading
 	LDX #0
-	LDY zObjectXHi + 4
+	LDY zCursiveDataOffset
 
-loc_BANKC_8A9C:
+WriteEndingCursive_THE:
+	; Y position
 	LDA #$40
 	STA iVirtualOAM, X
 	INX
-	LDA byte_BANKC_92FE, Y
+	; tile no.
+	LDA THECursiveAnimationOAMData, Y
 	STA iVirtualOAM, X
 	INY
 	INX
+	; attribute
 	LDA #0
 	STA iVirtualOAM, X
 	INX
-	LDA byte_BANKC_92FE, Y
+	; X position
+	LDA THECursiveAnimationOAMData, Y
 	STA iVirtualOAM, X
 	INY
 	INX
-	DEC zObjectXHi + 6
-	BPL loc_BANKC_8A9C
+	DEC zCursiveDataBlock
+	BPL WriteEndingCursive_THE
 
-	STY zObjectXHi + 4
-	DEC zObjectXHi + 8
-	BPL locret_BANKC_8ACC
+	; stash Y for next frame
+	STY zCursiveDataOffset
+	; we've fininshed a frame!
+	DEC zCursiveFramesLeft
+	BPL WriteEndingCursive_Quit1
 
-	INC zObjectXHi + 5
-	LDA #$12
-	STA zObjectXHi + 8
+	; start the END timer
+	INC zENDTimer
+	; number of proceeding frames
+	LDA #NumFrames_END - 1
+	STA zCursiveFramesLeft
+	; reset the data offset
 	LDA #0
-	STA zObjectXHi + 4
+	STA zCursiveDataOffset
 
-locret_BANKC_8ACC:
+WriteEndingCursive_Quit1:
+	; Voila!  Execution done!
 	RTS
 
 ; ---------------------------------------------------------------------------
 
-loc_BANKC_8ACD:
-	DEC zObjectXHi + 7
-	BPL locret_BANKC_8B07
+WriteEndingCursive_END:
+	; did we hit a new frame?
+	DEC zCursiveFrameTimer
+	BPL WriteEndingCursive_Quit2
 
+	; 60 fps / 5 = 12 fps
 	LDA #5
-	STA zObjectXHi + 7
+	STA zCursiveFrameTimer
+	; data block width = 8 / 2 - 1
 	LDA #3
-	STA zObjectXHi + 6
+	STA zCursiveDataBlock
+	; start reading
 	LDX #0
-	LDY zObjectXHi + 4
+	LDY zCursiveDataOffset
 
-loc_BANKC_8ADD:
+WriteEndingCursive_Loop:
+	; Y position
 	LDA #$40
 	STA iVirtualOAM + $10, X
 	INX
-	LDA byte_BANKC_93A6, Y
+	; tile no.
+	LDA ENDCursiveAnimationOAMData, Y
 	STA iVirtualOAM + $10, X
 	INY
 	INX
+	; attribute
 	LDA #0
 	STA iVirtualOAM + $10, X
 	INX
-	LDA byte_BANKC_93A6, Y
+	; X position
+	LDA ENDCursiveAnimationOAMData, Y
 	STA iVirtualOAM + $10, X
 	INY
 	INX
-	DEC zObjectXHi + 6
-	BPL loc_BANKC_8ADD
+	DEC zCursiveDataBlock
+	BPL WriteEndingCursive_Loop
 
-	STY zObjectXHi + 4
-	DEC zObjectXHi + 8
-	BPL locret_BANKC_8B07
+	; stash Y for next frame
+	STY zCursiveDataOffset
+	; we finished a frame!
+	DEC zCursiveFramesLeft
+	BPL WriteEndingCursive_Quit2
 
+	; animation is done
+	; max out the END timer
 	LDA #$FF
-	STA zObjectXHi + 5
+	STA zENDTimer
 
-locret_BANKC_8B07:
+	INC zMarioSleepingSceneIndex
+
+WriteEndingCursive_Quit2:
 	RTS
+
+
+DoPostCastPrompt:
+	LDA zENDTimer
+	BPL DoPostCastPrompt_WaitForStart
+	LDY #PostCreditsMenuSprites - EndingPromptOAMData - 1
+DoPostCastPrompt_PromptSpriteData:
+	LDA EndingPromptOAMData, Y
+	STA iVirtualOAM + $20, Y
+	DEY
+	BPL DoPostCastPrompt_PromptSpriteData
+	LDA #DPCM_EndingPrompt
+	STA iDPCMSFX
+	INC zENDTimer
+	LDA #1
+	STA iStack + 1
+	RTS
+
+DoPostCastPrompt_WaitForStart:
+	LDA zInputBottleneck
+	AND #ControllerInput_Start
+	BNE DoPostCastPrompt_Pressed
+	RTS
+
+DoPostCastPrompt_Pressed:
+	LDA #DPCM_Pause
+	STA iDPCMSFX
+	INC zMarioSleepingSceneIndex
+	RTS
+
+PostCastMenu_Up:
+	LDA #1
+	STA iStack + 1
+	LDA #SoundEffect2_CoinGet
+	STA iPulse1SFX
+	BNE PostCastMenu_UpdatePPUBuffer
+
+PostCastMenu_Down:
+	LDA #0
+	STA iStack + 1
+	LDA PostCastPaletteSwap1, Y
+	STA iPPUBuffer, X
+	DEX
+	DEY
+	BPL PostCastMenu_Down
+	LDA #SoundEffect2_CoinGet
+	STA iPulse1SFX
+	RTS
+
+PostCastMenu_AStart:
+	LDA #DPCM_Save
+	STA iDPCMSFX
+	LDA iStack + 1
+	BEQ PostCastMenu_ThenStop
+
+	LDA #Stack100_Save
+	STA iStack
+
+PostCastMenu_ThenStop:
+	BPL PostCastMenu_StopOperationAndReset
+
+PostCastMenu:
+	LDX #PostCastPaletteSwap2 - PostCastPaletteSwap1
+	LDY #PostCastPaletteSwapEnd - PostCastPaletteSwap1
+	LDA zENDTimer
+	BPL PostCastMenu_Update
+
+	LDA zInputBottleneck
+	AND #ControllerInput_Up
+	BNE PostCastMenu_Up
+
+	LDA zInputBottleneck
+	AND #ControllerInput_Down
+	BNE PostCastMenu_Down
+
+	LDA zInputBottleneck
+	AND #ControllerInput_A + ControllerInput_Start
+	BNE PostCastMenu_AStart
+	RTS
+
+PostCastMenu_Update:
+	JSR PostCastMenu_UpdatePPUBuffer
+	LDX #PostCastPaletteSwap1 - PostCreditsMenuSprites
+
+PostCastMenu_UpdateOAM:
+	LDA PostCreditsMenuSprites, X
+	STA iVirtualOAM + $20, X
+	DEX
+	BPL PostCastMenu_UpdateOAM
+	DEC zENDTimer
+	RTS
+
+PostCastMenu_UpdatePPUBuffer:
+	LDA PostCastPaletteSwap1, X
+	STA iPPUBuffer, X
+	DEX
+	BPL PostCastMenu_UpdatePPUBuffer
+	RTS
+
+PostCastMenu_StopOperationAndReset:
+	LDA #1
+	JSR DelayFrames
+	LDA iCurrentDPCMSFX
+	BNE PostCastMenu_StopOperationAndReset
+	JSR ClearNametablesAndSprites
+	TAX
+PostCastMenu_ClearStack:
+	STA iStack, X
+	DEX
+	BNE PostCastMenu_ClearStack
+	JMP RESET
 
 ; ---------------------------------------------------------------------------
 CastRoll_SpritePointersHi:
@@ -1684,7 +1832,6 @@ CastRoll_SpritePointersHi:
 	.db >CastRoll_Triclyde
 CastRoll_SpritePointersLo:
 	.db <CastRoll_Mario
-
 	.db <CastRoll_Luigi
 	.db <CastRoll_Princess
 	.db <CastRoll_Toad
@@ -2124,7 +2271,7 @@ CastRoll_Autobomb:
 	.db $F9, $E8, $00, $50 ; $38
 	.db $F9, $D2, $00, $58 ; $3C
 CastRoll_Cobrat:
-	.db $D0, $3E, 0, $30
+	.db $D0, $3E, $00, $30
 	.db $D0, $58, $00, $38 ; 4
 	.db $D0, $5A, $00, $40 ; 8
 	.db $D0, $3E, $00, $48 ; $C
@@ -2241,328 +2388,251 @@ CastRoll_Wart:
 	.db $F9, $F6, $00, $44 ; $50
 	.db $F9, $C0, $00, $50 ; $54
 	.db $F9, $C0, $00, $58 ; $58
-byte_BANKC_92FE:
-	.db $10
+;
+; "The End" OAM Data
+;
+; Each frame is split into 8 bytes, four slots each frame
+; Byte 0: Tile number
+; Byte 1: X Coordinate (144-200)
+THECursiveAnimationOAMData:
+	.db $10, $90 ; 0
+	.db $7C, $98
+	.db $7C, $A0
+	.db $7C, $A8
 
-	.db $90
-	.db $7C
-	.db $98
-	.db $7C
-	.db $A0
-	.db $7C
-	.db $A8
-	.db $12
-	.db $90
-	.db $7C
-	.db $98
-	.db $7C
-	.db $A0
-	.db $7C
-	.db $A8
-	.db $14
-	.db $90
-	.db $7C
-	.db $98
-	.db $7C
-	.db $A0
-	.db $7C
-	.db $A8
-	.db $16
-	.db $90
-	.db $7C
-	.db $98
-	.db $7C
-	.db $A0
-	.db $7C
-	.db $A8
-	.db $16
-	.db $90
-	.db $18
-	.db $98
-	.db $7C
-	.db $A0
-	.db $7C
-	.db $A8
-	.db $16
-	.db $90
-	.db $1A
-	.db $98
-	.db $7C
-	.db $A0
-	.db $7C
-	.db $A8
-	.db $16
-	.db $90
-	.db $1C
-	.db $98
-	.db $7C
-	.db $A0
-	.db $7C
-	.db $A8
-	.db $16
-	.db $90
-	.db $1E
-	.db $98
-	.db $7C
-	.db $A0
-	.db $7C
-	.db $A8
-	.db $20
-	.db $90
-	.db $1E
-	.db $98
-	.db $7C
-	.db $A0
-	.db $7C
-	.db $A8
-	.db $24
-	.db $90
-	.db $1E
-	.db $98
-	.db $7C
-	.db $A0
-	.db $7C
-	.db $A8
-	.db $24
-	.db $90
-	.db $28
-	.db $98
-	.db $7C
-	.db $A0
-	.db $7C
-	.db $A8
-	.db $24
-	.db $90
-	.db $2A
-	.db $98
-	.db $7C
-	.db $A0
-	.db $7C
-	.db $A8
-	.db $24
-	.db $90
-	.db $2A
-	.db $98
-	.db $2C
-	.db $A0
-	.db $7C
-	.db $A8
-	.db $24
-	.db $90
-	.db $2A
-	.db $98
-	.db $2E
-	.db $A0
-	.db $7C
-	.db $A8
-	.db $24
-	.db $90
-	.db $30
-	.db $98
-	.db $32
-	.db $A0
-	.db $7C
-	.db $A8
-	.db $24
-	.db $90
-	.db $30
-	.db $98
-	.db $34
-	.db $A0
-	.db $7C
-	.db $A8
-	.db $24
-	.db $90
-	.db $30
-	.db $98
-	.db $36
-	.db $A0
-	.db $7C
-	.db $A8
-	.db $24
-	.db $90
-	.db $30
-	.db $98
-	.db $36
-	.db $A0
-	.db $38
-	.db $A8
-	.db $24
-	.db $90
-	.db $30
-	.db $98
-	.db $3A
-	.db $A0
-	.db $3C
-	.db $A8
-	.db $24
-	.db $90
-	.db $30
-	.db $98
-	.db $3E
-	.db $A0
-	.db $40
-	.db $A8
-	.db $24
-	.db $90
-	.db $30
-	.db $98
-	.db $3E
-	.db $A0
-	.db $42
-	.db $A8
-byte_BANKC_93A6:
-	.db $44
+	.db $12, $90 ; 1
+	.db $7C, $98
+	.db $7C, $A0
+	.db $7C, $A8
 
-	.db $B0
-	.db $46
-	.db $B8
-	.db $7C
-	.db $C0
-	.db $7C
-	.db $C8
-	.db $48
-	.db $B0
-	.db $4A
-	.db $B8
-	.db $7C
-	.db $C0
-	.db $7C
-	.db $C8
-	.db $4C
-	.db $B0
-	.db $4E
-	.db $B8
-	.db $7C
-	.db $C0
-	.db $7C
-	.db $C8
-	.db $50
-	.db $B0
-	.db $52
-	.db $B8
-	.db $7C
-	.db $C0
-	.db $7C
-	.db $C8
-	.db $54
-	.db $B0
-	.db $56
-	.db $B8
-	.db $7C
-	.db $C0
-	.db $7C
-	.db $C8
-	.db $58
-	.db $B0
-	.db $5A
-	.db $B8
-	.db $7C
-	.db $C0
-	.db $7C
-	.db $C8
-	.db $5C
-	.db $B0
-	.db $5E
-	.db $B8
-	.db $7C
-	.db $C0
-	.db $7C
-	.db $C8
-	.db $5C
-	.db $B0
-	.db $60
-	.db $B8
-	.db $7C
-	.db $C0
-	.db $7C
-	.db $C8
-	.db $5C
-	.db $B0
-	.db $62
-	.db $B8
-	.db $7C
-	.db $C0
-	.db $7C
-	.db $C8
-	.db $5C
-	.db $B0
-	.db $64
-	.db $B8
-	.db $66
-	.db $C0
-	.db $7C
-	.db $C8
-	.db $5C
-	.db $B0
-	.db $64
-	.db $B8
-	.db $68
-	.db $C0
-	.db $7C
-	.db $C8
-	.db $5C
-	.db $B0
-	.db $64
-	.db $B8
-	.db $6A
-	.db $C0
-	.db $7C
-	.db $C8
-	.db $5C
-	.db $B0
-	.db $64
-	.db $B8
-	.db $6C
-	.db $C0
-	.db $6E
-	.db $C8
-	.db $5C
-	.db $B0
-	.db $64
-	.db $B8
-	.db $6C
-	.db $C0
-	.db $70
-	.db $C8
-	.db $5C
-	.db $B0
-	.db $64
-	.db $B8
-	.db $6C
-	.db $C0
-	.db $72
-	.db $C8
-	.db $5C
-	.db $B0
-	.db $64
-	.db $B8
-	.db $6C
-	.db $C0
-	.db $74
-	.db $C8
-	.db $5C
-	.db $B0
-	.db $64
-	.db $B8
-	.db $6C
-	.db $C0
-	.db $76
-	.db $C8
-	.db $5C
-	.db $B0
-	.db $64
-	.db $B8
-	.db $6C
-	.db $C0
-	.db $78
-	.db $C8
-	.db $5C
-	.db $B0
-	.db $64
-	.db $B8
-	.db $6C
-	.db $C0
-	.db $7A
-	.db $C8
-	.db $60
+	.db $14, $90 ; 2
+	.db $7C, $98
+	.db $7C, $A0
+	.db $7C, $A8
+
+	.db $16, $90 ; 3
+	.db $7C, $98
+	.db $7C, $A0
+	.db $7C, $A8
+
+	.db $16, $90 ; 4
+	.db $18, $98
+	.db $7C, $A0
+	.db $7C, $A8
+
+	.db $16, $90 ; 5
+	.db $1A, $98
+	.db $7C, $A0
+	.db $7C, $A8
+
+	.db $16, $90 ; 6
+	.db $1C, $98
+	.db $7C, $A0
+	.db $7C, $A8
+
+	.db $16, $90 ; 7
+	.db $1E, $98
+	.db $7C, $A0
+	.db $7C, $A8
+
+	.db $20, $90 ; 8
+	.db $1E, $98
+	.db $7C, $A0
+	.db $7C, $A8
+
+	.db $24, $90 ; 9
+	.db $1E, $98
+	.db $7C, $A0
+	.db $7C, $A8
+
+	.db $24, $90 ; 10
+	.db $28, $98
+	.db $7C, $A0
+	.db $7C, $A8
+
+	.db $24, $90 ; 11
+	.db $2A, $98
+	.db $7C, $A0
+	.db $7C, $A8
+
+	.db $24, $90 ; 12
+	.db $2A, $98
+	.db $2C, $A0
+	.db $7C, $A8
+
+	.db $24, $90 ; 13
+	.db $2A, $98
+	.db $2E, $A0
+	.db $7C, $A8
+
+	.db $24, $90 ; 14
+	.db $30, $98
+	.db $32, $A0
+	.db $7C, $A8
+
+	.db $24, $90 ; 15
+	.db $30, $98
+	.db $34, $A0
+	.db $7C, $A8
+
+	.db $24, $90 ; 16
+	.db $30, $98
+	.db $36, $A0
+	.db $7C, $A8
+
+	.db $24, $90 ; 17
+	.db $30, $98
+	.db $36, $A0
+	.db $38, $A8
+
+	.db $24, $90 ; 18
+	.db $30, $98
+	.db $3A, $A0
+	.db $3C, $A8
+
+	.db $24, $90 ; 19
+	.db $30, $98
+	.db $3E, $A0
+	.db $40, $A8
+
+	.db $24, $90 ; 20
+	.db $30, $98
+	.db $3E, $A0
+	.db $42, $A8
+ENDCursiveAnimationOAMData:
+	.db $44, $B0 ; 0
+	.db $46, $B8
+	.db $7C, $C0
+	.db $7C, $C8
+
+	.db $48, $B0 ; 1
+	.db $4A, $B8
+	.db $7C, $C0
+	.db $7C, $C8
+
+	.db $4C, $B0 ; 2
+	.db $4E, $B8
+	.db $7C, $C0
+	.db $7C, $C8
+
+	.db $50, $B0 ; 3
+	.db $52, $B8
+	.db $7C, $C0
+	.db $7C, $C8
+
+	.db $54, $B0 ; 4
+	.db $56, $B8
+	.db $7C, $C0
+	.db $7C, $C8
+
+	.db $58, $B0 ; 5
+	.db $5A, $B8
+	.db $7C, $C0
+	.db $7C, $C8
+
+	.db $5C, $B0 ; 6
+	.db $5E, $B8
+	.db $7C, $C0
+	.db $7C, $C8
+
+	.db $5C, $B0 ; 7
+	.db $60, $B8
+	.db $7C, $C0
+	.db $7C, $C8
+
+	.db $5C, $B0 ; 8
+	.db $62, $B8
+	.db $7C, $C0
+	.db $7C, $C8
+
+	.db $5C, $B0 ; 9
+	.db $64, $B8
+	.db $66, $C0
+	.db $7C, $C8
+
+	.db $5C, $B0 ; 10
+	.db $64, $B8
+	.db $68, $C0
+	.db $7C, $C8
+
+	.db $5C, $B0 ; 11
+	.db $64, $B8
+	.db $6A, $C0
+	.db $7C, $C8
+
+	.db $5C, $B0 ; 12
+	.db $64, $B8
+	.db $6C, $C0
+	.db $6E, $C8
+
+	.db $5C, $B0 ; 13
+	.db $64, $B8
+	.db $6C, $C0
+	.db $70, $C8
+
+	.db $5C, $B0 ; 14
+	.db $64, $B8
+	.db $6C, $C0
+	.db $72, $C8
+
+	.db $5C, $B0 ; 15
+	.db $64, $B8
+	.db $6C, $C0
+	.db $74, $C8
+
+	.db $5C, $B0 ; 16
+	.db $64, $B8
+	.db $6C, $C0
+	.db $76, $C8
+
+	.db $5C, $B0 ; 17
+	.db $64, $B8
+	.db $6C, $C0
+	.db $78, $C8
+
+	.db $5C, $B0 ; 18
+	.db $64, $B8
+	.db $6C, $C0
+	.db $7A, $C8
+
+	; Unreferenced
+	RTS
+
+EndingPromptOAMData:
+;           Y,   tile, attr., X
+	.db $CF, $EE,  $00,   $58 ; P
+	.db $CF, $F8,  $00,   $60 ; U
+	.db $CF, $F4,  $00,   $68 ; S
+	.db $CF, $DE,  $00,   $70 ; H
+
+	.db $DF, $F4,  $00,   $80 ; S
+	.db $DF, $F6,  $00,   $88 ; T
+	.db $DF, $D0,  $00,   $90 ; A
+	.db $DF, $F2,  $00,   $98 ; R
+	.db $DF, $F6,  $00,   $A0 ; T
+
+PostCreditsMenuSprites:
+;           Y,   tile, attr., X
+	.db $CF, $F4,  $01,   $70 ; S
+	.db $CF, $D0,  $01,   $78 ; A
+	.db $CF, $FA,  $01,   $80 ; V
+	.db $CF, $D8,  $01,   $88 ; E
+
+
+	.db $DF, $E2,  $02,   $5E ; J
+	.db $DF, $F8,  $02,   $66 ; U
+	.db $DF, $F4,  $02,   $6E ; S
+	.db $DF, $F6,  $02,   $76 ; T
+
+	.db $DF, $F0,  $02,   $82 ; Q
+	.db $DF, $F8,  $02,   $8A ; U
+	.db $DF, $E0,  $02,   $92 ; I
+	.db $DF, $F6,  $02,   $9A ; T
+
+PostCastPaletteSwap1:
+	.db $3f, $15, $01, $28
+	.db $3f, $19, $01, $30, $00
+PostCastPaletteSwap2:
+	.db $3f, $15, $01, $30
+	.db $3f, $19, $01, $28, $00
+PostCastPaletteSwapEnd:
