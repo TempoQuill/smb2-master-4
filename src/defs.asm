@@ -289,18 +289,40 @@ SoundEffect2_HawkDown = $80
 PPUStatus_SpriteOverflow = %100000
 PPUStatus_Sprite0Hit = %1000000
 PPUStatus_VBlankHit = %10000000
-
+.ende
 ; ---------------------------------------------------------------------------
 
 ; enum SoundEffect3
-SoundEffect3_ShortNoise = $01 ; Whale spout
-SoundEffect3_Rocket = $02
-SoundEffect3_POW = $04
-SoundEffect3_Door = $08
-SoundEffect3_Bomb = $10
-SoundEffect3_Autobomb = $20
-SoundEffect3_Bubbles = $40
-SoundEffect3_WartSmokePuff = $80
+.enum $0001
+Noise_ClosedHihat:
+	.dsb 1
+Noise_UpperSnare:
+	.dsb 1
+Noise_OpenHihat:
+	.dsb 1
+Noise_Kick:
+	.dsb 1
+Noise_DoubleSnare:
+	.dsb 1
+Noise_Snare:
+	.dsb 1
+NOISE_SFX:
+SoundEffect3_ShortNoise: ; Whale spout
+	.dsb 1
+SoundEffect3_Rocket:
+	.dsb 1
+SoundEffect3_POW:
+	.dsb 1
+SoundEffect3_Door:
+	.dsb 1
+SoundEffect3_Bomb:
+	.dsb 1
+SoundEffect3_Autobomb:
+	.dsb 1
+SoundEffect3_Bubbles:
+	.dsb 1
+SoundEffect3_WartSmokePuff:
+	.dsb 1
 
 ; ---------------------------------------------------------------------------
 

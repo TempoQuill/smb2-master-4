@@ -420,98 +420,98 @@ MusicDataEnding1_Noise:
 	.db $82
 	.db $01
 	.db $80
-	.db $0C
-	.db $0C
-	.db $0C
-	.db $0C
-	.db $8B
 	.db $0A
-	.db $80
-	.db $0C
-	.db $0C
-	.db $0C
-	.db $0C
-	.db $8B
 	.db $0A
+	.db $0A
+	.db $0A
+	.db $8B
+	.db $0C
 	.db $80
+	.db $0A
+	.db $0A
+	.db $0A
+	.db $0A
+	.db $8B
 	.db $0C
-	.db $0C
-	.db $0C
-	.db $0C
+	.db $80
+	.db $0A
+	.db $0A
+	.db $0A
+	.db $0A
 	.db $8A
-	.db $0A
-	.db $0A
-	.db $8B
-	.db $0A
-	.db $80
-	.db $0C
-	.db $0C
 	.db $0C
 	.db $0C
 	.db $8B
-	.db $0A
+	.db $0C
 	.db $80
-	.db $0C
-	.db $0C
-	.db $0C
-	.db $0C
+	.db $0A
+	.db $0A
+	.db $0A
+	.db $0A
 	.db $8B
-	.db $0A
+	.db $0C
 	.db $80
+	.db $0A
+	.db $0A
+	.db $0A
+	.db $0A
+	.db $8B
 	.db $0C
-	.db $0C
-	.db $0C
-	.db $0C
+	.db $80
+	.db $0A
+	.db $0A
+	.db $0A
+	.db $0A
 	.db $8A
-	.db $0A
-	.db $0A
+	.db $0C
+	.db $0C
 	.db $8C
-	.db $0A
+	.db $0C
 
 MusicDataEnding2_Noise:
 	.db $8B
-	.db $0A
+	.db $0C
 	.db $80
-	.db $0C
-	.db $0C
-	.db $0C
-	.db $0C
+	.db $0A
+	.db $0A
+	.db $0A
+	.db $0A
 	.db $8B
-	.db $0A
+	.db $0C
 	.db $80
-	.db $0C
-	.db $0C
-	.db $0C
-	.db $0C
+	.db $0A
+	.db $0A
+	.db $0A
+	.db $0A
 	.db $8A
-	.db $0A
-	.db $0A
-	.db $8B
-	.db $0A
-	.db $80
-	.db $0C
-	.db $0C
 	.db $0C
 	.db $0C
 	.db $8B
-	.db $0A
+	.db $0C
 	.db $80
-	.db $0C
-	.db $0C
-	.db $0C
-	.db $0C
+	.db $0A
+	.db $0A
+	.db $0A
+	.db $0A
 	.db $8B
-	.db $0A
+	.db $0C
 	.db $80
+	.db $0A
+	.db $0A
+	.db $0A
+	.db $0A
+	.db $8B
 	.db $0C
-	.db $0C
-	.db $0C
-	.db $0C
+	.db $80
+	.db $0A
+	.db $0A
+	.db $0A
+	.db $0A
 	.db $8A
-	.db $0A
-	.db $0A
+	.db $0C
+	.db $0C
 	.db $8C
-	.db $0A
+	.db $0C
 	.db $00
 
 MusicDataEnding1_DPCM:

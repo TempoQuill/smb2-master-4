@@ -372,24 +372,24 @@ MusicDataSubspace_Noise:
 	.db $88
 	.db $08
 	.db $86
-	.db $06
-	.db $06
+	.db $02
+	.db $02
 	.db $01
 	.db $08
 	.db $88
-	.db $06
+	.db $02
 	.db $82
 	.db $08
 	.db $86
-	.db $06
+	.db $02
 	.db $82
 	.db $08
 	.db $88
-	.db $04
+	.db $0A
 	.db $86
-	.db $06
+	.db $02
 	.db $82
-	.db $06
+	.db $02
 	.db $00
 
 MusicDataSubspace_DPCM:

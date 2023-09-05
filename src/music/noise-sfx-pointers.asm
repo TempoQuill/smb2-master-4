@@ -1,4 +1,10 @@
 NoiseSFXPointersLo:
+	.db <NoiseDrumData_ClosedHihat
+	.db <NoiseDrumData_UpperSnare
+	.db <NoiseDrumData_OpenHihat
+	.db <NoiseDrumData_Kick
+	.db <NoiseDrumData_Snare
+	.db <NoiseDrumData_DoubleSnare
 	.db <NoiseSFX_Whale
 	.db <NoiseSFX_Rocket
 	.db <NoiseSFX_POW
@@ -9,6 +15,12 @@ NoiseSFXPointersLo:
 	.db <NoiseSFX_WartSmokePuff
 
 NoiseSFXPointersHi:
+	.db >NoiseDrumData_ClosedHihat
+	.db >NoiseDrumData_UpperSnare
+	.db >NoiseDrumData_OpenHihat
+	.db >NoiseDrumData_Kick
+	.db >NoiseDrumData_Snare
+	.db >NoiseDrumData_DoubleSnare
 	.db >NoiseSFX_Whale
 	.db >NoiseSFX_Rocket
 	.db >NoiseSFX_POW

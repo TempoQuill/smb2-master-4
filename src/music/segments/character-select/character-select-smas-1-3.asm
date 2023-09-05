@@ -219,7 +219,7 @@ MusicDataCharacterSelect3_Square1:
 	.db $D8
 	.db $7E
 	.db $38
-	.db $3C
+	.db $3A
 	.db $3E
 
 MusicDataCharacterSelect1_Triangle:
@@ -245,39 +245,43 @@ MusicDataCharacterSelect3_Triangle:
 
 MusicDataCharacterSelect1_Noise:
 	.db $BC
-	.db $04
-	.db $00
+	.db $02
+	.db $02
+	.db $02
+	.db $BA
+	.db $02
+	.db $02
 
 MusicDataCharacterSelect2_Noise:
 MusicDataCharacterSelect3_Noise:
 	.db $88
-	.db $06
+	.db $02
 	.db $04
-	.db $06
+	.db $02
 	.db $04
-	.db $06
+	.db $02
 	.db $04
-	.db $06
+	.db $02
 	.db $04
-	.db $06
+	.db $02
 	.db $04
-	.db $06
+	.db $02
 	.db $04
-	.db $06
+	.db $02
 	.db $04
-	.db $06
+	.db $02
 	.db $04
-	.db $06
+	.db $02
 	.db $04
-	.db $06
+	.db $02
 	.db $04
-	.db $06
+	.db $02
 	.db $04
-	.db $06
+	.db $02
 	.db $04
-	.db $06
+	.db $02
 	.db $04
-	.db $06
+	.db $04
 	.db $04
 	.db $82
 	.db $04

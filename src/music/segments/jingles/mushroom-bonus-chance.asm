@@ -12,9 +12,9 @@ MusicDataMushroomBonusChance_Square2:
 	.db $00
 MusicDataMushroomBonusChance_Square1:
 	.db $80
+	.db $34
 	.db $38
 	.db $3A
-	.db $3C
 	.db $3E
 	.db $7E
 	.db $48

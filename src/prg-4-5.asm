@@ -21,7 +21,7 @@ MusicAndSFXProcessing:
 ProcessMusicAndSfxQueues:
 	JSR ProcessSoundEffectQueue2
 
-	JSR ProcessSoundEffectQueue3
+	JSR ProcessNoiseQueue
 
 	JSR ProcessDPCMQueue
 
@@ -251,60 +251,65 @@ HillSFXLinears:
 .include "src/music/sound-effects/hill-sfx-data.asm"
 
 ;
-; Noise Channel SFX Queue
+; Noise Channel SFX/Drum Queue
 ;
-ProcessSoundEffectQueue3:
+ProcessNoiseQueue:
 	LDA iNoiseSFX
-	BEQ ProcessSoundEffectQueue3_None
+	BEQ ProcessNoiseQueue_None
 
 	LDX #0
 	STX zNoiseSFXOffset
-	BEQ ProcessSoundEffectQueue3_Part2
+	BEQ ProcessNoiseQueue_Part2
 
-ProcessSoundEffectQueue3_None:
+ProcessNoiseQueue_None:
 	LDX iCurrentNoiseSFX
-	BNE ProcessSoundEffectQueue3_Part3
+	BNE ProcessNoiseQueue_Part3
+	LDX iCurrentDrum
+	BNE ProcessNoiseQueue_Part3
 	RTS
 
-ProcessSoundEffectQueue3_Part2:
+ProcessNoiseQueue_Part2:
 	; start a new sound effect
+	CMP #NOISE_SFX
+	BCS ProcessNoiseQueue_NotPercussion
+
+	STA iCurrentDrum
+	LDY #0
+	STY iCurrentNoiseSFX
+	BCC ProcessNoiseQueue_PointerOffset
+
+ProcessNoiseQueue_NotPercussion:
 	STA iCurrentNoiseSFX
-	LDY #$00
-	STY zNoiseSFXOffset
-	LSR A ; start looking now
-	BCS ProcessSoundEffectQueue3_SkipPointerLoop
+	LDY #0
+	STY iCurrentDrum
 
-; from here, loop until C is tripped, skipped if it already was
-ProcessSoundEffectQueue3_PointerLoop:
-	INY
-	LSR A
-	BCC ProcessSoundEffectQueue3_PointerLoop
-
-ProcessSoundEffectQueue3_SkipPointerLoop:
+ProcessNoiseQueue_PointerOffset:
+	TAY
+	DEY
 	; load pointer for us to access
 	LDA NoiseSFXPointersLo, Y
 	STA zNoiseIndexPointer
 	LDA NoiseSFXPointersHi, Y
 	STA zNoiseIndexPointer + 1
 
-ProcessSoundEffectQueue3_Part3:
+ProcessNoiseQueue_Part3:
 	; load offset and increment it
 	LDY zNoiseSFXOffset
 	INC zNoiseSFXOffset
 	; examine data
 	LDA (zNoiseIndexPointer), Y
 	; 00 = ret
-	BEQ ProcessSoundEffectQueue3_Done
+	BEQ ProcessNoiseQueue_Done
 	; 7e = rest
 	CMP #$7e
-	BEQ ProcessSoundEffectQueue3_Exit
+	BEQ ProcessNoiseQueue_Exit
 	; 10-7f = patch
 	AND #$70
-	BNE ProcessSoundEffectQueue3_Patch
+	BNE ProcessNoiseQueue_Patch
 	; 00-0f / 80-8f = note
-	BEQ ProcessSoundEffectQueue3_Note
+	BEQ ProcessNoiseQueue_Note
 
-ProcessSoundEffectQueue3_Done:
+ProcessNoiseQueue_Done:
 	; if it was $00, we're at the end of the data for this sound effect
 	LDX #$90
 	STX NOISE_VOL
@@ -313,16 +318,17 @@ ProcessSoundEffectQueue3_Done:
 	LDX #$00
 	STX NOISE_LO
 	STX iCurrentNoiseSFX
+	STX iCurrentDrum
 	RTS
 
-ProcessSoundEffectQueue3_Patch:
+ProcessNoiseQueue_Patch:
 	; apply patch
 	LDA (zNoiseIndexPointer), Y
 	STA NOISE_VOL
 	LDY zNoiseSFXOffset
 	INC zNoiseSFXOffset
 
-ProcessSoundEffectQueue3_Note:
+ProcessNoiseQueue_Note:
 	; apply note
 	LDA (zNoiseIndexPointer), Y
 	STA NOISE_LO
@@ -332,7 +338,7 @@ ProcessSoundEffectQueue3_Note:
 	ORA #$0F
 	STA SND_CHN
 
-ProcessSoundEffectQueue3_Exit:
+ProcessNoiseQueue_Exit:
 	RTS
 
 .include "src/music/noise-sfx-pointers.asm"
@@ -625,6 +631,7 @@ ProcessMusicQueue_DefaultNotelength:
 
 	; initialize offsets / fractions
 	LDA #$00
+	STA iCurrentDrum
 	STA iCurrentPulse2Offset
 	STA iCurrentHillOffset
 	STA iCurrentPulse1Offset
@@ -712,6 +719,7 @@ ClearChannelTriangle:
 ClearChannelNoise:
 	LDA iCurrentNoiseSFX
 	BNE ClearChannelDPCM
+	STA iCurrentDrum
 	STA NOISE_HI
 	STA NOISE_LO
 	LDA #$10
@@ -1082,23 +1090,15 @@ ProcessMusicQueue_NoiseByte:
 ProcessMusicQueue_NoiseNote:
 ; + = note
 ; NOTE - only $02-$0C are valid
+; $0E - $1C are treated as sound effects
 ; $01 is a rest note
 	LDY iCurrentNoiseSFX
 	BNE ProcessMusicQueue_NoiseLengthCarry
 	LSR A
 	BEQ ProcessMusicQueue_NoiseLengthCarry
-	TAY
 
-	LDA SND_CHN
-	ORA #$0F
-	STA SND_CHN
-
-	LDA NoiseVolTable, Y
-	STA NOISE_VOL
-	LDA NoiseLoTable, Y
-	STA NOISE_LO
-	LDA NoiseHiTable, Y
-	STA NOISE_HI
+	STA iNoiseSFX
+	JSR ProcessNoiseQueue
 
 ProcessMusicQueue_NoiseLengthCarry:
 	LDA iMusicNoiseNoteSubFrames
@@ -1259,33 +1259,7 @@ ProcessMusicQueue_DPCMLoopSegment:
 	STA iCurrentDPCMOffset
 	JMP ProcessMusicQueue_DPCMByte
 
-
-NoiseVolTable:
-	.db $10
-	.db $01
-	.db $00
-	.db $01
-	.db $00
-	.db $01
-	.db $00
-
-NoiseLoTable:
-	.db $00
-	.db $01
-	.db $08
-	.db $01
-	.db $8E
-	.db $09
-	.db $09
-
-NoiseHiTable:
-	.db $00
-	.db $18
-	.db $08
-	.db $08
-	.db $08
-	.db $08
-	.db $08
+.include "src/music/noise-drum-data.asm"
 
 ; DPCM sawtooth configuration data
 .include "src/music/dmc-data.asm"

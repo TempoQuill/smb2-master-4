@@ -68,27 +68,27 @@ MusicDataEnding4_Triangle:
 
 MusicDataEnding3_Noise:
 	.db $8A
-	.db $0A
+	.db $0C
 	.db $86
-	.db $0C
-	.db $0C
-	.db $0C
+	.db $0A
+	.db $0A
+	.db $0A
 	.db $8A
-	.db $0A
+	.db $0C
 	.db $86
-	.db $0C
-	.db $0C
-	.db $0C
+	.db $0A
+	.db $0A
+	.db $0A
 
 MusicDataEnding4_Noise:
 	.db $8A
-	.db $0A
+	.db $0C
 	.db $88
-	.db $0A
-	.db $0A
+	.db $0C
+	.db $0C
 	.db $01
 	.db $8B
-	.db $0A
+	.db $0C
 
 MusicDataEnding3_DPCM:
 	.db $86

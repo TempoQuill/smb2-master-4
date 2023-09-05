@@ -1523,7 +1523,7 @@ iDPCMNoteLengthCounter:
 	.dsb 1 ; $05fa
 iPulse1SFXSweep:
 	.dsb 1 ; $05fb
-; FOR RENT
+iCurrentDrum:
 	.dsb 1 ; $05fc
 iPulse1SFXVolume:
 	.dsb 1 ; $05fd

@@ -216,17 +216,17 @@ MusicDataCharacterSelect5_Square1:
 	.db $30
 	.db $34
 	.db $38
-	.db $3C
+	.db $3A
 	.db $B6
 	.db $52
 	.db $B2
 	.db $5A
 	.db $D8
-	.db $3C
+	.db $3A
 	.db $B6
 	.db $5A
 	.db $D2
-	.db $3C
+	.db $3A
 	.db $B6
 	.db $56
 	.db $D8
@@ -244,7 +244,7 @@ MusicDataCharacterSelect5_Square1:
 	.db $34
 	.db $38
 	.db $3A
-	.db $3C
+	.db $3A
 	.db $B6
 	.db $46
 	.db $B2
@@ -325,37 +325,39 @@ MusicDataCharacterSelect5_Triangle:
 MusicDataCharacterSelect4_Noise:
 MusicDataCharacterSelect5_Noise:
 	.db $88
+	.db $02
+	.db $04
+	.db $02
+	.db $04
+	.db $02
+	.db $04
+	.db $02
+	.db $04
+	.db $02
+	.db $04
+	.db $02
+	.db $04
+	.db $02
+	.db $04
+	.db $02
+	.db $04
+	.db $02
+	.db $04
+	.db $02
+	.db $04
+	.db $02
+	.db $04
+	.db $02
+	.db $04
+	.db $02
+	.db $04
+	.db $04
+	.db $04
+	.db $04
+	.db $8A
 	.db $06
-	.db $04
-	.db $06
-	.db $04
-	.db $06
-	.db $04
-	.db $06
-	.db $04
-	.db $06
-	.db $04
-	.db $06
-	.db $04
-	.db $06
-	.db $04
-	.db $06
-	.db $04
-	.db $06
-	.db $04
-	.db $06
-	.db $04
-	.db $06
-	.db $04
-	.db $06
-	.db $04
-	.db $06
-	.db $04
-	.db $04
-	.db $04
-	.db $04
-	.db $8B
-	.db $06
+	.db $88
+	.db $02
 
 MusicDataCharacterSelect4_DPCM:
 MusicDataCharacterSelect5_DPCM:
