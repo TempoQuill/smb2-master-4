@@ -4173,15 +4173,33 @@ WarpDestinations:
 UpdateJoypads:
 	JSR ReadJoypads
 
+	LDY #1
+
 UpdateJoypads_DoubleCheck:
 	; Work around DPCM sample bug,
 	; where some spurious inputs are read
-	LDY zInputBottleneck
+	LDA zInputBottleneck
+	STA iBackupInput, Y
 	JSR ReadJoypads
+	DEY
+	BPL UpdateJoypads_DoubleCheck
 
-	CPY zInputBottleneck
-	BNE UpdateJoypads_DoubleCheck
+	LDX #$02
+	LDA zInputBottleneck
 
+UpdateJoypads_CompareStash:
+	DEX
+	BMI UpdateJoypads_UseStash
+	CMP iBackupInput, X
+	BNE UpdateJoypads_CompareStash
+	BEQ UpdateJoypads_Bottleneck
+
+UpdateJoypads_UseStash:
+	LDA iBackupInput
+	AND iBackupInput + 1
+	STA zInputBottleneck
+
+UpdateJoypads_Bottleneck:
 	LDX #$01
 
 UpdateJoypads_Loop:

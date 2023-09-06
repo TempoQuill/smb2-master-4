@@ -761,17 +761,13 @@ iHorScrollBuffer:
 iObjectFlickerer:
 	.dsb 1 ; $0400
 
-; FOR RENT
+iBackupInput:
 	.dsb 1 ; $0401
-; FOR RENT
 	.dsb 1 ; $0402
 ; FOR RENT
 	.dsb 1 ; $0403
-; FOR RENT
 	.dsb 1 ; $0404
-; FOR RENT
 	.dsb 1 ; $0405
-; FOR RENT
 	.dsb 1 ; $0406
 
 iPlayerXSubpixel:
