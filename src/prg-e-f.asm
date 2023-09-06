@@ -1588,9 +1588,9 @@ SpinSlots:
 	STA zSFXReelTimer
 
 SpinSlots_Handling:
-	JSR sub_BANKF_EAC2
+	JSR CheckStopReel
 
-	JSR sub_BANKF_EADC
+	JSR TimedSlotIncrementation
 
 	JSR sub_BANKF_EAF6
 
@@ -2036,7 +2036,7 @@ WaitForNMILoop:
 
 ; =============== S U B R O U T I N E =======================================
 
-sub_BANKF_EAC2:
+CheckStopReel:
 	LDA zInputBottleneck
 	BPL locret_BANKF_EAD1
 
@@ -2062,11 +2062,11 @@ loc_BANKF_EAD2:
 	STA iPulse1SFX
 	RTS
 
-; End of function sub_BANKF_EAC2
+; End of function CheckStopReel
 
 ; =============== S U B R O U T I N E =======================================
 
-sub_BANKF_EADC:
+TimedSlotIncrementation:
 	LDX #$02
 
 loc_BANKF_EADE:
@@ -2076,7 +2076,7 @@ loc_BANKF_EADE:
 	DEC zObjectXLo + 3, X
 	BNE loc_BANKF_EAF2
 
-	LDA #$04
+	LDA #$07
 	STA zObjectXLo + 3, X
 	DEC zObjectXLo + 6, X
 	BPL loc_BANKF_EAF2
@@ -2089,7 +2089,7 @@ loc_BANKF_EAF2:
 	BPL loc_BANKF_EADE
 	RTS
 
-; End of function sub_BANKF_EADC
+; End of function TimedSlotIncrementation
 
 ; =============== S U B R O U T I N E =======================================
 
