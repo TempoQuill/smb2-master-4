@@ -331,6 +331,8 @@ ProcessNoiseQueue_Patch:
 ProcessNoiseQueue_Note:
 	; apply note
 	LDA (zNoiseIndexPointer), Y
+	CMP #$7E
+	BEQ ProcessNoiseQueue_Exit
 	STA NOISE_LO
 	LDA #$08
 	STA NOISE_HI

@@ -1,11 +1,28 @@
 NoiseSFX_Bomb:
-	.db $1F, $0E, $0F, $10, $7E, $7E
-	.db $1F, $0D, $0B, $0A, $0C, $0A, $0D, $0B, $0E, $0C
-	.db $1E, $0E
-	.db $1D, $0D
-	.db $1C, $0F
-	.db $1B, $0E
-	.db $1A, $0D
+	.db $1F
+	.db $0E
+	.db $0F
+	.db $10, $7E, $7E
+	.db $1F
+	.db $0D
+	.db $0B
+	.db $0A
+	.db $0C
+	.db $0A
+	.db $0D
+	.db $0B
+	.db $0E
+	.db $0C
+	.db $1E
+	.db $0E
+	.db $1D
+	.db $0D
+	.db $1C
+	.db $0F
+	.db $1B
+	.db $0E
+	.db $1A
+	.db $0D
 	.db $19, $7E
 	.db $18, $7E
 	.db $17, $7E

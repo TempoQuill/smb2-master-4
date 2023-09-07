@@ -33,10 +33,10 @@ NoiseDrumData_Snare:
 	.db $1F, $8D
 	.db      $0B
 	.db      $09
-	.db $1C, $09
-	.db $19, $09
-	.db $16, $09
-	.db $13, $09
-	.db $12, $09
-	.db $11, $09
+	.db $1C, $7E
+	.db $19, $7E
+	.db $16, $7E
+	.db $13, $7E
+	.db $12, $7E
+	.db $11, $7E
 	.db $00
