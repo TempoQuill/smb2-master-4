@@ -107,6 +107,6 @@ MMC5 = 1
 BANK_MIRRORING = 1
 
 ; Go straight to the Mario Sleeping Scene
-TEST_SLEEPING_SCENE = 1
+; TEST_SLEEPING_SCENE = 1
 
 .endinl
