@@ -1630,13 +1630,13 @@ CheckReel3Symbol:
 	CMP iReelBuffer + 16, X ; Does reel 3 match the previous two?
 	BNE AddSlotMachineExtraLives ; HEHE, NNNOPE
 
-	INY ; They all match! Yay! Add a life.
+	INY ; They all match! Yay! Add 2 extra lives.
+	INY
 ; Cherry count: 3 / Non-cherry: 1
 	CMP #$00 ; Were they all cherries?
 	BNE AddSlotMachineExtraLives ; Nope, all done
 
-	INY ; Yes, add 2 more extra lives
-	INY
+	INY ; Yes, add 1 more extra life
 
 AddSlotMachineExtraLives:
 	TYA ; Y contains extra lives to add
