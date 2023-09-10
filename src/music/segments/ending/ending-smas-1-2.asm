@@ -238,7 +238,9 @@ MusicDataEnding1_Triangle:
 	.db $86
 	.db $7E
 	.db $7E
-	.db $8C
+	.db $FA
+	.db $56
+	.db $8A
 	.db $56
 	.db $88
 	.db $7E
@@ -249,11 +251,14 @@ MusicDataEnding1_Triangle:
 	.db $52
 	.db $7E
 	.db $56
-	.db $8C
+	.db $FA
 	.db $5C
 	.db $8A
+	.db $5C
 	.db $52
-	.db $8C
+	.db $FA
+	.db $5C
+	.db $8A
 	.db $5C
 	.db $86
 	.db $7E
@@ -262,26 +267,34 @@ MusicDataEnding1_Triangle:
 	.db $5C
 	.db $56
 	.db $52
-	.db $8C
+	.db $FA
+	.db $56
+	.db $8A
 	.db $56
 	.db $8A
 	.db $7E
 	.db $64
-	.db $8C
+	.db $FA
+	.db $60
+	.db $8A
 	.db $60
 	.db $88
 	.db $7E
 	.db $5E
 	.db $60
 	.db $64
-	.db $8C
+	.db $FA
+	.db $60
+	.db $8A
 	.db $60
 	.db $88
 	.db $7E
 	.db $5E
 	.db $60
 	.db $64
-	.db $8C
+	.db $FA
+	.db $60
+	.db $8A
 	.db $60
 	.db $88
 	.db $7E
@@ -308,79 +321,83 @@ MusicDataEnding1_Triangle:
 	.db $72
 
 MusicDataEnding2_Triangle:
-	.db $8C
+	.db $FA
 	.db $48
-	.db $88
-	.db $7E
-	.db $48
-	.db $48
-	.db $3E
-	.db $86
-	.db $46
-	.db $7E
-	.db $46
-	.db $A2
-	.db $3E
-	.db $42
-	.db $46
-	.db $A0
-	.db $48
-	.db $4C
-	.db $50
-	.db $52
-	.db $56
-	.db $5A
-	.db $56
-	.db $5A
-	.db $56
-	.db $5A
-	.db $56
-	.db $5A
-	.db $56
-	.db $5A
-	.db $56
-	.db $5A
-	.db $56
-	.db $5A
-	.db $56
-	.db $5A
-	.db $8C
-	.db $44
-	.db $88
-	.db $7E
-	.db $44
-	.db $44
-	.db $3A
-	.db $86
-	.db $42
-	.db $7E
-	.db $42
-	.db $A2
-	.db $3A
-	.db $3E
-	.db $42
-	.db $A0
-	.db $44
-	.db $48
-	.db $4C
-	.db $50
-	.db $52
-	.db $56
-	.db $52
-	.db $56
-	.db $52
-	.db $56
-	.db $52
-	.db $56
-	.db $52
-	.db $56
-	.db $52
-	.db $56
-	.db $52
-	.db $56
-	.db $52
-	.db $56
 	.db $8A
+	.db $48
+	.db $88
+	.db $7E
+	.db $48
+	.db $48
+	.db $3E
+	.db $86
+	.db $46
+	.db $7E
+	.db $46
+	.db $A2
+	.db $3E
+	.db $42
+	.db $46
+	.db $A0
+	.db $48
+	.db $4C
+	.db $50
+	.db $52
+	.db $56
+	.db $5A
+	.db $56
+	.db $5A
+	.db $56
+	.db $5A
+	.db $56
+	.db $5A
+	.db $56
+	.db $5A
+	.db $56
+	.db $5A
+	.db $56
+	.db $5A
+	.db $56
+	.db $5A
+	.db $FA
+	.db $44
+	.db $8A
+	.db $44
+	.db $88
+	.db $7E
+	.db $44
+	.db $44
+	.db $3A
+	.db $86
+	.db $42
+	.db $7E
+	.db $42
+	.db $A2
+	.db $3A
+	.db $3E
+	.db $42
+	.db $A0
+	.db $44
+	.db $48
+	.db $4C
+	.db $50
+	.db $52
+	.db $56
+	.db $52
+	.db $56
+	.db $52
+	.db $56
+	.db $52
+	.db $56
+	.db $52
+	.db $56
+	.db $52
+	.db $56
+	.db $52
+	.db $56
+	.db $52
+	.db $56
+	.db $FA
 	.db $40
 	.db $A6
 	.db $48
@@ -392,7 +409,7 @@ MusicDataEnding2_Triangle:
 	.db $40
 	.db $40
 	.db $48
-	.db $8A
+	.db $FA
 	.db $48
 	.db $A6
 	.db $48
@@ -401,14 +418,18 @@ MusicDataEnding2_Triangle:
 	.db $AA
 	.db $60
 	.db $68
-	.db $8C
+	.db $FA
+	.db $3A
+	.db $8A
 	.db $3A
 	.db $88
 	.db $7E
 	.db $3A
 	.db $3A
 	.db $42
-	.db $8C
+	.db $FA
+	.db $3A
+	.db $8A
 	.db $3A
 	.db $88
 	.db $7E

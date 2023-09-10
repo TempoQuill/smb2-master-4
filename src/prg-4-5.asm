@@ -1034,6 +1034,8 @@ ProcessMusicQueue_TriangleSkipPitch:
 	BCS ProcessMusicQueue_TriangleMax
 
 	LDA iHillIns
+	CMP #$F0
+	BCS ProcessMusicQueue_TriangleMax
 	CMP #$B0
 	LDA Triangle15Outta16Lengths, Y
 	BCC ProcessMusicQueue_TriangleSetLength
