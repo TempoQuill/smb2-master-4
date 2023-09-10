@@ -350,6 +350,7 @@ ProcessNoiseQueue_Exit:
 .include "src/music/sound-effects/rocket.asm"
 .include "src/music/sound-effects/fireball.asm"
 .include "src/music/sound-effects/wart-bubble.asm"
+.include "src/music/sound-effects/drum-roll.asm"
 .include "src/music/sound-effects/wart-smoke-puff.asm"
 
 NoiseSFX_None:

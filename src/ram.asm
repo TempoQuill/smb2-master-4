@@ -768,6 +768,7 @@ iBackupInput:
 	.dsb 1 ; $0403
 	.dsb 1 ; $0404
 	.dsb 1 ; $0405
+iBonusDrumRoll:
 	.dsb 1 ; $0406
 
 iPlayerXSubpixel:

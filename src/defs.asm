@@ -101,6 +101,65 @@ NUM_MUSIC_TRACKS:
 Music_StopMusic = $FF
 .ende
 
+; pitches
+.enum $0000
+C_:
+	.dsb 2
+C#:
+	.dsb 2
+D_:
+	.dsb 2
+D#:
+	.dsb 2
+E_:
+	.dsb 2
+F_:
+	.dsb 2
+F#:
+	.dsb 2
+G_:
+	.dsb 2
+G#:
+	.dsb 2
+A_:
+	.dsb 2
+A#:
+	.dsb 2
+B_:
+.ende
+
+; note lengths
+.enum $0000
+SIXTEENTH: ; 0
+	.dsb 1
+	.dsb 1
+QUARTER_TRIPLET: ; 2
+	.dsb 1
+	.dsb 1
+EIGHTH: ; 4
+	.dsb 1
+DOTTED_EIGHTH: ; 5
+	.dsb 1
+HALF_TRIPLET: ; 6
+	.dsb 1
+QRT_HF_TIE:
+	.dsb 1
+QUARTER: ; 8
+	.dsb 1
+DOTTED_QUARTER: ; 9
+	.dsb 1
+HALF: ; a
+	.dsb 1
+DOTTED_HALF: ; b
+	.dsb 1
+WHOLE: ; c
+	.dsb 1
+SIXTEENTH_TRIPLET:
+	.dsb 1
+EIGHTH_TRIPLET:
+	.dsb 1
+WHOLE_TRIPLET:
+.ende
 
 ; ---------------------------------------------------------------------------
 
@@ -302,9 +361,9 @@ Noise_OpenHihat:
 	.dsb 1
 Noise_Kick:
 	.dsb 1
-Noise_DoubleSnare:
-	.dsb 1
 Noise_Snare:
+	.dsb 1
+Noise_DoubleSnare:
 	.dsb 1
 NOISE_SFX:
 SoundEffect3_ShortNoise: ; Whale spout
@@ -323,6 +382,7 @@ SoundEffect3_Bubbles:
 	.dsb 1
 SoundEffect3_WartSmokePuff:
 	.dsb 1
+SoundEffect3_DrumRoll:
 NUM_NOISE_TRACKS:
 NUM_NOISE_SFX = NUM_NOISE_TRACKS - NOISE_SFX
 

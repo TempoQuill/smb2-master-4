@@ -1649,6 +1649,8 @@ AddSlotMachineExtraLives:
 loc_BANKF_E8D3:
 	STA iExtraMen
 	STA sExtraMen
+	LDA #0
+	STA iBonusDrumRoll
 	TYA ; Did we actually win any lives?
 	BEQ SlotMachineLoseFanfare ; No, play lose sound effect
 
@@ -2051,6 +2053,29 @@ loc_BANKF_EAC8:
 	BCC loc_BANKF_EAC8
 
 locret_BANKF_EAD1:
+	; eject if noise is playing
+	LDA iCurrentNoiseSFX
+	ORA iBonusDrumRoll
+	BNE CheckStopReel_Eject
+
+	; eject if reels 1 or 2 are active
+	LDA zObjectXLo
+	ORA zObjectXLo + 1
+	BNE CheckStopReel_Eject
+
+	; eject if reels 1 and 2 don't match
+	LDX zObjectXLo + 6
+	LDA iReelBuffer, X
+	LDX zObjectXLo + 7
+	CMP iReelBuffer + 8, X
+	BNE CheckStopReel_Eject
+
+	; Play the drum roll!
+	LDX #SoundEffect3_DrumRoll
+	STX iNoiseSFX
+	INC iBonusDrumRoll
+
+CheckStopReel_Eject:
 	RTS
 
 ; ---------------------------------------------------------------------------
