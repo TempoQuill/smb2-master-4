@@ -1,70 +1,70 @@
 MusicDataSpadeGameFanfare:
 MusicDataSpadeGameFanfare_Square2:
-	.db $88
-	.db $48
-	.db $80
-	.db $48
-	.db $7E
-	.db $48
-	.db $7E
-	.db $88
-	.db $48
-	.db $44
-	.db $44
-	.db $4C
-	.db $8C
-	.db $48
-	.db $00
+	note_type 1, QUARTER
+	note C_, 4
+	note_type 1, SIXTEENTH
+	note C_, 4
+	rest
+	note C_, 4
+	rest
+	note_type 1, QUARTER
+	note C_, 4
+	note A#, 3
+	note A#, 3
+	note D_, 4
+	note_type 1, WHOLE
+	note C_, 4
+	sound_ret
 
 MusicDataSpadeGameFanfare_Square1:
-	.db $88
-	.db $3E
-	.db $80
-	.db $3E
-	.db $7E
-	.db $3E
-	.db $7E
-	.db $88
-	.db $3E
-	.db $3A
-	.db $3A
-	.db $44
-	.db $8C
-	.db $3E
+	note_type 1, QUARTER
+	note G_, 3
+	note_type 1, SIXTEENTH
+	note G_, 3
+	rest
+	note G_, 3
+	rest
+	note_type 1, QUARTER
+	note G_, 3
+	note F_, 3
+	note F_, 3
+	note A#, 3
+	note_type 1, WHOLE
+	note G_, 3
 
 MusicDataSpadeGameFanfare_Triangle:
-	.db $88
-	.db $30
-	.db $B4
-	.db $30
-	.db $30
-	.db $88
-	.db $30
-	.db $30
-	.db $30
-	.db $30
-	.db $8C
-	.db $30
+	note_type 1, QUARTER
+	note C_, 3
+	note_type 4, EIGHTH
+	note C_, 3
+	note C_, 3
+	note_type 1, QUARTER
+	note C_, 3
+	note C_, 3
+	note C_, 3
+	note C_, 3
+	note_type 1, WHOLE
+	note C_, 3
 
 MusicDataSpadeGameFanfare_Noise:
-	.db $8A
-	.db $01
-	.db $8C
-	.db $01
-	.db $01
+	note_type 1, HALF
+	drum_rest
+	note_type 1, WHOLE
+	drum_rest
+	drum_rest
 
 MusicDataSpadeGameFanfare_DPCM:
-	.db $88
-	.db $50
-	.db $80
-	.db $50
-	.db $7E
-	.db $50
-	.db $7E
-	.db $88
-	.db $50
-	.db $4C
-	.db $4C
-	.db $52
-	.db $8C
-	.db $50
+	note_type 1, QUARTER
+	note E_, 4
+	note_type 1, SIXTEENTH
+	note E_, 4
+	rest
+	note E_, 4
+	rest
+	note_type 1, QUARTER
+	note E_, 4
+	note D_, 4
+	note D_, 4
+	note F_, 4
+	note_type 1, WHOLE
+	note E_, 4

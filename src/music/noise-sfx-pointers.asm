@@ -13,6 +13,7 @@ NoiseSFXPointersLo:
 	.db <NoiseSFX_Fireball
 	.db <NoiseSFX_WartBubble
 	.db <NoiseSFX_WartSmokePuff
+	.db <NoiseSFX_DrumRoll
 
 NoiseSFXPointersHi:
 	.db >NoiseDrumData_ClosedHihat
@@ -29,3 +30,4 @@ NoiseSFXPointersHi:
 	.db >NoiseSFX_Fireball
 	.db >NoiseSFX_WartBubble
 	.db >NoiseSFX_WartSmokePuff
+	.db >NoiseSFX_DrumRoll

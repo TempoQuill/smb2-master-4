@@ -1,132 +1,132 @@
 MusicDataEnding3:
 MusicDataEnding3_Square2:
-	.db $FC
-	.db $48
-	.db $48
-	.db $00
+	note_type 8, WHOLE
+	note C_, 4
+	note C_, 4
+	sound_ret
 
 MusicDataEnding4:
 MusicDataEnding4_Square2:
-	.db $FC
-	.db $48
-	.db $7E
-	.db $00
+	note_type 8, WHOLE
+	note C_, 4
+	rest
+	sound_ret
 
 MusicDataEnding3_Square1:
-	.db $FA
-	.db $1E
-	.db $F6
-	.db $1E
-	.db $1E
-	.db $1E
-	.db $FA
-	.db $1C
-	.db $F6
-	.db $1C
-	.db $1C
-	.db $1C
+	note_type 8, HALF
+	note D#, 2
+	note_type 8, HALF_TRIPLET
+	note D#, 2
+	note D#, 2
+	note D#, 2
+	note_type 8, HALF
+	note D_, 2
+	note_type 8, HALF_TRIPLET
+	note D_, 2
+	note D_, 2
+	note D_, 2
 
 MusicDataEnding4_Square1:
-	.db $FA
-	.db $18
-	.db $F4
-	.db $0E
-	.db $7E
-	.db $0E
-	.db $7E
-	.db $0E
-	.db $7E
-	.db $FB
-	.db $0E
+	note_type 8, HALF
+	note C_, 2
+	note_type 8, EIGHTH
+	note G_, 1
+	rest
+	note G_, 1
+	rest
+	note G_, 1
+	rest
+	note_type 8, DOTTED_HALF
+	note G_, 1
 
 MusicDataEnding3_Triangle:
-	.db $8A
-	.db $40
-	.db $86
-	.db $40
-	.db $40
-	.db $40
-	.db $8A
-	.db $3A
-	.db $86
-	.db $3A
-	.db $3A
-	.db $3A
+	note_type 1, HALF
+	note G#, 3
+	note_type 1, HALF_TRIPLET
+	note G#, 3
+	note G#, 3
+	note G#, 3
+	note_type 1, HALF
+	note F_, 3
+	note_type 1, HALF_TRIPLET
+	note F_, 3
+	note F_, 3
+	note F_, 3
 
 MusicDataEnding4_Triangle:
-	.db $8A
-	.db $38
-	.db $84
-	.db $30
-	.db $7E
-	.db $30
-	.db $7E
-	.db $30
-	.db $7E
-	.db $8B
-	.db $30
+	note_type 1, HALF
+	note E_, 3
+	note_type 1, EIGHTH
+	note C_, 3
+	rest
+	note C_, 3
+	rest
+	note C_, 3
+	rest
+	note_type 1, DOTTED_HALF
+	note C_, 3
 
 MusicDataEnding3_Noise:
-	.db $8A
-	.db $0C
-	.db $86
-	.db $0A
-	.db $0A
-	.db $0A
-	.db $8A
-	.db $0C
-	.db $86
-	.db $0A
-	.db $0A
-	.db $0A
+	note_type 1, HALF
+	drum_note Noise_DoubleSnare
+	note_type 1, HALF_TRIPLET
+	drum_note Noise_Snare
+	drum_note Noise_Snare
+	drum_note Noise_Snare
+	note_type 1, HALF
+	drum_note Noise_DoubleSnare
+	note_type 1, HALF_TRIPLET
+	drum_note Noise_Snare
+	drum_note Noise_Snare
+	drum_note Noise_Snare
 
 MusicDataEnding4_Noise:
-	.db $8A
-	.db $0C
-	.db $88
-	.db $0C
-	.db $0C
-	.db $01
-	.db $8B
-	.db $0C
+	note_type 1, HALF
+	drum_note Noise_DoubleSnare
+	note_type 1, QUARTER
+	drum_note Noise_DoubleSnare
+	drum_note Noise_DoubleSnare
+	drum_rest
+	note_type 1, DOTTED_HALF
+	drum_note Noise_DoubleSnare
 
 MusicDataEnding3_DPCM:
-	.db $86
-	.db $10
-	.db $7E
-	.db $7E
-	.db $82
-	.db $10
-	.db $7E
-	.db $10
-	.db $7E
-	.db $10
-	.db $7E
-	.db $86
-	.db $14
-	.db $7E
-	.db $7E
-	.db $82
-	.db $14
-	.db $7E
-	.db $14
-	.db $7E
-	.db $14
-	.db $7E
+	note_type 1, HALF_TRIPLET
+	note G#, 1
+	rest
+	rest
+	note_type 1, QUARTER_TRIPLET
+	note G#, 1
+	rest
+	note G#, 1
+	rest
+	note G#, 1
+	rest
+	note_type 1, HALF_TRIPLET
+	note A#, 1
+	rest
+	rest
+	note_type 1, QUARTER_TRIPLET
+	note A#, 1
+	rest
+	note A#, 1
+	rest
+	note A#, 1
+	rest
 
 MusicDataEnding4_DPCM:
-	.db $86
-	.db $18
-	.db $7E
-	.db $7E
-	.db $84
-	.db $18
-	.db $7E
-	.db $18
-	.db $7E
-	.db $18
-	.db $7E
-	.db $8A
-	.db $18
-	.db $88
-	.db $7E
+	note_type 1, HALF_TRIPLET
+	note C_, 2
+	rest
+	rest
+	note_type 1, EIGHTH
+	note C_, 2
+	rest
+	note C_, 2
+	rest
+	note C_, 2
+	rest
+	note_type 1, HALF
+	note C_, 2
+	note_type 1, QUARTER
+	rest

@@ -1,485 +1,485 @@
 MusicDataOverworld3:
 MusicDataOverworld3_Square2:
-	.db $B6
-	.db $7E
-	.db $50
-	.db $7E
-	.db $56
-	.db $B2
-	.db $7E
-	.db $5A
-	.db $7E
-	.db $BF
-	.db $60
-	.db $B8
-	.db $7E
-	.db $B2
-	.db $5A
-	.db $7E
-	.db $56
-	.db $50
-	.db $7E
-	.db $48
-	.db $4C
-	.db $7E
-	.db $50
-	.db $4C
-	.db $7E
-	.db $50
-	.db $4C
-	.db $7E
-	.db $42
-	.db $7E
-	.db $7E
-	.db $B4
-	.db $4C
-	.db $B2
-	.db $7E
-	.db $B0
-	.db $42
-	.db $4C
-	.db $42
-	.db $4C
-	.db $42
-	.db $4C
-	.db $42
-	.db $4C
-	.db $42
-	.db $4C
-	.db $42
-	.db $4C
-	.db $42
-	.db $4C
-	.db $B2
-	.db $4C
-	.db $7E
-	.db $50
-	.db $4C
-	.db $7E
-	.db $50
-	.db $4C
-	.db $7E
-	.db $B8
-	.db $50
-	.db $5A
-	.db $B2
-	.db $56
-	.db $5A
-	.db $7E
-	.db $56
-	.db $00
+	note_type 4, HALF_TRIPLET
+	rest
+	note E_, 4
+	rest
+	note G_, 4
+	note_type 4, QUARTER_TRIPLET
+	rest
+	note A_, 4
+	rest
+	note_type 4, WHOLE_TRIPLET
+	note C_, 5
+	note_type 4, QUARTER
+	rest
+	note_type 4, QUARTER_TRIPLET
+	note A_, 4
+	rest
+	note G_, 4
+	note E_, 4
+	rest
+	note C_, 4
+	note D_, 4
+	rest
+	note E_, 4
+	note D_, 4
+	rest
+	note E_, 4
+	note D_, 4
+	rest
+	note A_, 3
+	rest
+	rest
+	note_type 4, EIGHTH
+	note D_, 4
+	note_type 4, QUARTER_TRIPLET
+	rest
+	note_type 4, SIXTEENTH
+	note A_, 3
+	note D_, 4
+	note A_, 3
+	note D_, 4
+	note A_, 3
+	note D_, 4
+	note A_, 3
+	note D_, 4
+	note A_, 3
+	note D_, 4
+	note A_, 3
+	note D_, 4
+	note A_, 3
+	note D_, 4
+	note_type 4, QUARTER_TRIPLET
+	note D_, 4
+	rest
+	note E_, 4
+	note D_, 4
+	rest
+	note E_, 4
+	note D_, 4
+	rest
+	note_type 4, QUARTER
+	note E_, 4
+	note A_, 4
+	note_type 4, QUARTER_TRIPLET
+	note G_, 4
+	note A_, 4
+	rest
+	note G_, 4
+	sound_ret
 
 MusicDataOverworld4:
 MusicDataOverworld4_Square2:
-	.db $B2
-	.db $50
-	.db $7E
-	.db $4C
-	.db $48
-	.db $7E
-	.db $BF
-	.db $50
-	.db $B0
-	.db $3E
-	.db $50
-	.db $3E
-	.db $50
-	.db $3E
-	.db $50
-	.db $3E
-	.db $50
-	.db $3E
-	.db $50
-	.db $3E
-	.db $50
-	.db $B6
-	.db $7E
-	.db $56
-	.db $4E
-	.db $46
-	.db $42
-	.db $3E
-	.db $00
+	note_type 4, QUARTER_TRIPLET
+	note E_, 4
+	rest
+	note D_, 4
+	note C_, 4
+	rest
+	note_type 4, WHOLE_TRIPLET
+	note E_, 4
+	note_type 4, SIXTEENTH
+	note G_, 3
+	note E_, 4
+	note G_, 3
+	note E_, 4
+	note G_, 3
+	note E_, 4
+	note G_, 3
+	note E_, 4
+	note G_, 3
+	note E_, 4
+	note G_, 3
+	note E_, 4
+	note_type 4, HALF_TRIPLET
+	rest
+	note G_, 4
+	note D#, 4
+	note B_, 3
+	note A_, 3
+	note G_, 3
+	sound_ret
 
 MusicDataOverworld3_Square1:
-	.db $B6
-	.db $7E
-	.db $B2
-	.db $3E
-	.db $A4
-	.db $26
-	.db $7E
-	.db $B6
-	.db $48
-	.db $B2
-	.db $7E
-	.db $50
-	.db $7E
-	.db $BF
-	.db $56
-	.db $A4
-	.db $26
-	.db $7E
-	.db $B2
-	.db $50
-	.db $7E
-	.db $48
-	.db $42
-	.db $7E
-	.db $3E
-	.db $3C
-	.db $7E
-	.db $3E
-	.db $3C
-	.db $7E
-	.db $3E
-	.db $3C
-	.db $7E
-	.db $34
-	.db $A4
-	.db $2A
-	.db $AE
-	.db $7E
-	.db $B4
-	.db $3C
-	.db $B2
-	.db $7E
-	.db $B0
-	.db $34
-	.db $3C
-	.db $34
-	.db $3C
-	.db $34
-	.db $3C
-	.db $34
-	.db $3C
-	.db $34
-	.db $3C
-	.db $34
-	.db $3C
-	.db $34
-	.db $3C
-	.db $B2
-	.db $3A
-	.db $7E
-	.db $3E
-	.db $3A
-	.db $7E
-	.db $3E
-	.db $3A
-	.db $7E
-	.db $3E
-	.db $A4
-	.db $2A
-	.db $AE
-	.db $7E
-	.db $B8
-	.db $48
-	.db $B2
-	.db $46
-	.db $48
-	.db $7E
-	.db $46
+	note_type 4, HALF_TRIPLET
+	rest
+	note_type 4, QUARTER_TRIPLET
+	note G_, 3
+	note_type 3, EIGHTH
+	note G_, 2
+	rest
+	note_type 4, HALF_TRIPLET
+	note C_, 4
+	note_type 4, QUARTER_TRIPLET
+	rest
+	note E_, 4
+	rest
+	note_type 4, WHOLE_TRIPLET
+	note G_, 4
+	note_type 3, EIGHTH
+	note G_, 2
+	rest
+	note_type 4, QUARTER_TRIPLET
+	note E_, 4
+	rest
+	note C_, 4
+	note A_, 3
+	rest
+	note G_, 3
+	note F#, 3
+	rest
+	note G_, 3
+	note F#, 3
+	rest
+	note G_, 3
+	note F#, 3
+	rest
+	note D_, 3
+	note_type 3, EIGHTH
+	note A_, 2
+	note_type 3, EIGHTH_TRIPLET
+	rest
+	note_type 4, EIGHTH
+	note F#, 3
+	note_type 4, QUARTER_TRIPLET
+	rest
+	note_type 4, SIXTEENTH
+	note D_, 3
+	note F#, 3
+	note D_, 3
+	note F#, 3
+	note D_, 3
+	note F#, 3
+	note D_, 3
+	note F#, 3
+	note D_, 3
+	note F#, 3
+	note D_, 3
+	note F#, 3
+	note D_, 3
+	note F#, 3
+	note_type 4, QUARTER_TRIPLET
+	note F_, 3
+	rest
+	note G_, 3
+	note F_, 3
+	rest
+	note G_, 3
+	note F_, 3
+	rest
+	note G_, 3
+	note_type 3, EIGHTH
+	note A_, 2
+	note_type 3, EIGHTH_TRIPLET
+	rest
+	note_type 4, QUARTER
+	note C_, 4
+	note_type 4, QUARTER_TRIPLET
+	note B_, 3
+	note C_, 4
+	rest
+	note B_, 3
 
 MusicDataOverworld4_Square1:
-	.db $B2
-	.db $3E
-	.db $7E
-	.db $3A
-	.db $38
-	.db $7E
-	.db $BF
-	.db $48
-	.db $B0
-	.db $38
-	.db $48
-	.db $38
-	.db $48
-	.db $38
-	.db $48
-	.db $38
-	.db $48
-	.db $38
-	.db $48
-	.db $38
-	.db $48
-	.db $A4
-	.db $2E
-	.db $AE
-	.db $7E
-	.db $B2
-	.db $46
-	.db $A2
-	.db $2E
-	.db $B6
-	.db $42
-	.db $3E
-	.db $B2
-	.db $3A
-	.db $A2
-	.db $2E
-	.db $B6
-	.db $36
+	note_type 4, QUARTER_TRIPLET
+	note G_, 3
+	rest
+	note F_, 3
+	note E_, 3
+	rest
+	note_type 4, WHOLE_TRIPLET
+	note C_, 4
+	note_type 4, SIXTEENTH
+	note E_, 3
+	note C_, 4
+	note E_, 3
+	note C_, 4
+	note E_, 3
+	note C_, 4
+	note E_, 3
+	note C_, 4
+	note E_, 3
+	note C_, 4
+	note E_, 3
+	note C_, 4
+	note_type 3, EIGHTH
+	note B_, 2
+	note_type 3, EIGHTH_TRIPLET
+	rest
+	note_type 4, QUARTER_TRIPLET
+	note B_, 3
+	note_type 3, QUARTER_TRIPLET
+	note B_, 2
+	note_type 4, HALF_TRIPLET
+	note A_, 3
+	note G_, 3
+	note_type 4, QUARTER_TRIPLET
+	note F_, 3
+	note_type 3, QUARTER_TRIPLET
+	note B_, 2
+	note_type 4, HALF_TRIPLET
+	note D#, 3
 
 MusicDataOverworld3_Triangle:
-	.db $88
-	.db $7E
-	.db $84
-	.db $68
-	.db $89
-	.db $7E
-	.db $84
-	.db $68
-	.db $89
-	.db $7E
-	.db $84
-	.db $68
-	.db $89
-	.db $7E
-	.db $82
-	.db $68
-	.db $7E
-	.db $68
-	.db $88
-	.db $7E
-	.db $84
-	.db $6C
-	.db $89
-	.db $7E
-	.db $84
-	.db $6C
-	.db $89
-	.db $7E
-	.db $84
-	.db $6C
-	.db $89
-	.db $7E
-	.db $82
-	.db $6C
-	.db $7E
-	.db $6C
-	.db $88
-	.db $7E
-	.db $84
-	.db $6A
-	.db $89
-	.db $7E
-	.db $84
-	.db $6A
-	.db $89
-	.db $7E
-	.db $84
-	.db $6A
-	.db $7E
+	note_type 1, QUARTER
+	rest
+	note_type 1, EIGHTH
+	note E_, 5
+	note_type 1, DOTTED_QUARTER
+	rest
+	note_type 1, EIGHTH
+	note E_, 5
+	note_type 1, DOTTED_QUARTER
+	rest
+	note_type 1, EIGHTH
+	note E_, 5
+	note_type 1, DOTTED_QUARTER
+	rest
+	note_type 1, QUARTER_TRIPLET
+	note E_, 5
+	rest
+	note E_, 5
+	note_type 1, QUARTER
+	rest
+	note_type 1, EIGHTH
+	note F#, 5
+	note_type 1, DOTTED_QUARTER
+	rest
+	note_type 1, EIGHTH
+	note F#, 5
+	note_type 1, DOTTED_QUARTER
+	rest
+	note_type 1, EIGHTH
+	note F#, 5
+	note_type 1, DOTTED_QUARTER
+	rest
+	note_type 1, QUARTER_TRIPLET
+	note F#, 5
+	rest
+	note F#, 5
+	note_type 1, QUARTER
+	rest
+	note_type 1, EIGHTH
+	note F_, 5
+	note_type 1, DOTTED_QUARTER
+	rest
+	note_type 1, EIGHTH
+	note F_, 5
+	note_type 1, DOTTED_QUARTER
+	rest
+	note_type 1, EIGHTH
+	note F_, 5
+	rest
 
 MusicDataOverworld4_Triangle:
-	.db $88
-	.db $7E
-	.db $82
-	.db $6A
-	.db $7E
-	.db $6A
-	.db $88
-	.db $7E
-	.db $84
-	.db $68
-	.db $89
-	.db $7E
-	.db $84
-	.db $68
-	.db $7E
-	.db $66
-	.db $7E
-	.db $66
-	.db $7E
-	.db $66
-	.db $7E
-	.db $66
-	.db $7E
+	note_type 1, QUARTER
+	rest
+	note_type 1, QUARTER_TRIPLET
+	note F_, 5
+	rest
+	note F_, 5
+	note_type 1, QUARTER
+	rest
+	note_type 1, EIGHTH
+	note E_, 5
+	note_type 1, DOTTED_QUARTER
+	rest
+	note_type 1, EIGHTH
+	note E_, 5
+	rest
+	note D#, 5
+	rest
+	note D#, 5
+	rest
+	note D#, 5
+	rest
+	note D#, 5
+	rest
 
 MusicDataOverworld3_Noise:
-	.db $88
-	.db $08
-	.db $85
-	.db $0A
-	.db $80
-	.db $08
-	.db $88
-	.db $08
-	.db $85
-	.db $0A
-	.db $80
-	.db $08
-	.db $88
-	.db $08
-	.db $85
-	.db $0A
-	.db $80
-	.db $08
-	.db $82
-	.db $08
-	.db $01
-	.db $0A
-	.db $88
-	.db $0A
-	.db $08
-	.db $85
-	.db $0A
-	.db $80
-	.db $08
-	.db $88
-	.db $08
-	.db $85
-	.db $0A
-	.db $80
-	.db $08
-	.db $88
-	.db $08
-	.db $85
-	.db $0A
-	.db $80
-	.db $08
-	.db $82
-	.db $08
-	.db $01
-	.db $0A
-	.db $88
-	.db $0A
-	.db $08
-	.db $85
-	.db $0A
-	.db $80
-	.db $08
-	.db $88
-	.db $08
-	.db $0A
-	.db $08
-	.db $85
-	.db $0A
-	.db $80
-	.db $08
+	note_type 1, QUARTER
+	drum_note Noise_Kick
+	note_type 1, DOTTED_EIGHTH
+	drum_note Noise_Snare
+	note_type 1, SIXTEENTH
+	drum_note Noise_Kick
+	note_type 1, QUARTER
+	drum_note Noise_Kick
+	note_type 1, DOTTED_EIGHTH
+	drum_note Noise_Snare
+	note_type 1, SIXTEENTH
+	drum_note Noise_Kick
+	note_type 1, QUARTER
+	drum_note Noise_Kick
+	note_type 1, DOTTED_EIGHTH
+	drum_note Noise_Snare
+	note_type 1, SIXTEENTH
+	drum_note Noise_Kick
+	note_type 1, QUARTER_TRIPLET
+	drum_note Noise_Kick
+	drum_rest
+	drum_note Noise_Snare
+	note_type 1, QUARTER
+	drum_note Noise_Snare
+	drum_note Noise_Kick
+	note_type 1, DOTTED_EIGHTH
+	drum_note Noise_Snare
+	note_type 1, SIXTEENTH
+	drum_note Noise_Kick
+	note_type 1, QUARTER
+	drum_note Noise_Kick
+	note_type 1, DOTTED_EIGHTH
+	drum_note Noise_Snare
+	note_type 1, SIXTEENTH
+	drum_note Noise_Kick
+	note_type 1, QUARTER
+	drum_note Noise_Kick
+	note_type 1, DOTTED_EIGHTH
+	drum_note Noise_Snare
+	note_type 1, SIXTEENTH
+	drum_note Noise_Kick
+	note_type 1, QUARTER_TRIPLET
+	drum_note Noise_Kick
+	drum_rest
+	drum_note Noise_Snare
+	note_type 1, QUARTER
+	drum_note Noise_Snare
+	drum_note Noise_Kick
+	note_type 1, DOTTED_EIGHTH
+	drum_note Noise_Snare
+	note_type 1, SIXTEENTH
+	drum_note Noise_Kick
+	note_type 1, QUARTER
+	drum_note Noise_Kick
+	drum_note Noise_Snare
+	drum_note Noise_Kick
+	note_type 1, DOTTED_EIGHTH
+	drum_note Noise_Snare
+	note_type 1, SIXTEENTH
+	drum_note Noise_Kick
 
 MusicDataOverworld4_Noise:
-	.db $88
-	.db $08
-	.db $0A
-	.db $08
-	.db $85
-	.db $0A
-	.db $80
-	.db $08
-	.db $82
-	.db $08
-	.db $01
-	.db $0A
-	.db $88
-	.db $0A
-	.db $08
-	.db $85
-	.db $0A
-	.db $80
-	.db $08
-	.db $88
-	.db $08
-	.db $0A
+	note_type 1, QUARTER
+	drum_note Noise_Kick
+	drum_note Noise_Snare
+	drum_note Noise_Kick
+	note_type 1, DOTTED_EIGHTH
+	drum_note Noise_Snare
+	note_type 1, SIXTEENTH
+	drum_note Noise_Kick
+	note_type 1, QUARTER_TRIPLET
+	drum_note Noise_Kick
+	drum_rest
+	drum_note Noise_Snare
+	note_type 1, QUARTER
+	drum_note Noise_Snare
+	drum_note Noise_Kick
+	note_type 1, DOTTED_EIGHTH
+	drum_note Noise_Snare
+	note_type 1, SIXTEENTH
+	drum_note Noise_Kick
+	note_type 1, QUARTER
+	drum_note Noise_Kick
+	drum_note Noise_Snare
 
 MusicDataOverworld3_DPCM:
-	.db $82
-	.db $18
-	.db $7E
-	.db $7E
-	.db $1C
-	.db $7E
-	.db $7E
-	.db $20
-	.db $7E
-	.db $7E
-	.db $26
-	.db $7E
-	.db $7E
-	.db $2A
-	.db $7E
-	.db $7E
-	.db $26
-	.db $7E
-	.db $7E
-	.db $20
-	.db $7E
-	.db $7E
-	.db $18
-	.db $7E
-	.db $7E
-	.db $1C
-	.db $7E
-	.db $7E
-	.db $20
-	.db $7E
-	.db $7E
-	.db $24
-	.db $7E
-	.db $7E
-	.db $12
-	.db $7E
-	.db $7E
-	.db $1C
-	.db $7E
-	.db $20
-	.db $18
-	.db $7E
-	.db $7E
-	.db $16
-	.db $7E
-	.db $7E
-	.db $12
-	.db $7E
-	.db $7E
-	.db $0E
-	.db $7E
-	.db $7E
-	.db $26
-	.db $7E
-	.db $7E
-	.db $22
-	.db $7E
-	.db $7E
-	.db $1C
-	.db $7E
-	.db $7E
-	.db $16
-	.db $7E
-	.db $7E
-	.db $0E
-	.db $7E
-	.db $7E
+	note_type 1, QUARTER_TRIPLET
+	note C_, 2
+	rest
+	rest
+	note D_, 2
+	rest
+	rest
+	note E_, 2
+	rest
+	rest
+	note G_, 2
+	rest
+	rest
+	note A_, 2
+	rest
+	rest
+	note G_, 2
+	rest
+	rest
+	note E_, 2
+	rest
+	rest
+	note C_, 2
+	rest
+	rest
+	note D_, 2
+	rest
+	rest
+	note E_, 2
+	rest
+	rest
+	note F#, 2
+	rest
+	rest
+	note A_, 1
+	rest
+	rest
+	note D_, 2
+	rest
+	note E_, 2
+	note C_, 2
+	rest
+	rest
+	note B_, 1
+	rest
+	rest
+	note A_, 1
+	rest
+	rest
+	note G_, 1
+	rest
+	rest
+	note G_, 2
+	rest
+	rest
+	note F_, 2
+	rest
+	rest
+	note D_, 2
+	rest
+	rest
+	note B_, 1
+	rest
+	rest
+	note G_, 1
+	rest
+	rest
 
 MusicDataOverworld4_DPCM:
-	.db $12
-	.db $7E
-	.db $7E
-	.db $16
-	.db $7E
-	.db $7E
-	.db $18
-	.db $7E
-	.db $7E
-	.db $1A
-	.db $7E
-	.db $7E
-	.db $1C
-	.db $7E
-	.db $7E
-	.db $1E
-	.db $7E
-	.db $7E
-	.db $20
-	.db $7E
-	.db $16
-	.db $12
-	.db $7E
-	.db $7E
-	.db $0E
-	.db $7E
-	.db $7E
-	.db $16
-	.db $7E
-	.db $7E
+	note A_, 1
+	rest
+	rest
+	note B_, 1
+	rest
+	rest
+	note C_, 2
+	rest
+	rest
+	note C#, 2
+	rest
+	rest
+	note D_, 2
+	rest
+	rest
+	note D#, 2
+	rest
+	rest
+	note E_, 2
+	rest
+	note B_, 1
+	note A_, 1
+	rest
+	rest
+	note G_, 1
+	rest
+	rest
+	note B_, 1
+	rest
+	rest

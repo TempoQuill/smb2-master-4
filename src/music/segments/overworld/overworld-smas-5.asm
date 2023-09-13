@@ -1,694 +1,694 @@
 MusicDataOverworld5:
 MusicDataOverworld5_Square2:
-	.db $B2
-	.db $5A
-	.db $7E
-	.db $56
-	.db $50
-	.db $7E
-	.db $BF
-	.db $48
-	.db $BA
-	.db $7E
-	.db $B2
-	.db $52
-	.db $7E
-	.db $B8
-	.db $50
-	.db $7E
-	.db $50
-	.db $7E
-	.db $50
-	.db $B2
-	.db $52
-	.db $4E
-	.db $7E
-	.db $50
-	.db $52
-	.db $7E
-	.db $4E
-	.db $50
-	.db $7E
-	.db $BF
-	.db $5E
-	.db $B8
-	.db $58
-	.db $52
-	.db $50
-	.db $B2
-	.db $4C
-	.db $BE
-	.db $50
-	.db $4C
-	.db $B2
-	.db $48
-	.db $46
-	.db $7E
-	.db $48
-	.db $4C
-	.db $7E
-	.db $48
-	.db $46
-	.db $7E
-	.db $BA
-	.db $48
-	.db $B2
-	.db $48
-	.db $B8
-	.db $46
-	.db $48
-	.db $B6
-	.db $7E
-	.db $BF
-	.db $4C
-	.db $B8
-	.db $4A
-	.db $B6
-	.db $4C
-	.db $BF
-	.db $5A
-	.db $B8
-	.db $54
-	.db $56
-	.db $5A
-	.db $BF
-	.db $5E
-	.db $B2
-	.db $7E
-	.db $5E
-	.db $BF
-	.db $5A
-	.db $B2
-	.db $7E
-	.db $5A
-	.db $BF
-	.db $58
-	.db $B2
-	.db $7E
-	.db $58
-	.db $56
-	.db $7E
-	.db $BF
-	.db $7E
-	.db $00
+	note_type 4, QUARTER_TRIPLET
+	note A_, 4
+	rest
+	note G_, 4
+	note E_, 4
+	rest
+	note_type 4, WHOLE_TRIPLET
+	note C_, 4
+	note_type 4, HALF
+	rest
+	note_type 4, QUARTER_TRIPLET
+	note F_, 4
+	rest
+	note_type 4, QUARTER
+	note E_, 4
+	rest
+	note E_, 4
+	rest
+	note E_, 4
+	note_type 4, QUARTER_TRIPLET
+	note F_, 4
+	note D#, 4
+	rest
+	note E_, 4
+	note F_, 4
+	rest
+	note D#, 4
+	note E_, 4
+	rest
+	note_type 4, WHOLE_TRIPLET
+	note B_, 4
+	note_type 4, QUARTER
+	note G#, 4
+	note F_, 4
+	note E_, 4
+	note_type 4, QUARTER_TRIPLET
+	note D_, 4
+	note_type 4, EIGHTH_TRIPLET
+	note E_, 4
+	note D_, 4
+	note_type 4, QUARTER_TRIPLET
+	note C_, 4
+	note B_, 3
+	rest
+	note C_, 4
+	note D_, 4
+	rest
+	note C_, 4
+	note B_, 3
+	rest
+	note_type 4, HALF
+	note C_, 4
+	note_type 4, QUARTER_TRIPLET
+	note C_, 4
+	note_type 4, QUARTER
+	note B_, 3
+	note C_, 4
+	note_type 4, HALF_TRIPLET
+	rest
+	note_type 4, WHOLE_TRIPLET
+	note D_, 4
+	note_type 4, QUARTER
+	note C#, 4
+	note_type 4, HALF_TRIPLET
+	note D_, 4
+	note_type 4, WHOLE_TRIPLET
+	note A_, 4
+	note_type 4, QUARTER
+	note F#, 4
+	note G_, 4
+	note A_, 4
+	note_type 4, WHOLE_TRIPLET
+	note B_, 4
+	note_type 4, QUARTER_TRIPLET
+	rest
+	note B_, 4
+	note_type 4, WHOLE_TRIPLET
+	note A_, 4
+	note_type 4, QUARTER_TRIPLET
+	rest
+	note A_, 4
+	note_type 4, WHOLE_TRIPLET
+	note G#, 4
+	note_type 4, QUARTER_TRIPLET
+	rest
+	note G#, 4
+	note G_, 4
+	rest
+	note_type 4, WHOLE_TRIPLET
+	rest
+	sound_ret
 MusicDataOverworld5_Square1:
-	.db $B2
-	.db $48
-	.db $7E
-	.db $46
-	.db $3E
-	.db $7E
-	.db $BF
-	.db $38
-	.db $A4
-	.db $30
-	.db $AE
-	.db $7E
-	.db $B2
-	.db $3C
-	.db $3E
-	.db $7E
-	.db $40
-	.db $42
-	.db $7E
-	.db $48
-	.db $A4
-	.db $30
-	.db $AE
-	.db $7E
-	.db $B8
-	.db $7E
-	.db $48
-	.db $7E
-	.db $38
-	.db $B2
-	.db $3A
-	.db $36
-	.db $7E
-	.db $38
-	.db $3A
-	.db $7E
-	.db $36
-	.db $38
-	.db $7E
-	.db $BF
-	.db $46
-	.db $B8
-	.db $40
-	.db $3A
-	.db $38
-	.db $B2
-	.db $34
-	.db $BE
-	.db $38
-	.db $34
-	.db $B2
-	.db $30
-	.db $2E
-	.db $7E
-	.db $30
-	.db $34
-	.db $7E
-	.db $30
-	.db $2E
-	.db $7E
-	.db $BA
-	.db $30
-	.db $B2
-	.db $30
-	.db $B8
-	.db $2E
-	.db $30
-	.db $B6
-	.db $7E
-	.db $BF
-	.db $34
-	.db $B8
-	.db $32
-	.db $B6
-	.db $34
-	.db $BF
-	.db $42
-	.db $B8
-	.db $3C
-	.db $3E
-	.db $42
-	.db $B2
-	.db $46
-	.db $7E
-	.db $44
-	.db $46
-	.db $7E
-	.db $46
-	.db $42
-	.db $7E
-	.db $40
-	.db $42
-	.db $7E
-	.db $42
-	.db $40
-	.db $7E
-	.db $3E
-	.db $40
-	.db $7E
-	.db $40
-	.db $3E
-	.db $7E
-	.db $4C
-	.db $46
-	.db $7E
-	.db $3E
+	note_type 4, QUARTER_TRIPLET
+	note C_, 4
+	rest
+	note B_, 3
+	note G_, 3
+	rest
+	note_type 4, WHOLE_TRIPLET
+	note E_, 3
+	note_type 3, EIGHTH
+	note C_, 3
+	note_type 3, EIGHTH_TRIPLET
+	rest
+	note_type 4, QUARTER_TRIPLET
+	note F#, 3
+	note G_, 3
+	rest
+	note G#, 3
+	note A_, 3
+	rest
+	note C_, 4
+	note_type 3, EIGHTH
+	note C_, 3
+	note_type 3, EIGHTH_TRIPLET
+	rest
+	note_type 4, QUARTER
+	rest
+	note C_, 4
+	rest
+	note E_, 3
+	note_type 4, QUARTER_TRIPLET
+	note F_, 3
+	note D#, 3
+	rest
+	note E_, 3
+	note F_, 3
+	rest
+	note D#, 3
+	note E_, 3
+	rest
+	note_type 4, WHOLE_TRIPLET
+	note B_, 3
+	note_type 4, QUARTER
+	note G#, 3
+	note F_, 3
+	note E_, 3
+	note_type 4, QUARTER_TRIPLET
+	note D_, 3
+	note_type 4, EIGHTH_TRIPLET
+	note E_, 3
+	note D_, 3
+	note_type 4, QUARTER_TRIPLET
+	note C_, 3
+	note B_, 2
+	rest
+	note C_, 3
+	note D_, 3
+	rest
+	note C_, 3
+	note B_, 2
+	rest
+	note_type 4, HALF
+	note C_, 3
+	note_type 4, QUARTER_TRIPLET
+	note C_, 3
+	note_type 4, QUARTER
+	note B_, 2
+	note C_, 3
+	note_type 4, HALF_TRIPLET
+	rest
+	note_type 4, WHOLE_TRIPLET
+	note D_, 3
+	note_type 4, QUARTER
+	note C#, 3
+	note_type 4, HALF_TRIPLET
+	note D_, 3
+	note_type 4, WHOLE_TRIPLET
+	note A_, 3
+	note_type 4, QUARTER
+	note F#, 3
+	note G_, 3
+	note A_, 3
+	note_type 4, QUARTER_TRIPLET
+	note B_, 3
+	rest
+	note A#, 3
+	note B_, 3
+	rest
+	note B_, 3
+	note A_, 3
+	rest
+	note G#, 3
+	note A_, 3
+	rest
+	note A_, 3
+	note G#, 3
+	rest
+	note G_, 3
+	note G#, 3
+	rest
+	note G#, 3
+	note G_, 3
+	rest
+	note D_, 4
+	note B_, 3
+	rest
+	note G_, 3
 
 MusicDataOverworld5_Triangle:
-	.db $88
-	.db $7E
-	.db $82
-	.db $6A
-	.db $7E
-	.db $6A
-	.db $88
-	.db $7E
-	.db $84
-	.db $68
-	.db $89
-	.db $7E
-	.db $84
-	.db $6A
-	.db $7E
-	.db $68
-	.db $7E
-	.db $86
-	.db $7E
-	.db $84
-	.db $68
-	.db $7E
-	.db $8F
-	.db $7E
-	.db $86
-	.db $7E
-	.db $80
-	.db $7E
-	.db $8E ; down
-	.db $4C
-	.db $58
-	.db $82
-	.db $7E
-	.db $8D ; up
-	.db $58
-	.db $4C
-	.db $88
-	.db $7E
-	.db $8E
-	.db $7E
-	.db $8E ; down
-	.db $4C
-	.db $58
-	.db $82
-	.db $7E
-	.db $8D ; up
-	.db $58
-	.db $4C
-	.db $89
-	.db $7E
-	.db $8D ; down
-	.db $4C
-	.db $58
-	.db $7E
-	.db $7E
-	.db $8D ; up
-	.db $58
-	.db $4C
-	.db $7E
-	.db $7E
-	.db $8E ; down
-	.db $4C
-	.db $58
-	.db $82
-	.db $7E
-	.db $8D ; up
-	.db $58
-	.db $4C
-	.db $8E
-	.db $7E
-	.db $8E ; down
-	.db $4C
-	.db $58
-	.db $82
-	.db $7E
-	.db $8D ; up
-	.db $58
-	.db $4C
-	.db $80
-	.db $7E
-	.db $86
-	.db $7E
-	.db $80
-	.db $7E
-	.db $8E ; down
-	.db $48
-	.db $5A
-	.db $82
-	.db $7E
-	.db $8D ; up
-	.db $5A
-	.db $48
-	.db $88
-	.db $7E
-	.db $8E
-	.db $7E
-	.db $8E ; down
-	.db $48
-	.db $5A
-	.db $82
-	.db $7E
-	.db $8D ; up
-	.db $5A
-	.db $48
-	.db $89
-	.db $7E
-	.db $8D ; down
-	.db $48
-	.db $5A
-	.db $7E
-	.db $7E
-	.db $8D ; up
-	.db $5A
-	.db $48
-	.db $7E
-	.db $7E
-	.db $8E ; down
-	.db $48
-	.db $5A
-	.db $82
-	.db $7E
-	.db $8D ; up
-	.db $5A
-	.db $48
-	.db $8E
-	.db $7E
-	.db $8E ; down
-	.db $48
-	.db $5A
-	.db $82
-	.db $7E
-	.db $8D ; up
-	.db $5A
-	.db $48
-	.db $80
-	.db $7E
-	.db $86
-	.db $7E
-	.db $80
-	.db $7E
-	.db $8E ; down
-	.db $4C
-	.db $5A
-	.db $82
-	.db $7E
-	.db $8D ; up
-	.db $5A
-	.db $4C
-	.db $88
-	.db $7E
-	.db $8E
-	.db $7E
-	.db $8E ; down
-	.db $4C
-	.db $5A
-	.db $82
-	.db $7E
-	.db $8D ; up
-	.db $5A
-	.db $4C
-	.db $89
-	.db $7E
-	.db $8D ; down
-	.db $4C
-	.db $5A
-	.db $7E
-	.db $7E
-	.db $8D ; up
-	.db $5A
-	.db $4C
-	.db $7E
-	.db $7E
-	.db $8E ; down
-	.db $4C
-	.db $5A
-	.db $82
-	.db $7E
-	.db $8D ; up
-	.db $5A
-	.db $4C
-	.db $8E
-	.db $7E
-	.db $8E ; down
-	.db $4C
-	.db $5A
-	.db $82
-	.db $7E
-	.db $8D ; up
-	.db $5A
-	.db $4C
-	.db $80
-	.db $7E
-	.db $86
-	.db $7E
-	.db $80
-	.db $7E
-	.db $8E ; down
-	.db $46
-	.db $56
-	.db $82
-	.db $7E
-	.db $8D ; up
-	.db $56
-	.db $46
-	.db $88
-	.db $7E
-	.db $8E
-	.db $7E
-	.db $8E ; down
-	.db $42
-	.db $52
-	.db $82
-	.db $7E
-	.db $8D ; up
-	.db $52
-	.db $42
-	.db $89
-	.db $7E
-	.db $8D ; down
-	.db $40
-	.db $52
-	.db $7E
-	.db $7E
-	.db $8D ; up
-	.db $52
-	.db $40
-	.db $7E
-	.db $7E
-	.db $8E ; down
-	.db $3E
-	.db $52
-	.db $82
-	.db $7E
-	.db $8D ; up
-	.db $52
-	.db $3E
-	.db $8E
-	.db $7E
-	.db $8E ; down
-	.db $3E
-	.db $52
-	.db $82
-	.db $7E
-	.db $8D ; up
-	.db $52
-	.db $3E
-	.db $80
-	.db $7E
+	note_type 1, QUARTER
+	rest
+	note_type 1, QUARTER_TRIPLET
+	note F_, 5
+	rest
+	note F_, 5
+	note_type 1, QUARTER
+	rest
+	note_type 1, EIGHTH
+	note E_, 5
+	note_type 1, DOTTED_QUARTER
+	rest
+	note_type 1, EIGHTH
+	note F_, 5
+	rest
+	note E_, 5
+	rest
+	note_type 1, HALF_TRIPLET
+	rest
+	note_type 1, EIGHTH
+	note E_, 5
+	rest
+	note_type 1, WHOLE_TRIPLET
+	rest
+	note_type 1, HALF_TRIPLET
+	rest
+	note_type 1, SIXTEENTH
+	rest
+	note_type 1, EIGHTH_TRIPLET
+	note D_, 4
+	note G#, 4
+	note_type 1, QUARTER_TRIPLET
+	rest
+	note_type 1, SIXTEENTH_TRIPLET
+	note G#, 4
+	note D_, 4
+	note_type 1, QUARTER
+	rest
+	note_type 1, EIGHTH_TRIPLET
+	rest
+	note_type 1, EIGHTH_TRIPLET
+	note D_, 4
+	note G#, 4
+	note_type 1, QUARTER_TRIPLET
+	rest
+	note_type 1, SIXTEENTH_TRIPLET
+	note G#, 4
+	note D_, 4
+	note_type 1, DOTTED_QUARTER
+	rest
+	note_type 1, SIXTEENTH_TRIPLET
+	note D_, 4
+	note G#, 4
+	rest
+	rest
+	note_type 1, SIXTEENTH_TRIPLET
+	note G#, 4
+	note D_, 4
+	rest
+	rest
+	note_type 1, EIGHTH_TRIPLET
+	note D_, 4
+	note G#, 4
+	note_type 1, QUARTER_TRIPLET
+	rest
+	note_type 1, SIXTEENTH_TRIPLET
+	note G#, 4
+	note D_, 4
+	note_type 1, EIGHTH_TRIPLET
+	rest
+	note_type 1, EIGHTH_TRIPLET
+	note D_, 4
+	note G#, 4
+	note_type 1, QUARTER_TRIPLET
+	rest
+	note_type 1, SIXTEENTH_TRIPLET
+	note G#, 4
+	note D_, 4
+	note_type 1, SIXTEENTH
+	rest
+	note_type 1, HALF_TRIPLET
+	rest
+	note_type 1, SIXTEENTH
+	rest
+	note_type 1, EIGHTH_TRIPLET
+	note C_, 4
+	note A_, 4
+	note_type 1, QUARTER_TRIPLET
+	rest
+	note_type 1, SIXTEENTH_TRIPLET
+	note A_, 4
+	note C_, 4
+	note_type 1, QUARTER
+	rest
+	note_type 1, EIGHTH_TRIPLET
+	rest
+	note_type 1, EIGHTH_TRIPLET
+	note C_, 4
+	note A_, 4
+	note_type 1, QUARTER_TRIPLET
+	rest
+	note_type 1, SIXTEENTH_TRIPLET
+	note A_, 4
+	note C_, 4
+	note_type 1, DOTTED_QUARTER
+	rest
+	note_type 1, SIXTEENTH_TRIPLET
+	note C_, 4
+	note A_, 4
+	rest
+	rest
+	note_type 1, SIXTEENTH_TRIPLET
+	note A_, 4
+	note C_, 4
+	rest
+	rest
+	note_type 1, EIGHTH_TRIPLET
+	note C_, 4
+	note A_, 4
+	note_type 1, QUARTER_TRIPLET
+	rest
+	note_type 1, SIXTEENTH_TRIPLET
+	note A_, 4
+	note C_, 4
+	note_type 1, EIGHTH_TRIPLET
+	rest
+	note_type 1, EIGHTH_TRIPLET
+	note C_, 4
+	note A_, 4
+	note_type 1, QUARTER_TRIPLET
+	rest
+	note_type 1, SIXTEENTH_TRIPLET
+	note A_, 4
+	note C_, 4
+	note_type 1, SIXTEENTH
+	rest
+	note_type 1, HALF_TRIPLET
+	rest
+	note_type 1, SIXTEENTH
+	rest
+	note_type 1, EIGHTH_TRIPLET
+	note D_, 4
+	note A_, 4
+	note_type 1, QUARTER_TRIPLET
+	rest
+	note_type 1, SIXTEENTH_TRIPLET
+	note A_, 4
+	note D_, 4
+	note_type 1, QUARTER
+	rest
+	note_type 1, EIGHTH_TRIPLET
+	rest
+	note_type 1, EIGHTH_TRIPLET
+	note D_, 4
+	note A_, 4
+	note_type 1, QUARTER_TRIPLET
+	rest
+	note_type 1, SIXTEENTH_TRIPLET
+	note A_, 4
+	note D_, 4
+	note_type 1, DOTTED_QUARTER
+	rest
+	note_type 1, SIXTEENTH_TRIPLET
+	note D_, 4
+	note A_, 4
+	rest
+	rest
+	note_type 1, SIXTEENTH_TRIPLET
+	note A_, 4
+	note D_, 4
+	rest
+	rest
+	note_type 1, EIGHTH_TRIPLET
+	note D_, 4
+	note A_, 4
+	note_type 1, QUARTER_TRIPLET
+	rest
+	note_type 1, SIXTEENTH_TRIPLET
+	note A_, 4
+	note D_, 4
+	note_type 1, EIGHTH_TRIPLET
+	rest
+	note_type 1, EIGHTH_TRIPLET
+	note D_, 4
+	note A_, 4
+	note_type 1, QUARTER_TRIPLET
+	rest
+	note_type 1, SIXTEENTH_TRIPLET
+	note A_, 4
+	note D_, 4
+	note_type 1, SIXTEENTH
+	rest
+	note_type 1, HALF_TRIPLET
+	rest
+	note_type 1, SIXTEENTH
+	rest
+	note_type 1, EIGHTH_TRIPLET
+	note B_, 3
+	note G_, 4
+	note_type 1, QUARTER_TRIPLET
+	rest
+	note_type 1, SIXTEENTH_TRIPLET
+	note G_, 4
+	note B_, 3
+	note_type 1, QUARTER
+	rest
+	note_type 1, EIGHTH_TRIPLET
+	rest
+	note_type 1, EIGHTH_TRIPLET
+	note A_, 3
+	note F_, 4
+	note_type 1, QUARTER_TRIPLET
+	rest
+	note_type 1, SIXTEENTH_TRIPLET
+	note F_, 4
+	note A_, 3
+	note_type 1, DOTTED_QUARTER
+	rest
+	note_type 1, SIXTEENTH_TRIPLET
+	note G#, 3
+	note F_, 4
+	rest
+	rest
+	note_type 1, SIXTEENTH_TRIPLET
+	note F_, 4
+	note G#, 3
+	rest
+	rest
+	note_type 1, EIGHTH_TRIPLET
+	note G_, 3
+	note F_, 4
+	note_type 1, QUARTER_TRIPLET
+	rest
+	note_type 1, SIXTEENTH_TRIPLET
+	note F_, 4
+	note G_, 3
+	note_type 1, EIGHTH_TRIPLET
+	rest
+	note_type 1, EIGHTH_TRIPLET
+	note G_, 3
+	note F_, 4
+	note_type 1, QUARTER_TRIPLET
+	rest
+	note_type 1, SIXTEENTH_TRIPLET
+	note F_, 4
+	note G_, 3
+	note_type 1, SIXTEENTH
+	rest
 
 MusicDataOverworld5_Noise:
-	.db $88
-	.db $08
-	.db $0A
-	.db $08
-	.db $85
-	.db $0A
-	.db $80
-	.db $08
-	.db $82
-	.db $08
-	.db $01
-	.db $0A
-	.db $88
-	.db $0A
-	.db $08
-	.db $85
-	.db $0A
-	.db $80
-	.db $08
-	.db $88
-	.db $08
-	.db $0A
-	.db $06
-	.db $82
-	.db $02
-	.db $01
-	.db $02
-	.db $88
-	.db $06
-	.db $82
-	.db $02
-	.db $01
-	.db $02
-	.db $88
-	.db $06
-	.db $82
-	.db $02
-	.db $01
-	.db $02
-	.db $88
-	.db $06
-	.db $82
-	.db $02
-	.db $01
-	.db $02
-	.db $88
-	.db $06
-	.db $82
-	.db $02
-	.db $01
-	.db $02
-	.db $88
-	.db $06
-	.db $82
-	.db $02
-	.db $01
-	.db $02
-	.db $88
-	.db $06
-	.db $82
-	.db $02
-	.db $01
-	.db $02
-	.db $88
-	.db $06
-	.db $82
-	.db $02
-	.db $01
-	.db $02
-	.db $88
-	.db $06
-	.db $82
-	.db $02
-	.db $01
-	.db $02
-	.db $88
-	.db $06
-	.db $82
-	.db $02
-	.db $01
-	.db $02
-	.db $88
-	.db $06
-	.db $82
-	.db $02
-	.db $01
-	.db $02
-	.db $88
-	.db $06
-	.db $82
-	.db $02
-	.db $01
-	.db $02
-	.db $88
-	.db $06
-	.db $82
-	.db $02
-	.db $01
-	.db $02
-	.db $88
-	.db $06
-	.db $82
-	.db $02
-	.db $01
-	.db $02
-	.db $88
-	.db $06
-	.db $82
-	.db $02
-	.db $01
-	.db $02
-	.db $88
-	.db $06
-	.db $82
-	.db $02
-	.db $01
-	.db $02
+	note_type 1, QUARTER
+	drum_note Noise_Kick
+	drum_note Noise_Snare
+	drum_note Noise_Kick
+	note_type 1, DOTTED_EIGHTH
+	drum_note Noise_Snare
+	note_type 1, SIXTEENTH
+	drum_note Noise_Kick
+	note_type 1, QUARTER_TRIPLET
+	drum_note Noise_Kick
+	drum_rest
+	drum_note Noise_Snare
+	note_type 1, QUARTER
+	drum_note Noise_Snare
+	drum_note Noise_Kick
+	note_type 1, DOTTED_EIGHTH
+	drum_note Noise_Snare
+	note_type 1, SIXTEENTH
+	drum_note Noise_Kick
+	note_type 1, QUARTER
+	drum_note Noise_Kick
+	drum_note Noise_Snare
+	drum_note Noise_OpenHihat
+	note_type 1, QUARTER_TRIPLET
+	drum_note Noise_ClosedHihat
+	drum_rest
+	drum_note Noise_ClosedHihat
+	note_type 1, QUARTER
+	drum_note Noise_OpenHihat
+	note_type 1, QUARTER_TRIPLET
+	drum_note Noise_ClosedHihat
+	drum_rest
+	drum_note Noise_ClosedHihat
+	note_type 1, QUARTER
+	drum_note Noise_OpenHihat
+	note_type 1, QUARTER_TRIPLET
+	drum_note Noise_ClosedHihat
+	drum_rest
+	drum_note Noise_ClosedHihat
+	note_type 1, QUARTER
+	drum_note Noise_OpenHihat
+	note_type 1, QUARTER_TRIPLET
+	drum_note Noise_ClosedHihat
+	drum_rest
+	drum_note Noise_ClosedHihat
+	note_type 1, QUARTER
+	drum_note Noise_OpenHihat
+	note_type 1, QUARTER_TRIPLET
+	drum_note Noise_ClosedHihat
+	drum_rest
+	drum_note Noise_ClosedHihat
+	note_type 1, QUARTER
+	drum_note Noise_OpenHihat
+	note_type 1, QUARTER_TRIPLET
+	drum_note Noise_ClosedHihat
+	drum_rest
+	drum_note Noise_ClosedHihat
+	note_type 1, QUARTER
+	drum_note Noise_OpenHihat
+	note_type 1, QUARTER_TRIPLET
+	drum_note Noise_ClosedHihat
+	drum_rest
+	drum_note Noise_ClosedHihat
+	note_type 1, QUARTER
+	drum_note Noise_OpenHihat
+	note_type 1, QUARTER_TRIPLET
+	drum_note Noise_ClosedHihat
+	drum_rest
+	drum_note Noise_ClosedHihat
+	note_type 1, QUARTER
+	drum_note Noise_OpenHihat
+	note_type 1, QUARTER_TRIPLET
+	drum_note Noise_ClosedHihat
+	drum_rest
+	drum_note Noise_ClosedHihat
+	note_type 1, QUARTER
+	drum_note Noise_OpenHihat
+	note_type 1, QUARTER_TRIPLET
+	drum_note Noise_ClosedHihat
+	drum_rest
+	drum_note Noise_ClosedHihat
+	note_type 1, QUARTER
+	drum_note Noise_OpenHihat
+	note_type 1, QUARTER_TRIPLET
+	drum_note Noise_ClosedHihat
+	drum_rest
+	drum_note Noise_ClosedHihat
+	note_type 1, QUARTER
+	drum_note Noise_OpenHihat
+	note_type 1, QUARTER_TRIPLET
+	drum_note Noise_ClosedHihat
+	drum_rest
+	drum_note Noise_ClosedHihat
+	note_type 1, QUARTER
+	drum_note Noise_OpenHihat
+	note_type 1, QUARTER_TRIPLET
+	drum_note Noise_ClosedHihat
+	drum_rest
+	drum_note Noise_ClosedHihat
+	note_type 1, QUARTER
+	drum_note Noise_OpenHihat
+	note_type 1, QUARTER_TRIPLET
+	drum_note Noise_ClosedHihat
+	drum_rest
+	drum_note Noise_ClosedHihat
+	note_type 1, QUARTER
+	drum_note Noise_OpenHihat
+	note_type 1, QUARTER_TRIPLET
+	drum_note Noise_ClosedHihat
+	drum_rest
+	drum_note Noise_ClosedHihat
+	note_type 1, QUARTER
+	drum_note Noise_OpenHihat
+	note_type 1, QUARTER_TRIPLET
+	drum_note Noise_ClosedHihat
+	drum_rest
+	drum_note Noise_ClosedHihat
 
 MusicDataOverworld5_DPCM:
-	.db $82
-	.db $12
-	.db $7E
-	.db $7E
-	.db $16
-	.db $7E
-	.db $7E
-	.db $18
-	.db $7E
-	.db $7E
-	.db $0E
-	.db $7E
-	.db $7E
-	.db $12
-	.db $7E
-	.db $7E
-	.db $16
-	.db $7E
-	.db $7E
-	.db $18
-	.db $8F
-	.db $7E
-	.db $82
-	.db $18
-	.db $8A
-	.db $7E
-	.db $82
-	.db $20
-	.db $7E
-	.db $7E
-	.db $2E
-	.db $7E
-	.db $7E
-	.db $28
-	.db $7E
-	.db $7E
-	.db $22
-	.db $7E
-	.db $7E
-	.db $20
-	.db $7E
-	.db $7E
-	.db $1C
-	.db $7E
-	.db $7E
-	.db $16
-	.db $7E
-	.db $7E
-	.db $10
-	.db $7E
-	.db $7E
-	.db $12
-	.db $7E
-	.db $7E
-	.db $16
-	.db $7E
-	.db $7E
-	.db $18
-	.db $7E
-	.db $7E
-	.db $1C
-	.db $7E
-	.db $7E
-	.db $20
-	.db $7E
-	.db $7E
-	.db $18
-	.db $7E
-	.db $7E
-	.db $16
-	.db $7E
-	.db $7E
-	.db $12
-	.db $7E
-	.db $7E
-	.db $1C
-	.db $7E
-	.db $7E
-	.db $20
-	.db $7E
-	.db $7E
-	.db $24
-	.db $7E
-	.db $7E
-	.db $2A
-	.db $7E
-	.db $7E
-	.db $1C
-	.db $7E
-	.db $7E
-	.db $12
-	.db $7E
-	.db $7E
-	.db $1C
-	.db $7E
-	.db $7E
-	.db $24
-	.db $7E
-	.db $7E
-	.db $26
-	.db $7E
-	.db $7E
-	.db $22
-	.db $7E
-	.db $7E
-	.db $1C
-	.db $7E
-	.db $7E
-	.db $16
-	.db $7E
-	.db $7E
-	.db $1C
-	.db $7E
-	.db $7E
-	.db $16
-	.db $7E
-	.db $7E
-	.db $12
-	.db $7E
-	.db $7E
-	.db $0E
-	.db $7E
-	.db $7E
+	note_type 1, QUARTER_TRIPLET
+	note A_, 1
+	rest
+	rest
+	note B_, 1
+	rest
+	rest
+	note C_, 2
+	rest
+	rest
+	note G_, 1
+	rest
+	rest
+	note A_, 1
+	rest
+	rest
+	note B_, 1
+	rest
+	rest
+	note C_, 2
+	note_type 1, WHOLE_TRIPLET
+	rest
+	note_type 1, QUARTER_TRIPLET
+	note C_, 2
+	note_type 1, HALF
+	rest
+	note_type 1, QUARTER_TRIPLET
+	note E_, 2
+	rest
+	rest
+	note B_, 2
+	rest
+	rest
+	note G#, 2
+	rest
+	rest
+	note F_, 2
+	rest
+	rest
+	note E_, 2
+	rest
+	rest
+	note D_, 2
+	rest
+	rest
+	note B_, 1
+	rest
+	rest
+	note G#, 1
+	rest
+	rest
+	note A_, 1
+	rest
+	rest
+	note B_, 1
+	rest
+	rest
+	note C_, 2
+	rest
+	rest
+	note D_, 2
+	rest
+	rest
+	note E_, 2
+	rest
+	rest
+	note C_, 2
+	rest
+	rest
+	note B_, 1
+	rest
+	rest
+	note A_, 1
+	rest
+	rest
+	note D_, 2
+	rest
+	rest
+	note E_, 2
+	rest
+	rest
+	note F#, 2
+	rest
+	rest
+	note A_, 2
+	rest
+	rest
+	note D_, 2
+	rest
+	rest
+	note A_, 1
+	rest
+	rest
+	note D_, 2
+	rest
+	rest
+	note F#, 2
+	rest
+	rest
+	note G_, 2
+	rest
+	rest
+	note F_, 2
+	rest
+	rest
+	note D_, 2
+	rest
+	rest
+	note B_, 1
+	rest
+	rest
+	note D_, 2
+	rest
+	rest
+	note B_, 1
+	rest
+	rest
+	note A_, 1
+	rest
+	rest
+	note G_, 1
+	rest
+	rest

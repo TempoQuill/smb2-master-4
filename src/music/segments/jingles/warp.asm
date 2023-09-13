@@ -1,96 +1,97 @@
 MusicDataWarp:
 MusicDataWarp_Square2:
-	.db $9A
-	.db $18
-	.db $16
-	.db $14
-	.db $12
-	.db $10
-	.db $0E
-	.db $18
-	.db $16
-	.db $14
-	.db $12
-	.db $10
-	.db $0E
-	.db $18
-	.db $16
-	.db $14
-	.db $12
-	.db $10
-	.db $0E
-	.db $18
-	.db $16
-	.db $14
-	.db $12
-	.db $10
-	.db $0E
-	.db $00
+	note_type 2, HALF
+	note C_, 2
+	note B_, 1
+	note A#, 1
+	note A_, 1
+	note G#, 1
+	note G_, 1
+	note C_, 2
+	note B_, 1
+	note A#, 1
+	note A_, 1
+	note G#, 1
+	note G_, 1
+	note C_, 2
+	note B_, 1
+	note A#, 1
+	note A_, 1
+	note G#, 1
+	note G_, 1
+	note C_, 2
+	note B_, 1
+	note A#, 1
+	note A_, 1
+	note G#, 1
+	note G_, 1
+	sound_ret
 
 MusicDataWarp_Square1:
-	.db $FA
-	.db $48
-	.db $46
-	.db $44
-	.db $42
-	.db $40
-	.db $3E
-	.db $48
-	.db $46
-	.db $44
-	.db $42
-	.db $40
-	.db $3E
-	.db $48
-	.db $46
-	.db $44
-	.db $42
-	.db $40
-	.db $3E
-	.db $48
-	.db $46
-	.db $44
-	.db $42
-	.db $40
-	.db $3E
+	note_type 8, HALF
+	note C_, 4
+	note B_, 3
+	note A#, 3
+	note A_, 3
+	note G#, 3
+	note G_, 3
+	note C_, 4
+	note B_, 3
+	note A#, 3
+	note A_, 3
+	note G#, 3
+	note G_, 3
+	note C_, 4
+	note B_, 3
+	note A#, 3
+	note A_, 3
+	note G#, 3
+	note G_, 3
+	note C_, 4
+	note B_, 3
+	note A#, 3
+	note A_, 3
+	note G#, 3
+	note G_, 3
 
 MusicDataWarp_Triangle:
-	.db $8C
-	.db $7E
-	.db $86
-	.db $4C
-	.db $4C
-	.db $4A
-	.db $48
-	.db $46
-	.db $44
-	.db $42
-	.db $40
-	.db $3E
-	.db $3C
-	.db $3A
-	.db $38
-	.db $36
-	.db $34
-	.db $32
-	.db $30
-	.db $2E
-	.db $2E
-	.db $30
-	.db $32
-	.db $34
-	.db $36
-	.db $38
-	.db $3A
-	.db $3C
-	.db $3E
-	.db $40
-	.db $42
-	.db $44
-	.db $46
-	.db $48
-	.db $4A
-	.db $4C
-	.db $4E
-	.db $50
-	.db $00
+	note_type 1, WHOLE
+	rest
+	note_type 8, HALF_TRIPLET
+	note D_, 4
+	note D_, 4
+	note C#, 4
+	note C_, 4
+	note B_, 3
+	note A#, 3
+	note A_, 3
+	note G#, 3
+	note G_, 3
+	note F#, 3
+	note F_, 3
+	note E_, 3
+	note D#, 3
+	note D_, 3
+	note C#, 3
+	note C_, 3
+	note B_, 2
+	note B_, 2
+	note C_, 3
+	note C#, 3
+	note D_, 3
+	note D#, 3
+	note E_, 3
+	note F_, 3
+	note F#, 3
+	note G_, 3
+	note G#, 3
+	note A_, 3
+	note A#, 3
+	note B_, 3
+	note C_, 4
+	note C#, 4
+	note D_, 4
+	note D#, 4
+	note_type 1, HALF_TRIPLET
+	note E_, 4
+	sound_loop

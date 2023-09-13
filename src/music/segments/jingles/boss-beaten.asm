@@ -1,211 +1,211 @@
 MusicDataBossBeaten:
 MusicDataBossBeaten_Square2:
-	.db $95
-	.db $0A
-	.db $90
-	.db $7E
-	.db $95
-	.db $22
-	.db $90
-	.db $7E
-	.db $95
-	.db $0C
-	.db $90
-	.db $7E
-	.db $95
-	.db $24
-	.db $90
-	.db $7E
-	.db $95
-	.db $0E
-	.db $90
-	.db $7E
-	.db $95
-	.db $26
-	.db $90
-	.db $7E
-	.db $95
-	.db $12
-	.db $90
-	.db $7E
-	.db $95
-	.db $2A
-	.db $90
-	.db $7E
-	.db $95
-	.db $1C
-	.db $90
-	.db $7E
-	.db $95
-	.db $2A
-	.db $90
-	.db $7E
-	.db $95
-	.db $0E
-	.db $90
-	.db $7E
-	.db $95
-	.db $2E
-	.db $90
-	.db $7E
-	.db $98
-	.db $30
-	.db $9B
-	.db $7E
-	.db $9A
-	.db $7E
-	.db $B8
-	.db $3E
-	.db $00
+	note_type 2, DOTTED_EIGHTH
+	note F_, 1
+	note_type 2, SIXTEENTH
+	rest
+	note_type 2, DOTTED_EIGHTH
+	note F_, 2
+	note_type 2, SIXTEENTH
+	rest
+	note_type 2, DOTTED_EIGHTH
+	note F#, 1
+	note_type 2, SIXTEENTH
+	rest
+	note_type 2, DOTTED_EIGHTH
+	note F#, 2
+	note_type 2, SIXTEENTH
+	rest
+	note_type 2, DOTTED_EIGHTH
+	note G_, 1
+	note_type 2, SIXTEENTH
+	rest
+	note_type 2, DOTTED_EIGHTH
+	note G_, 2
+	note_type 2, SIXTEENTH
+	rest
+	note_type 2, DOTTED_EIGHTH
+	note A_, 1
+	note_type 2, SIXTEENTH
+	rest
+	note_type 2, DOTTED_EIGHTH
+	note A_, 2
+	note_type 2, SIXTEENTH
+	rest
+	note_type 2, DOTTED_EIGHTH
+	note D_, 2
+	note_type 2, SIXTEENTH
+	rest
+	note_type 2, DOTTED_EIGHTH
+	note A_, 2
+	note_type 2, SIXTEENTH
+	rest
+	note_type 2, DOTTED_EIGHTH
+	note G_, 1
+	note_type 2, SIXTEENTH
+	rest
+	note_type 2, DOTTED_EIGHTH
+	note B_, 2
+	note_type 2, SIXTEENTH
+	rest
+	note_type 2, QUARTER
+	note C_, 3
+	note_type 2, DOTTED_HALF
+	rest
+	note_type 2, HALF
+	rest
+	note_type 4, QUARTER
+	note G_, 3
+	sound_ret
 MusicDataBossBeaten_Square1:
-	.db $B4
-	.db $42
-	.db $48
-	.db $4C
-	.db $42
-	.db $48
-	.db $4C
-	.db $3E
-	.db $42
-	.db $50
-	.db $3E
-	.db $42
-	.db $52
-	.db $50
-	.db $48
-	.db $42
-	.db $7E
-	.db $3A
-	.db $42
-	.db $48
-	.db $50
-	.db $4C
-	.db $3E
-	.db $B8
-	.db $42
-	.db $48
-	.db $B4
-	.db $3E
-	.db $42
-	.db $7E
-	.db $3E
-	.db $B8
-	.db $38
-	.db $B8
-	.db $30
-	.db $26
-	.db $48
+	note_type 4, EIGHTH
+	note A_, 3
+	note C_, 4
+	note D_, 4
+	note A_, 3
+	note C_, 4
+	note D_, 4
+	note G_, 3
+	note A_, 3
+	note E_, 4
+	note G_, 3
+	note A_, 3
+	note F_, 4
+	note E_, 4
+	note C_, 4
+	note A_, 3
+	rest
+	note F_, 3
+	note A_, 3
+	note C_, 4
+	note E_, 4
+	note D_, 4
+	note G_, 3
+	note_type 4, QUARTER
+	note A_, 3
+	note C_, 4
+	note_type 4, EIGHTH
+	note G_, 3
+	note A_, 3
+	rest
+	note G_, 3
+	note_type 4, QUARTER
+	note E_, 3
+	note_type 4, QUARTER
+	note C_, 3
+	note G_, 2
+	note C_, 4
 MusicDataBossBeaten_Triangle:
-	.db $85
-	.db $22
-	.db $80
-	.db $7E
-	.db $85
-	.db $30
-	.db $80
-	.db $7E
-	.db $85
-	.db $24
-	.db $80
-	.db $7E
-	.db $85
-	.db $30
-	.db $80
-	.db $7E
-	.db $85
-	.db $26
-	.db $80
-	.db $7E
-	.db $85
-	.db $34
-	.db $80
-	.db $7E
-	.db $85
-	.db $2A
-	.db $80
-	.db $7E
-	.db $85
-	.db $38
-	.db $80
-	.db $7E
-	.db $85
-	.db $34
-	.db $80
-	.db $7E
-	.db $85
-	.db $22
-	.db $80
-	.db $7E
-	.db $85
-	.db $26
-	.db $80
-	.db $7E
-	.db $85
-	.db $34
-	.db $80
-	.db $7E
-	.db $85
-	.db $30
-	.db $80
-	.db $7E
-	.db $84
-	.db $3E
-	.db $42
-	.db $7E
-	.db $3E
-	.db $85
-	.db $38
-	.db $80
-	.db $7E
-	.db $85
-	.db $30
-	.db $80
-	.db $7E
-	.db $85
-	.db $26
-	.db $80
-	.db $7E
-	.db $85
-	.db $18
-	.db $80
-	.db $7E
+	note_type 1, DOTTED_EIGHTH
+	note F_, 2
+	note_type 1, SIXTEENTH
+	rest
+	note_type 1, DOTTED_EIGHTH
+	note C_, 3
+	note_type 1, SIXTEENTH
+	rest
+	note_type 1, DOTTED_EIGHTH
+	note F#, 2
+	note_type 1, SIXTEENTH
+	rest
+	note_type 1, DOTTED_EIGHTH
+	note C_, 3
+	note_type 1, SIXTEENTH
+	rest
+	note_type 1, DOTTED_EIGHTH
+	note G_, 2
+	note_type 1, SIXTEENTH
+	rest
+	note_type 1, DOTTED_EIGHTH
+	note D_, 3
+	note_type 1, SIXTEENTH
+	rest
+	note_type 1, DOTTED_EIGHTH
+	note A_, 2
+	note_type 1, SIXTEENTH
+	rest
+	note_type 1, DOTTED_EIGHTH
+	note E_, 3
+	note_type 1, SIXTEENTH
+	rest
+	note_type 1, DOTTED_EIGHTH
+	note D_, 3
+	note_type 1, SIXTEENTH
+	rest
+	note_type 1, DOTTED_EIGHTH
+	note F_, 2
+	note_type 1, SIXTEENTH
+	rest
+	note_type 1, DOTTED_EIGHTH
+	note G_, 2
+	note_type 1, SIXTEENTH
+	rest
+	note_type 1, DOTTED_EIGHTH
+	note D_, 3
+	note_type 1, SIXTEENTH
+	rest
+	note_type 1, DOTTED_EIGHTH
+	note C_, 3
+	note_type 1, SIXTEENTH
+	rest
+	note_type 1, EIGHTH
+	note G_, 3
+	note A_, 3
+	rest
+	note G_, 3
+	note_type 1, DOTTED_EIGHTH
+	note E_, 3
+	note_type 1, SIXTEENTH
+	rest
+	note_type 1, DOTTED_EIGHTH
+	note C_, 3
+	note_type 1, SIXTEENTH
+	rest
+	note_type 1, DOTTED_EIGHTH
+	note G_, 2
+	note_type 1, SIXTEENTH
+	rest
+	note_type 1, DOTTED_EIGHTH
+	note C_, 2
+	note_type 1, SIXTEENTH
+	rest
 
 MusicDataBossBeaten_Noise:
-	.db $8C
-	.db $01
-	.db $00
+	note_type 1, WHOLE
+	drum_rest
+	sound_loop
 
 MusicDataBossBeaten_DPCM:
-	.db $84
-	.db $50
-	.db $5A
-	.db $5A
-	.db $50
-	.db $5A
-	.db $5A
-	.db $50
-	.db $50
-	.db $60
-	.db $50
-	.db $50
-	.db $60
-	.db $60
-	.db $5A
-	.db $50
-	.db $7E
-	.db $4C
-	.db $52
-	.db $5A
-	.db $60
-	.db $52
-	.db $52
-	.db $52
-	.db $7E
-	.db $50
-	.db $89
-	.db $7E
-	.db $8C
-	.db $7E
-	.db $84
-	.db $50
-	.db $7E
+	note_type 1, EIGHTH
+	note E_, 4
+	note A_, 4
+	note A_, 4
+	note E_, 4
+	note A_, 4
+	note A_, 4
+	note E_, 4
+	note E_, 4
+	note C_, 5
+	note E_, 4
+	note E_, 4
+	note C_, 5
+	note C_, 5
+	note A_, 4
+	note E_, 4
+	rest
+	note D_, 4
+	note F_, 4
+	note A_, 4
+	note C_, 5
+	note F_, 4
+	note F_, 4
+	note F_, 4
+	rest
+	note E_, 4
+	note_type 1, DOTTED_QUARTER
+	rest
+	note_type 1, WHOLE
+	rest
+	note_type 1, EIGHTH
+	note E_, 4
+	rest

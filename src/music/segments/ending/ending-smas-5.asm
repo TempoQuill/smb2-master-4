@@ -1,262 +1,262 @@
 
 MusicDataEnding5:
 MusicDataEnding5_Square2:
-	.db $A4
-	.db $68
-	.db $6A
-	.db $6E
-	.db $64
-	.db $7E
-	.db $64
-	.db $7E
-	.db $64
-	.db $60
-	.db $64
-	.db $68
-	.db $5E
-	.db $7E
-	.db $5E
-	.db $7E
-	.db $56
-	.db $5A
-	.db $5E
-	.db $60
-	.db $56
-	.db $7E
-	.db $56
-	.db $54
-	.db $56
-	.db $5A
-	.db $5E
-	.db $60
-	.db $5E
-	.db $7E
-	.db $60
-	.db $64
-	.db $7E
-	.db $68
-	.db $6A
-	.db $6E
-	.db $64
-	.db $7E
-	.db $64
-	.db $6E
-	.db $76
-	.db $78
-	.db $7C
-	.db $78
-	.db $76
-	.db $7E
-	.db $72
-	.db $6E
-	.db $6A
-	.db $68
-	.db $6A
-	.db $6E
-	.db $64
-	.db $7E
-	.db $64
-	.db $60
-	.db $5E
-	.db $60
-	.db $7E
-	.db $AB
-	.db $7E
-	.db $A4
-	.db $60
-	.db $64
-	.db $60
-	.db $64
-	.db $7E
-	.db $66
-	.db $6A
-	.db $6E
-	.db $AC
-	.db $7E
-	.db $A4
-	.db $60
-	.db $64
-	.db $60
-	.db $64
-	.db $7E
-	.db $66
-	.db $7E
-	.db $6A
-	.db $6E
-	.db $7E
-	.db $AB
-	.db $7E
-	.db $A4
-	.db $60
-	.db $64
-	.db $60
-	.db $64
-	.db $7E
-	.db $66
-	.db $6A
-	.db $6E
-	.db $7E
-	.db $68
-	.db $60
-	.db $56
-	.db $AA
-	.db $7E
-	.db $A4
-	.db $60
-	.db $64
-	.db $60
-	.db $64
-	.db $7E
-	.db $5A
-	.db $5E
-	.db $60
-	.db $64
-	.db $7E
-	.db $8B
-	.db $7E
-	.db $00
+	note_type 3, EIGHTH
+	note E_, 5
+	note F_, 5
+	note G_, 5
+	note D_, 5
+	rest
+	note D_, 5
+	rest
+	note D_, 5
+	note C_, 5
+	note D_, 5
+	note E_, 5
+	note B_, 4
+	rest
+	note B_, 4
+	rest
+	note G_, 4
+	note A_, 4
+	note B_, 4
+	note C_, 5
+	note G_, 4
+	rest
+	note G_, 4
+	note F#, 4
+	note G_, 4
+	note A_, 4
+	note B_, 4
+	note C_, 5
+	note B_, 4
+	rest
+	note C_, 5
+	note D_, 5
+	rest
+	note E_, 5
+	note F_, 5
+	note G_, 5
+	note D_, 5
+	rest
+	note D_, 5
+	note G_, 5
+	note B_, 5
+	note C_, 6
+	note D_, 6
+	note C_, 6
+	note B_, 5
+	rest
+	note A_, 5
+	note G_, 5
+	note F_, 5
+	note E_, 5
+	note F_, 5
+	note G_, 5
+	note D_, 5
+	rest
+	note D_, 5
+	note C_, 5
+	note B_, 4
+	note C_, 5
+	rest
+	note_type 3, DOTTED_HALF
+	rest
+	note_type 3, EIGHTH
+	note C_, 5
+	note D_, 5
+	note C_, 5
+	note D_, 5
+	rest
+	note D#, 5
+	note F_, 5
+	note G_, 5
+	note_type 3, WHOLE
+	rest
+	note_type 3, EIGHTH
+	note C_, 5
+	note D_, 5
+	note C_, 5
+	note D_, 5
+	rest
+	note D#, 5
+	rest
+	note F_, 5
+	note G_, 5
+	rest
+	note_type 3, DOTTED_HALF
+	rest
+	note_type 3, EIGHTH
+	note C_, 5
+	note D_, 5
+	note C_, 5
+	note D_, 5
+	rest
+	note D#, 5
+	note F_, 5
+	note G_, 5
+	rest
+	note E_, 5
+	note C_, 5
+	note G_, 4
+	note_type 3, HALF
+	rest
+	note_type 3, EIGHTH
+	note C_, 5
+	note D_, 5
+	note C_, 5
+	note D_, 5
+	rest
+	note A_, 4
+	note B_, 4
+	note C_, 5
+	note D_, 5
+	rest
+	note_type 1, DOTTED_HALF
+	rest
+	sound_ret
 MusicDataEnding5_Square1:
-	.db $A4
-	.db $48
-	.db $56
-	.db $50
-	.db $56
-	.db $46
-	.db $56
-	.db $4C
-	.db $56
-	.db $42
-	.db $56
-	.db $50
-	.db $56
-	.db $3E
-	.db $56
-	.db $4C
-	.db $56
-	.db $3A
-	.db $52
-	.db $48
-	.db $52
-	.db $38
-	.db $50
-	.db $46
-	.db $50
-	.db $34
-	.db $4C
-	.db $42
-	.db $4C
-	.db $3E
-	.db $52
-	.db $46
-	.db $52
-	.db $48
-	.db $56
-	.db $50
-	.db $56
-	.db $46
-	.db $56
-	.db $4C
-	.db $56
-	.db $44
-	.db $52
-	.db $4C
-	.db $52
-	.db $42
-	.db $52
-	.db $48
-	.db $52
-	.db $3E
-	.db $50
-	.db $48
-	.db $50
-	.db $3E
-	.db $4C
-	.db $46
-	.db $4C
-	.db $48
-	.db $56
-	.db $50
-	.db $56
-	.db $48
-	.db $56
-	.db $50
-	.db $56
-	.db $40
-	.db $4E
-	.db $48
-	.db $4E
-	.db $40
-	.db $4E
-	.db $48
-	.db $4E
-	.db $3E
-	.db $50
-	.db $48
-	.db $50
-	.db $3E
-	.db $50
-	.db $48
-	.db $50
-	.db $40
-	.db $4E
-	.db $48
-	.db $4E
-	.db $40
-	.db $4E
-	.db $48
-	.db $4E
-	.db $3E
-	.db $50
-	.db $48
-	.db $50
-	.db $3E
-	.db $50
-	.db $48
-	.db $50
-	.db $40
-	.db $4E
-	.db $48
-	.db $4E
-	.db $40
-	.db $4E
-	.db $48
-	.db $4E
-	.db $3E
-	.db $50
-	.db $48
-	.db $50
-	.db $3E
-	.db $50
-	.db $48
-	.db $50
-	.db $3C
-	.db $4C
-	.db $48
-	.db $4C
-	.db $3C
-	.db $4C
-	.db $48
-	.db $4C
-	.db $3E
-	.db $4C
-	.db $46
-	.db $4C
-	.db $3E
-	.db $52
-	.db $4C
-	.db $46
+	note_type 3, EIGHTH
+	note C_, 4
+	note G_, 4
+	note E_, 4
+	note G_, 4
+	note B_, 3
+	note G_, 4
+	note D_, 4
+	note G_, 4
+	note A_, 3
+	note G_, 4
+	note E_, 4
+	note G_, 4
+	note G_, 3
+	note G_, 4
+	note D_, 4
+	note G_, 4
+	note F_, 3
+	note F_, 4
+	note C_, 4
+	note F_, 4
+	note E_, 3
+	note E_, 4
+	note B_, 3
+	note E_, 4
+	note D_, 3
+	note D_, 4
+	note A_, 3
+	note D_, 4
+	note G_, 3
+	note F_, 4
+	note B_, 3
+	note F_, 4
+	note C_, 4
+	note G_, 4
+	note E_, 4
+	note G_, 4
+	note B_, 3
+	note G_, 4
+	note D_, 4
+	note G_, 4
+	note A#, 3
+	note F_, 4
+	note D_, 4
+	note F_, 4
+	note A_, 3
+	note F_, 4
+	note C_, 4
+	note F_, 4
+	note G_, 3
+	note E_, 4
+	note C_, 4
+	note E_, 4
+	note G_, 3
+	note D_, 4
+	note B_, 3
+	note D_, 4
+	note C_, 4
+	note G_, 4
+	note E_, 4
+	note G_, 4
+	note C_, 4
+	note G_, 4
+	note E_, 4
+	note G_, 4
+	note G#, 3
+	note D#, 4
+	note C_, 4
+	note D#, 4
+	note G#, 3
+	note D#, 4
+	note C_, 4
+	note D#, 4
+	note G_, 3
+	note E_, 4
+	note C_, 4
+	note E_, 4
+	note G_, 3
+	note E_, 4
+	note C_, 4
+	note E_, 4
+	note G#, 3
+	note D#, 4
+	note C_, 4
+	note D#, 4
+	note G#, 3
+	note D#, 4
+	note C_, 4
+	note D#, 4
+	note G_, 3
+	note E_, 4
+	note C_, 4
+	note E_, 4
+	note G_, 3
+	note E_, 4
+	note C_, 4
+	note E_, 4
+	note G#, 3
+	note D#, 4
+	note C_, 4
+	note D#, 4
+	note G#, 3
+	note D#, 4
+	note C_, 4
+	note D#, 4
+	note G_, 3
+	note E_, 4
+	note C_, 4
+	note E_, 4
+	note G_, 3
+	note E_, 4
+	note C_, 4
+	note E_, 4
+	note F#, 3
+	note D_, 4
+	note C_, 4
+	note D_, 4
+	note F#, 3
+	note D_, 4
+	note C_, 4
+	note D_, 4
+	note G_, 3
+	note D_, 4
+	note B_, 3
+	note D_, 4
+	note G_, 3
+	note F_, 4
+	note D_, 4
+	note B_, 3
 
 MusicDataEnding5_Triangle:
-	.db $8C
-	.db $7E
-	.db $00
+	note_type 1, WHOLE
+	rest
+	sound_loop
 
 MusicDataEnding5_Noise:
-	.db $8C
-	.db $01
-	.db $00
+	note_type 1, WHOLE
+	drum_rest
+	sound_loop
 
 MusicDataEnding5_DPCM:
-	.db $8C
-	.db $7E
-	.db $00
+	note_type 1, WHOLE
+	rest
+	sound_loop

@@ -1,373 +1,373 @@
 MusicDataCharacterSelect1:
 MusicDataCharacterSelect1_Square2:
-	.db $B6
-	.db $48
-	.db $B8
-	.db $48
-	.db $48
-	.db $48
-	.db $B2
-	.db $48
-	.db $B6
-	.db $48
-	.db $B8
-	.db $48
-	.db $48
-	.db $48
-	.db $B2
-	.db $48
-	.db $B6
-	.db $48
-	.db $B8
-	.db $48
-	.db $48
-	.db $48
-	.db $B2
-	.db $48
-	.db $BA
-	.db $50
-	.db $4C
-	.db $00
+	note_type 4, HALF_TRIPLET
+	note C_, 4
+	note_type 4, QUARTER
+	note C_, 4
+	note C_, 4
+	note C_, 4
+	note_type 4, QUARTER_TRIPLET
+	note C_, 4
+	note_type 4, HALF_TRIPLET
+	note C_, 4
+	note_type 4, QUARTER
+	note C_, 4
+	note C_, 4
+	note C_, 4
+	note_type 4, QUARTER_TRIPLET
+	note C_, 4
+	note_type 4, HALF_TRIPLET
+	note C_, 4
+	note_type 4, QUARTER
+	note C_, 4
+	note C_, 4
+	note C_, 4
+	note_type 4, QUARTER_TRIPLET
+	note C_, 4
+	note_type 4, HALF
+	note E_, 4
+	note D_, 4
+	sound_ret
 
 MusicDataCharacterSelect2:
 MusicDataCharacterSelect2_Square2:
 MusicDataCharacterSelect3:
 MusicDataCharacterSelect3_Square2:
-	.db $B8
-	.db $50
-	.db $7E
-	.db $50
-	.db $B2
-	.db $7E
-	.db $7E
-	.db $50
-	.db $7E
-	.db $7E
-	.db $48
-	.db $7E
-	.db $7E
-	.db $42
-	.db $BA
-	.db $3E
-	.db $48
-	.db $B8
-	.db $48
-	.db $B2
-	.db $7E
-	.db $7E
-	.db $48
-	.db $7E
-	.db $7E
-	.db $42
-	.db $7E
-	.db $7E
-	.db $3C
-	.db $BA
-	.db $38
-	.db $50
-	.db $B8
-	.db $50
-	.db $B2
-	.db $7E
-	.db $7E
-	.db $50
-	.db $7E
-	.db $7E
-	.db $48
-	.db $7E
-	.db $7E
-	.db $42
-	.db $B8
-	.db $50
-	.db $50
-	.db $BC
-	.db $48
-	.db $7E
-	.db $00
+	note_type 4, QUARTER
+	note E_, 4
+	rest
+	note E_, 4
+	note_type 4, QUARTER_TRIPLET
+	rest
+	rest
+	note E_, 4
+	rest
+	rest
+	note C_, 4
+	rest
+	rest
+	note A_, 3
+	note_type 4, HALF
+	note G_, 3
+	note C_, 4
+	note_type 4, QUARTER
+	note C_, 4
+	note_type 4, QUARTER_TRIPLET
+	rest
+	rest
+	note C_, 4
+	rest
+	rest
+	note A_, 3
+	rest
+	rest
+	note F#, 3
+	note_type 4, HALF
+	note E_, 3
+	note E_, 4
+	note_type 4, QUARTER
+	note E_, 4
+	note_type 4, QUARTER_TRIPLET
+	rest
+	rest
+	note E_, 4
+	rest
+	rest
+	note C_, 4
+	rest
+	rest
+	note A_, 3
+	note_type 4, QUARTER
+	note E_, 4
+	note E_, 4
+	note_type 4, WHOLE
+	note C_, 4
+	rest
+	sound_ret
 
 MusicDataCharacterSelect1_Square1:
-	.db $B6
-	.db $3E
-	.db $B8
-	.db $3E
-	.db $3E
-	.db $3E
-	.db $B2
-	.db $3E
-	.db $B6
-	.db $3C
-	.db $B8
-	.db $3C
-	.db $3C
-	.db $3C
-	.db $B2
-	.db $3C
-	.db $B6
-	.db $3A
-	.db $B8
-	.db $3A
-	.db $3A
-	.db $3A
-	.db $B2
-	.db $3A
-	.db $BA
-	.db $46
-	.db $3A
+	note_type 4, HALF_TRIPLET
+	note G_, 3
+	note_type 4, QUARTER
+	note G_, 3
+	note G_, 3
+	note G_, 3
+	note_type 4, QUARTER_TRIPLET
+	note G_, 3
+	note_type 4, HALF_TRIPLET
+	note F#, 3
+	note_type 4, QUARTER
+	note F#, 3
+	note F#, 3
+	note F#, 3
+	note_type 4, QUARTER_TRIPLET
+	note F#, 3
+	note_type 4, HALF_TRIPLET
+	note F_, 3
+	note_type 4, QUARTER
+	note F_, 3
+	note F_, 3
+	note F_, 3
+	note_type 4, QUARTER_TRIPLET
+	note F_, 3
+	note_type 4, HALF
+	note B_, 3
+	note F_, 3
 
 MusicDataCharacterSelect2_Square1:
-	.db $B8
-	.db $3E
-	.db $7E
-	.db $3E
-	.db $B2
-	.db $7E
-	.db $7E
-	.db $3E
-	.db $7E
-	.db $7E
-	.db $38
-	.db $7E
-	.db $7E
-	.db $38
-	.db $BA
-	.db $30
-	.db $3C
-	.db $B8
-	.db $3C
-	.db $B2
-	.db $7E
-	.db $7E
-	.db $3C
-	.db $7E
-	.db $7E
-	.db $34
-	.db $7E
-	.db $7E
-	.db $34
-	.db $BA
-	.db $30
-	.db $3A
-	.db $B8
-	.db $3A
-	.db $B2
-	.db $7E
-	.db $7E
-	.db $3A
-	.db $7E
-	.db $7E
-	.db $34
-	.db $7E
-	.db $7E
-	.db $2E
-	.db $B8
-	.db $3E
-	.db $3E
-	.db $BC
-	.db $38
-	.db $7E
+	note_type 4, QUARTER
+	note G_, 3
+	rest
+	note G_, 3
+	note_type 4, QUARTER_TRIPLET
+	rest
+	rest
+	note G_, 3
+	rest
+	rest
+	note E_, 3
+	rest
+	rest
+	note E_, 3
+	note_type 4, HALF
+	note C_, 3
+	note F#, 3
+	note_type 4, QUARTER
+	note F#, 3
+	note_type 4, QUARTER_TRIPLET
+	rest
+	rest
+	note F#, 3
+	rest
+	rest
+	note D_, 3
+	rest
+	rest
+	note D_, 3
+	note_type 4, HALF
+	note C_, 3
+	note F_, 3
+	note_type 4, QUARTER
+	note F_, 3
+	note_type 4, QUARTER_TRIPLET
+	rest
+	rest
+	note F_, 3
+	rest
+	rest
+	note D_, 3
+	rest
+	rest
+	note B_, 2
+	note_type 4, QUARTER
+	note G_, 3
+	note G_, 3
+	note_type 4, WHOLE
+	note E_, 3
+	rest
 
 MusicDataCharacterSelect3_Square1:
-	.db $B8
-	.db $3E
-	.db $7E
-	.db $3E
-	.db $B2
-	.db $7E
-	.db $7E
-	.db $3E
-	.db $7E
-	.db $7E
-	.db $38
-	.db $7E
-	.db $7E
-	.db $38
-	.db $BA
-	.db $30
-	.db $3C
-	.db $B8
-	.db $3C
-	.db $B2
-	.db $7E
-	.db $7E
-	.db $3C
-	.db $7E
-	.db $7E
-	.db $34
-	.db $7E
-	.db $7E
-	.db $34
-	.db $BA
-	.db $30
-	.db $3A
-	.db $B8
-	.db $3A
-	.db $B2
-	.db $7E
-	.db $7E
-	.db $3A
-	.db $7E
-	.db $7E
-	.db $34
-	.db $7E
-	.db $7E
-	.db $2E
-	.db $B8
-	.db $3E
-	.db $3E
-	.db $BC
-	.db $38
-	.db $D8
-	.db $7E
-	.db $38
-	.db $3A
-	.db $3E
+	note_type 4, QUARTER
+	note G_, 3
+	rest
+	note G_, 3
+	note_type 4, QUARTER_TRIPLET
+	rest
+	rest
+	note G_, 3
+	rest
+	rest
+	note E_, 3
+	rest
+	rest
+	note E_, 3
+	note_type 4, HALF
+	note C_, 3
+	note F#, 3
+	note_type 4, QUARTER
+	note F#, 3
+	note_type 4, QUARTER_TRIPLET
+	rest
+	rest
+	note F#, 3
+	rest
+	rest
+	note D_, 3
+	rest
+	rest
+	note D_, 3
+	note_type 4, HALF
+	note C_, 3
+	note F_, 3
+	note_type 4, QUARTER
+	note F_, 3
+	note_type 4, QUARTER_TRIPLET
+	rest
+	rest
+	note F_, 3
+	rest
+	rest
+	note D_, 3
+	rest
+	rest
+	note B_, 2
+	note_type 4, QUARTER
+	note G_, 3
+	note G_, 3
+	note_type 4, WHOLE
+	note E_, 3
+	note_type 6, QUARTER
+	rest
+	note E_, 3
+	note F_, 3
+	note G_, 3
 
 MusicDataCharacterSelect1_Triangle:
 MusicDataCharacterSelect2_Triangle:
-	.db $8C
-	.db $7E
-	.db $00
+	note_type 1, WHOLE
+	rest
+	sound_loop
 
 MusicDataCharacterSelect3_Triangle:
-	.db $8C
-	.db $7E
-	.db $7E
-	.db $7E
-	.db $7E
-	.db $7E
-	.db $7E
-	.db $7E
-	.db $88
-	.db $7E
-	.db $60
-	.db $64
-	.db $66
+	note_type 1, WHOLE
+	rest
+	rest
+	rest
+	rest
+	rest
+	rest
+	rest
+	note_type 1, QUARTER
+	rest
+	note C_, 5
+	note D_, 5
+	note D#, 5
 
 MusicDataCharacterSelect1_Noise:
-	.db $BC
-	.db $02
-	.db $02
-	.db $02
-	.db $BA
-	.db $02
-	.db $02
+	note_type 1, WHOLE
+	drum_note Noise_ClosedHihat
+	drum_note Noise_ClosedHihat
+	drum_note Noise_ClosedHihat
+	note_type 1, HALF
+	drum_note Noise_ClosedHihat
+	drum_note Noise_ClosedHihat
 
 MusicDataCharacterSelect2_Noise:
 MusicDataCharacterSelect3_Noise:
-	.db $88
-	.db $02
-	.db $04
-	.db $02
-	.db $04
-	.db $02
-	.db $04
-	.db $02
-	.db $04
-	.db $02
-	.db $04
-	.db $02
-	.db $04
-	.db $02
-	.db $04
-	.db $02
-	.db $04
-	.db $02
-	.db $04
-	.db $02
-	.db $04
-	.db $02
-	.db $04
-	.db $02
-	.db $04
-	.db $02
-	.db $04
-	.db $04
-	.db $04
-	.db $82
-	.db $04
-	.db $04
-	.db $04
-	.db $04
-	.db $01
-	.db $04
-	.db $04
-	.db $01
-	.db $04
-	.db $04
-	.db $01
-	.db $04
+	note_type 1, QUARTER
+	drum_note Noise_ClosedHihat
+	drum_note Noise_UpperSnare
+	drum_note Noise_ClosedHihat
+	drum_note Noise_UpperSnare
+	drum_note Noise_ClosedHihat
+	drum_note Noise_UpperSnare
+	drum_note Noise_ClosedHihat
+	drum_note Noise_UpperSnare
+	drum_note Noise_ClosedHihat
+	drum_note Noise_UpperSnare
+	drum_note Noise_ClosedHihat
+	drum_note Noise_UpperSnare
+	drum_note Noise_ClosedHihat
+	drum_note Noise_UpperSnare
+	drum_note Noise_ClosedHihat
+	drum_note Noise_UpperSnare
+	drum_note Noise_ClosedHihat
+	drum_note Noise_UpperSnare
+	drum_note Noise_ClosedHihat
+	drum_note Noise_UpperSnare
+	drum_note Noise_ClosedHihat
+	drum_note Noise_UpperSnare
+	drum_note Noise_ClosedHihat
+	drum_note Noise_UpperSnare
+	drum_note Noise_ClosedHihat
+	drum_note Noise_UpperSnare
+	drum_note Noise_UpperSnare
+	drum_note Noise_UpperSnare
+	note_type 1, QUARTER_TRIPLET
+	drum_note Noise_UpperSnare
+	drum_note Noise_UpperSnare
+	drum_note Noise_UpperSnare
+	drum_note Noise_UpperSnare
+	drum_rest
+	drum_note Noise_UpperSnare
+	drum_note Noise_UpperSnare
+	drum_rest
+	drum_note Noise_UpperSnare
+	drum_note Noise_UpperSnare
+	drum_rest
+	drum_note Noise_UpperSnare
 
 MusicDataCharacterSelect1_DPCM:
-	.db $B6
-	.db $30
-	.db $B4
-	.db $30
-	.db $7E
-	.db $30
-	.db $7E
-	.db $30
-	.db $7E
-	.db $B2
-	.db $30
-	.db $B6
-	.db $30
-	.db $B4
-	.db $30
-	.db $7E
-	.db $30
-	.db $7E
-	.db $30
-	.db $7E
-	.db $B2
-	.db $30
-	.db $B6
-	.db $30
-	.db $B4
-	.db $30
-	.db $7E
-	.db $30
-	.db $7E
-	.db $30
-	.db $7E
-	.db $B2
-	.db $30
-	.db $B6
-	.db $26
-	.db $7E
-	.db $7E
-	.db $2E
-	.db $7E
-	.db $7E
+	note_type 1, HALF_TRIPLET
+	note C_, 3
+	note_type 1, EIGHTH
+	note C_, 3
+	rest
+	note C_, 3
+	rest
+	note C_, 3
+	rest
+	note_type 1, QUARTER_TRIPLET
+	note C_, 3
+	note_type 1, HALF_TRIPLET
+	note C_, 3
+	note_type 1, EIGHTH
+	note C_, 3
+	rest
+	note C_, 3
+	rest
+	note C_, 3
+	rest
+	note_type 1, QUARTER_TRIPLET
+	note C_, 3
+	note_type 1, HALF_TRIPLET
+	note C_, 3
+	note_type 1, EIGHTH
+	note C_, 3
+	rest
+	note C_, 3
+	rest
+	note C_, 3
+	rest
+	note_type 1, QUARTER_TRIPLET
+	note C_, 3
+	note_type 1, HALF_TRIPLET
+	note G_, 2
+	rest
+	rest
+	note B_, 2
+	rest
+	rest
 
 MusicDataCharacterSelect2_DPCM:
 MusicDataCharacterSelect3_DPCM:
-	.db $88
-	.db $18
-	.db $7E
-	.db $18
-	.db $7E
-	.db $18
-	.db $7E
-	.db $18
-	.db $7E
-	.db $1C
-	.db $7E
-	.db $1C
-	.db $7E
-	.db $1C
-	.db $7E
-	.db $1C
-	.db $7E
-	.db $26
-	.db $7E
-	.db $26
-	.db $7E
-	.db $26
-	.db $7E
-	.db $26
-	.db $7E
-	.db $18
-	.db $8B
-	.db $7E
-	.db $8c
-	.db $7E
+	note_type 1, QUARTER
+	note C_, 2
+	rest
+	note C_, 2
+	rest
+	note C_, 2
+	rest
+	note C_, 2
+	rest
+	note D_, 2
+	rest
+	note D_, 2
+	rest
+	note D_, 2
+	rest
+	note D_, 2
+	rest
+	note G_, 2
+	rest
+	note G_, 2
+	rest
+	note G_, 2
+	rest
+	note G_, 2
+	rest
+	note C_, 2
+	note_type 1, DOTTED_HALF
+	rest
+	note_type 1, WHOLE
+	rest

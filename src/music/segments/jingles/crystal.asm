@@ -1,76 +1,76 @@
 MusicDataCrystal:
 MusicDataCrystal_Square2:
-	.db $89
-	.db $36
-	.db $80
-	.db $36
-	.db $7E
-	.db $88
-	.db $36
-	.db $44
-	.db $44
-	.db $40
-	.db $8C
-	.db $3E
-	.db $8A
-	.db $7E
-	.db $00
+	note_type 1, DOTTED_QUARTER
+	note D#, 3
+	note_type 1, SIXTEENTH
+	note D#, 3
+	rest
+	note_type 1, QUARTER
+	note D#, 3
+	note A#, 3
+	note A#, 3
+	note G#, 3
+	note_type 1, WHOLE
+	note G_, 3
+	note_type 1, HALF
+	rest
+	sound_ret
 MusicDataCrystal_Square1:
-	.db $89
-	.db $40
-	.db $80
-	.db $40
-	.db $7E
-	.db $88
-	.db $40
-	.db $56
-	.db $56
-	.db $52
-	.db $8C
-	.db $50
-	.db $8A
-	.db $7E
+	note_type 1, DOTTED_QUARTER
+	note G#, 3
+	note_type 1, SIXTEENTH
+	note G#, 3
+	rest
+	note_type 1, QUARTER
+	note G#, 3
+	note G_, 4
+	note G_, 4
+	note F_, 4
+	note_type 1, WHOLE
+	note E_, 4
+	note_type 1, HALF
+	rest
 MusicDataCrystal_Triangle:
-	.db $89
-	.db $28
-	.db $80
-	.db $28
-	.db $7E
-	.db $88
-	.db $28
-	.db $88
-	.db $36
-	.db $36
-	.db $32
-	.db $8C
-	.db $30
-	.db $8A
-	.db $7E
+	note_type 1, DOTTED_QUARTER
+	note G#, 2
+	note_type 1, SIXTEENTH
+	note G#, 2
+	rest
+	note_type 1, QUARTER
+	note G#, 2
+	note_type 1, QUARTER
+	note D#, 3
+	note D#, 3
+	note C#, 3
+	note_type 1, WHOLE
+	note C_, 3
+	note_type 1, HALF
+	rest
 
 MusicDataCrystal_Noise:
-	.db $8C
-	.db $01
-	.db $00
+	note_type 1, WHOLE
+	drum_rest
+	sound_loop
 
 MusicDataCrystal_DPCM:
-	.db $8B
-	.db $02
-	.db $88
-	.db $02
-	.db $02
-	.db $02
-	.db $80
-	.db $02
-	.db $02
-	.db $02
-	.db $02
-	.db $02
-	.db $02
-	.db $02
-	.db $02
-	.db $02
-	.db $02
-	.db $02
-	.db $02
-	.db $8B
-	.db $02
+	note_type 1, DOTTED_HALF
+	drum_note 1
+	note_type 1, QUARTER
+	drum_note 1
+	drum_note 1
+	drum_note 1
+	note_type 1, SIXTEENTH
+	drum_note 1
+	drum_note 1
+	drum_note 1
+	drum_note 1
+	drum_note 1
+	drum_note 1
+	drum_note 1
+	drum_note 1
+	drum_note 1
+	drum_note 1
+	drum_note 1
+	drum_note 1
+	note_type 1, DOTTED_HALF
+	drum_note 1

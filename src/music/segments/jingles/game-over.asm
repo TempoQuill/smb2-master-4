@@ -1,59 +1,59 @@
 MusicDataGameOver:
 MusicDataGameOver_Square2:
-	.db $B4
-	.db $7E
-	.db $B0
-	.db $30
-	.db $7E
-	.db $7E
-	.db $30
-	.db $B4
-	.db $7E
-	.db $30
-	.db $3A
-	.db $38
-	.db $00
+	note_type 4, EIGHTH
+	rest
+	note_type 4, SIXTEENTH
+	note C_, 3
+	rest
+	rest
+	note C_, 3
+	note_type 4, EIGHTH
+	rest
+	note C_, 3
+	note F_, 3
+	note E_, 3
+	sound_ret
 MusicDataGameOver_Square1:
-	.db $B0
-	.db $56
-	.db $5A
-	.db $60
-	.db $3E
-	.db $42
-	.db $48
-	.db $26
-	.db $2A
-	.db $B4
-	.db $30
-	.db $26
-	.db $30
+	note_type 4, SIXTEENTH
+	note G_, 4
+	note A_, 4
+	note C_, 5
+	note G_, 3
+	note A_, 3
+	note C_, 4
+	note G_, 2
+	note A_, 2
+	note_type 4, EIGHTH
+	note C_, 3
+	note G_, 2
+	note C_, 3
 MusicDataGameOver_Triangle:
-	.db $84
-	.db $7E
-	.db $80
-	.db $50
-	.db $7E
-	.db $7E
-	.db $38
-	.db $84
-	.db $7E
-	.db $30
-	.db $3E
-	.db $30
+	note_type 1, EIGHTH
+	rest
+	note_type 1, SIXTEENTH
+	note E_, 4
+	rest
+	rest
+	note E_, 3
+	note_type 1, EIGHTH
+	rest
+	note C_, 3
+	note G_, 3
+	note C_, 3
 MusicDataGameOver_Noise:
-	.db $84
-	.db $01
-	.db $00
+	note_type 1, EIGHTH
+	drum_rest
+	sound_loop
 MusicDataGameOver_DPCM:
-	.db $84
-	.db $7E
-	.db $80
-	.db $50
-	.db $7E
-	.db $7E
-	.db $38
-	.db $84
-	.db $7E
-	.db $30
-	.db $3E
-	.db $30
+	note_type 1, EIGHTH
+	rest
+	note_type 1, SIXTEENTH
+	note E_, 4
+	rest
+	rest
+	note E_, 3
+	note_type 1, EIGHTH
+	rest
+	note C_, 3
+	note G_, 3
+	note C_, 3

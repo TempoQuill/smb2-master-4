@@ -1,540 +1,540 @@
 MusicDataWart:
 MusicDataWart_Square2:
-	.db $D9
-	.db $26
-	.db $24
-	.db $D5
-	.db $1C
-	.db $D0
-	.db $7E
-	.db $D9
-	.db $24
-	.db $22
-	.db $D5
-	.db $1A
-	.db $D0
-	.db $7E
-	.db $D9
-	.db $22
-	.db $20
-	.db $D5
-	.db $18
-	.db $D0
-	.db $7E
-	.db $D4
-	.db $1E
-	.db $DA
-	.db $1C
-	.db $D9
-	.db $7E
-	.db $D9
-	.db $2A
-	.db $28
-	.db $D5
-	.db $20
-	.db $D0
-	.db $7E
-	.db $D9
-	.db $28
-	.db $26
-	.db $D5
-	.db $1E
-	.db $D0
-	.db $7E
-	.db $D9
-	.db $26
-	.db $24
-	.db $D5
-	.db $1C
-	.db $D0
-	.db $7E
-	.db $D4
-	.db $22
-	.db $DA
-	.db $20
-	.db $D9
-	.db $7E
-	.db $F0
-	.db $6A
-	.db $7E
-	.db $F4
-	.db $6A
-	.db $7E
-	.db $6A
-	.db $7E
-	.db $6A
-	.db $7E
-	.db $F0
-	.db $6A
-	.db $7E
-	.db $6C
-	.db $7E
-	.db $F4
-	.db $6C
-	.db $7E
-	.db $6C
-	.db $7E
-	.db $6C
-	.db $7E
-	.db $F0
-	.db $6C
-	.db $7E
-	.db $6E
-	.db $7E
-	.db $F4
-	.db $6E
-	.db $7E
-	.db $6E
-	.db $7E
-	.db $6E
-	.db $7E
-	.db $F0
-	.db $6E
-	.db $7E
-	.db $70
-	.db $7E
-	.db $F4
-	.db $70
-	.db $7E
-	.db $70
-	.db $7E
-	.db $70
-	.db $7E
-	.db $F0
-	.db $70
-	.db $7E
-	.db $00
+	note_type 6, DOTTED_QUARTER
+	note G_, 2
+	note F#, 2
+	note_type 6, DOTTED_EIGHTH
+	note D_, 2
+	note_type 6, SIXTEENTH
+	rest
+	note_type 6, DOTTED_QUARTER
+	note F#, 2
+	note F_, 2
+	note_type 6, DOTTED_EIGHTH
+	note C#, 2
+	note_type 6, SIXTEENTH
+	rest
+	note_type 6, DOTTED_QUARTER
+	note F_, 2
+	note E_, 2
+	note_type 6, DOTTED_EIGHTH
+	note C_, 2
+	note_type 6, SIXTEENTH
+	rest
+	note_type 6, EIGHTH
+	note D#, 2
+	note_type 6, HALF
+	note D_, 2
+	note_type 6, DOTTED_QUARTER
+	rest
+	note_type 6, DOTTED_QUARTER
+	note A_, 2
+	note G#, 2
+	note_type 6, DOTTED_EIGHTH
+	note E_, 2
+	note_type 6, SIXTEENTH
+	rest
+	note_type 6, DOTTED_QUARTER
+	note G#, 2
+	note G_, 2
+	note_type 6, DOTTED_EIGHTH
+	note D#, 2
+	note_type 6, SIXTEENTH
+	rest
+	note_type 6, DOTTED_QUARTER
+	note G_, 2
+	note F#, 2
+	note_type 6, DOTTED_EIGHTH
+	note D_, 2
+	note_type 6, SIXTEENTH
+	rest
+	note_type 6, EIGHTH
+	note F_, 2
+	note_type 6, HALF
+	note E_, 2
+	note_type 6, DOTTED_QUARTER
+	rest
+	note_type 8, SIXTEENTH
+	note F_, 5
+	rest
+	note_type 8, EIGHTH
+	note F_, 5
+	rest
+	note F_, 5
+	rest
+	note F_, 5
+	rest
+	note_type 8, SIXTEENTH
+	note F_, 5
+	rest
+	note F#, 5
+	rest
+	note_type 8, EIGHTH
+	note F#, 5
+	rest
+	note F#, 5
+	rest
+	note F#, 5
+	rest
+	note_type 8, SIXTEENTH
+	note F#, 5
+	rest
+	note G_, 5
+	rest
+	note_type 8, EIGHTH
+	note G_, 5
+	rest
+	note G_, 5
+	rest
+	note G_, 5
+	rest
+	note_type 8, SIXTEENTH
+	note G_, 5
+	rest
+	note G#, 5
+	rest
+	note_type 8, EIGHTH
+	note G#, 5
+	rest
+	note G#, 5
+	rest
+	note G#, 5
+	rest
+	note_type 8, SIXTEENTH
+	note G#, 5
+	rest
+	sound_ret
 MusicDataWart_Square1:
-	.db $D9
-	.db $2C
-	.db $2A
-	.db $D5
-	.db $22
-	.db $D0
-	.db $7E
-	.db $D9
-	.db $2A
-	.db $28
-	.db $D5
-	.db $20
-	.db $D0
-	.db $7E
-	.db $D9
-	.db $28
-	.db $26
-	.db $D5
-	.db $1E
-	.db $D0
-	.db $7E
-	.db $D4
-	.db $24
-	.db $DA
-	.db $22
-	.db $D9
-	.db $7E
-	.db $D9
-	.db $30
-	.db $2E
-	.db $D5
-	.db $26
-	.db $D0
-	.db $7E
-	.db $D9
-	.db $2E
-	.db $2C
-	.db $D5
-	.db $24
-	.db $D0
-	.db $7E
-	.db $D9
-	.db $2C
-	.db $2A
-	.db $D5
-	.db $22
-	.db $D0
-	.db $7E
-	.db $D4
-	.db $2A
-	.db $DA
-	.db $28
-	.db $D9
-	.db $7E
-	.db $D0
-	.db $24
-	.db $7E
-	.db $22
-	.db $7E
-	.db $24
-	.db $7E
-	.db $22
-	.db $7E
-	.db $24
-	.db $7E
-	.db $22
-	.db $7E
-	.db $24
-	.db $7E
-	.db $22
-	.db $7E
-	.db $26
-	.db $7E
-	.db $24
-	.db $7E
-	.db $26
-	.db $7E
-	.db $24
-	.db $7E
-	.db $26
-	.db $7E
-	.db $24
-	.db $7E
-	.db $26
-	.db $7E
-	.db $24
-	.db $7E
-	.db $28
-	.db $7E
-	.db $26
-	.db $7E
-	.db $28
-	.db $7E
-	.db $26
-	.db $7E
-	.db $28
-	.db $7E
-	.db $26
-	.db $7E
-	.db $28
-	.db $7E
-	.db $26
-	.db $7E
-	.db $2A
-	.db $7E
-	.db $28
-	.db $7E
-	.db $2A
-	.db $7E
-	.db $28
-	.db $7E
-	.db $2A
-	.db $7E
-	.db $28
-	.db $7E
-	.db $2A
-	.db $7E
-	.db $28
-	.db $7E
+	note_type 6, DOTTED_QUARTER
+	note A#, 2
+	note A_, 2
+	note_type 6, DOTTED_EIGHTH
+	note F_, 2
+	note_type 6, SIXTEENTH
+	rest
+	note_type 6, DOTTED_QUARTER
+	note A_, 2
+	note G#, 2
+	note_type 6, DOTTED_EIGHTH
+	note E_, 2
+	note_type 6, SIXTEENTH
+	rest
+	note_type 6, DOTTED_QUARTER
+	note G#, 2
+	note G_, 2
+	note_type 6, DOTTED_EIGHTH
+	note D#, 2
+	note_type 6, SIXTEENTH
+	rest
+	note_type 6, EIGHTH
+	note F#, 2
+	note_type 6, HALF
+	note F_, 2
+	note_type 6, DOTTED_QUARTER
+	rest
+	note_type 6, DOTTED_QUARTER
+	note C_, 3
+	note B_, 2
+	note_type 6, DOTTED_EIGHTH
+	note G_, 2
+	note_type 6, SIXTEENTH
+	rest
+	note_type 6, DOTTED_QUARTER
+	note B_, 2
+	note A#, 2
+	note_type 6, DOTTED_EIGHTH
+	note F#, 2
+	note_type 6, SIXTEENTH
+	rest
+	note_type 6, DOTTED_QUARTER
+	note A#, 2
+	note A_, 2
+	note_type 6, DOTTED_EIGHTH
+	note F_, 2
+	note_type 6, SIXTEENTH
+	rest
+	note_type 6, EIGHTH
+	note A_, 2
+	note_type 6, HALF
+	note G#, 2
+	note_type 6, DOTTED_QUARTER
+	rest
+	note_type 6, SIXTEENTH
+	note F#, 2
+	rest
+	note F_, 2
+	rest
+	note F#, 2
+	rest
+	note F_, 2
+	rest
+	note F#, 2
+	rest
+	note F_, 2
+	rest
+	note F#, 2
+	rest
+	note F_, 2
+	rest
+	note G_, 2
+	rest
+	note F#, 2
+	rest
+	note G_, 2
+	rest
+	note F#, 2
+	rest
+	note G_, 2
+	rest
+	note F#, 2
+	rest
+	note G_, 2
+	rest
+	note F#, 2
+	rest
+	note G#, 2
+	rest
+	note G_, 2
+	rest
+	note G#, 2
+	rest
+	note G_, 2
+	rest
+	note G#, 2
+	rest
+	note G_, 2
+	rest
+	note G#, 2
+	rest
+	note G_, 2
+	rest
+	note A_, 2
+	rest
+	note G#, 2
+	rest
+	note A_, 2
+	rest
+	note G#, 2
+	rest
+	note A_, 2
+	rest
+	note G#, 2
+	rest
+	note A_, 2
+	rest
+	note G#, 2
+	rest
 MusicDataWart_Triangle:
-	.db $B4
-	.db $26
-	.db $2A
-	.db $2C
-	.db $26
-	.db $2A
-	.db $2C
-	.db $26
-	.db $2A
-	.db $26
-	.db $2A
-	.db $2C
-	.db $26
-	.db $2A
-	.db $2C
-	.db $26
-	.db $2A
-	.db $26
-	.db $2A
-	.db $2C
-	.db $26
-	.db $2A
-	.db $2C
-	.db $26
-	.db $2A
-	.db $26
-	.db $2A
-	.db $2C
-	.db $26
-	.db $2A
-	.db $2C
-	.db $26
-	.db $2A
-	.db $24
-	.db $28
-	.db $2A
-	.db $24
-	.db $28
-	.db $2A
-	.db $24
-	.db $28
-	.db $24
-	.db $28
-	.db $2A
-	.db $24
-	.db $28
-	.db $2A
-	.db $24
-	.db $28
-	.db $24
-	.db $28
-	.db $2A
-	.db $24
-	.db $28
-	.db $2A
-	.db $24
-	.db $28
-	.db $24
-	.db $28
-	.db $2A
-	.db $24
-	.db $28
-	.db $2A
-	.db $24
-	.db $28
-	.db $22
-	.db $B8
-	.db $22
-	.db $22
-	.db $22
-	.db $B4
-	.db $22
-	.db $24
-	.db $B8
-	.db $24
-	.db $24
-	.db $24
-	.db $B4
-	.db $24
-	.db $26
-	.db $B8
-	.db $26
-	.db $26
-	.db $26
-	.db $B4
-	.db $26
-	.db $28
-	.db $B8
-	.db $28
-	.db $28
-	.db $28
-	.db $B4
-	.db $28
+	note_type 4, EIGHTH
+	note G_, 2
+	note A_, 2
+	note A#, 2
+	note G_, 2
+	note A_, 2
+	note A#, 2
+	note G_, 2
+	note A_, 2
+	note G_, 2
+	note A_, 2
+	note A#, 2
+	note G_, 2
+	note A_, 2
+	note A#, 2
+	note G_, 2
+	note A_, 2
+	note G_, 2
+	note A_, 2
+	note A#, 2
+	note G_, 2
+	note A_, 2
+	note A#, 2
+	note G_, 2
+	note A_, 2
+	note G_, 2
+	note A_, 2
+	note A#, 2
+	note G_, 2
+	note A_, 2
+	note A#, 2
+	note G_, 2
+	note A_, 2
+	note F#, 2
+	note G#, 2
+	note A_, 2
+	note F#, 2
+	note G#, 2
+	note A_, 2
+	note F#, 2
+	note G#, 2
+	note F#, 2
+	note G#, 2
+	note A_, 2
+	note F#, 2
+	note G#, 2
+	note A_, 2
+	note F#, 2
+	note G#, 2
+	note F#, 2
+	note G#, 2
+	note A_, 2
+	note F#, 2
+	note G#, 2
+	note A_, 2
+	note F#, 2
+	note G#, 2
+	note F#, 2
+	note G#, 2
+	note A_, 2
+	note F#, 2
+	note G#, 2
+	note A_, 2
+	note F#, 2
+	note G#, 2
+	note F_, 2
+	note_type 4, QUARTER
+	note F_, 2
+	note F_, 2
+	note F_, 2
+	note_type 4, EIGHTH
+	note F_, 2
+	note F#, 2
+	note_type 4, QUARTER
+	note F#, 2
+	note F#, 2
+	note F#, 2
+	note_type 4, EIGHTH
+	note F#, 2
+	note G_, 2
+	note_type 4, QUARTER
+	note G_, 2
+	note G_, 2
+	note G_, 2
+	note_type 4, EIGHTH
+	note G_, 2
+	note G#, 2
+	note_type 4, QUARTER
+	note G#, 2
+	note G#, 2
+	note G#, 2
+	note_type 4, EIGHTH
+	note G#, 2
 
 MusicDataWart_Noise:
-	.db $84
-	.db $08
-	.db $08
-	.db $01
-	.db $08
-	.db $08
-	.db $01
-	.db $08
-	.db $08
-	.db $01
-	.db $08
-	.db $08
-	.db $01
-	.db $08
-	.db $08
-	.db $0A
-	.db $01
-	.db $08
-	.db $08
-	.db $01
-	.db $08
-	.db $08
-	.db $01
-	.db $08
-	.db $08
-	.db $01
-	.db $08
-	.db $08
-	.db $01
-	.db $08
-	.db $08
-	.db $0A
-	.db $01
-	.db $08
-	.db $08
-	.db $01
-	.db $08
-	.db $08
-	.db $01
-	.db $08
-	.db $08
-	.db $01
-	.db $08
-	.db $08
-	.db $01
-	.db $08
-	.db $08
-	.db $0A
-	.db $01
-	.db $08
-	.db $08
-	.db $01
-	.db $08
-	.db $08
-	.db $01
-	.db $08
-	.db $08
-	.db $01
-	.db $08
-	.db $08
-	.db $01
-	.db $08
-	.db $08
-	.db $0A
-	.db $01
-	.db $08
-	.db $08
-	.db $01
-	.db $08
-	.db $01
-	.db $08
-	.db $08
-	.db $0A
-	.db $08
-	.db $08
-	.db $01
-	.db $08
-	.db $01
-	.db $08
-	.db $08
-	.db $0A
-	.db $08
-	.db $08
-	.db $01
-	.db $08
-	.db $01
-	.db $08
-	.db $08
-	.db $0A
-	.db $08
-	.db $08
-	.db $0A
-	.db $08
-	.db $01
-	.db $0A
-	.db $0A
-	.db $0A
+	note_type 1, EIGHTH
+	drum_note Noise_Kick
+	drum_note Noise_Kick
+	drum_rest
+	drum_note Noise_Kick
+	drum_note Noise_Kick
+	drum_rest
+	drum_note Noise_Kick
+	drum_note Noise_Kick
+	drum_rest
+	drum_note Noise_Kick
+	drum_note Noise_Kick
+	drum_rest
+	drum_note Noise_Kick
+	drum_note Noise_Kick
+	drum_note Noise_Snare
+	drum_rest
+	drum_note Noise_Kick
+	drum_note Noise_Kick
+	drum_rest
+	drum_note Noise_Kick
+	drum_note Noise_Kick
+	drum_rest
+	drum_note Noise_Kick
+	drum_note Noise_Kick
+	drum_rest
+	drum_note Noise_Kick
+	drum_note Noise_Kick
+	drum_rest
+	drum_note Noise_Kick
+	drum_note Noise_Kick
+	drum_note Noise_Snare
+	drum_rest
+	drum_note Noise_Kick
+	drum_note Noise_Kick
+	drum_rest
+	drum_note Noise_Kick
+	drum_note Noise_Kick
+	drum_rest
+	drum_note Noise_Kick
+	drum_note Noise_Kick
+	drum_rest
+	drum_note Noise_Kick
+	drum_note Noise_Kick
+	drum_rest
+	drum_note Noise_Kick
+	drum_note Noise_Kick
+	drum_note Noise_Snare
+	drum_rest
+	drum_note Noise_Kick
+	drum_note Noise_Kick
+	drum_rest
+	drum_note Noise_Kick
+	drum_note Noise_Kick
+	drum_rest
+	drum_note Noise_Kick
+	drum_note Noise_Kick
+	drum_rest
+	drum_note Noise_Kick
+	drum_note Noise_Kick
+	drum_rest
+	drum_note Noise_Kick
+	drum_note Noise_Kick
+	drum_note Noise_Snare
+	drum_rest
+	drum_note Noise_Kick
+	drum_note Noise_Kick
+	drum_rest
+	drum_note Noise_Kick
+	drum_rest
+	drum_note Noise_Kick
+	drum_note Noise_Kick
+	drum_note Noise_Snare
+	drum_note Noise_Kick
+	drum_note Noise_Kick
+	drum_rest
+	drum_note Noise_Kick
+	drum_rest
+	drum_note Noise_Kick
+	drum_note Noise_Kick
+	drum_note Noise_Snare
+	drum_note Noise_Kick
+	drum_note Noise_Kick
+	drum_rest
+	drum_note Noise_Kick
+	drum_rest
+	drum_note Noise_Kick
+	drum_note Noise_Kick
+	drum_note Noise_Snare
+	drum_note Noise_Kick
+	drum_note Noise_Kick
+	drum_note Noise_Snare
+	drum_note Noise_Kick
+	drum_rest
+	drum_note Noise_Snare
+	drum_note Noise_Snare
+	drum_note Noise_Snare
 
 MusicDataWart_DPCM:
-	.db $89
-	.db $6E
-	.db $6C
-	.db $85
-	.db $64
-	.db $80
-	.db $7E
-	.db $89
-	.db $6C
-	.db $6A
-	.db $85
-	.db $62
-	.db $80
-	.db $7E
-	.db $89
-	.db $6A
-	.db $68
-	.db $85
-	.db $60
-	.db $80
-	.db $7E
-	.db $84
-	.db $66
-	.db $8A
-	.db $64
-	.db $89
-	.db $7E
-	.db $89
-	.db $72
-	.db $70
-	.db $85
-	.db $68
-	.db $80
-	.db $7E
-	.db $89
-	.db $70
-	.db $6E
-	.db $85
-	.db $66
-	.db $80
-	.db $7E
-	.db $89
-	.db $6E
-	.db $6C
-	.db $85
-	.db $64
-	.db $80
-	.db $7E
-	.db $84
-	.db $6A
-	.db $8A
-	.db $68
-	.db $89
-	.db $7E
-	.db $80
-	.db $66
-	.db $7E
-	.db $64
-	.db $7E
-	.db $66
-	.db $7E
-	.db $64
-	.db $7E
-	.db $66
-	.db $7E
-	.db $64
-	.db $7E
-	.db $66
-	.db $7E
-	.db $64
-	.db $7E
-	.db $68
-	.db $7E
-	.db $66
-	.db $7E
-	.db $68
-	.db $7E
-	.db $66
-	.db $7E
-	.db $68
-	.db $7E
-	.db $66
-	.db $7E
-	.db $68
-	.db $7E
-	.db $66
-	.db $7E
-	.db $6A
-	.db $7E
-	.db $68
-	.db $7E
-	.db $6A
-	.db $7E
-	.db $68
-	.db $7E
-	.db $6A
-	.db $7E
-	.db $68
-	.db $7E
-	.db $6A
-	.db $7E
-	.db $68
-	.db $7E
-	.db $6C
-	.db $7E
-	.db $6A
-	.db $7E
-	.db $6C
-	.db $7E
-	.db $6A
-	.db $7E
-	.db $6C
-	.db $7E
-	.db $64
-	.db $66
-	.db $68
-	.db $6A
-	.db $6C
-	.db $7E
+	note_type 1, DOTTED_QUARTER
+	note G_, 5
+	note F#, 5
+	note_type 1, DOTTED_EIGHTH
+	note D_, 5
+	note_type 1, SIXTEENTH
+	rest
+	note_type 1, DOTTED_QUARTER
+	note F#, 5
+	note F_, 5
+	note_type 1, DOTTED_EIGHTH
+	note C#, 5
+	note_type 1, SIXTEENTH
+	rest
+	note_type 1, DOTTED_QUARTER
+	note F_, 5
+	note E_, 5
+	note_type 1, DOTTED_EIGHTH
+	note C_, 5
+	note_type 1, SIXTEENTH
+	rest
+	note_type 1, EIGHTH
+	note D#, 5
+	note_type 1, HALF
+	note D_, 5
+	note_type 1, DOTTED_QUARTER
+	rest
+	note_type 1, DOTTED_QUARTER
+	note A_, 5
+	note G#, 5
+	note_type 1, DOTTED_EIGHTH
+	note E_, 5
+	note_type 1, SIXTEENTH
+	rest
+	note_type 1, DOTTED_QUARTER
+	note G#, 5
+	note G_, 5
+	note_type 1, DOTTED_EIGHTH
+	note D#, 5
+	note_type 1, SIXTEENTH
+	rest
+	note_type 1, DOTTED_QUARTER
+	note G_, 5
+	note F#, 5
+	note_type 1, DOTTED_EIGHTH
+	note D_, 5
+	note_type 1, SIXTEENTH
+	rest
+	note_type 1, EIGHTH
+	note F_, 5
+	note_type 1, HALF
+	note E_, 5
+	note_type 1, DOTTED_QUARTER
+	rest
+	note_type 1, SIXTEENTH
+	note D#, 5
+	rest
+	note D_, 5
+	rest
+	note D#, 5
+	rest
+	note D_, 5
+	rest
+	note D#, 5
+	rest
+	note D_, 5
+	rest
+	note D#, 5
+	rest
+	note D_, 5
+	rest
+	note E_, 5
+	rest
+	note D#, 5
+	rest
+	note E_, 5
+	rest
+	note D#, 5
+	rest
+	note E_, 5
+	rest
+	note D#, 5
+	rest
+	note E_, 5
+	rest
+	note D#, 5
+	rest
+	note F_, 5
+	rest
+	note E_, 5
+	rest
+	note F_, 5
+	rest
+	note E_, 5
+	rest
+	note F_, 5
+	rest
+	note E_, 5
+	rest
+	note F_, 5
+	rest
+	note E_, 5
+	rest
+	note F#, 5
+	rest
+	note F_, 5
+	rest
+	note F#, 5
+	rest
+	note F_, 5
+	rest
+	note F#, 5
+	rest
+	note D_, 5
+	note D#, 5
+	note E_, 5
+	note F_, 5
+	note F#, 5
+	rest
