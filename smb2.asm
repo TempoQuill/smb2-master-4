@@ -9,12 +9,10 @@
 .include "constants.asm"
 
 .ignorenl
-INES_MAPPER = MAPPER_MMC3
-IFDEF MMC5
-	INES_MAPPER = MAPPER_MMC5
-ENDIF
-	MIRROR_4SCREEN = %0000
-.endinl
+INES_MAPPER = MAPPER_MMC5
+MIRROR_4SCREEN = %0000
+BATTERY_RAM = 2
+INES_2_0 = 8
 
 IFNDEF NSF_FILE
 	.include "inesheader.asm"

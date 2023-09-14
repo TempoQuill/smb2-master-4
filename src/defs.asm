@@ -1,16 +1,11 @@
 .enum $0000
 .ignorenl
 
-VMirror = %00000000
-HMirror = %00000001
-
 MMC5_VMirror = %01000100
 MMC5_HMirror = %01010000
 
-IF INES_MAPPER == MAPPER_MMC5
-  VMirror = MMC5_VMirror
-  HMirror = MMC5_HMirror
-ENDIF
+VMirror = MMC5_VMirror
+HMirror = MMC5_HMirror
 
 CHR_A12_INVERSION = $80
 

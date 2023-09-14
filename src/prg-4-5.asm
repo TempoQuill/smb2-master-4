@@ -396,9 +396,7 @@ ProcessDPCMQueue_Part3:
 
 	LDA DMCBankTable, Y
 IFNDEF NSF_FILE
-	IF INES_MAPPER = MAPPER_MMC5
-		STA MMC5_PRGBankSwitch4
-	ENDIF
+	STA MMC5_PRGBankSwitch4
 ELSE
 	ASL A
 	STA NSFBank4
@@ -431,10 +429,8 @@ PlayWartDeathSound:
 	STA iDPCMNoteRatioLength
 	LDA #PRGBank_DMC_17
 IFNDEF NSF_FILE
-	IF INES_MAPPER = MAPPER_MMC5
-		ORA #$80
-		STA MMC5_PRGBankSwitch4
-	ENDIF
+	ORA #$80
+	STA MMC5_PRGBankSwitch4
 ELSE
 	ASL A
 	STA NSFBank4
@@ -511,10 +507,8 @@ ProcessMusicQueue_ReadFirstPointer:
 	DEY
 	LDA SongBanks, Y
 IFNDEF NSF_FILE
-	IF INES_MAPPER = MAPPER_MMC5
-		STA iMusicBank
-		STA MMC5_PRGBankSwitch3
-	ENDIF
+	STA iMusicBank
+	STA MMC5_PRGBankSwitch3
 ELSE
 	JSR SetMusicBank
 ENDIF
@@ -1197,9 +1191,7 @@ ProcessMusicQueue_DPCMNoteLoop:
 	; get octave bank
 	LDA DPCMOctaves, X
 IFNDEF NSF_FILE
-	IF INES_MAPPER = MAPPER_MMC5
-		STA MMC5_PRGBankSwitch4
-	ENDIF
+	STA MMC5_PRGBankSwitch4
 ELSE
 	ASL A
 	STA NSFBank4

@@ -2705,7 +2705,6 @@ UpdatePPUFBWO_CopySingleTileSkip:
 	JMP UpdatePPUFromBufferWithOptions
 
 
-IF INES_MAPPER == MAPPER_MMC5
 RESET_MMC5:
 	; Set PRG mode 3 and CHR mode 3
 	LDA #$03
@@ -2748,7 +2747,6 @@ RESET_MMC5:
 	STA MMC5_PRGBankSwitch5 ; $E000-$FFFF
 
 	JMP RESET
-ENDIF
 
 ;
 ; ## Tile collision bounding boxes
@@ -4966,22 +4964,14 @@ RESET_VBlank2Loop:
 	LDA PPUSTATUS
 	BPL RESET_VBlank2Loop
 
-IF INES_MAPPER == MAPPER_MMC5
 	LDA #MMC5_VMirror
 	STA MMC5_NametableMapping
-ELSE ;  INES_MAPPER == MAPPER_MMC3
-	LDA #VMirror
-	STA MMC3_Mirroring
-	LDA #$80
-	STA MMC3_PRGRamProtect
-ENDIF
 	JMP StartGame
 
 
 ;
 ; Switches the current CHR banks
 ;
-IF INES_MAPPER == MAPPER_MMC5
 ChangeCHRBanks:
 	LDA iObjCHR1
 	STA MMC5_CHRBankSwitch1
@@ -5015,20 +5005,6 @@ ChangeCHRBanks:
 	ADC #$01
 	STA MMC5_CHRBankSwitch12
 	RTS
-
-ELSE ; INES_MAPPER == MAPPER_MMC3
-ChangeCHRBanks:
-	LDY #$05
-ChangeCHRBanks_Loop:
-	TYA
-	ORA #CHR_A12_INVERSION
-	STA MMC3_BankSelect
-	LDA iBGCHR1, Y
-	STA MMC3_BankData
-	DEY
-	BPL ChangeCHRBanks_Loop
-	RTS
-ENDIF
 
 
 ;
@@ -5066,30 +5042,11 @@ ChangeMappedPRGBank:
 ChangeMappedPRGBankWithoutSaving:
 	ASL A
 
-IF INES_MAPPER == MAPPER_MMC5
 	ORA #$80
 	STA MMC5_PRGBankSwitch2
 	ORA #$01
 	STA MMC5_PRGBankSwitch3
 	RTS
-
-ELSE ; INES_MAPPER == MAPPER_MMC3
-	; Change first bank
-	PHA
-	LDA #CHR_A12_INVERSION | $06
-	STA MMC3_BankSelect
-	PLA
-	STA MMC3_BankData
-	ORA #$01 ; Use the bank right after this one next
-	; Change second bank
-	PHA
-	LDA #CHR_A12_INVERSION | $07
-	STA MMC3_BankSelect
-	PLA
-	STA MMC3_BankData
-	RTS
-
-ENDIF
 
 
 ;
@@ -5099,11 +5056,7 @@ ENDIF
 ; - `A`: `$00` =  vertical, `$01` = horizontal
 ;
 ChangeNametableMirroring:
-IF INES_MAPPER == MAPPER_MMC5
 	STA MMC5_NametableMapping
-ELSE
-	STA MMC3_Mirroring
-ENDIF
 	RTS
 
 IFDEF BANK_MIRRORING
@@ -5112,28 +5065,11 @@ ChangeMappedMirroredPRGBank:
 ChangeMappedMirroredPRGBankWithoutSaving:
 	ASL A
 
-	IF INES_MAPPER == MAPPER_MMC5
-		ORA #$80
-		STA MMC5_PRGBankSwitch2
-		STA MMC5_PRGBankSwitch3
-		RTS
+	ORA #$80
+	STA MMC5_PRGBankSwitch2
+	STA MMC5_PRGBankSwitch3
+	RTS
 
-	ELSE ; INES_MAPPER == MAPPER_MMC3
-		; Change first bank
-		PHA
-		LDA #CHR_A12_INVERSION | $06
-		STA MMC3_BankSelect
-		PLA
-		STA MMC3_BankData
-		; Change second bank
-		PHA
-		LDA #CHR_A12_INVERSION | $07
-		STA MMC3_BankSelect
-		PLA
-		STA MMC3_BankData
-		RTS
-
-	ENDIF
 ENDIF
 
 ; Note that this is NOT CODE.
@@ -5267,9 +5203,5 @@ StopOperationAndReset_ClearStack:
 
 NESVectorTables:
 	.dw NMI
-IF INES_MAPPER == MAPPER_MMC5
 	.dw RESET_MMC5
-ELSE ; INES_MAPPER == MAPPER_MMC3
-	.dw RESET
-ENDIF
 	.dw IRQ
