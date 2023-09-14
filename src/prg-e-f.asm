@@ -29,24 +29,28 @@ ScreenUpdateBufferPointers:
 	.dw PPUBuffer_CharacterSelect
 	.dw PPUBuffer_TitleCard
 	.dw PPUBuffer_Text_Game_Over
-	.dw iContinueScreenBuffer
+	.dw mContinueScreenBuffer
 	.dw PPUBuffer_Text_Retry
 	.dw wTitleCardBuffer
-	.dw iLDPBonusChanceBuffer ; Doki Doki Panic leftover
-	.dw iLDPBonucChanceNA
-	.dw iLDPBonucChanceABtn
-	.dw iLDPBonucChanceLifeDisplay
-	.dw iPauseBuffer
-	.dw iTextDeletionPause
-	.dw iTextDeletionBonus
-	.dw iTextDeletionABtn
-	.dw iTextDeletionBonusUnused
+	.dw mLDPBonusChanceBuffer ; Doki Doki Panic leftover
+	.dw mLDPBonucChanceNA
+	.dw mLDPBonucChanceABtn
+	.dw mLDPBonucChanceLifeDisplay
+	.dw mPauseBuffer
+	.dw mTextDeletionPause
+	.dw mTextDeletionBonus
+	.dw mTextDeletionABtn
+	.dw mTextDeletionBonusUnused
 	.dw wWorldWarpDestination
 	.dw wContinueScreenBullets
 	.dw wHawkDoorBuffer
 	.dw PPUBuffer_TitleCardLeftover
 	.dw PPUBuffer_PauseExtraLife
 	.dw wBonusLayoutBuffer
+	.dw PauseOptionData
+	.dw PauseOptionPalette1
+	.dw PauseOptionPalette2
+	.dw PauseOptionPalette3
 
 PPUBuffer_CharacterSelect:
 	.db $21, $49, $06, $E9, $E5, $DE, $DA, $EC, $DE ; PLEASE
@@ -1008,16 +1012,24 @@ VerticalLevel_CheckTransition:
 ShowPauseScreen:
 	JSR PauseScreen_ExtraLife
 
+	LDA #ScreenUpdateBuffer_RAM_PauseText
+	STA zScreenUpdateIndex
 	; used when running sound queues
 	LDA #Stack100_Pause
 	STA iStack
 	LDA #DPCM_Pause
 	STA iDPCMSFX
 
-PauseScreenLoop:
-	LDA #$0E
-	STA z06
+	JSR WaitForNMI
 
+	LDA #ScreenUpdateBuffer_PauseOptions
+	STA zScreenUpdateIndex
+	JSR WaitForNMI
+
+	; ScreenUpdateBuffer_PauseOptionsAttribute1
+	INC zScreenUpdateIndex
+
+PauseScreenLoop:
 DoSuicideCheatCheck:
 	JSR WaitForNMI_TurnOnPPU
 
@@ -1032,20 +1044,31 @@ DoSuicideCheatCheck:
 	JSR KillPlayer ; KILL THYSELF
 
 PauseScreenExitCheck:
-	LDA zInputBottleneck
+	JSR ChooseSaveChoiceAttribute
+	TYA
+	CLC
+	ADC #ScreenUpdateBuffer_PauseOptions + 1
+	STA zScreenUpdateIndex
+
+	LDY zInputBottleneck
+	TYA
 	AND #ControllerInput_Start
 	BNE HidePauseScreen
 
-	DEC z06
-	BPL DoSuicideCheatCheck
+	TYA
+	AND #ControllerInput_A
+	BEQ PauseScreenLoop
 
-	INC z07
-	LDA z07
-	AND #$01
-	CLC
-	ADC #$0D ; Will use either $0D or $0E from the update index pointers
-	STA zScreenUpdateIndex ; @TODO I assume this is what blinks "PAUSE"
-	JMP PauseScreenLoop
+	LDY iStack + 1
+	DEY
+	BMI HidePauseScreen
+	DEY
+	BMI SaveAndHidePauseScreen
+	JMP StopOperationAndReset
+
+SaveAndHidePauseScreen:
+	LDA #Stack100_PauseSave
+	STA iStack
 
 ;
 ; Unpauses the game
@@ -1073,9 +1096,27 @@ ENDIF
 	LDA #PRGBank_0_1
 	JSR ChangeMappedPRGBank
 
+	LDA zPlayerState ; Check if the player is already dying
+	CMP #PlayerState_Dying
+	BNE HidePauseScreen_SFX
+
+	JMP HidePauseScreen_01
+
+HidePauseScreen_SFX:
+	LDA zInputCurrentState
+	ORA zInputBottleneck
+	AND #$7F
+	BNE HidePauseScreen_SFXStart
+	LDX iStack + 1
+	LDA PauseSounds, X
+	STA iDPCMSFX
+	JMP HidePauseScreen_01
+
+HidePauseScreen_SFXStart:
 	LDA #DPCM_Pause
 	STA iDPCMSFX
 	JMP HidePauseScreen_01
+
 
 
 InitializeSubArea:
@@ -1296,18 +1337,18 @@ loc_BANKF_E6E6:
 	LDY #(BonusChanceUpdateBuffer_BONUS_CHANCE_Unused - PPUBuffer_Text_Continue - 1)
 loc_BANKF_E6EF:
 	LDA PPUBuffer_Text_Continue, Y
-	STA iContinueScreenBuffer, Y
+	STA mContinueScreenBuffer, Y
 	DEY
 	BPL loc_BANKF_E6EF
 
 	; Hide the bullet for RETRY
 	LDA #$FB
-	STA iContinueScreenRetry
+	STA mContinueScreenRetry
 	; Update the number of continues
 	LDA iNumContinues
 	CLC
 	ADC #$D0
-	STA iContinueScreenContNo
+	STA mContinueScreenContNo
 	LDA #$00
 	STA z08
 	LDA #ScreenUpdateBuffer_RAM_ContinueRetryText
@@ -1610,14 +1651,14 @@ SpinSlots_Handling:
 
 	LDY #$00
 	LDX zObjectXLo + 6 ; Load reel 1
-	LDA iReelBuffer, X
+	LDA mReelBuffer, X
 	BNE CheckReel2Symbol ; Is this reel a cherry?
 
 	INY ; Yes; add one life
 
 CheckReel2Symbol:
 	LDX zObjectXLo + 7 ; Load reel 2
-	CMP iReelBuffer + 8, X
+	CMP mReelBuffer + 8, X
 	BNE AddSlotMachineExtraLives ; Does this match the previous symbol?
 
 	CMP #$00 ; Yes; are they both cherries?
@@ -1627,7 +1668,7 @@ CheckReel2Symbol:
 
 CheckReel3Symbol:
 	LDX zObjectXLo + 8 ; Load reel 3
-	CMP iReelBuffer + 16, X ; Does reel 3 match the previous two?
+	CMP mReelBuffer + 16, X ; Does reel 3 match the previous two?
 	BNE AddSlotMachineExtraLives ; HEHE, NNNOPE
 
 	INY ; They all match! Yay! Add 2 extra lives.
@@ -1655,7 +1696,7 @@ loc_BANKF_E8D3:
 	BEQ SlotMachineLoseFanfare ; No, play lose sound effect
 
 	ORA #$D0
-	STA iLDPBonucChanceLiveEMCount ; Update number of lives won
+	STA mLDPBonucChanceLiveEMCount ; Update number of lives won
 	JSR SlotMachine_WaitforSFX
 	LDA #Music_CrystalGetFanfare ; Play winner jingle
 	STA iMusic
@@ -2065,9 +2106,9 @@ locret_BANKF_EAD1:
 
 	; eject if reels 1 and 2 don't match
 	LDX zObjectXLo + 6
-	LDA iReelBuffer, X
+	LDA mReelBuffer, X
 	LDX zObjectXLo + 7
-	CMP iReelBuffer + 8, X
+	CMP mReelBuffer + 8, X
 	BNE CheckStopReel_Eject
 
 	; Play the drum roll!
@@ -2131,7 +2172,7 @@ loc_BANKF_EAFA:
 	TAX
 	ADC zObjectXLo + 6, Y
 	TAY
-	LDA iReelBuffer, Y
+	LDA mReelBuffer, Y
 	TAY
 	LDA #$07
 	STA z01
@@ -2674,6 +2715,7 @@ RESET_MMC5:
 	; Enable PRG RAM writing
 	LDA #$02
 	STA MMC5_PRGRAMProtect1
+	STA MMC5_ExtendedRAMMode
 	LDA #$01
 	STA MMC5_PRGRAMProtect2
 
@@ -4389,6 +4431,14 @@ loc_BANKF_F749:
 	; Set music to death jingle
 	LDA #Music_DeathJingle
 	STA iMusic
+	LDA iStack
+	CMP #Stack100_Pause
+	BNE KillPlayer_Eject
+
+	LDA #ControllerInput_Start
+	STA zInputBottleneck
+
+KillPlayer_Eject:
 	RTS
 
 
@@ -5176,6 +5226,29 @@ EngageSave_Save:
 	JMP GenerateChecksum
 EngageSave_Exit:
 	RTS
+
+PauseSounds:
+	.db DPCM_Pause
+	.db DPCM_Save
+	.db DPCM_Save ; unused
+
+StopOperationAndReset:
+	LDA #DPCM_Save
+	STA iDPCMSFX
+	LDA #Stack100_Save
+	STA iStack
+StopOperationAndReset_Loop:
+	LDA #1
+	JSR DelayFrames
+	LDA iCurrentDPCMSFX
+	BNE StopOperationAndReset_Loop
+	JSR ClearNametablesAndSprites
+	TAX
+StopOperationAndReset_ClearStack:
+	STA iStack, X
+	DEX
+	BNE StopOperationAndReset_ClearStack
+	JMP RESET
 
 ;
 ; Vectors for the NES CPU. These must ALWAYS be at $FFFA!

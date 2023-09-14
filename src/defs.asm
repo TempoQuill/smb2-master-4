@@ -306,6 +306,16 @@ ScreenUpdateBuffer_RAM_EndOfLevelDoor = $14
 ScreenUpdateBuffer_TitleCardLeftover = $15
 ScreenUpdateBuffer_PauseExtraLife = $16
 ScreenUpdateBuffer_RAM_BonusChanceLayout = $17
+ScreenUpdateBuffer_PauseOptions = $18
+ScreenUpdateBuffer_PauseOptionsAttribute1 = $19
+ScreenUpdateBuffer_PauseOptionsAttribute2 = $1A
+ScreenUpdateBuffer_PauseOptionsAttribute3 = $1B
+
+; ---------------------------------------------------------------------------
+; enum options (width 1 byte)
+PauseOption_Continue = 0
+PauseOption_SaveNContinue = 1
+PauseOption_SaveNQuit = 2
 
 ; ---------------------------------------------------------------------------
 

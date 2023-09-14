@@ -449,10 +449,10 @@ loc_BANKA_8479:
 	CPY #$FF
 	BNE loc_BANKA_8479
 
-	LDY #$B6
+	LDY #(TitleCardText - BonusChanceReel1Order) - 1
 loc_BANKA_8486:
 	LDA BonusChanceReel1Order, Y
-	STA iReelBuffer, Y
+	STA mReelBuffer, Y
 	DEY
 	CPY #$FF
 	BNE loc_BANKA_8486
@@ -620,9 +620,9 @@ BonusChanceText_PLAYER_1UP:
 	.db $00
 
 Text_PAUSE:
-	.db $25, $ED, $05
+	.db $25, $6D, $05
 	.db $E9, $DA, $EE, $EC, $DE ; PAUSE
-	.db $27, $DB, $02, $AA, $AA ; attribute data
+	.db $27, $CB, $02, $AA, $AA ; attribute data
 	.db $00
 
 ; Erases NO BONUS / PUSH (A) BUTTON / PLAYER 1UP
@@ -643,7 +643,7 @@ BonusChanceText_Message_Erase_Unused:
 	.db $00
 
 Text_PAUSE_Erase:
-	.db $25, $ED, $05
+	.db $25, $6D, $05
 	.db $FB, $FB, $FB, $FB, $FB
 	.db $00
 

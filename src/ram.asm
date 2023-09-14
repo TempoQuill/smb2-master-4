@@ -1694,45 +1694,7 @@ iCHR_A5:
 	.dsb 1 ; $0636
 iBackupPlayerPal:
 	.dsb 4 ; $0637
-iReelBuffer:
-	.dsb 8 ; $063b
-	.dsb 8 ; $0643
-	.dsb 8 ; $064b
-	.dsb 40 ; $0653
-
-iLDPBonusChanceBuffer:
-
-iContinueScreenBuffer:
-	.dsb 3 ; $067b
-; Number of continues
-iContinueScreenContNo:
-	.dsb 4 ; $067e
-; Bullet next to CONTINUE
-	.dsb 13 ; $0682
-; Bullet next to RETRY
-iContinueScreenRetry:
-	.dsb 4 ; $068f
-
-iLDPBonucChanceNA:
-	.dsb 24 ; $0693
-iLDPBonucChanceABtn:
-	.dsb 18 ; $06ab
-iLDPBonucChanceLifeDisplay:
-	.dsb 11 ; $06bd
-iLDPBonucChanceLiveEMCount:
-	.dsb 4 ; $06c8
-
-iPauseBuffer:
-	.dsb 14 ; $06cc
-
-iTextDeletionBonus:
-	.dsb 5 ; $06da
-iTextDeletionABtn:
-	.dsb 5 ; $06df
-iTextDeletionBonusUnused:
-	.dsb 5 ; $06e4
-iTextDeletionPause:
-	.dsb 9 ; $06e9
+	.dsb $b7
 
 iCurrentROMBank:
 	.dsb 1 ; $06f2
@@ -1881,6 +1843,9 @@ MMC5_IRQStatus = $5204
 
 MMC5_Multiplier = $5205
 
+MMC5_ExpansionRAMStart = $5c00
+MMC5_ExpansionRAMEnd = $5fff
+
 ;
 ; Cartridge on-board RAM
 ; Decoded level data is stored in memory here,
@@ -1980,4 +1945,46 @@ MMC3_IRQLatch = $c000
 MMC3_IRQReload = $c001
 MMC3_IRQDisable = $e000
 MMC3_IRQEnable = $e001
+.ende
+
+.enum MMC5_ExpansionRAMStart
+mReelBuffer:
+	.dsb 8 ; $5c00
+	.dsb 8 ; $5c08
+	.dsb 8 ; $5c10
+	.dsb 40 ; $5c18
+
+mLDPBonusChanceBuffer:
+
+mContinueScreenBuffer:
+	.dsb 3 ; $5c40
+; Number of continues
+mContinueScreenContNo:
+	.dsb 4 ; $5c43
+; Bullet next to CONTINUE
+	.dsb 13 ; $5c47
+; Bullet next to RETRY
+mContinueScreenRetry:
+	.dsb 4 ; $5c54
+
+mLDPBonucChanceNA:
+	.dsb 24 ; $5c58
+mLDPBonucChanceABtn:
+	.dsb 18 ; $5c70
+mLDPBonucChanceLifeDisplay:
+	.dsb 11 ; $5c82
+mLDPBonucChanceLiveEMCount:
+	.dsb 4 ; $5c8d
+
+mPauseBuffer:
+	.dsb 14 ; $5c91
+
+mTextDeletionBonus:
+	.dsb 5 ; $5c9f
+mTextDeletionABtn:
+	.dsb 5 ; $5ca4
+mTextDeletionBonusUnused:
+	.dsb 5 ; $5ca9
+mTextDeletionPause:
+	.dsb 9 ; $5cae
 .ende
