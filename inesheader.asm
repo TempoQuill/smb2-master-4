@@ -10,7 +10,8 @@ ELSE
 	.db 16 ; number of 8KB CHR-ROM pages
 ENDIF
 
-	.db ((INES_MAPPER & %00001111) << 4) | MIRROR_4SCREEN ; mapper (lower nybble) and mirroring
-	.dsb 3, $00
-	.db $70 ; flags 10
+	.db ((INES_MAPPER & $f) << 4) | MIRROR_4SCREEN | BATTERY_RAM
+	.db INES_MAPPER & $f0 | INES_2_0
+	.dsb 2, $00
+	.db $77 ; 8K of W/SRAM
 	.dsb 5, $00 ; clear the remaining bytes
