@@ -5045,12 +5045,12 @@ TitleStoryText_Line14:
 	.db $FB, $FB, $FB, $FB ; IN HIS DREAM....
 
 TitleStoryText_Line15:
-	.db $FB, $FB, $FB, $FB, $FB, $FB, $FB, $FB, $FB, $FB, $FB, $FB, $FB, $FB, $FB, $FB
-	.db $FB, $FB, $FB, $FB ; (blank)
+	.db $EC, $ED, $DA, $EB, $ED, $FB, $F4, $FB, $E7, $DE, $F0, $FB, $E0, $DA, $E6, $DE
+	.db $FB, $FB, $FB, $FB ; START - NEW GAME
 
 TitleStoryText_Line16:
-	.db $FB, $FB, $E9, $EE, $EC, $E1, $FB, $EC, $ED, $DA, $EB, $ED, $FB, $DB, $EE, $ED
-	.db $ED, $E8, $E7, $FB ; PUSH START BUTTON
+	.db $FB, $DA, $B9, $DB, $FB, $F4, $FB, $E5, $E8, $DA, $DD, $FB, $E0, $DA, $E6, $DE
+	.db $FB, $FB, $FB, $FB ; B+A - LOAD GAME
 
 TitleAttributeData1:
 	.db $23, $CB, $42, $FF
@@ -5271,22 +5271,20 @@ loc_BANK0_9B3B:
 ; ---------------------------------------------------------------------------
 
 loc_BANK0_9B4D:
-IFDEF TEST_SLEEPING_SCENE
 	LDA zInputBottleneck
-	AND #ControllerInput_Select
-	BNE DebugEnding
-ENDIF
+	AND #ControllerInput_A | ControllerInput_B
+	BNE LoadSave
 
 	LDA zInputBottleneck
 	AND #ControllerInput_Start
 	BEQ loc_BANK0_9B56
-
+	JSR InitNewGame
 	JMP loc_BANK0_9C1F
 
-IFDEF TEST_SLEEPING_SCENE
-DebugEnding:
-	JMP DoDebugEnding
-ENDIF
+LoadSave:
+	JSR LoadPreviousGame
+	JMP loc_BANK0_9C1F
+
 ; ---------------------------------------------------------------------------
 
 loc_BANK0_9B56:
@@ -5423,11 +5421,10 @@ loc_BANK0_9C0B:
 	STA z10
 
 loc_BANK0_9C19:
-IFDEF TEST_SLEEPING_SCENE
 	LDA zInputCurrentState
-	AND #ControllerInput_Select
-	BNE LateDebugEnding
-ENDIF
+	AND #ControllerInput_A | ControllerInput_B
+	BNE LoadSaveGame
+
 	LDA zInputCurrentState
 	AND #ControllerInput_Start
 	BEQ loc_BANK0_9C35
@@ -5449,14 +5446,11 @@ loc_BANK0_9C2A:
 	JSR HideAllSprites
 
 	INC iMainGameState
-	LDA #$02 ; Number of continues on start
-	STA iNumContinues
 	RTS
 
-IFDEF TEST_SLEEPING_SCENE
-LateDebugEnding:
-	JMP DoDebugEnding
-ENDIF
+LoadSaveGame:
+	JSR LoadPreviousGame
+	JMP loc_BANK0_9C1F
 
 ; ---------------------------------------------------------------------------
 
@@ -5507,9 +5501,6 @@ EndingPPUDataPointers:
 	.dw EndingCelebrationText_PRINCESS
 	.dw EndingCelebrationText_TOAD
 	.dw EndingCelebrationText_LUIGI
-IFDEF TEST_SLEEPING_SCENE
-	.dw EndingToadPalette
-ENDIF
 
 
 WaitForNMI_Ending_TurnOffPPU:
@@ -7857,67 +7848,80 @@ PlaceCorkRoomJar_Loop:
 PlaceCorkRoomJar_Exit:
 	RTS
 
-IFDEF TEST_SLEEPING_SCENE
-DoDebugEnding:
-	LDA #Music_StopMusic
-	STA iMusic
-	LDX #18
-DoDebugEnding_StatsLoop:
-	LDA Debug_ToadStats - 1, X
-	STA iStatsRAM - 1, X
-	DEX
-	BNE DoDebugEnding_StatsLoop
-	LDA #Character_Toad
-	STA zCurrentCharacter
-	LDA #CHRBank_Toad
-	STA iObjCHR1
-	LDA #CHRBank_EnemiesSky
-	STA iObjCHR4
-	LDA #CHRBank_BackgroundSky
-	STA iBGCHR1
-	LDA #EndingUpdateBuffer_Debug
-	STA zScreenUpdateIndex
+LoadPreviousGame_Corrupt:
+	JMP InitNewGame
+
+LoadPreviousGame:
+; integrity check, make sure backup data matches
+	; make sure the backup checksum is valid before doing anything
+	; byte 0
+	CLC
+	LDY #3
+	LDA sBackupContributors + 3
+LoadPreviousGame_BackupByte0:
+	ADC sBackupContributors, Y
+	ADC sBackupLvl, Y
+	DEY
+	BPL LoadPreviousGame_BackupByte0
+	CMP sBackupMultiChecksum
+	BNE LoadPreviousGame_Corrupt
+
+	; byte 1
+	LDA sBackupExtraMen
+	CMP sBackupMultiChecksum + 1
+	BNE LoadPreviousGame_Corrupt
+	; byte 2 / 3
+	LDA sBackupMultiChecksum
+	LDY sBackupMultiChecksum + 1
+	STA MMC5_Multiplier
+	STY MMC5_Multiplier + 1
+	LDA MMC5_Multiplier
+	LDY MMC5_Multiplier + 1
+	CMP sBackupMultiChecksum + 2
+	BNE LoadPreviousGame_Corrupt
+	CPY sBackupMultiChecksum + 3
+	BNE LoadPreviousGame_Corrupt
+	; checksums
+	JSR GenerateChecksum
+	LDY #3
+LoadPreviousGame_Checksums:
+	LDA sMultiChecksum, Y
+	CMP sBackupMultiChecksum, Y
+	BNE RetrieveBackupData
+	DEY
+	BPL LoadPreviousGame_Checksums
+
+	LDY #SAVE_DATA_WIDTH - 1
+	; data
+LoadPreviousGame_Data:
+	LDA sSaveData, Y
+	CMP sBackupSaveData, Y
+	BNE RetrieveBackupData
+	DEY
+	BPL LoadPreviousGame_Data
+	; Yay!  No corruption!
+
+RetrieveBackupData:
+; Copy backup data to main save data
+	LDY #SAVE_DATA_WIDTH - 1
+
+RetrieveBackupData_Copy:
+	LDA sBackupSaveData, Y
+	STA sSaveData, Y
+	DEY
+	BPL RetrieveBackupData_Copy
+	JMP GenerateChecksum
+
+InitNewGame:
 	LDA #5
-	STA iCharacterLevelCount
-	STA iCharacterLevelCount + 1
-	STA iCharacterLevelCount + 2
-	STA iCharacterLevelCount + 3
-	STA sContributors
-	STA sContributors + 1
-	STA sContributors + 2
-	STA sContributors + 3
-	JMP EndingSceneRoutine
-
-EndingToadPalette:
-	.db $3F, $10, $04
-	.db $30, $01, $30, $27
-	; no need for zero here, there's one the very next byte
-
-Debug_ToadStats:
-	.db $00 ; Pick-up Speed, frame 1/6 - pulling
-	.db $04 ; Pick-up Speed, frame 2/6 - pulling
-	.db $02 ; Pick-up Speed, frame 3/6 - ducking
-	.db $01 ; Pick-up Speed, frame 4/6 - ducking
-	.db $04 ; Pick-up Speed, frame 5/6 - ducking
-	.db $07 ; Pick-up Speed, frame 6/6 - ducking
-	.db $B0 ; Jump Speed, still - no object
-	.db $B0 ; Jump Speed, still - with object
-	.db $98 ; Jump Speed, charged - no object
-	.db $98 ; Jump Speed, charged - with object
-	.db $A6 ; Jump Speed, running - no object
-	.db $AA ; Jump Speed, running - with object
-	.db $E0 ; Jump Speed - in quicksand
-	.db $00 ; Floating Time
-	.db $07 ; Gravity without Jump button pressed
-	.db $04 ; Gravity with Jump button pressed
-	.db $08 ; Gravity in quicksand
-	.db $18 ; Running Speed, right - no object
-	.db $18 ; Running Speed, right - with object
-	.db $04 ; Running Speed, right - in quicksand
-	.db $E8 ; Running Speed, left - no object
-	.db $E8 ; Running Speed, left - with object
-	.db $FC ; Running Speed, left - in quicksand
-ENDIF
+	STA sExtraMen
+	LDY #7
+	LDA #0
+InitNewGame_Loop:
+	STA sSaveData, Y
+	DEY
+	BPL InitNewGame_Loop
+	RTS
 
 ChooseSaveChoiceAttribute:
 ; Decide the attributes to send

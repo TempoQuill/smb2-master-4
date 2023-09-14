@@ -823,13 +823,18 @@ StartGame:
 
 ; We return here after picking "CONTINUE" from the game over menu.
 ContinueGame:
-	LDA #$05 ; Number of lives to start
+	LDA sExtraMen
 	STA iExtraMen
-	STA sExtraMen
 
 GoToWorldStartingLevel:
-	LDX iCurrentWorld
+	LDX sSavedWorld
 	LDY WorldStartingLevel, X
+	CPY sSavedLvl
+	BEQ GoToWorldStartingLevel_SaveMatch
+
+	LDY sSavedLvl
+
+GoToWorldStartingLevel_SaveMatch:
 	STY iCurrentLvl
 	STY sSavedLvl
 	STY iCurrentLevel_Init
@@ -1345,21 +1350,11 @@ loc_BANKF_E6EF:
 	LDA #$FB
 	STA mContinueScreenRetry
 	; Update the number of continues
-	LDA iNumContinues
-	CLC
-	ADC #$D0
+	LDA #$FB
 	STA mContinueScreenContNo
 	LDA #$00
 	STA z08
 	LDA #ScreenUpdateBuffer_RAM_ContinueRetryText
-	DEC iNumContinues
-	BPL loc_BANKF_E717
-
-	LDA #$01
-	STA z08
-	LDA #ScreenUpdateBuffer_Text_Retry
-
-loc_BANKF_E717:
 	STA zScreenUpdateIndex
 
 loc_BANKF_E719:
@@ -1372,14 +1367,6 @@ loc_BANKF_E719:
 	LDA z08
 	EOR #$01
 	STA z08
-	LDY iNumContinues
-	CPY #$FF
-	BNE loc_BANKF_E733
-
-	LDA #$01
-	STA z08
-
-loc_BANKF_E733:
 	ASL A
 	ASL A
 	TAY
@@ -5095,13 +5082,13 @@ BackUpSaveData_Loop:
 GenerateChecksum:
 	; 2 3-byte strings
 	LDY #3
-	; start with Peach's saved contributor number
-	LDA #0
+	; start with Luigi's saved contributor number
+	LDA sContributors + 3
 	CLC
 
 GenerateChecksum_Loop:
 	; + Toad's SCN + World
-	; + Luigi's SCN + Level Area
+	; + Peach's SCN + Level Area
 	; + Mario's SCN + Level
 	ADC sContributors, Y
 	ADC sSavedLvl, Y
@@ -5121,20 +5108,23 @@ GenerateChecksum_Loop:
 	LDY MMC5_Multiplier + 1
 	STA sMultiChecksum + 2
 	STY sMultiChecksum + 3
+	RTS
+
+GenerateBackupChecksum:
 	; do the backup save
 	; 2 3-byte strings
 	LDY #3
-	; start with Peach's backup contributor number
-	LDA #0
+	; start with Luigi's backup contributor number
+	LDA sBackupContributors + 3
 	CLC
-GenerateChecksum_BackupLoop:
-	; + Toad's SCN + World
-	; + Luigi's SCN + Level Area
-	; + Mario's SCN + Level
+GenerateBackupChecksum_Loop:
+	; + Toad's BCN + World
+	; + Peach's BCN + Level Area
+	; + Mario's BCN + Level
 	ADC sBackupContributors, Y
 	ADC sBackupLvl, Y
 	DEY
-	BPL GenerateChecksum_BackupLoop
+	BPL GenerateBackupChecksum_Loop
 	; stash the sum in byte 0, transfer to Y as well
 	STA sBackupMultiChecksum
 	TAY
@@ -5159,7 +5149,8 @@ EngageSave:
 	BNE EngageSave_Exit
 EngageSave_Save:
 	JSR BackUpSaveData
-	JMP GenerateChecksum
+	JSR GenerateChecksum
+	JMP GenerateBackupChecksum
 EngageSave_Exit:
 	RTS
 
