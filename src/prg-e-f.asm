@@ -828,6 +828,7 @@ ContinueGame:
 
 GoToWorldStartingLevel:
 	LDX sSavedWorld
+	STX iCurrentWorld
 	LDY WorldStartingLevel, X
 	CPY sSavedLvl
 	BEQ GoToWorldStartingLevel_SaveMatch
@@ -1387,6 +1388,8 @@ loc_BANKF_E747:
 	BNE GameOver_Retry
 
 	STA iTotalCoins
+	LDA #5
+	STA sExtraMen
 	JMP ContinueGame
 
 ; ---------------------------------------------------------------------------
@@ -1544,6 +1547,9 @@ GoToNextLevel:
 	STA iMusicID
 	INC iCurrentWorld
 	INC sSavedWorld
+	LDY iCurrentWorld
+	LDX WorldStartingLevel, Y
+	STX sSavedLvl
 	JMP GoToWorldStartingLevel
 
 GoToNextLevel_SameWorld:
