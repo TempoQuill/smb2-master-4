@@ -381,6 +381,13 @@ ProcessDPCMSFX_Exit:
 	RTS
 
 ProcessDPCMSFX_Part2:
+	LDY iDPCMBossPriority
+	BEQ ProcessDPCMSFX_Part3
+
+	CMP iDPCMBossPriority
+	BNE ProcessDPCMSFX_SoundCheck
+
+ProcessDPCMSFX_Part3:
 	STA iCurrentDPCMSFX
 	TAY
 	DEY
