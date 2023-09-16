@@ -19,15 +19,10 @@ StartProcessingSoundQueue:
 MusicAndSFXProcessing:
 
 ProcessMusicAndSfxQueues:
-	JSR ProcessSoundEffectQueue2
-
+	JSR ProcessPulseSFX
 	JSR ProcessNoiseQueue
-
-	JSR ProcessDPCMQueue
-
-	JSR ProcessHillQueue
-
-ProcessOnlyMusicQueue2:
+	JSR ProcessDPCMSFX
+	JSR ProcessHillSFX
 	JSR ProcessMusicQueue
 
 	; Reset queues
@@ -40,28 +35,28 @@ ProcessOnlyMusicQueue2:
 	RTS
 
 
-ProcessSoundEffectQueue2:
+ProcessPulseSFX:
 	LDA iPulse1SFX
-	BNE ProcessSoundEffectQueue2_Part2
+	BNE ProcessPulseSFX_Part2
 	LDA iCurrentPulse1SFX
-	BNE ProcessSoundEffectQueue2_Part3
-ProcessSoundEffectQueue2_Exit:
+	BNE ProcessPulseSFX_Part3
+ProcessPulseSFX_Exit:
 	RTS
 
-ProcessSoundEffectQueue2_Part2:
+ProcessPulseSFX_Part2:
 	STA iCurrentPulse1SFX
 	LDY #0
 	STY zPulse1SFXOffset
 	STY iPulse1SFXSweep
 	LSR A
-	BCS ProcessSoundEffectQueue2_DesignatePointer
+	BCS ProcessPulseSFX_DesignatePointer
 
-ProcessSoundEffectQueue2_PointerLoop:
+ProcessPulseSFX_PointerLoop:
 	INY
 	LSR A
-	BCC ProcessSoundEffectQueue2_PointerLoop
+	BCC ProcessPulseSFX_PointerLoop
 
-ProcessSoundEffectQueue2_DesignatePointer:
+ProcessPulseSFX_DesignatePointer:
 	LDA Pulse1SFXVolumes, Y
 	STA iPulse1SFXVolume
 	LDA Pulse1SFXEnvelopes, Y
@@ -71,25 +66,25 @@ ProcessSoundEffectQueue2_DesignatePointer:
 	LDA Pulse1SFXPointersHi, Y
 	STA zPulse1IndexPointer + 1
 
-ProcessSoundEffectQueue2_Part3:
+ProcessPulseSFX_Part3:
 	LDY zPulse1SFXOffset
 	LDA (zPulse1IndexPointer), Y
-	BEQ ProcessSoundEffectQueue2_End
-	BPL ProcessSoundEffectQueue2_Note
+	BEQ ProcessPulseSFX_End
+	BPL ProcessPulseSFX_Note
 
 	INY
 	STA iPulse1SFXSweep
 	LDA (zPulse1IndexPointer), Y
 
-ProcessSoundEffectQueue2_Note:
+ProcessPulseSFX_Note:
 	INY
 	CMP #$40
-	BCS ProcessSoundEffectQueue2_Tie
+	BCS ProcessPulseSFX_Tie
 	CMP #$08
 	LDX #$10
-	BCC ProcessSoundEffectQueue2_Volume
+	BCC ProcessPulseSFX_Volume
 	LDX iPulse1SFXVolume
-ProcessSoundEffectQueue2_Volume:
+ProcessPulseSFX_Volume:
 	STX SQ2_VOL
 	TAX
 	LDA (zPulse1IndexPointer), Y
@@ -100,16 +95,16 @@ ProcessSoundEffectQueue2_Volume:
 	ORA #$0F
 	STA SND_CHN
 	CPX #$08
-	BCC ProcessSoundEffectQueue2_Tie
+	BCC ProcessPulseSFX_Tie
 	LDA iPulse1SFXSweep
 	STA SQ2_SWEEP
 	LDA iPulse1SFXVolume + 1
 	STA SQ2_VOL
-ProcessSoundEffectQueue2_Tie:
+ProcessPulseSFX_Tie:
 	STY zPulse1SFXOffset
 	RTS
 
-ProcessSoundEffectQueue2_End:
+ProcessPulseSFX_End:
 	STA iCurrentPulse1SFX
 	STA iPulse1SFXSweep
 	STA zPulse1IndexPointer
@@ -151,33 +146,33 @@ Pulse1SFXEnvelopes:
 
 .include "src/music/sound-effects/pulse-1-sfx-data.asm"
 
-ProcessHillQueue:
+ProcessHillSFX:
 	LDA iHillSFX
-	BNE ProcessHillQueue_Part2
+	BNE ProcessHillSFX_Part2
 	LDA iCurrentHillSFX
-	BNE ProcessHillQueue_Part3
+	BNE ProcessHillSFX_Part3
 	RTS
 
-ProcessHillQueue_Part2:
+ProcessHillSFX_Part2:
 	LDY iHillBossPriority
-	BEQ ProcessHillQueue_SkipPriority
+	BEQ ProcessHillSFX_SkipPriority
 
 	CMP iHillBossPriority
-	BNE ProcessHillQueue_Part3
+	BNE ProcessHillSFX_Part3
 
-ProcessHillQueue_SkipPriority
+ProcessHillSFX_SkipPriority
 	STA iCurrentHillSFX
 	LDY #0
 	STY iHillSFXOffset
 	LSR A
-	BCS ProcessHillQueue_DesignatePointer
+	BCS ProcessHillSFX_DesignatePointer
 
-ProcessHillQueue_PointerLoop:
+ProcessHillSFX_PointerLoop:
 	INY
 	LSR A
-	BCC ProcessHillQueue_PointerLoop
+	BCC ProcessHillSFX_PointerLoop
 
-ProcessHillQueue_DesignatePointer:
+ProcessHillSFX_DesignatePointer:
 	LDA HillSFXPointersLo, Y
 	STA zHillIndexPointer
 	LDA HillSFXPointersHi, Y
@@ -185,17 +180,17 @@ ProcessHillQueue_DesignatePointer:
 	LDA HillSFXLinears, Y
 	STA iSFXLinear
 
-ProcessHillQueue_Part3:
+ProcessHillSFX_Part3:
 	LDY iHillSFXOffset
 	LDA (zHillIndexPointer), Y
-	BEQ ProcessHillQueue_Done
+	BEQ ProcessHillSFX_Done
 	INY
 	TAX
 	CPX #8
 	LDA #0
-	BCC ProcessHillQueue_Linear:
+	BCC ProcessHillSFX_Linear:
 	LDA iSFXLinear
-ProcessHillQueue_Linear:
+ProcessHillSFX_Linear:
 	STA TRI_LINEAR
 	LDA (zHillIndexPointer), Y
 	INY
@@ -207,7 +202,7 @@ ProcessHillQueue_Linear:
 	STA SND_CHN
 	RTS
 
-ProcessHillQueue_Done:
+ProcessHillSFX_Done:
 	STA iHillBossPriority
 	STA iHillSFXOffset
 	STA zHillIndexPointer
@@ -251,7 +246,7 @@ HillSFXLinears:
 .include "src/music/sound-effects/hill-sfx-data.asm"
 
 ;
-; Noise Channel SFX/Drum Queue
+; Noise Channel SFX / Percussion Queue
 ;
 ProcessNoiseQueue:
 	LDA iNoiseSFX
@@ -356,40 +351,36 @@ ProcessNoiseQueue_Exit:
 NoiseSFX_None:
 	.db $00
 
-ProcessDPCMQueue:
+;
+; DPCM Channel SFX / Percussion Queue
+;
+ProcessDPCMSFX:
 	LDA iDPCMSFX
-	BNE ProcessDPCMQueue_Part2
+	BNE ProcessDPCMSFX_Part2
 
 	LDA iCurrentDPCMSFX
-	BNE ProcessDPCMQueue_SoundCheck
+	BNE ProcessDPCMSFX_SoundCheck
 
 	LDA iCurrentDPCMOffset
-	BEQ ProcessDPCMQueue_None
+	BEQ ProcessDPCMSFX_None
 	RTS
 
-ProcessDPCMQueue_SoundCheck:
+ProcessDPCMSFX_SoundCheck:
 	LDA SND_CHN
 	AND #$10
-	BNE ProcessDPCMQueue_Exit
+	BNE ProcessDPCMSFX_Exit
 
-ProcessDPCMQueue_None:
+ProcessDPCMSFX_None:
 	LDA #$00
 	STA iCurrentDPCMSFX
 	STA iDPCMBossPriority
 	LDA #%00001111
 	STA SND_CHN
 
-ProcessDPCMQueue_Exit:
+ProcessDPCMSFX_Exit:
 	RTS
 
-ProcessDPCMQueue_Part2:
-	LDY iDPCMBossPriority
-	BEQ ProcessDPCMQueue_Part3
-
-	CMP iDPCMBossPriority
-	BNE ProcessDPCMQueue_SoundCheck
-
-ProcessDPCMQueue_Part3:
+ProcessDPCMSFX_Part2:
 	STA iCurrentDPCMSFX
 	TAY
 	DEY
@@ -862,7 +853,7 @@ ProcessMusicQueue_Square1AfterPatch:
 	STA iSweep
 	BEQ ProcessMusicQueue_Square1Patch
 
-ProcessMusicQueue_HandleSweep
+ProcessMusicQueue_HandleSweep:
 	; 0 - set sweep to $8C
 	LDA #$8C
 	STA iSweep
@@ -1562,9 +1553,6 @@ MusicStackPermission:
 	.db $00
 	.db $01
 	.db $00
-
-ChannelPlayField:
-	.db $01, $02, $04
 
 ;
 ; -------------------------------------------------------------------------
