@@ -18,7 +18,7 @@
 ### `$0047`  (`zObjectYVelocity`)
 - y-velocity
 
-### `$0051`  (`EnemyState`)
+### `$0051`  (`zEnemyState`)
 - enemy state (eg. alive/dead/puff of smoke)
 
 ### `$005B`  (`zEnemyCollision`)
