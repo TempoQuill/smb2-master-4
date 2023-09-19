@@ -7910,6 +7910,12 @@ RetrieveBackupData_Copy:
 	STA sSaveData, Y
 	DEY
 	BPL RetrieveBackupData_Copy
+	LDY #3
+RetrieveBackupData_LoadContributorData:
+	LDA sContributors, Y
+	STA iCharacterLevelCount, Y
+	DEY
+	BPL RetrieveBackupData_LoadContributorData
 	JMP GenerateChecksum
 
 InitNewGame:
