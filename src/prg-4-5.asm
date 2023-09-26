@@ -353,8 +353,8 @@ NoiseSFX_None:
 
 ;
 ; DPCM Channel SFX / Percussion Queue
-; CORRETION:	This is only true in VulpReich.
-;		SMB2:ASSA doesn't have a dedicated fanfare queue like VulpReich.
+; CORRETION:	This is only true in VulpReich, which will have a dedicated
+;		fanfare queue that SMB2:ASSA doesn't have.
 ;		So this is only used for sound effects here.
 ;
 ProcessDPCMSFX:
