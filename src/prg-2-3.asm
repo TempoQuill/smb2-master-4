@@ -3471,7 +3471,7 @@ EnemyBehavior_Bomb_Explode:
 	STA zSpriteTimer, X
 	STA iSkyFlashTimer
 	LDA #SoundEffect3_Bomb
-	STA iNoiseSFX
+	STA iNoiseDrumSFX
 	LSR A
 	; A = $00
 	STA iObjectBulletTimer, X
@@ -4768,7 +4768,7 @@ loc_BANK2_96EC:
 	LDA #$20
 	STA iPOWTimer
 	LDA #SoundEffect3_POW
-	STA iNoiseSFX
+	STA iNoiseDrumSFX
 	JMP sub_BANK2_98C4
 
 ; ---------------------------------------------------------------------------
@@ -7986,7 +7986,7 @@ EnemyBehavior_Tryclyde_SpitFireball:
 	BMI RenderSprite_Tryclyde_Exit
 
 	LDA #SoundEffect3_Autobomb
-	STA iNoiseSFX
+	STA iNoiseDrumSFX
 	LDY z00
 	LDA #Enemy_Fireball
 	STA zObjectType, Y
@@ -8589,7 +8589,7 @@ EnemyBehavior_Rocket_Launching:
 	STA zEnemyArray, X
 	STA iIsInRocket
 	LDA #SoundEffect3_Rocket
-	STA iNoiseSFX
+	STA iNoiseDrumSFX
 	LDA #$FE
 	STA zObjectYVelocity, X
 
@@ -9030,7 +9030,7 @@ loc_BANK3_AE28:
 	JSR EnemyBehavior_SpitProjectile
 
 	LDX #SoundEffect3_Autobomb
-	STX iNoiseSFX
+	STX iNoiseDrumSFX
 	LDX z00
 	DEC zObjectYLo, X
 	DEC zObjectYLo, X
@@ -9140,7 +9140,7 @@ loc_BANK3_AEC3:
 
 loc_BANK3_AECD:
 	LDA #SoundEffect3_ShortNoise
-	STA iNoiseSFX
+	STA iNoiseDrumSFX
 	LDA zObjectVariables, X
 	CMP #$80
 	BCC loc_BANK3_AEE6
@@ -9766,7 +9766,7 @@ EnemyBehavior_Wart_PhysicsX:
 	BMI EnemyBehavior_Wart_Exit
 
 	LDA #SoundEffect3_Bubbles
-	STA iNoiseSFX
+	STA iNoiseDrumSFX
 	; determines how high to spit the bubble
 	LDA i480, X
 	AND #$03
@@ -9826,7 +9826,7 @@ EnemyBehavior_Wart_DeathFall:
 	BNE EnemyBehavior_Wart_CheckDeathComplete
 
 	LDA #SoundEffect3_WartSmokePuff
-	STA iNoiseSFX
+	STA iNoiseDrumSFX
 	JSR CreateEnemy
 
 	LDX z00
@@ -11551,7 +11551,7 @@ DoorHandling_GoThroughDoor_Bank3:
 	JSR SnapPlayerToTile_Bank3
 
 	LDA #SoundEffect3_Door
-	STA iNoiseSFX
+	STA iNoiseDrumSFX
 	RTS
 
 

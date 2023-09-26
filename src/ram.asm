@@ -1590,7 +1590,7 @@ iPulse1SFX:
 ; $20 -N/A-
 ; $40 -N/A-
 ; $80 -N/A-
-iNoiseSFX:
+iNoiseDrumSFX:
 	.dsb 1 ; $0605
 
 	.dsb 1 ; $0606

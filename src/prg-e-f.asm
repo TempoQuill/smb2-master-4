@@ -2106,7 +2106,7 @@ locret_BANKF_EAD1:
 
 	; Play the drum roll!
 	LDX #SoundEffect3_DrumRoll
-	STX iNoiseSFX
+	STX iNoiseDrumSFX
 	INC iBonusDrumRoll
 
 CheckStopReel_Eject:

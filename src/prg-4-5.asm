@@ -31,7 +31,7 @@ ProcessMusicAndSfxQueues:
 	STA iHillSFX
 	STA iDPCMSFX
 	STA iMusicQueue
-	STA iNoiseSFX
+	STA iNoiseDrumSFX
 	RTS
 
 
@@ -249,7 +249,7 @@ HillSFXLinears:
 ; Noise Channel SFX / Percussion Queue
 ;
 ProcessNoiseQueue:
-	LDA iNoiseSFX
+	LDA iNoiseDrumSFX
 	BEQ ProcessNoiseQueue_None
 
 	LDX #0
@@ -1097,7 +1097,7 @@ ProcessMusicQueue_NoiseNote:
 	LSR A
 	BEQ ProcessMusicQueue_NoiseLengthCarry
 
-	STA iNoiseSFX
+	STA iNoiseDrumSFX
 	JSR ProcessNoiseQueue
 
 ProcessMusicQueue_NoiseLengthCarry:
