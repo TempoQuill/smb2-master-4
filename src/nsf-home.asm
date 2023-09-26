@@ -24,7 +24,7 @@ PLAY:
 
 PLAY_Music:
 	ADC #1
-	STA iMusic
+	STA iMusicQueue
 	RTS
 
 PLAY_Triangle:
@@ -47,7 +47,7 @@ PLAY_Pulse:
 	LDA BitwiseMusicIDs, Y
 
 PLAY_SFX:
-	STA iMusic, X
+	STA iMusicQueue, X
 	RTS
 
 BitwiseMusicIDs:

@@ -1043,7 +1043,7 @@ loc_BANK2_8509:
 	JSR Swarm_Stop
 
 	LDA #Music_BossClearFanfare
-	STA iMusic
+	STA iMusicQueue
 	LDA iEndOfLevelDoorPage, X
 	STA zObjectXHi, X
 	LDA #$80
@@ -3352,7 +3352,7 @@ EnemyBehavior_Mushroom_PickUp:
 	BNE EnemyBehavior_CrystalBall_Exit
 
 	LDA #Music_CrystalGetFanfare
-	STA iMusic
+	STA iMusicQueue
 	LDA #$60
 	STA iMaskPreamble
 	INC iMaskDoorOpenFlag
@@ -3378,7 +3378,7 @@ EnemyBehavior_PickUpMushroom:
 	JSR RestorePlayerToFullHealth
 
 	LDA #Music_MushroomGetJingle
-	STA iMusic
+	STA iMusicQueue
 	RTS
 
 EnemyBehavior_PickUpMushroom1up:
@@ -4847,7 +4847,7 @@ loc_BANK2_9741:
 	CPY #8
 	BCS loc_BANK2_9750
 
-	STA iMusic
+	STA iMusicQueue
 
 loc_BANK2_9750:
 	JMP TurnIntoPuffOfSmoke
@@ -9881,7 +9881,7 @@ RenderSprite_Wart:
 	BNE RenderSprite_Wart_ObjAttrib
 
 	LDA #Music_WartDeath
-	STA iMusic
+	STA iMusicQueue
 	INC iWartDefeated
 
 RenderSprite_Wart_ObjAttrib:
@@ -10689,7 +10689,7 @@ ELSE
 ENDIF
 	STA iStarTimer
 	LDA #Music_Invincible
-	STA iMusic
+	STA iMusicQueue
 	LDA #EnemyState_Inactive
 	STA zEnemyState, Y
 

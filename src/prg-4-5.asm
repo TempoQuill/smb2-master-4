@@ -30,7 +30,7 @@ ProcessMusicAndSfxQueues:
 	STA iPulse1SFX
 	STA iHillSFX
 	STA iDPCMSFX
-	STA iMusic
+	STA iMusicQueue
 	STA iNoiseSFX
 	RTS
 
@@ -470,7 +470,7 @@ ProcessMusicQueue_StopMusic:
 
 ProcessMusicQueue:
 	; start by checking for no music
-	LDY iMusic
+	LDY iMusicQueue
 	TYA
 	INY
 	BEQ ProcessMusicQueue_StopMusic
@@ -478,8 +478,8 @@ ProcessMusicQueue:
 	CMP #Music_WartDeath
 	BEQ ProcessMusicQueue_WartDeath
 
-	; if iMusic != 0, branch
-	LDA iMusic
+	; if iMusicQueue != 0, branch
+	LDA iMusicQueue
 	BNE ProcessMusicQueue_MusicQueue1
 
 	; if any music is playing, read note data
@@ -492,11 +492,11 @@ ProcessMusicQueue:
 	RTS
 
 ProcessMusicQueue_MusicQueue1:
-	; iMusic != 0, initialize
+	; iMusicQueue != 0, initialize
 	LDA iCurrentMusic
 	STA iMusicStack
 	JSR StopMusic
-	LDY iMusic
+	LDY iMusicQueue
 	STY iCurrentMusic
 	LDA MusicStackPermission, Y
 	BNE ProcessMusicQueue_ReadFirstPointer
@@ -680,7 +680,7 @@ ProcessMusicQueue_EndOfSegment:
 	BEQ StopMusic
 
 	; iMusicStack != 0
-	STA iMusic
+	STA iMusicQueue
 	JMP ProcessMusicQueue_MusicQueue1
 
 StopMusic:
@@ -688,7 +688,7 @@ StopMusic:
 ;	iMusicStack = 0, fallthrough
 ;	iCurrentMusic does not meet logic when fanfare ends
 ;	Reaching the end-offset without a loop
-;	iMusic is $80
+;	iMusicQueue is $80
 ;	initializing the sound engine for a new song
 	LDA #$10
 	STA SQ1_VOL
@@ -745,7 +745,7 @@ ProcessMusicQueue_Square2Patch:
 	TXA
 	JSR ProcessMusicQueue_PatchNoteLength
 
-	STA iMusicPulse2NoteStartLength
+	STA iPulse2NoteLength
 	STY iMusicPulse2NoteSubFrames
 
 	; next byte, allows higher notes
@@ -765,7 +765,7 @@ ProcessMusicQueue_Square2Note:
 	TAY
 	BEQ ProcessMusicQueue_Square2UpdateNoteOffset
 
-	LDA iMusicPulse2NoteStartLength
+	LDA iPulse2NoteLength
 	JSR SetInstrumentStartOffset
 
 ProcessMusicQueue_Square2UpdateNoteOffset:
@@ -786,7 +786,7 @@ ProcessMusicQueue_Square2ContinueNote:
 	CLC
 	ADC iMusicPulse2NoteLengthFraction
 	STA iMusicPulse2NoteLengthFraction
-	LDA iMusicPulse2NoteStartLength
+	LDA iPulse2NoteLength
 	ADC #0
 	STA iMusicPulse2NoteLength
 
@@ -805,7 +805,7 @@ ProcessMusicQueue_LoadSquare2InstrumentOffset:
 
 ProcessMusicQueue_LoadSquare2Instrument:
 	; load instrument no.
-	LDA iMusicPulse2NoteStartLength
+	LDA iPulse2NoteLength
 	LDX iPulse2Ins
 	JSR LoadSquareInstrumentDVE
 
@@ -995,7 +995,7 @@ ProcessMusicQueue_TriangleNoteLength:
 	TXA
 	JSR ProcessMusicQueue_PatchNoteLength
 
-	STA iMusicHillNoteStartLength
+	STA iHillNoteLength
 	STY iMusicHillNoteSubFrames
 	LDA #$1F
 	STA TRI_LINEAR
@@ -1020,7 +1020,7 @@ ProcessMusicQueue_TriangleSkipPitch:
 	CLC
 	ADC iMusicHillNoteLengthFraction
 	STA iMusicHillNoteLengthFraction
-	LDA iMusicHillNoteStartLength
+	LDA iHillNoteLength
 	ADC #0
 	STA iMusicHillNoteLength
 	BMI ProcessMusicQueue_TriangleMax
@@ -1079,7 +1079,7 @@ ProcessMusicQueue_NoiseByte:
 	; - = note length
 	JSR ProcessMusicQueue_PatchNoteLength
 
-	STA iMusicNoiseNoteStartLength
+	STA iNoiseNoteLength
 	STY iMusicNoiseNoteSubFrames
 	; next byte - later entries allowed
 	LDY iCurrentNoiseOffset
@@ -1105,7 +1105,7 @@ ProcessMusicQueue_NoiseLengthCarry:
 	CLC
 	ADC iMusicNoiseNoteLengthFraction
 	STA iMusicNoiseNoteLengthFraction
-	LDA iMusicNoiseNoteStartLength
+	LDA iNoiseNoteLength
 	ADC #0
 	STA iMusicNoiseNoteLength
 

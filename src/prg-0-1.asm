@@ -5162,7 +5162,7 @@ InitTitleBackgroundPalettesLoop:
 	JSR PlaceTitleSprites
 
 	LDA #Music_Title
-	STA iMusic
+	STA iMusicQueue
 	JSR WaitForNMI_TitleScreen_TurnOnPPU
 
 	LDA #$03
@@ -5431,7 +5431,7 @@ loc_BANK0_9C19:
 
 loc_BANK0_9C1F:
 	LDA #Music_StopMusic
-	STA iMusic
+	STA iMusicQueue
 	JSR WaitForNMI_TitleScreen
 
 	LDA #$00
@@ -5846,7 +5846,7 @@ FreeSubconsScene_JumpingLoop:
 	BNE FreeSubconsScene_JumpingLoop
 
 	LDY #Music_EndingAndCast
-	STY iMusic
+	STY iMusicQueue
 	BNE FreeSubconsScene_JumpingLoop
 
 FreeSubconsScene_Exit:
@@ -7787,7 +7787,7 @@ ExitSubArea_Loop:
 ;
 ; ##### Output
 ; - `iMusicID`: music we should be plathing
-; - `iMusic`: song to play if we need to change the music
+; - `iMusicQueue`: song to play if we need to change the music
 ;
 EnsureCorrectMusic:
 	LDA iLevelMusic
@@ -7801,7 +7801,7 @@ EnsureCorrectMusic:
 	BCS EnsureCorrectMusic_Exit
 
 	LDA LevelMusicIndexes, X
-	STA iMusic
+	STA iMusicQueue
 
 EnsureCorrectMusic_Exit:
 	RTS

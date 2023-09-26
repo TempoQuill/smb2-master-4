@@ -1544,7 +1544,7 @@ iCurrentDPCMOffset:
 ; $0E Mini-fanfare (slot win, crystal get)
 ; $0F Wart Death
 ; $FF Silence (stops music)
-iMusic:
+iMusicQueue:
 	.dsb 1 ; $0600
 
 ; $01 Jump
@@ -1628,7 +1628,7 @@ iCurrentHillOffset:
 	.dsb 1 ; $0615
 iCurrentNoiseOffset:
 	.dsb 1 ; $0616
-iMusicPulse2NoteStartLength:
+iPulse2NoteLength:
 	.dsb 1 ; $0617
 iMusicPulse2NoteLength:
 	.dsb 1 ; $0618
@@ -1638,13 +1638,13 @@ iMusicPulse1NoteLength:
 	.dsb 1 ; $061a
 iMusicPulse1InstrumentOffset:
 	.dsb 1 ; $061b
-iMusicHillNoteStartLength:
+iHillNoteLength:
 	.dsb 1 ; $061c
 iMusicHillNoteLength:
 	.dsb 1 ; $061d
 iMusicNoiseNoteLength:
 	.dsb 1 ; $061e
-iMusicNoiseNoteStartLength:
+iNoiseNoteLength:
 	.dsb 1 ; $061f
 iLifeUpEventFlag:
 	.dsb 1 ; $0620

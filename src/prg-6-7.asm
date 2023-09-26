@@ -3513,7 +3513,7 @@ LoadAreaMusic:
 	BCS LoadAreaMusic_Exit
 
 	LDA #Music_StopMusic
-	STA iMusic
+	STA iMusicQueue
 
 LoadAreaMusic_Exit:
 	RTS
@@ -3542,7 +3542,7 @@ Unused_ChangeAreaMusic:
 	BCS LoadAreaMusic_Exit
 
 	LDA Unused_LevelMusicIndexes, X
-	STA iMusic
+	STA iMusicQueue
 
 Unused_ChangeAreaMusic_Exit:
 	RTS
@@ -4724,7 +4724,7 @@ ClearLayoutAndPokeMusic:
 	JSR ClearSubAreaTileLayout
 
 	LDA #Music_Inside
-	STA iMusic
+	STA iMusicQueue
 	LDA #$01
 	STA iMusicID
 	JMP loc_BANKF_E5E1
@@ -4737,7 +4737,7 @@ SubspaceGeneration:
 	BCS SubspaceGeneration_Starman
 
 	LDA #Music_Subspace
-	STA iMusic
+	STA iMusicQueue
 
 SubspaceGeneration_Starman:
 	LDA #$04

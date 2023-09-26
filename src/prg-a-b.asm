@@ -729,7 +729,7 @@ LoadCHRSelect:
 	JSR DisableNMI
 
 	LDA #Music_CharacterSelect
-	STA iMusic
+	STA iMusicQueue
 
 	LDY #$3F
 loc_BANKF_E2CA:
@@ -768,10 +768,10 @@ EndOfLevelSlotMachine_AB:
 	JSR sub_BANKF_EA33
 
 	LDA #Music_StopMusic
-	STA iMusic
+	STA iMusicQueue
 	JSR WaitForNMI
 	LDA #Music_MushroomGetJingle
-	STA iMusic
+	STA iMusicQueue
 	JSR Delay80Frames
 	LDA iTotalCoins
 	BEQ EndOfLevelSlotMachine_Exit

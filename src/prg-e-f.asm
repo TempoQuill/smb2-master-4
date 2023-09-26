@@ -799,7 +799,7 @@ loc_BANKF_E3EC:
 	BPL loc_BANKF_E3EC
 
 	LDA #Music_StopMusic
-	STA iMusic
+	STA iMusicQueue
 	RTS
 
 
@@ -1240,7 +1240,7 @@ ENDIF
 	BNE loc_BANKF_E64C
 
 	LDA LevelMusicIndexes, Y
-	STA iMusic
+	STA iMusicQueue
 
 loc_BANKF_E64C:
 	LDA #PRGBank_0_1
@@ -1314,7 +1314,7 @@ ResetAreaAndProcessGameMode_NotTitleCard:
 DoGameOverStuff:
 	STY iCurrentPlayerSize
 	LDA #Music_GameOver
-	STA iMusic
+	STA iMusicQueue
 	JSR WaitForNMI_TurnOffPPU
 
 	JSR ChangeTitleCardCHR
@@ -1434,10 +1434,10 @@ DoWorldWarp:
 	LDA #ScreenUpdateBuffer_WarpToWorld
 	STA zScreenUpdateIndex
 	LDA #Music_StopMusic
-	STA iMusic
+	STA iMusicQueue
 	JSR WaitForNMI
 	LDA #Music_MushroomGetJingle
-	STA iMusic
+	STA iMusicQueue
 	JSR Delay160Frames
 
 	JSR InitializeSomeLevelStuff
@@ -1449,7 +1449,7 @@ DoWorldWarp:
 EndOfLevel:
 	; Stop the music
 	LDA #Music_StopMusic ; Stop music
-	STA iMusic
+	STA iMusicQueue
 
 	; Increase current characters "contribution" counter
 	LDX zCurrentCharacter
@@ -1509,10 +1509,10 @@ ENDIF
 	JSR sub_BANKF_EA33
 
 	LDA #Music_StopMusic
-	STA iMusic
+	STA iMusicQueue
 	JSR WaitForNMI
 	LDA #Music_MushroomGetJingle
-	STA iMusic
+	STA iMusicQueue
 	JSR Delay80Frames
 	LDA iTotalCoins
 	BNE loc_BANKF_E7F2
@@ -1692,7 +1692,7 @@ loc_BANKF_E8D3:
 	STA mLDPBonucChanceLiveEMCount ; Update number of lives won
 	JSR SlotMachine_WaitforSFX
 	LDA #Music_CrystalGetFanfare ; Play winner jingle
-	STA iMusic
+	STA iMusicQueue
 	LDA #$A0
 	STA z06
 	JSR WaitForNMI
@@ -1715,7 +1715,7 @@ SlotMachineLoseFanfare:
 	JSR SlotMachine_WaitforSFX
 
 	LDA #Music_DeathJingle
-	STA iMusic
+	STA iMusicQueue
 	JSR WaitForNMI
 
 	JSR sub_BANKF_EA68
@@ -1768,7 +1768,7 @@ SlotMachineTextFlashIndex:
 NoCoinsForSlotMachine:
 
 	LDA #Music_DeathJingle
-	STA iMusic
+	STA iMusicQueue
 
 	STA z06
 loc_BANKF_E92A:
@@ -3053,7 +3053,7 @@ DecrementPlayerStateTimers_Zero:
 
 	LDY iMusicID
 	LDA LevelMusicIndexes, Y
-	STA iMusic
+	STA iMusicQueue
 
 RunFrame_Exit:
 	RTS
@@ -4421,7 +4421,7 @@ loc_BANKF_F747:
 loc_BANKF_F749:
 	; Set music to death jingle
 	LDA #Music_DeathJingle
-	STA iMusic
+	STA iMusicQueue
 	LDA iStack
 	CMP #Stack100_Pause
 	BNE KillPlayer_Eject
