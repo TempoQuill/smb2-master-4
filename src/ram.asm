@@ -350,7 +350,7 @@ zHillIndexPointer:
 	.dsb 2 ; $00c1
 zNoiseSFXOffset:
 	.dsb 1 ; $00c3
-zPulse1SFXOffset:
+zPulse2SFXOffset:
 	.dsb 1 ; $00c4
 zNoiseIndexPointer:
 	.dsb 2 ; $00c5
@@ -1518,11 +1518,11 @@ iDPCMNoteLength:
 	.dsb 2 ; $05f8
 iDPCMNoteLengthCounter:
 	.dsb 1 ; $05fa
-iPulse1SFXSweep:
+iPulse2SFXSweep:
 	.dsb 1 ; $05fb
 iCurrentDrum:
 	.dsb 1 ; $05fc
-iPulse1SFXVolume:
+iPulse2SFXVolume:
 	.dsb 1 ; $05fd
 	.dsb 1 ; $05fe
 iCurrentDPCMOffset:
@@ -1579,7 +1579,7 @@ iDPCMSFX:
 ; $20 Grow
 ; $40 -N/A-
 ; $80 -N/A-
-iPulse1SFX:
+iPulse2SFX:
 	.dsb 1 ; $0604
 
 ; $01 Short noise
@@ -1608,7 +1608,7 @@ iDPCMBossPriority:
 	.dsb 1 ; $060b
 iSweep:
 	.dsb 1 ; $060c
-iCurrentPulse1SFX:
+iCurrentPulse2SFX:
 	.dsb 1 ; $060d
 iCurrentNoiseSFX:
 	.dsb 1 ; $060e

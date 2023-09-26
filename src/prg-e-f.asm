@@ -654,7 +654,7 @@ CharacterSelect_ChangeCharacter:
 
 	DEC zCurrentCharacter
 	LDA #SoundEffect2_CoinGet
-	STA iPulse1SFX
+	STA iPulse2SFX
 
 loc_BANKF_E2FE:
 	LDA zInputBottleneck
@@ -663,7 +663,7 @@ loc_BANKF_E2FE:
 
 	INC zCurrentCharacter
 	LDA #SoundEffect2_CoinGet
-	STA iPulse1SFX
+	STA iPulse2SFX
 
 loc_BANKF_E30B:
 	LDA zCurrentCharacter
@@ -1730,7 +1730,7 @@ loc_BANKF_E90C:
 	JMP loc_BANKF_E7FD
 
 SlotMachine_WaitforSFX:
-	LDA iCurrentPulse1SFX
+	LDA iCurrentPulse2SFX
 	BEQ SlotMachine_SFXDone
 	JSR WaitForNMI
 	JMP SlotMachine_WaitforSFX
@@ -2118,7 +2118,7 @@ loc_BANKF_EAD2:
 	LDA #$00
 	STA zObjectXLo, X
 	LDA #SoundEffect2_StopSlot
-	STA iPulse1SFX
+	STA iPulse2SFX
 	RTS
 
 ; End of function CheckStopReel

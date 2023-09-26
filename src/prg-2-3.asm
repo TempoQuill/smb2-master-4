@@ -287,7 +287,7 @@ ENDIF
 	BNE AreaMainRoutine_DecrementStopwatch
 
 	LDY #SoundEffect2_Watch
-	STY iPulse1SFX
+	STY iPulse2SFX
 
 AreaMainRoutine_DecrementStopwatch:
 	LSR A
@@ -2723,7 +2723,7 @@ loc_BANK2_8D7B:
 	BNE loc_BANK2_8D78
 
 	LDA #SoundEffect2_HawkUp
-	STA iPulse1SFX
+	STA iPulse2SFX
 
 loc_BANK2_8D8A:
 	LDA iMaskClosingFlag
@@ -2808,7 +2808,7 @@ loc_BANK2_8DDB:
 	LDA #$FC
 	STA zPlayerYVelocity
 	LDA #SoundEffect2_HawkDown
-	STA iPulse1SFX
+	STA iPulse2SFX
 	INC iMaskClosingFlag
 
 RenderSprite_HawkmouthLeft:
@@ -3281,7 +3281,7 @@ EnemyBehavior_Coin:
 	BNE EnemyBehavior_Mushroom1up
 
 	LDA #SoundEffect2_CoinGet
-	STA iPulse1SFX
+	STA iPulse2SFX
 
 EnemyBehavior_Mushroom1up:
 	LDA zObjectYVelocity, X
@@ -3312,7 +3312,7 @@ ENDIF
 
 loc_BANK2_9050:
 	LDA #SoundEffect2_1UP
-	STA iPulse1SFX
+	STA iPulse2SFX
 	RTS
 
 ; ---------------------------------------------------------------------------
@@ -9449,14 +9449,14 @@ HawkmouthEat:
 	LDA #$FC
 	STA zPlayerYVelocity
 	LDA #SoundEffect2_HawkDown
-	STA iPulse1SFX
+	STA iPulse2SFX
 	RTS
 
 ; =============== S U B R O U T I N E =======================================
 
 sub_BANK3_B095:
 	LDA #SoundEffect2_HawkUp
-	STA iPulse1SFX
+	STA iPulse2SFX
 
 locret_BANK3_B09A:
 	RTS
@@ -11110,7 +11110,7 @@ loc_BANK3_BA2A:
 
 loc_BANK3_BA2C:
 	LDA #SoundEffect2_Injury
-	STA iPulse1SFX
+	STA iPulse2SFX
 
 locret_BANK3_BA31:
 	RTS

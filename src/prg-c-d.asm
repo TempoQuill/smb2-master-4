@@ -1721,7 +1721,7 @@ PostCastMenu_Up:
 	LDA #1
 	STA iStack + 1
 	LDA #SoundEffect2_CoinGet
-	STA iPulse1SFX
+	STA iPulse2SFX
 	BNE PostCastMenu_UpdatePPUBuffer
 
 PostCastMenu_Down:
@@ -1733,7 +1733,7 @@ PostCastMenu_Down:
 	DEY
 	BPL PostCastMenu_Down
 	LDA #SoundEffect2_CoinGet
-	STA iPulse1SFX
+	STA iPulse2SFX
 	RTS
 
 PostCastMenu_AStart:

@@ -27,7 +27,7 @@ ProcessMusicAndSfxQueues:
 
 	; Reset queues
 	LDA #$00
-	STA iPulse1SFX
+	STA iPulse2SFX
 	STA iHillSFX
 	STA iDPCMSFX
 	STA iMusicQueue
@@ -36,18 +36,18 @@ ProcessMusicAndSfxQueues:
 
 
 ProcessPulseSFX:
-	LDA iPulse1SFX
+	LDA iPulse2SFX
 	BNE ProcessPulseSFX_Part2
-	LDA iCurrentPulse1SFX
+	LDA iCurrentPulse2SFX
 	BNE ProcessPulseSFX_Part3
 ProcessPulseSFX_Exit:
 	RTS
 
 ProcessPulseSFX_Part2:
-	STA iCurrentPulse1SFX
+	STA iCurrentPulse2SFX
 	LDY #0
-	STY zPulse1SFXOffset
-	STY iPulse1SFXSweep
+	STY zPulse2SFXOffset
+	STY iPulse2SFXSweep
 	LSR A
 	BCS ProcessPulseSFX_DesignatePointer
 
@@ -57,23 +57,23 @@ ProcessPulseSFX_PointerLoop:
 	BCC ProcessPulseSFX_PointerLoop
 
 ProcessPulseSFX_DesignatePointer:
-	LDA Pulse1SFXVolumes, Y
-	STA iPulse1SFXVolume
-	LDA Pulse1SFXEnvelopes, Y
-	STA iPulse1SFXVolume + 1
-	LDA Pulse1SFXPointersLo, Y
+	LDA Pulse2SFXVolumes, Y
+	STA iPulse2SFXVolume
+	LDA Pulse2SFXEnvelopes, Y
+	STA iPulse2SFXVolume + 1
+	LDA Pulse2SFXPointersLo, Y
 	STA zPulse1IndexPointer
-	LDA Pulse1SFXPointersHi, Y
+	LDA Pulse2SFXPointersHi, Y
 	STA zPulse1IndexPointer + 1
 
 ProcessPulseSFX_Part3:
-	LDY zPulse1SFXOffset
+	LDY zPulse2SFXOffset
 	LDA (zPulse1IndexPointer), Y
 	BEQ ProcessPulseSFX_End
 	BPL ProcessPulseSFX_Note
 
 	INY
-	STA iPulse1SFXSweep
+	STA iPulse2SFXSweep
 	LDA (zPulse1IndexPointer), Y
 
 ProcessPulseSFX_Note:
@@ -83,7 +83,7 @@ ProcessPulseSFX_Note:
 	CMP #$08
 	LDX #$10
 	BCC ProcessPulseSFX_Volume
-	LDX iPulse1SFXVolume
+	LDX iPulse2SFXVolume
 ProcessPulseSFX_Volume:
 	STX SQ2_VOL
 	TAX
@@ -96,20 +96,20 @@ ProcessPulseSFX_Volume:
 	STA SND_CHN
 	CPX #$08
 	BCC ProcessPulseSFX_Tie
-	LDA iPulse1SFXSweep
+	LDA iPulse2SFXSweep
 	STA SQ2_SWEEP
-	LDA iPulse1SFXVolume + 1
+	LDA iPulse2SFXVolume + 1
 	STA SQ2_VOL
 ProcessPulseSFX_Tie:
-	STY zPulse1SFXOffset
+	STY zPulse2SFXOffset
 	RTS
 
 ProcessPulseSFX_End:
-	STA iCurrentPulse1SFX
-	STA iPulse1SFXSweep
+	STA iCurrentPulse2SFX
+	STA iPulse2SFXSweep
 	STA zPulse1IndexPointer
 	STA zPulse1IndexPointer + 1
-	STA zPulse1SFXOffset
+	STA zPulse2SFXOffset
 	LDA #$10
 	STX SQ2_VOL
 	LDA #0
@@ -118,30 +118,30 @@ ProcessPulseSFX_End:
 	STA SQ2_SWEEP
 	RTS
 
-Pulse1SFXPointersLo:
-	.db <Pulse1SFXData_StopSlot
-	.db <Pulse1SFXData_1UP
-	.db <Pulse1SFXData_Coin
-	.db <Pulse1SFXData_Shrink
-	.db <Pulse1SFXData_Injury
-	.db <Pulse1SFXData_Watch
-	.db <Pulse1SFXData_HawkUp
-	.db <Pulse1SFXData_HawkDown
+Pulse2SFXPointersLo:
+	.db <Pulse2SFXData_StopSlot
+	.db <Pulse2SFXData_1UP
+	.db <Pulse2SFXData_Coin
+	.db <Pulse2SFXData_Shrink
+	.db <Pulse2SFXData_Injury
+	.db <Pulse2SFXData_Watch
+	.db <Pulse2SFXData_HawkUp
+	.db <Pulse2SFXData_HawkDown
 
-Pulse1SFXPointersHi:
-	.db >Pulse1SFXData_StopSlot
-	.db >Pulse1SFXData_1UP
-	.db >Pulse1SFXData_Coin
-	.db >Pulse1SFXData_Shrink
-	.db >Pulse1SFXData_Injury
-	.db >Pulse1SFXData_Watch
-	.db >Pulse1SFXData_HawkUp
-	.db >Pulse1SFXData_HawkDown
+Pulse2SFXPointersHi:
+	.db >Pulse2SFXData_StopSlot
+	.db >Pulse2SFXData_1UP
+	.db >Pulse2SFXData_Coin
+	.db >Pulse2SFXData_Shrink
+	.db >Pulse2SFXData_Injury
+	.db >Pulse2SFXData_Watch
+	.db >Pulse2SFXData_HawkUp
+	.db >Pulse2SFXData_HawkDown
 
-Pulse1SFXVolumes:
+Pulse2SFXVolumes:
 	.db $99, $9F, $9F, $1F, $1F, $9F, $1F, $1F
 
-Pulse1SFXEnvelopes:
+Pulse2SFXEnvelopes:
 	.db $87, $81, $84, $00, $00, $82, $00, $00
 
 .include "src/music/sound-effects/pulse-1-sfx-data.asm"
@@ -698,7 +698,7 @@ StopMusic:
 	STA SQ1_LO
 	STA SQ1_SWEEP
 
-	LDA iCurrentPulse1SFX
+	LDA iCurrentPulse2SFX
 	BNE ClearChannelTriangle
 	STA SQ2_HI
 	STA SQ2_LO
@@ -756,7 +756,7 @@ ProcessMusicQueue_Square2Patch:
 ProcessMusicQueue_Square2Note:
 ; + = note
 	; check if sound effects are playing
-	LDX iCurrentPulse1SFX
+	LDX iCurrentPulse2SFX
 	BNE ProcessMusicQueue_Square2ContinueNote
 
 	; We're clear! Play the note!
@@ -793,7 +793,7 @@ ProcessMusicQueue_Square2ContinueNote:
 ProcessMusicQueue_Square2SustainNote:
 	; note update
 	; SFX playing?  If yes, skip to updating Pulse 1
-	LDX iCurrentPulse1SFX
+	LDX iCurrentPulse2SFX
 	BNE ProcessMusicQueue_Square1
 
 ProcessMusicQueue_LoadSquare2InstrumentOffset:

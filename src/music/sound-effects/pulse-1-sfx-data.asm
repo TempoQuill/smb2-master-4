@@ -1,4 +1,4 @@
-Pulse1SFXData_StopSlot:
+Pulse2SFXData_StopSlot:
 	.db $08, $46, $40, $40
 	.db      $40, $40, $40, $40
 	.db $08, $37, $40, $40
@@ -11,7 +11,7 @@ Pulse1SFXData_StopSlot:
 	.db      $40, $40, $40, $40, $40
 	.db $00
 
-Pulse1SFXData_HawkUp:
+Pulse2SFXData_HawkUp:
 	.db $81
 	.db $0A, $1A
 	.db $0A, $15
@@ -39,7 +39,7 @@ Pulse1SFXData_HawkUp:
 	.db $09, $A7
 	.db $00
 
-Pulse1SFXData_HawkDown:
+Pulse2SFXData_HawkDown:
 	.db $81
 	.db $09, $A7
 	.db $09, $AC
@@ -67,7 +67,7 @@ Pulse1SFXData_HawkDown:
 	.db $0A, $1A
 	.db $00
 
-Pulse1SFXData_Shrink:
+Pulse2SFXData_Shrink:
 	.db $A1
 	.db $08, $FE, $40
 	.db $09, $7C, $40
@@ -92,7 +92,7 @@ Pulse1SFXData_Shrink:
 	.db $0D, $00, $40
 	.db $00
 
-Pulse1SFXData_Watch:
+Pulse2SFXData_Watch:
 	.db $F8
 	.db $08, $54, $40, $40, $40, $40
 	.db      $40, $40, $40, $40, $40
@@ -106,7 +106,7 @@ Pulse1SFXData_Watch:
 	.db      $40, $40, $40, $40, $40, $40
 	.db $00
 
-Pulse1SFXData_1UP:
+Pulse2SFXData_1UP:
 	.db $08, $53, $40, $40, $40
 	.db $08, $46, $40, $40, $40, $40
 	.db $08, $29, $40, $40, $40
@@ -115,7 +115,7 @@ Pulse1SFXData_1UP:
 	.db $08, $22, $40, $40, $40, $40
 	.db $00
 
-Pulse1SFXData_Injury:
+Pulse2SFXData_Injury:
 	.db $81
 	.db $19, $FC
 	.db $1A, $A6, $40
@@ -131,7 +131,7 @@ Pulse1SFXData_Injury:
 	.db $1D, $4D, $40
 	.db $00
 
-Pulse1SFXData_Coin:
+Pulse2SFXData_Coin:
 	.db $08, $37, $40, $40, $40
 	.db $08, $29, $40, $40, $40, $40
 	.db      $40, $40, $40, $40

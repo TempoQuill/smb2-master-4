@@ -1915,7 +1915,7 @@ HandlePlayerState:
 	BNE loc_ChangeSize
 loc_Shrinking:
 	LDA GrowShrinkSFXIndexes, Y
-	STA iPulse1SFX
+	STA iPulse2SFX
 
 loc_ChangeSize:
 	LDA #$1E
@@ -7622,7 +7622,7 @@ PlayerTileCollision_HurtPlayer:
 loc_BANK1_BAE5:
 	STA zPlayerYVelocity
 	LDA #SoundEffect2_Injury
-	STA iPulse1SFX
+	STA iPulse2SFX
 
 locret_BANK1_BAEC:
 	RTS
@@ -7938,7 +7938,7 @@ ChooseSaveChoiceAttribute:
 ;		2 - Save & Quit
 	; up or down?
 	LDA #SoundEffect2_CoinGet
-	STA iPulse1SFX
+	STA iPulse2SFX
 	LDY zInputBottleneck
 	TYA
 	AND #ControllerInput_Down
@@ -7949,7 +7949,7 @@ ChooseSaveChoiceAttribute:
 	; nothing was pressed
 	LDY iStack + 1
 	LDA #0
-	STA iPulse1SFX
+	STA iPulse2SFX
 	RTS
 
 ChooseSaveChoiceAttribute_Up:
