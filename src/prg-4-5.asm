@@ -1177,7 +1177,7 @@ ProcessMusicQueue_DPCMNotLoop:
 
 ProcessMusicQueue_DPCMNote:
 ; check for sound effects before playing a note
-	LDX #iCurrentDPCMSFX
+	LDX iCurrentDPCMSFX
 	BNE ProcessMusicQueue_DPCMSFXExit
 	; mute for now
 	; initialize X

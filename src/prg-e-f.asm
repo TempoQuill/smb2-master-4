@@ -4229,36 +4229,31 @@ WarpDestinations:
 ; Updates joypad press/held values
 ;
 UpdateJoypads:
-	JSR ReadJoypads
-
-	LDY #1
-
-UpdateJoypads_DoubleCheck:
 	; Work around DPCM sample bug,
 	; where some spurious inputs are read
-	LDA zInputBottleneck
-	STA iBackupInput, Y
 	JSR ReadJoypads
-	DEY
-	BPL UpdateJoypads_DoubleCheck
-
-	LDX #$02
 	LDA zInputBottleneck
+	STA iBackupInput
+	JSR ReadJoypads
+	LDA zInputBottleneck
+	STA iBackupInput + 1
+	LDX #1
+	EOR iBackupInput
+	BEQ UpdateJoypads_Loop
+	TAX
 
-UpdateJoypads_CompareStash:
-	DEX
-	BMI UpdateJoypads_UseStash
-	CMP iBackupInput, X
-	BNE UpdateJoypads_CompareStash
-	BEQ UpdateJoypads_Bottleneck
-
-UpdateJoypads_UseStash:
+	LDA iBackupInput + 1
+	BEQ UpdateJoypads_FoundCorrectInput
 	LDA iBackupInput
-	AND iBackupInput + 1
-	STA zInputBottleneck
+	BEQ UpdateJoypads_FoundCorrectInput
 
-UpdateJoypads_Bottleneck:
-	LDX #$01
+	JSR UpdateJoypads_FindDeletion
+
+	LDA iBackupInput, Y
+
+UpdateJoypads_FoundCorrectInput:
+	STA zInputBottleneck
+	LDX #1
 
 UpdateJoypads_Loop:
 	LDA zInputBottleneck, X ; Update the press/held values
@@ -4271,6 +4266,27 @@ UpdateJoypads_Loop:
 	BPL UpdateJoypads_Loop
 	RTS
 
+UpdateJoypads_FindDeletion:
+	TXA
+	AND iBackupInput
+	STA iBackupInput + 2
+	TXA
+	AND iBackupInput + 1
+	STA iBackupInput + 3
+	LDY #0
+UpdateJoypads_FindDeletion_Loop:
+	LSR iBackupInput + 3
+	BCS UpdateJoypads_FindDeletion_Found
+	LDY #1
+	LDA iBackupInput + 3
+	BEQ UpdateJoypads_FindDeletion_Found
+	LSR iBackupInput + 2
+	BCS UpdateJoypads_FindDeletion_Found
+	LDY #0
+	LDA iBackupInput + 2
+	BNE UpdateJoypads_FindDeletion_Loop
+UpdateJoypads_FindDeletion_Found:
+	RTS
 
 ;
 ; Reads joypad pressed input
