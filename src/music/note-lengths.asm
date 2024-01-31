@@ -24,25 +24,45 @@
 ; $xE: 1/8 triplet                (overworld arps)
 ; $xF: whole triplet, 1/8 triplet (overworld triangle long note)
 ;
-
-NoteLengthTable_Warp = $22
-NoteLengthTable_SpadeGame = $3C
-NoteLengthTable_Death = $42
-NoteLengthTable_CHR = $44
-NoteLengthTable_Crystal = $48
-NoteLengthTable_BossBeaten = $4E
-NoteLengthTable_Ending12 = $50
-NoteLengthTable_Ending34 = $54
-NoteLengthTable_Subspace = $5C
-NoteLengthTable_Boss = $64
-NoteLengthTable_Overworld = $6C
-NoteLengthTable_Wart = $70
-NoteLengthTable_Star = $78
-NoteLengthTable_GameOver = $88
-NoteLengthTable_Underground = $8C
-NoteLengthTable_BonusChance = $94
-NoteLengthTable_Ending5 = $A8
-NoteLengthTable_Title = $B0
+IFNDEF PAL
+	NoteLengthTable_Warp = $22
+	NoteLengthTable_SpadeGame = $3C
+	NoteLengthTable_Death = $42
+	NoteLengthTable_CHR = $44
+	NoteLengthTable_Crystal = $48
+	NoteLengthTable_BossBeaten = $4E
+	NoteLengthTable_Ending12 = $50
+	NoteLengthTable_Ending34 = $54
+	NoteLengthTable_Subspace = $5C
+	NoteLengthTable_Boss = $64
+	NoteLengthTable_Overworld = $6C
+	NoteLengthTable_Wart = $70
+	NoteLengthTable_Star = $78
+	NoteLengthTable_GameOver = $88
+	NoteLengthTable_Underground = $8C
+	NoteLengthTable_BonusChance = $94
+	NoteLengthTable_Ending5 = $A8
+	NoteLengthTable_Title = $B0
+ELSE
+	NoteLengthTable_Warp = $1C ; $22
+	NoteLengthTable_SpadeGame = $32 ; $3C
+	NoteLengthTable_Death = $37 ; $42
+	NoteLengthTable_CHR = $39 ; $44
+	NoteLengthTable_Crystal = $3C ; $48
+	NoteLengthTable_BossBeaten = $41 ; $4E
+	NoteLengthTable_Ending12 = $43 ; $50
+	NoteLengthTable_Ending34 = $46 ; $54
+	NoteLengthTable_Subspace = $4D ; $5C
+	NoteLengthTable_Boss = $53 ; $64
+	NoteLengthTable_Overworld = $5A ; $6C
+	NoteLengthTable_Wart = $5D ; $70
+	NoteLengthTable_Star = $64 ; $78
+	NoteLengthTable_GameOver = $71 ; $88
+	NoteLengthTable_Underground = $75 ; $8C
+	NoteLengthTable_BonusChance = $7B ; $94
+	NoteLengthTable_Ending5 = $8C ; $A8
+	NoteLengthTable_Title = $93 ; $B0
+ENDIF
 
 ;
 ; Triangle Linearity Indeces

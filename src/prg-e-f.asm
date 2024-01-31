@@ -1478,10 +1478,8 @@ EndOfLevelSlotMachine:
 
 	JSR ClearNametablesAndSprites
 
-IFDEF REV_A
 	JSR EnableNMI
 	JSR WaitForNMI
-ENDIF
 
 	JSR LoadBonusChanceCHRBanks
 
@@ -3186,13 +3184,21 @@ PlayerHealthValueByHeartCount:
 	.db PlayerHealth_4_HP
 ; Max hearts = (hearts - 2), value is 0,$01,2
 ; This table determines what the player's HP is set to
-
+IFNDEF PAL
 ClimbSpeed:
 	.db $00
 ClimbSpeedDown:
 	.db $20
 ClimbSpeedUp:
 	.db $F0
+ELSE
+ClimbSpeed:
+	.db $00
+ClimbSpeedDown:
+	.db $26
+ClimbSpeedUp:
+	.db $ED
+ENDIF
 ; Bug: The climb speed index is determined by checking the up/down flags in
 ; zInputCurrentState. If both are enabled, the index it out of bounds and uses
 ; the LDA ($A5) below, which zips the player up the vine!

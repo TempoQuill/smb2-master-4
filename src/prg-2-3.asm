@@ -1996,10 +1996,8 @@ ENDIF
 loc_BANK2_89E2:
 	LDA zObjectType, X
 
-IFDEF REV_A
 	CMP #Enemy_FryguySplit
 	BEQ loc_BANK2_8A0A
-ENDIF
 
 	CMP #Enemy_Heart
 	BEQ loc_BANK2_8A0A
@@ -8917,19 +8915,15 @@ loc_BANK3_AD85:
 	ASL zObjectXVelocity, X
 
 loc_BANK3_ADAB:
-IFDEF REV_A
 	LDA zPlayerState
 	CMP #PlayerState_ChangingSize
 	BEQ +
-ENDIF
 
 	JSR ApplyObjectPhysicsX
 
 	JMP ApplyObjectMovement_Vertical
 
-IFDEF REV_A
 	+ RTS
-ENDIF
 
 ; ---------------------------------------------------------------------------
 

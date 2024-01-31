@@ -270,6 +270,7 @@ StatOffsets:
 
 CharacterStats:
 MarioStats:
+IFNDEF PAL
 	.db $00 ; Pick-up Speed, frame 1/6 - pulling
 	.db $04 ; Pick-up Speed, frame 2/6 - pulling
 	.db $02 ; Pick-up Speed, frame 3/6 - ducking
@@ -293,15 +294,40 @@ MarioStats:
 	.db $E8 ; Running Speed, left - no object
 	.db $E8 ; Running Speed, left - with object
 	.db $FC ; Running Speed, left - in quicksand
+ELSE
+	.db $00 ; Pick-up Speed, frame 1/6 - pulling
+	.db $03 ; Pick-up Speed, frame 2/6 - pulling
+	.db $02 ; Pick-up Speed, frame 3/6 - ducking
+	.db $01 ; Pick-up Speed, frame 4/6 - ducking
+	.db $03 ; Pick-up Speed, frame 5/6 - ducking
+	.db $06 ; Pick-up Speed, frame 6/6 - ducking
+	.db $A0 ; Jump Speed, still - no object
+	.db $A0 ; Jump Speed, still - with object
+	.db $84 ; Jump Speed, charged - no object
+	.db $84 ; Jump Speed, charged - with object
+	.db $94 ; Jump Speed, running - no object
+	.db $99 ; Jump Speed, running - with object
+	.db $DA ; Jump Speed - in quicksand
+	.db $00 ; Floating Time
+	.db $09 ; Gravity without Jump button pressed
+	.db $06 ; Gravity with Jump button pressed
+	.db $0B ; Gravity in quicksand
+	.db $1D ; Running Speed, right - no object
+	.db $1D ; Running Speed, right - with object
+	.db $05 ; Running Speed, right - in quicksand
+	.db $E3 ; Running Speed, left - no object
+	.db $E3 ; Running Speed, left - with object
+	.db $FB ; Running Speed, left - in quicksand
+ENDIF
 
 ToadStats:
+IFNDEF PAL
 	.db $00 ; Pick-up Speed, frame 1/6 - pulling
 	.db $01 ; Pick-up Speed, frame 2/6 - pulling
 	.db $01 ; Pick-up Speed, frame 3/6 - ducking
 	.db $01 ; Pick-up Speed, frame 4/6 - ducking
 	.db $01 ; Pick-up Speed, frame 5/6 - ducking
 	.db $02 ; Pick-up Speed, frame 6/6 - ducking
-IFNDEF STATS_TESTING_PURPOSES
 	.db $B2 ; Jump Speed, still - no object
 	.db $B2 ; Jump Speed, still - with object
 	.db $98 ; Jump Speed, charged - no object
@@ -318,35 +344,32 @@ IFNDEF STATS_TESTING_PURPOSES
 	.db $04 ; Running Speed, right - in quicksand
 	.db $E8 ; Running Speed, left - no object
 	.db $E3 ; Running Speed, left - with object
-ELSE
-	.db $a1
-;	.db $B2 ; Jump Speed, still - no object
-	.db $a1
-;	.db $B2 ; Jump Speed, still - with object
-	.db $81
-;	.db $98 ; Jump Speed, charged - no object
-	.db $81
-;	.db $98 ; Jump Speed, charged - with object
-	.db $9B
-;	.db $AD ; Jump Speed, running - no object
-	.db $9B
-;	.db $AD ; Jump Speed, running - with object
-	.db $E0 ; Jump Speed - in quicksand
-	.db $00 ; Floating Time
-	.db $07 ; Gravity without Jump button pressed
-	.db $04 ; Gravity with Jump button pressed
-	.db $08 ; Gravity in quicksand
-	.db $1F
-;	.db $18 ; Running Speed, right - no object
-	.db $1F
-;	.db $1D ; Running Speed, right - with object
-	.db $04 ; Running Speed, right - in quicksand
-	.db $E1
-;	.db $E8 ; Running Speed, left - no object
-	.db $E1
-;	.db $E3 ; Running Speed, left - with object
-ENDIF
 	.db $FC ; Running Speed, left - in quicksand
+ELSE
+	.db $00 ; Pick-up Speed, frame 1/6 - pulling
+	.db $01 ; Pick-up Speed, frame 2/6 - pulling
+	.db $01 ; Pick-up Speed, frame 3/6 - ducking
+	.db $01 ; Pick-up Speed, frame 4/6 - ducking
+	.db $01 ; Pick-up Speed, frame 5/6 - ducking
+	.db $01 ; Pick-up Speed, frame 6/6 - ducking
+	.db $A2 ; Jump Speed, still - no object
+	.db $A2 ; Jump Speed, still - with object
+	.db $84 ; Jump Speed, charged - no object
+	.db $84 ; Jump Speed, charged - with object
+	.db $98 ; Jump Speed, running - no object
+	.db $98 ; Jump Speed, running - with object
+	.db $DA ; Jump Speed - in quicksand
+	.db $00 ; Floating Time
+	.db $09 ; Gravity without Jump button pressed
+	.db $06 ; Gravity with Jump button pressed
+	.db $0B ; Gravity in quicksand
+	.db $1D ; Running Speed, right - no object
+	.db $23 ; Running Speed, right - with object
+	.db $05 ; Running Speed, right - in quicksand
+	.db $E3 ; Running Speed, left - no object
+	.db $DD ; Running Speed, left - with object
+	.db $FB ; Running Speed, left - in quicksand
+ENDIF
 
 LuigiStats:
 	.db $00 ; Pick-up Speed, frame 1/6 - pulling

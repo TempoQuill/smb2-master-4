@@ -19,15 +19,21 @@ NoiseDrumData_OpenHihat:
 	.db $00
 
 NoiseDrumData_Kick:
+IFNDEF PAL
 	.db $1F, $8D
 	.db      $8E
+ELSE
+	.db $1F, $8E
+ENDIF
 	.db $40, $01, $7E, $7E
 	.db $00
 
 NoiseDrumData_DoubleSnare:
 	.db $1F, $8D
 	.db      $0B
+IFNDEF PAL
 	.db      $09
+ENDIF
 
 NoiseDrumData_Snare:
 	.db $1F, $8D

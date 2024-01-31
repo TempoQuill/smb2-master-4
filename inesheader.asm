@@ -14,4 +14,11 @@ ENDIF
 	.db INES_MAPPER & $f0 | INES_2_0
 	.dsb 2, $00
 	.db $70 ; 8K of SRAM
-	.dsb 5, $00 ; clear the remaining bytes
+IFNDEF PAL
+	.db 0
+	.db 0 ; NTSC
+ELSE
+	.db 0
+	.db 1 ; PAL
+ENDIF
+	.db 0, 0, 0 ; unused

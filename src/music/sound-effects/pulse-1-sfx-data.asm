@@ -1,4 +1,5 @@
 Pulse2SFXData_StopSlot:
+IFNDEF PAL
 	.db $08, $46, $40, $40
 	.db      $40, $40, $40, $40
 	.db $08, $37, $40, $40
@@ -9,10 +10,22 @@ Pulse2SFXData_StopSlot:
 	.db      $40, $40, $40, $40, $40
 	.db      $40, $40, $40, $40
 	.db      $40, $40, $40, $40, $40
+ELSE
+	.db $08, $41, $40, $40
+	.db      $40, $40, $40
+	.db $08, $33, $40, $40
+	.db      $40, $40, $40
+	.db $08, $2B, $40, $40
+	.db      $40, $40, $40
+	.db $08, $20, $40, $40, $40, $40
+	.db      $40, $40, $40, $40, $40
+	.db      $40, $40, $40, $40, $40
+ENDIF
 	.db $00
 
 Pulse2SFXData_HawkUp:
 	.db $81
+IFNDEF PAL
 	.db $0A, $1A
 	.db $0A, $15
 	.db $0A, $10
@@ -21,6 +34,7 @@ Pulse2SFXData_HawkUp:
 	.db $0A, $01
 	.db $09, $FC
 	.db $09, $F7
+ENDIF
 	.db $09, $F2
 	.db $09, $ED
 	.db $09, $E8
@@ -37,10 +51,26 @@ Pulse2SFXData_HawkUp:
 	.db $09, $B1
 	.db $09, $AC
 	.db $09, $A7
+IFDEF PAL
+	.db $09, $A2
+	.db $09, $9D
+	.db $09, $98
+	.db $09, $93
+	.db $09, $8E
+	.db $09, $8A
+ENDIF
 	.db $00
 
 Pulse2SFXData_HawkDown:
 	.db $81
+IFDEF PAL
+	.db $09, $8A
+	.db $09, $8E
+	.db $09, $93
+	.db $09, $98
+	.db $09, $9D
+	.db $09, $A2
+ENDIF
 	.db $09, $A7
 	.db $09, $AC
 	.db $09, $B1
@@ -57,6 +87,7 @@ Pulse2SFXData_HawkDown:
 	.db $09, $E8
 	.db $09, $ED
 	.db $09, $F2
+IFNDEF PAL
 	.db $09, $F7
 	.db $09, $FC
 	.db $0A, $01
@@ -65,34 +96,34 @@ Pulse2SFXData_HawkDown:
 	.db $0A, $10
 	.db $0A, $15
 	.db $0A, $1A
+ENDIF
 	.db $00
 
 Pulse2SFXData_Shrink:
 	.db $A1
-	.db $08, $FE, $40
-	.db $09, $7C, $40
-	.db $08, $FE, $40
-	.db $09, $7C, $40
-	.db $0A, $3A, $40
-	.db $0B, $56, $40
-	.db $0D, $00, $40
-	.db $08, $FE, $40
-	.db $09, $7C, $40
-	.db $08, $FE, $40
-	.db $09, $7C, $40
-	.db $0A, $3A, $40
-	.db $0B, $56, $40
-	.db $0D, $00, $40
-	.db $08, $FE, $40
-	.db $09, $7C, $40
-	.db $08, $FE, $40
-	.db $09, $7C, $40
-	.db $0A, $3A, $40
-	.db $0B, $56, $40
-	.db $0D, $00, $40
+REPT 3
+	IFNDEF PAL
+		.db $08, $FE, $40
+		.db $09, $7C, $40
+		.db $08, $FE, $40
+		.db $09, $7C, $40
+		.db $0A, $3A, $40
+		.db $0B, $56, $40
+		.db $0D, $00, $40
+	ELSE
+		.db $08, $EC
+		.db $09, $61, $40
+		.db $08, $EC, $40
+		.db $09, $61
+		.db $0A, $12, $40
+		.db $0B, $1A, $40
+		.db $0C, $A5, $40
+	ENDIF
+ENDR
 	.db $00
 
 Pulse2SFXData_Watch:
+IFNDEF PAL
 	.db $F8
 	.db $08, $54, $40, $40, $40, $40
 	.db      $40, $40, $40, $40, $40
@@ -104,37 +135,69 @@ Pulse2SFXData_Watch:
 	.db      $40, $40
 	.db $08, $8E, $40, $40, $40, $40
 	.db      $40, $40, $40, $40, $40, $40
+ELSE
+	.db $F8
+	.db $08, $4E, $40, $40, $40
+	.db      $40, $40, $40, $40
+	.db $08, $63, $40, $40
+	.db $FB
+	.db      $40
+	.db $F8
+	.db $08, $58, $40, $40
+	.db      $40, $40
+	.db $08, $84, $40, $40, $40
+	.db      $40, $40, $40, $40
+ENDIF
 	.db $00
 
 Pulse2SFXData_1UP:
+IFNDEF PAL
 	.db $08, $53, $40, $40, $40
 	.db $08, $46, $40, $40, $40, $40
 	.db $08, $29, $40, $40, $40
 	.db $08, $34, $40, $40, $40, $40
 	.db $08, $2E, $40, $40, $40
 	.db $08, $22, $40, $40, $40, $40
+ELSE
+	.db $08, $4D, $40, $40
+	.db $08, $41, $40, $40, $40
+	.db $08, $26, $40, $40, $40
+	.db $08, $30, $40, $40, $40
+	.db $08, $2B, $40, $40
+	.db $08, $20, $40, $40, $40
+ENDIF
 	.db $00
 
 Pulse2SFXData_Injury:
 	.db $81
-	.db $19, $FC
-	.db $1A, $A6, $40
-	.db $1B, $F8, $40
-	.db $1D, $4D, $40
-	.db $19, $FC
-	.db $1A, $A6, $40
-	.db $1B, $F8, $40
-	.db $1D, $4D, $40
-	.db $19, $FC
-	.db $1A, $A6, $40
-	.db $1B, $F8, $40
-	.db $1D, $4D, $40
+IFNDEF PAL
+	REPT 3
+		.db $19, $FC
+		.db $1A, $A6, $40
+		.db $1B, $F8, $40
+		.db $1D, $4D, $40
+	ENDR
+ELSE
+	REPT 3
+		.db $19, $D8
+		.db $1A, $76, $40
+		.db $1B, $B0
+		.db $1C, $EC, $40
+	ENDR
+ENDIF
 	.db $00
 
 Pulse2SFXData_Coin:
+IFNDEF PAL
 	.db $08, $37, $40, $40, $40
 	.db $08, $29, $40, $40, $40, $40
 	.db      $40, $40, $40, $40
 	.db      $40, $40, $40, $40, $40
 	.db      $40, $40, $40, $40
+ELSE
+	.db $08, $33, $40, $40
+	.db $08, $26, $40, $40, $40, $40
+	.db      $40, $40, $40, $40, $40
+	.db      $40, $40, $40, $40, $40
+ENDIF
 	.db $00
