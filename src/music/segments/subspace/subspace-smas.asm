@@ -370,26 +370,26 @@ MusicDataSubspace_Triangle:
 
 MusicDataSubspace_Noise:
 	note_type 1, QUARTER
-	drum_note Noise_Kick
+	drum_note Noise_OWKick
 	note_type 1, HALF_TRIPLET
-	drum_note Noise_ClosedHihat
-	drum_note Noise_ClosedHihat
+	drum_note Noise_OWClosedHihat
+	drum_note Noise_OWClosedHihat
 	drum_rest
-	drum_note Noise_Kick
+	drum_note Noise_OWKick
 	note_type 1, QUARTER
-	drum_note Noise_ClosedHihat
+	drum_note Noise_OWClosedHihat
 	note_type 1, QUARTER_TRIPLET
-	drum_note Noise_Kick
+	drum_note Noise_OWKick
 	note_type 1, HALF_TRIPLET
-	drum_note Noise_ClosedHihat
+	drum_note Noise_OWClosedHihat
 	note_type 1, QUARTER_TRIPLET
-	drum_note Noise_Kick
+	drum_note Noise_OWKick
 	note_type 1, QUARTER
-	drum_note Noise_Snare
+	drum_note Noise_OWSnare
 	note_type 1, HALF_TRIPLET
-	drum_note Noise_ClosedHihat
+	drum_note Noise_OWClosedHihat
 	note_type 1, QUARTER_TRIPLET
-	drum_note Noise_ClosedHihat
+	drum_note Noise_OWClosedHihat
 	sound_loop
 
 MusicDataSubspace_DPCM:

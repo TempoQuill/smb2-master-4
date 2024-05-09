@@ -451,122 +451,122 @@ MusicDataOverworld5_Triangle:
 
 MusicDataOverworld5_Noise:
 	note_type 1, QUARTER
-	drum_note Noise_Kick
-	drum_note Noise_Snare
-	drum_note Noise_Kick
+	drum_note Noise_OWKick
+	drum_note Noise_OWSnare
+	drum_note Noise_OWKick
 	note_type 1, DOTTED_EIGHTH
-	drum_note Noise_Snare
+	drum_note Noise_OWSnare
 	note_type 1, SIXTEENTH
-	drum_note Noise_Kick
+	drum_note Noise_OWKick
 	note_type 1, QUARTER_TRIPLET
-	drum_note Noise_Kick
+	drum_note Noise_OWKick
 	drum_rest
-	drum_note Noise_Snare
+	drum_note Noise_OWSnare
 	note_type 1, QUARTER
-	drum_note Noise_Snare
-	drum_note Noise_Kick
+	drum_note Noise_OWSnare
+	drum_note Noise_OWKick
 	note_type 1, DOTTED_EIGHTH
-	drum_note Noise_Snare
+	drum_note Noise_OWSnare
 	note_type 1, SIXTEENTH
-	drum_note Noise_Kick
+	drum_note Noise_OWKick
 	note_type 1, QUARTER
-	drum_note Noise_Kick
-	drum_note Noise_Snare
-	drum_note Noise_OpenHihat
+	drum_note Noise_OWKick
+	drum_note Noise_OWSnare
+	drum_note Noise_OWOpenHihat
 	note_type 1, QUARTER_TRIPLET
-	drum_note Noise_ClosedHihat
+	drum_note Noise_OWClosedHihat
 	drum_rest
-	drum_note Noise_ClosedHihat
+	drum_note Noise_OWClosedHihat
 	note_type 1, QUARTER
-	drum_note Noise_OpenHihat
+	drum_note Noise_OWOpenHihat
 	note_type 1, QUARTER_TRIPLET
-	drum_note Noise_ClosedHihat
+	drum_note Noise_OWClosedHihat
 	drum_rest
-	drum_note Noise_ClosedHihat
+	drum_note Noise_OWClosedHihat
 	note_type 1, QUARTER
-	drum_note Noise_OpenHihat
+	drum_note Noise_OWOpenHihat
 	note_type 1, QUARTER_TRIPLET
-	drum_note Noise_ClosedHihat
+	drum_note Noise_OWClosedHihat
 	drum_rest
-	drum_note Noise_ClosedHihat
+	drum_note Noise_OWClosedHihat
 	note_type 1, QUARTER
-	drum_note Noise_OpenHihat
+	drum_note Noise_OWOpenHihat
 	note_type 1, QUARTER_TRIPLET
-	drum_note Noise_ClosedHihat
+	drum_note Noise_OWClosedHihat
 	drum_rest
-	drum_note Noise_ClosedHihat
+	drum_note Noise_OWClosedHihat
 	note_type 1, QUARTER
-	drum_note Noise_OpenHihat
+	drum_note Noise_OWOpenHihat
 	note_type 1, QUARTER_TRIPLET
-	drum_note Noise_ClosedHihat
+	drum_note Noise_OWClosedHihat
 	drum_rest
-	drum_note Noise_ClosedHihat
+	drum_note Noise_OWClosedHihat
 	note_type 1, QUARTER
-	drum_note Noise_OpenHihat
+	drum_note Noise_OWOpenHihat
 	note_type 1, QUARTER_TRIPLET
-	drum_note Noise_ClosedHihat
+	drum_note Noise_OWClosedHihat
 	drum_rest
-	drum_note Noise_ClosedHihat
+	drum_note Noise_OWClosedHihat
 	note_type 1, QUARTER
-	drum_note Noise_OpenHihat
+	drum_note Noise_OWOpenHihat
 	note_type 1, QUARTER_TRIPLET
-	drum_note Noise_ClosedHihat
+	drum_note Noise_OWClosedHihat
 	drum_rest
-	drum_note Noise_ClosedHihat
+	drum_note Noise_OWClosedHihat
 	note_type 1, QUARTER
-	drum_note Noise_OpenHihat
+	drum_note Noise_OWOpenHihat
 	note_type 1, QUARTER_TRIPLET
-	drum_note Noise_ClosedHihat
+	drum_note Noise_OWClosedHihat
 	drum_rest
-	drum_note Noise_ClosedHihat
+	drum_note Noise_OWClosedHihat
 	note_type 1, QUARTER
-	drum_note Noise_OpenHihat
+	drum_note Noise_OWOpenHihat
 	note_type 1, QUARTER_TRIPLET
-	drum_note Noise_ClosedHihat
+	drum_note Noise_OWClosedHihat
 	drum_rest
-	drum_note Noise_ClosedHihat
+	drum_note Noise_OWClosedHihat
 	note_type 1, QUARTER
-	drum_note Noise_OpenHihat
+	drum_note Noise_OWOpenHihat
 	note_type 1, QUARTER_TRIPLET
-	drum_note Noise_ClosedHihat
+	drum_note Noise_OWClosedHihat
 	drum_rest
-	drum_note Noise_ClosedHihat
+	drum_note Noise_OWClosedHihat
 	note_type 1, QUARTER
-	drum_note Noise_OpenHihat
+	drum_note Noise_OWOpenHihat
 	note_type 1, QUARTER_TRIPLET
-	drum_note Noise_ClosedHihat
+	drum_note Noise_OWClosedHihat
 	drum_rest
-	drum_note Noise_ClosedHihat
+	drum_note Noise_OWClosedHihat
 	note_type 1, QUARTER
-	drum_note Noise_OpenHihat
+	drum_note Noise_OWOpenHihat
 	note_type 1, QUARTER_TRIPLET
-	drum_note Noise_ClosedHihat
+	drum_note Noise_OWClosedHihat
 	drum_rest
-	drum_note Noise_ClosedHihat
+	drum_note Noise_OWClosedHihat
 	note_type 1, QUARTER
-	drum_note Noise_OpenHihat
+	drum_note Noise_OWOpenHihat
 	note_type 1, QUARTER_TRIPLET
-	drum_note Noise_ClosedHihat
+	drum_note Noise_OWClosedHihat
 	drum_rest
-	drum_note Noise_ClosedHihat
+	drum_note Noise_OWClosedHihat
 	note_type 1, QUARTER
-	drum_note Noise_OpenHihat
+	drum_note Noise_OWOpenHihat
 	note_type 1, QUARTER_TRIPLET
-	drum_note Noise_ClosedHihat
+	drum_note Noise_OWClosedHihat
 	drum_rest
-	drum_note Noise_ClosedHihat
+	drum_note Noise_OWClosedHihat
 	note_type 1, QUARTER
-	drum_note Noise_OpenHihat
+	drum_note Noise_OWOpenHihat
 	note_type 1, QUARTER_TRIPLET
-	drum_note Noise_ClosedHihat
+	drum_note Noise_OWClosedHihat
 	drum_rest
-	drum_note Noise_ClosedHihat
+	drum_note Noise_OWClosedHihat
 	note_type 1, QUARTER
-	drum_note Noise_OpenHihat
+	drum_note Noise_OWOpenHihat
 	note_type 1, QUARTER_TRIPLET
-	drum_note Noise_ClosedHihat
+	drum_note Noise_OWClosedHihat
 	drum_rest
-	drum_note Noise_ClosedHihat
+	drum_note Noise_OWClosedHihat
 
 MusicDataOverworld5_DPCM:
 	note_type 1, QUARTER_TRIPLET

@@ -370,6 +370,14 @@ Noise_Snare:
 	.dsb 1
 Noise_DoubleSnare:
 	.dsb 1
+Noise_OWClosedHihat:
+	.dsb 1
+Noise_OWOpenHihat:
+	.dsb 1
+Noise_OWKick:
+	.dsb 1
+Noise_OWSnare:
+	.dsb 1
 NOISE_SFX:
 SoundEffect3_ShortNoise: ; Whale spout
 	.dsb 1

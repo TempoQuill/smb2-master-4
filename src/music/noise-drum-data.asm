@@ -46,3 +46,40 @@ NoiseDrumData_Snare:
 	.db $12, $7E
 	.db $11, $7E
 	.db $00
+
+NoiseDrumData_OWClosedHihat:
+	.db $1A, $03
+	.db $19, $02
+	.db $19, $01
+	.db $00
+
+NoiseDrumData_OWOpenHihat:
+	.db $1A, $01
+	.db $15, $02
+	.db $1A, $03
+	.db $15, $02
+	.db $13, $01
+	.db $00
+
+NoiseDrumData_OWKick:
+IFNDEF PAL
+	.db $1A, $8D
+	.db      $8E
+ELSE
+	.db $1A, $8E
+ENDIF
+	.db $1A, $01
+	.db $17, $7E
+	.db $14, $7E
+	.db $00
+
+NoiseDrumData_OWSnare:
+	.db $1B, $08
+	.db $19, $09
+	.db $16, $7E
+	.db $15, $7E
+	.db $14, $7E
+	.db $13, $7E
+	.db $12, $7E
+	.db $11, $7E
+	.db $00

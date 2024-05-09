@@ -73,17 +73,17 @@ MusicDataOverworld1_Noise:
 	note_type 1, WHOLE
 	drum_rest
 	note_type 1, QUARTER
-	drum_note Noise_ClosedHihat
+	drum_note Noise_OWClosedHihat
 	note_type 1, QUARTER_TRIPLET
-	drum_note Noise_ClosedHihat
-	drum_note Noise_ClosedHihat
-	drum_note Noise_ClosedHihat
-	drum_note Noise_ClosedHihat
+	drum_note Noise_OWClosedHihat
+	drum_note Noise_OWClosedHihat
+	drum_note Noise_OWClosedHihat
+	drum_note Noise_OWClosedHihat
 	drum_rest
-	drum_note Noise_ClosedHihat
-	drum_note Noise_ClosedHihat
-	drum_note Noise_ClosedHihat
-	drum_note Noise_ClosedHihat
+	drum_note Noise_OWClosedHihat
+	drum_note Noise_OWClosedHihat
+	drum_note Noise_OWClosedHihat
+	drum_note Noise_OWClosedHihat
 MusicDataOverworld1_DPCM:
 	note_type 1, QUARTER_TRIPLET
 	rest
