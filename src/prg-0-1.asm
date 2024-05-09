@@ -5439,6 +5439,8 @@ loc_BANK0_9C19:
 	AND #ControllerInput_Start
 	BEQ loc_BANK0_9C35
 
+	JSR InitNewGame
+
 loc_BANK0_9C1F:
 	LDA #Music_StopMusic
 	STA iMusicQueue
