@@ -1016,6 +1016,8 @@ VerticalLevel_CheckTransition:
 ; Pauses the game
 ;
 ShowPauseScreen:
+	LDA #PauseOption_Continue
+	STA iStack + 1
 	JSR PauseScreen_ExtraLife
 
 	LDA #ScreenUpdateBuffer_RAM_PauseText
