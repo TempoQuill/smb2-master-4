@@ -576,32 +576,32 @@ BonusChanceBackgroundPalettes:
 	.db $0F, $21, $12, $01 ; $0C
 
 BonusChanceReel1Order:
-	.db Slot_Snifit ; $00
-	.db Slot_Coin   ; $01 ; Graphics exist for a mushroom (not used)
-	.db Slot_Star   ; $02
 	.db Slot_Turnip ; $03
-	.db Slot_Snifit ; $04
-	.db Slot_Star   ; $05
+	.db Slot_Star   ; $02
+	.db Slot_7      ; $01 ; Graphics exist for a mushroom (not used)
 	.db Slot_Cherry ; $06
 	.db Slot_Turnip ; $07
-BonusChanceReel2Order:
-	.db Slot_Star   ; $00
-	.db Slot_Coin   ; $01
-	.db Slot_Cherry ; $02
-	.db Slot_Snifit ; $03
-	.db Slot_Turnip ; $04
 	.db Slot_Star   ; $05
+	.db Slot_Snifit ; $00
+	.db Slot_Cherry ; $04
+BonusChanceReel2Order:
+	.db Slot_Snifit ; $03
+	.db Slot_Star   ; $00
+	.db Slot_Turnip ; $04
+	.db Slot_Cherry ; $02
 	.db Slot_Snifit ; $06
+	.db Slot_Star   ; $05
 	.db Slot_Turnip ; $07
+	.db Slot_7      ; $01
 BonusChanceReel3Order:
-	.db Slot_Coin   ; $00
+	.db Slot_Turnip ; $03
 	.db Slot_Snifit ; $01
 	.db Slot_Star   ; $02
-	.db Slot_Turnip ; $03
-	.db Slot_Star   ; $04
-	.db Slot_Cherry ; $05
+	.db Slot_7      ; $00
 	.db Slot_Turnip ; $06
 	.db Slot_Snifit ; $07
+	.db Slot_Star   ; $04
+	.db Slot_Cherry ; $05
 
 BonusChanceUnusedCoinSprite:
 	.db $F8, $19, $01, $60, $F8, $1B, $01, $68
@@ -815,7 +815,7 @@ CheckForCoinService:
 	LDA mCoinService
 	BMI CheckForCoinService_Exit
 
-	LDA #Slot_Coin
+	LDA #Slot_7
 	LDX zObjectXLo + 7 ; Load reel 2
 	CMP mReelBuffer + 8, X
 	BNE CheckForCoinService_Exit
