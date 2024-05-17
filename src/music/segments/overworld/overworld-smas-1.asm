@@ -3,23 +3,23 @@ MusicDataOverworld1_Square2:
 	note_type 3, QUARTER_TRIPLET
 	rest
 	rest
-	note G_, 5
-	note F#, 5
+	note D_, 6
+	note C#, 6
 	rest
-	note F_, 5
+	note C_, 6
+	note A_, 5
+	rest
+	note F#, 5
+	note E_, 5
+	rest
+	note D#, 5
+	note_type 3, EIGHTH
 	note D_, 5
 	rest
-	note B_, 4
-	note A_, 4
-	rest
-	note G#, 4
-	note_type 3, EIGHTH
-	note G_, 4
-	rest
-	note G_, 5
+	note D_, 6
 	rest
 	note_type 3, HALF_TRIPLET
-	note G_, 4
+	note D_, 5
 	rest
 	rest
 	sound_ret

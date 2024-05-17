@@ -577,7 +577,7 @@ BonusChanceBackgroundPalettes:
 
 BonusChanceReel1Order:
 	.db Slot_Snifit ; $00
-	.db Slot_Turnip ; $01 ; Graphics exist for a mushroom (not used)
+	.db Slot_Coin   ; $01 ; Graphics exist for a mushroom (not used)
 	.db Slot_Star   ; $02
 	.db Slot_Turnip ; $03
 	.db Slot_Snifit ; $04
@@ -586,7 +586,7 @@ BonusChanceReel1Order:
 	.db Slot_Turnip ; $07
 BonusChanceReel2Order:
 	.db Slot_Star   ; $00
-	.db Slot_Snifit ; $01
+	.db Slot_Coin   ; $01
 	.db Slot_Cherry ; $02
 	.db Slot_Snifit ; $03
 	.db Slot_Turnip ; $04
@@ -594,7 +594,7 @@ BonusChanceReel2Order:
 	.db Slot_Snifit ; $06
 	.db Slot_Turnip ; $07
 BonusChanceReel3Order:
-	.db Slot_Star   ; $00
+	.db Slot_Coin   ; $00
 	.db Slot_Snifit ; $01
 	.db Slot_Star   ; $02
 	.db Slot_Turnip ; $03
@@ -634,7 +634,14 @@ BonusChanceText_NO_BONUS:
 
 BonusChanceText_PUSH_A_BUTTON:
 	.db $22, $89, $0E
-	.db $E9, $EE, $EC, $E1, $FB, $0E, $F,$FB, $DB, $EE, $ED, $ED, $E8, $E7 ; PUSH (A) BUTTON
+	.db $E9, $EE, $EC, $E1, $FB, $0E, $0F, $FB, $DB, $EE, $ED, $ED, $E8, $E7 ; PUSH (A) BUTTON
+	.db $00
+
+BonusChanceText_ThreeCoinsService:
+	.db $22, $87, $13
+	.db $ED, $E1, $EB, $DE, $DE, $FB
+	.db $DC, $E8, $E2, $E7, $EC, $FB
+	.DB $EC, $DE, $EB, $EF, $E2, $DC, $DE
 	.db $00
 
 BonusChanceText_PLAYER_1UP:
@@ -648,7 +655,7 @@ Text_PAUSE:
 	.db $27, $CB, $02, $AA, $AA ; attribute data
 	.db $00
 
-; Erases NO BONUS / PUSH (A) BUTTON / PLAYER 1UP
+; Erases NO BONUS / PUSH (A) BUTTON / PLAYER 1UP / THREE COINS SERVICE
 BonusChanceText_Message_Erase:
 	.db $22, $86, $54, $FB
 	.db $00
@@ -802,3 +809,74 @@ EndOfLevelSlotMachine_AB:
 
 EndOfLevelSlotMachine_Exit:
 	JMP NoCoinsForSlotMachine
+
+CheckForCoinService:
+; if 2 coins are shown, award three coins if it hasn't happened already
+	LDA mCoinService
+	BMI CheckForCoinService_Exit
+
+	LDA #Slot_Coin
+	LDX zObjectXLo + 7 ; Load reel 2
+	CMP mReelBuffer + 8, X
+	BNE CheckForCoinService_Exit
+
+	LDX zObjectXLo + 8 ; Load reel 3
+	CMP mReelBuffer + 16, X ; Does reel 3 match the previous two?
+	BNE CheckForCoinService_Exit
+
+	LDA #2
+	STA mCoinService
+
+CheckForCoinService_Exit:
+	RTS
+
+ExecuteCoinService:
+	LDA mCoinService
+	BMI ExecuteCoinService_Exit
+	BEQ ExecuteCoinService_Exit
+
+	LDA #ScreenUpdateBuffer_RAM_EraseBonusMessageText
+	STA zScreenUpdateIndex
+
+	JSR WaitForNMI
+
+	LDA #ScreenUpdateBuffer_RAM_BonusChanceThreeCoinService
+	STA zScreenUpdateIndex
+
+	JSR WaitForNMI
+
+ExecuteCoinService_PlaySound:
+	INC iTotalCoins
+	DEC mCoinService
+
+	LDA #SoundEffect2_CoinGet
+	STA iPulse2SFX
+
+	LDA iTotalCoins
+	JSR GetTwoDigitNumberTiles
+	STY i588 - 1
+	STA i588
+
+	LDA #ScreenUpdateBuffer_RAM_BonusChanceCoinsExtraLife
+	STA zScreenUpdateIndex
+
+ExecuteCoinService_Loop:
+	JSR WaitForNMI
+	INC mCoinServiceTimer
+	LDA mCoinServiceTimer
+	AND #$3f
+	BNE ExecuteCoinService_Loop
+
+	LDA #ScreenUpdateBuffer_RAM_BonusChanceCoinsExtraLife
+	STA zScreenUpdateIndex
+
+	LDA mCoinService
+	BPL ExecuteCoinService_PlaySound
+
+	LDA #ScreenUpdateBuffer_RAM_EraseBonusMessageText
+	STA zScreenUpdateIndex
+
+	JSR WaitForNMI
+
+ExecuteCoinService_Exit:
+	RTS

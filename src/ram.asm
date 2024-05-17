@@ -1893,6 +1893,7 @@ sMultiChecksum:
 sBackupMultiChecksum:
 	.dsb 4
 SAVE_DATA_WIDTH = sBackupSaveData - sSaveData
+	.dsb 1
 
 wColBoxLeft = $7100
 wColBoxTop = $7114
@@ -1967,13 +1968,15 @@ mContinueScreenContNo:
 mContinueScreenRetry:
 	.dsb 4 ; $5c54
 
-mLDPBonucChanceNA:
+mLDPBonusChanceNA:
 	.dsb 24 ; $5c58
-mLDPBonucChanceABtn:
+mLDPBonusChanceABtn:
 	.dsb 18 ; $5c70
-mLDPBonucChanceLifeDisplay:
+mLDPBonusChanceCoinService:
+	.dsb 23 ; $5c8d
+mLDPBonusChanceLifeDisplay:
 	.dsb 11 ; $5c82
-mLDPBonucChanceLiveEMCount:
+mLDPBonusChanceLiveEMCount:
 	.dsb 4 ; $5c8d
 
 mPauseBuffer:
@@ -1987,4 +1990,8 @@ mTextDeletionBonusUnused:
 	.dsb 5 ; $5ca9
 mTextDeletionPause:
 	.dsb 9 ; $5cae
+mCoinService:
+	.dsb 1
+mCoinServiceTimer:
+	.dsb 1
 .ende

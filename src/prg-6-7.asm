@@ -99,15 +99,15 @@ World1BackgroundPalettes:
 
 World1SpritePalettes:
 	; Overworld
-	.db $FF, $36, $16, $06 ; $00
+	.db $FF, $30, $16, $06 ; $00
 	.db $FF, $38, $10, $0F ; $04
 	.db $FF, $35, $25, $05 ; $08
 	; Underground
-	.db $FF, $36, $16, $06 ; $0C
+	.db $FF, $30, $16, $06 ; $0C
 	.db $FF, $38, $10, $0F ; $10
 	.db $FF, $35, $25, $05 ; $14
 	; Boss
-	.db $FF, $36, $16, $06 ; $18
+	.db $FF, $30, $16, $06 ; $18
 	.db $FF, $30, $10, $0F ; $1C
 	.db $FF, $25, $10, $0F ; $20
 
@@ -153,15 +153,15 @@ World2BackgroundPalettes:
 
 World2SpritePalettes:
 	; Overworld
-	.db $FF, $36, $16, $06 ; $00
+	.db $FF, $30, $16, $06 ; $00
 	.db $FF, $38, $2A, $0C ; $04
 	.db $FF, $35, $25, $05 ; $08
 	; Underground
-	.db $FF, $36, $16, $06 ; $0C
+	.db $FF, $30, $16, $06 ; $0C
 	.db $FF, $38, $2A, $0F ; $10
 	.db $FF, $35, $25, $05 ; $14
 	; Boss
-	.db $FF, $36, $16, $06 ; $18
+	.db $FF, $30, $16, $06 ; $18
 	.db $FF, $30, $10, $0F ; $1C
 	.db $FF, $33, $23, $03 ; $20
 
@@ -207,15 +207,15 @@ World3BackgroundPalettes:
 
 World3SpritePalettes:
 	; Overworld
-	.db $FF, $36, $16, $06 ; $00
+	.db $FF, $30, $16, $06 ; $00
 	.db $FF, $38, $10, $0F ; $04
 	.db $FF, $35, $25, $05 ; $08
 	; Underground
-	.db $FF, $36, $16, $06 ; $0C
+	.db $FF, $30, $16, $06 ; $0C
 	.db $FF, $38, $10, $0F ; $10
 	.db $FF, $35, $25, $05 ; $14
 	; Boss
-	.db $FF, $36, $16, $06 ; $18
+	.db $FF, $30, $16, $06 ; $18
 	.db $FF, $30, $10, $0F ; $1C
 	.db $FF, $2B, $10, $0F ; $20
 
@@ -261,15 +261,15 @@ World4BackgroundPalettes:
 
 World4SpritePalettes:
 	; Overworld
-	.db $FF, $36, $16, $06 ; $00
+	.db $FF, $30, $16, $06 ; $00
 	.db $FF, $38, $10, $0F ; $04
 	.db $FF, $35, $25, $05 ; $08
 	; Underground
-	.db $FF, $36, $16, $06 ; $0C
+	.db $FF, $30, $16, $06 ; $0C
 	.db $FF, $38, $10, $0F ; $10
 	.db $FF, $35, $25, $05 ; $14
 	; Boss
-	.db $FF, $36, $16, $06 ; $18
+	.db $FF, $30, $16, $06 ; $18
 	.db $FF, $30, $10, $0F ; $1C
 	.db $FF, $27, $16, $05 ; $20
 
@@ -315,16 +315,16 @@ World5BackgroundPalettes:
 
 World5SpritePalettes:
 	; Overworld
-	.db $FF, $36, $16, $06 ; $00
+	.db $FF, $30, $16, $06 ; $00
 	.db $FF, $38, $10, $0F ; $04
 	.db $FF, $35, $25, $05 ; $08
 	; Underground
-	.db $FF, $36, $16, $06 ; $0C
+	.db $FF, $30, $16, $06 ; $0C
 	.db $FF, $38, $10, $0F ; $10
 	.db $FF, $35, $25, $05 ; $14
 	; Boss
-	.db $FF, $36, $16, $06 ; $18
-	.db $FF, $36, $16, $06 ; $1C
+	.db $FF, $30, $16, $06 ; $18
+	.db $FF, $30, $16, $06 ; $1C
 	.db $FF, $16, $30, $0F ; $20
 
 ;
@@ -369,15 +369,15 @@ World6BackgroundPalettes:
 
 World6SpritePalettes:
 	; Overworld
-	.db $FF, $36, $16, $06 ; $00
+	.db $FF, $30, $16, $06 ; $00
 	.db $FF, $38, $2A, $0A ; $04
 	.db $FF, $35, $25, $05 ; $08
 	; Underground
-	.db $FF, $36, $16, $06 ; $0C
+	.db $FF, $30, $16, $06 ; $0C
 	.db $FF, $38, $2A, $0A ; $10
 	.db $FF, $35, $25, $05 ; $14
 	; Boss
-	.db $FF, $36, $16, $06 ; $18
+	.db $FF, $30, $16, $06 ; $18
 	.db $FF, $30, $10, $0F ; $1C
 	.db $FF, $33, $23, $03 ; $20
 
@@ -423,7 +423,7 @@ World7BackgroundPalettes:
 
 World7SpritePalettes:
 	; Overworld
-	.db $FF, $36, $16, $06 ; $00
+	.db $FF, $30, $16, $06 ; $00
 	.db $FF, $38, $10, $0F ; $04
 	.db $FF, $35, $25, $05 ; $08
 	; Underground
@@ -431,7 +431,7 @@ World7SpritePalettes:
 	.db $FF, $38, $10, $0F ; $10
 	.db $FF, $30, $25, $05 ; $14
 	; Boss
-	.db $FF, $36, $16, $06 ; $18
+	.db $FF, $30, $16, $06 ; $18
 	.db $FF, $30, $10, $0F ; $1C
 	.db $FF, $3A, $2A, $01 ; $20
 

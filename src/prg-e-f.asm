@@ -33,9 +33,9 @@ ScreenUpdateBufferPointers:
 	.dw PPUBuffer_Text_Retry
 	.dw wTitleCardBuffer
 	.dw mLDPBonusChanceBuffer ; Doki Doki Panic leftover
-	.dw mLDPBonucChanceNA
-	.dw mLDPBonucChanceABtn
-	.dw mLDPBonucChanceLifeDisplay
+	.dw mLDPBonusChanceNA
+	.dw mLDPBonusChanceABtn
+	.dw mLDPBonusChanceLifeDisplay
 	.dw mPauseBuffer
 	.dw mTextDeletionPause
 	.dw mTextDeletionBonus
@@ -51,6 +51,7 @@ ScreenUpdateBufferPointers:
 	.dw PauseOptionPalette1
 	.dw PauseOptionPalette2
 	.dw PauseOptionPalette3
+	.dw mLDPBonusChanceCoinService
 
 PPUBuffer_CharacterSelect:
 	.db $21, $49, $06, $E9, $E5, $DE, $DA, $EC, $DE ; PLEASE
@@ -281,6 +282,10 @@ BonusChanceVeggieSprite:
 	.db $5F, $0B, $41, $60
 
 BonusChanceSnifitSprite:
+	.db $5F, $A7, $81, $58
+	.db $5F, $A9, $81, $60
+
+BonusChanceSlotCoinSprite:
 	.db $5F, $01, $01, $58
 	.db $5F, $03, $01, $60
 
@@ -1480,6 +1485,9 @@ EndOfLevelSlotMachine:
 
 	JSR ClearNametablesAndSprites
 
+	LDA #0
+	STA mCoinService
+
 	JSR EnableNMI
 	JSR WaitForNMI
 
@@ -1668,9 +1676,15 @@ CheckReel3Symbol:
 	INY
 ; Cherry count: 3 / Non-cherry: 1
 	CMP #$00 ; Were they all cherries?
-	BNE AddSlotMachineExtraLives ; Nope, all done
+	BNE MaybeCoins ; Okay, they could be 7s
 
 	INY ; Yes, add 1 more extra life
+
+MaybeCoins:
+	CMP #$20 ; 7s?
+	BNE AddSlotMachineExtraLives ; Nope, all done
+
+	LDY #10 ; just hard code 9 lives, faster that way
 
 AddSlotMachineExtraLives:
 	TYA ; Y contains extra lives to add
@@ -1681,15 +1695,18 @@ AddSlotMachineExtraLives:
 	LDA #$FF ; If so, set extra lives to 255 (#$FF)
 
 loc_BANKF_E8D3:
+; now to check for coin service
 	STA iExtraMen
 	STA sExtraMen
+	JSR CheckForCoinService
 	LDA #0
 	STA iBonusDrumRoll
 	TYA ; Did we actually win any lives?
 	BEQ SlotMachineLoseFanfare ; No, play lose sound effect
 
-	ORA #$D0
-	STA mLDPBonucChanceLiveEMCount ; Update number of lives won
+	JSR GetTwoDigitNumberTiles
+	STY mLDPBonusChanceLiveEMCount - 1
+	STA mLDPBonusChanceLiveEMCount ; Update number of lives won
 	JSR SlotMachine_WaitforSFX
 	LDA #Music_CrystalGetFanfare ; Play winner jingle
 	STA iMusicQueue
@@ -1709,7 +1726,9 @@ loc_BANKF_E8ED:
 	DEC z06
 	BNE loc_BANKF_E8ED
 
-	BEQ loc_BANKF_E90C
+	JSR ExecuteCoinService
+
+	JMP loc_BANKF_E90C
 
 SlotMachineLoseFanfare:
 	JSR SlotMachine_WaitforSFX
@@ -1995,8 +2014,8 @@ sub_BANKF_EA68:
 	STA i59a
 
 	LDA iTotalCoins
-	CLC
-	ADC #$D0
+	JSR GetTwoDigitNumberTiles
+	STY i588 - 1
 	STA i588
 
 	LDA #ScreenUpdateBuffer_RAM_BonusChanceCoinsExtraLife

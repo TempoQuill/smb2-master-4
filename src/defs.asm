@@ -305,6 +305,7 @@ ScreenUpdateBuffer_PauseOptions = $18
 ScreenUpdateBuffer_PauseOptionsAttribute1 = $19
 ScreenUpdateBuffer_PauseOptionsAttribute2 = $1A
 ScreenUpdateBuffer_PauseOptionsAttribute3 = $1B
+ScreenUpdateBuffer_RAM_BonusChanceThreeCoinService = $1C
 
 ; ---------------------------------------------------------------------------
 ; enum options (width 1 byte)
@@ -407,6 +408,7 @@ Slot_Cherry = $00
 Slot_Star = $08
 Slot_Turnip = $10
 Slot_Snifit = $18
+Slot_Coin = $20
 
 ; ---------------------------------------------------------------------------
 
