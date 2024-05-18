@@ -28,23 +28,39 @@ ENDIF
 	.db $40, $01, $7E, $7E
 	.db $00
 
-NoiseDrumData_DoubleSnare:
-	.db $1F, $8D
-	.db      $0B
-IFNDEF PAL
-	.db      $09
-ENDIF
-
-NoiseDrumData_Snare:
-	.db $1F, $8D
-	.db      $0B
-	.db      $09
+NoiseDrumData_StarSnare:
+	.db $1F, $89
+	.db      $06
 	.db $1C, $7E
 	.db $19, $7E
+	.db $17, $7E
 	.db $16, $7E
+	.db $15, $7E
+	.db $14, $7E
 	.db $13, $7E
 	.db $12, $7E
 	.db $11, $7E
+	.db $00
+
+NoiseDrumData_Snare:
+	.db $1F, $88
+	.db      $0A
+	.db $1C, $7E
+	.db      $7E
+	.db      $7E
+	.db $19, $7E
+	.db $17, $7E
+	.db $16, $7E
+	.db $15, $7E
+	.db      $7E
+	.db $14, $7E
+	.db      $7E
+	.db $13, $7E
+	.db      $7E
+	.db $12, $7E
+	.db      $7E
+	.db $11, $7E
+	.db      $7E
 	.db $00
 
 NoiseDrumData_OWClosedHihat:
@@ -72,6 +88,13 @@ ENDIF
 	.db $17, $7E
 	.db $14, $7E
 	.db $00
+
+NoiseDrumData_DoubleSnare:
+	.db $1B, $08
+	.db $19, $09
+IFNDEF PAL
+	.db $16, $7E
+ENDIF
 
 NoiseDrumData_OWSnare:
 	.db $1B, $08

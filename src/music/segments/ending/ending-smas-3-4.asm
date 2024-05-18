@@ -70,15 +70,15 @@ MusicDataEnding3_Noise:
 	note_type 1, HALF
 	drum_note Noise_DoubleSnare
 	note_type 1, HALF_TRIPLET
-	drum_note Noise_Snare
-	drum_note Noise_Snare
-	drum_note Noise_Snare
+	drum_note Noise_OWSnare
+	drum_note Noise_OWSnare
+	drum_note Noise_OWSnare
 	note_type 1, HALF
 	drum_note Noise_DoubleSnare
 	note_type 1, HALF_TRIPLET
-	drum_note Noise_Snare
-	drum_note Noise_Snare
-	drum_note Noise_Snare
+	drum_note Noise_OWSnare
+	drum_note Noise_OWSnare
+	drum_note Noise_OWSnare
 
 MusicDataEnding4_Noise:
 	note_type 1, HALF

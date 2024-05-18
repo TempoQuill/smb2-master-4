@@ -97,12 +97,12 @@ MusicDataStar_Noise:
 	note_type 1, QUARTER
 	drum_rest
 	note_type 1, DOTTED_EIGHTH
-	drum_note Noise_Snare
-	drum_note Noise_Snare
+	drum_note Noise_StarSnare
+	drum_note Noise_StarSnare
 	note_type 1, EIGHTH
 	drum_rest
 	note_type 1, QUARTER
-	drum_note Noise_Snare
+	drum_note Noise_StarSnare
 	sound_loop
 
 MusicDataStar_DPCM:

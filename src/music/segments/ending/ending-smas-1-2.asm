@@ -441,48 +441,48 @@ MusicDataEnding1_Noise:
 	note_type 1, QUARTER_TRIPLET
 	drum_rest
 	note_type 1, SIXTEENTH
-	drum_note Noise_Snare
-	drum_note Noise_Snare
-	drum_note Noise_Snare
-	drum_note Noise_Snare
+	drum_note Noise_OWSnare
+	drum_note Noise_OWSnare
+	drum_note Noise_OWSnare
+	drum_note Noise_OWSnare
 	note_type 1, DOTTED_HALF
 	drum_note Noise_DoubleSnare
 	note_type 1, SIXTEENTH
-	drum_note Noise_Snare
-	drum_note Noise_Snare
-	drum_note Noise_Snare
-	drum_note Noise_Snare
+	drum_note Noise_OWSnare
+	drum_note Noise_OWSnare
+	drum_note Noise_OWSnare
+	drum_note Noise_OWSnare
 	note_type 1, DOTTED_HALF
 	drum_note Noise_DoubleSnare
 	note_type 1, SIXTEENTH
-	drum_note Noise_Snare
-	drum_note Noise_Snare
-	drum_note Noise_Snare
-	drum_note Noise_Snare
+	drum_note Noise_OWSnare
+	drum_note Noise_OWSnare
+	drum_note Noise_OWSnare
+	drum_note Noise_OWSnare
 	note_type 1, HALF
 	drum_note Noise_DoubleSnare
 	drum_note Noise_DoubleSnare
 	note_type 1, DOTTED_HALF
 	drum_note Noise_DoubleSnare
 	note_type 1, SIXTEENTH
-	drum_note Noise_Snare
-	drum_note Noise_Snare
-	drum_note Noise_Snare
-	drum_note Noise_Snare
+	drum_note Noise_OWSnare
+	drum_note Noise_OWSnare
+	drum_note Noise_OWSnare
+	drum_note Noise_OWSnare
 	note_type 1, DOTTED_HALF
 	drum_note Noise_DoubleSnare
 	note_type 1, SIXTEENTH
-	drum_note Noise_Snare
-	drum_note Noise_Snare
-	drum_note Noise_Snare
-	drum_note Noise_Snare
+	drum_note Noise_OWSnare
+	drum_note Noise_OWSnare
+	drum_note Noise_OWSnare
+	drum_note Noise_OWSnare
 	note_type 1, DOTTED_HALF
 	drum_note Noise_DoubleSnare
 	note_type 1, SIXTEENTH
-	drum_note Noise_Snare
-	drum_note Noise_Snare
-	drum_note Noise_Snare
-	drum_note Noise_Snare
+	drum_note Noise_OWSnare
+	drum_note Noise_OWSnare
+	drum_note Noise_OWSnare
+	drum_note Noise_OWSnare
 	note_type 1, HALF
 	drum_note Noise_DoubleSnare
 	drum_note Noise_DoubleSnare
@@ -493,41 +493,41 @@ MusicDataEnding2_Noise:
 	note_type 1, DOTTED_HALF
 	drum_note Noise_DoubleSnare
 	note_type 1, SIXTEENTH
-	drum_note Noise_Snare
-	drum_note Noise_Snare
-	drum_note Noise_Snare
-	drum_note Noise_Snare
+	drum_note Noise_OWSnare
+	drum_note Noise_OWSnare
+	drum_note Noise_OWSnare
+	drum_note Noise_OWSnare
 	note_type 1, DOTTED_HALF
 	drum_note Noise_DoubleSnare
 	note_type 1, SIXTEENTH
-	drum_note Noise_Snare
-	drum_note Noise_Snare
-	drum_note Noise_Snare
-	drum_note Noise_Snare
+	drum_note Noise_OWSnare
+	drum_note Noise_OWSnare
+	drum_note Noise_OWSnare
+	drum_note Noise_OWSnare
 	note_type 1, HALF
 	drum_note Noise_DoubleSnare
 	drum_note Noise_DoubleSnare
 	note_type 1, DOTTED_HALF
 	drum_note Noise_DoubleSnare
 	note_type 1, SIXTEENTH
-	drum_note Noise_Snare
-	drum_note Noise_Snare
-	drum_note Noise_Snare
-	drum_note Noise_Snare
+	drum_note Noise_OWSnare
+	drum_note Noise_OWSnare
+	drum_note Noise_OWSnare
+	drum_note Noise_OWSnare
 	note_type 1, DOTTED_HALF
 	drum_note Noise_DoubleSnare
 	note_type 1, SIXTEENTH
-	drum_note Noise_Snare
-	drum_note Noise_Snare
-	drum_note Noise_Snare
-	drum_note Noise_Snare
+	drum_note Noise_OWSnare
+	drum_note Noise_OWSnare
+	drum_note Noise_OWSnare
+	drum_note Noise_OWSnare
 	note_type 1, DOTTED_HALF
 	drum_note Noise_DoubleSnare
 	note_type 1, SIXTEENTH
-	drum_note Noise_Snare
-	drum_note Noise_Snare
-	drum_note Noise_Snare
-	drum_note Noise_Snare
+	drum_note Noise_OWSnare
+	drum_note Noise_OWSnare
+	drum_note Noise_OWSnare
+	drum_note Noise_OWSnare
 	note_type 1, HALF
 	drum_note Noise_DoubleSnare
 	drum_note Noise_DoubleSnare

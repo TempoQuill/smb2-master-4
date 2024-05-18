@@ -379,6 +379,8 @@ Noise_OWKick:
 	.dsb 1
 Noise_OWSnare:
 	.dsb 1
+Noise_StarSnare:
+	.dsb 1
 NOISE_SFX:
 SoundEffect3_ShortNoise: ; Whale spout
 	.dsb 1

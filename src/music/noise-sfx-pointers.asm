@@ -9,6 +9,7 @@ NoiseSFXPointersLo:
 	dl NoiseDrumData_OWOpenHihat
 	dl NoiseDrumData_OWKick
 	dl NoiseDrumData_OWSnare
+	dl NoiseDrumData_StarSnare
 	dl NoiseSFX_Whale
 	dl NoiseSFX_Rocket
 	dl NoiseSFX_POW
@@ -30,6 +31,7 @@ NoiseSFXPointersHi:
 	dh NoiseDrumData_OWOpenHihat
 	dh NoiseDrumData_OWKick
 	dh NoiseDrumData_OWSnare
+	dh NoiseDrumData_StarSnare
 	dh NoiseSFX_Whale
 	dh NoiseSFX_Rocket
 	dh NoiseSFX_POW
