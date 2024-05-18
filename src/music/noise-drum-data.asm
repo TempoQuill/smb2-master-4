@@ -92,9 +92,6 @@ ENDIF
 NoiseDrumData_DoubleSnare:
 	.db $1B, $08
 	.db $19, $09
-IFNDEF PAL
-	.db $16, $7E
-ENDIF
 
 NoiseDrumData_OWSnare:
 	.db $1B, $08
