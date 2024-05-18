@@ -3298,7 +3298,7 @@ EnemyBehavior_Mushroom1up:
 ; ---------------------------------------------------------------------------
 
 Award1upMushroom:
-IFNDEF STATS_TESTING_PURPOSES
+IFNDEF STATS_TESTING_PURPOSES ; infinite 1UP mushrooms
 	INC iLifeUpEventFlag
 ENDIF
 	INC iExtraMen
@@ -10676,7 +10676,7 @@ CheckCollisionWithPlayer_NotPhanto:
 	CMP #Enemy_Starman
 	BNE CheckCollisionWithPlayer_NotStarman
 
-IFNDEF STATS_TESTING_PURPOSES
+IFNDEF STATS_TESTING_PURPOSES ; longer starman timer
 	LDA #$3F
 ELSE
 	LDA #$FF

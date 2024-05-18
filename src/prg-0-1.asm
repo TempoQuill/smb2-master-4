@@ -3632,12 +3632,12 @@ loc_BANK0_90C5:
 	CMP #Enemy_Mushroom1up
 	BNE loc_BANK0_90D5
 
-IFNDEF STATS_TESTING_PURPOSES
+IFNDEF STATS_TESTING_PURPOSES ; infinite 1UP mushrooms
 	LDA iLifeUpEventFlag
 ENDIF
 	BEQ loc_BANK0_90EA
 
-IFNDEF STATS_TESTING_PURPOSES
+IFNDEF STATS_TESTING_PURPOSES ; infinite 1UP mushrooms
 	LDA #Enemy_VegetableSmall
 	STA zObjectType, X
 
@@ -3858,7 +3858,7 @@ loc_BANK0_91CF:
 	CPX #$02
 	BNE loc_BANK0_91E3
 
-IFNDEF STATS_TESTING_PURPOSES
+IFNDEF STATS_TESTING_PURPOSES ; infinite coined visits
 	LDA iSubspaceVisitCount
 	CMP #$02
 	BCS loc_BANK0_91E2 ; skip if we've already visited Subspace twice
@@ -4683,7 +4683,7 @@ AreaTransitionPlacement_Subspace:
 	LDA iPlayerScreenY
 	STA zPlayerYLo
 	DEC iPlayerLock
-IFNDEF STATS_TESTING_PURPOSES
+IFNDEF STATS_TESTING_PURPOSES ; longer subspace time
 	LDA #$63
 ELSE
 	LDA #$FF
