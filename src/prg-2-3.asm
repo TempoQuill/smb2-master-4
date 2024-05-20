@@ -3301,12 +3301,12 @@ Award1upMushroom:
 IFNDEF STATS_TESTING_PURPOSES ; infinite 1UP mushrooms
 	INC iLifeUpEventFlag
 ENDIF
+	LDA iExtraMen
+	CMP #100
+	BCS loc_BANK2_9050 ; Check if lives exceed two figures. Keep as is if so.
+
 	INC iExtraMen
 	INC sExtraMen
-	BNE loc_BANK2_9050 ; Check if lives overflow. If so, reduce by one again
-
-	DEC iExtraMen
-	DEC sExtraMen
 
 loc_BANK2_9050:
 	LDA #SoundEffect2_1UP
