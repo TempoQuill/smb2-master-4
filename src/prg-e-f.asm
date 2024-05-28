@@ -52,6 +52,12 @@ ScreenUpdateBufferPointers:
 	.dw PauseOptionPalette2
 	.dw PauseOptionPalette3
 	.dw mLDPBonusChanceCoinService
+	.dw wWarpScreenLayout
+	.dw WarpPaletteDataBlack
+	.dw WarpPaletteFade3
+	.dw WarpPaletteFade2
+	.dw WarpPaletteFade1
+	.dw WarpPalettes
 
 PPUBuffer_CharacterSelect:
 	.db $21, $49, $06, $E9, $E5, $DE, $DA, $EC, $DE ; PLEASE
@@ -1407,45 +1413,12 @@ GameOver_Retry:
 
 ResetAreaAndProcessGameMode_NotGameOver:
 	DEY ; Initial `iGameMode` minus 3
-	BEQ EndOfLevel
+	BNE DoWorldWarp
+	JMP EndOfLevel
 
 DoWorldWarp:
 	; Show warp screen
-	LDY iCurrentWorld
-	LDA WarpDestinations, Y
-	STA iCurrentWorld
-	STA sSavedWorld
-	TAY
-	LDX zCurrentCharacter
-	LDA WorldStartingLevel, Y
-	STA iCurrentLvl
-	STA sSavedLvl
-	STA iCurrentLevel_Init
-
-	; Set world number
-	INY
-	TYA
-	ORA #$D0
-	STA wWorldWarpDestinationNo
-
-	JSR WaitForNMI_TurnOffPPU
-
-	JSR SetScrollXYTo0
-	JSR ClearNametablesAndSprites
-	JSR SetBlackAndWhitePalette
-
-	JSR EnableNMI
-
-	JSR ChangeTitleCardCHR
-
-	LDA #ScreenUpdateBuffer_WarpToWorld
-	STA zScreenUpdateIndex
-	LDA #Music_StopMusic
-	STA iMusicQueue
-	JSR WaitForNMI
-	LDA #Music_MushroomGetJingle
-	STA iMusicQueue
-	JSR Delay160Frames
+	JSR DoNewWarp
 
 	JSR InitializeSomeLevelStuff
 
@@ -4952,7 +4925,6 @@ ChangeTitleCardCHR:
 	LDA TitleCardCHRBanks, Y
 	STA iBGCHR2
 	RTS
-
 
 LoadBonusChanceCHRBanks:
 	LDA #CHRBank_ChanceBG1

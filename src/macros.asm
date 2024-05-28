@@ -34,3 +34,23 @@ MACRO levelHeader pages, horizontal, bgPalette, spritePalette, music, objectType
 ENDM
 
 .include "src/music/macros.asm"
+
+MACRO PHX
+	TXA
+	PHA
+ENDM
+
+MACRO PHY
+	TYA
+	PHA
+ENDM
+
+MACRO PLX
+	PLA
+	TAX
+ENDM
+
+MACRO PLY
+	PLA
+	TAY
+ENDM

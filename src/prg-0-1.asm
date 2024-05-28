@@ -8022,3 +8022,171 @@ PauseOptionPalette3:
 	.db $27, $E1, $04
 	.db $0C, $0F, $0F, $0F
 	.db $00
+
+DoNewWarp:
+	; Show warp screen
+	LDY iCurrentWorld
+	LDA WarpDestinations, Y
+	STA iCurrentWorld
+	STA sSavedWorld
+	TAY
+	LDX zCurrentCharacter
+	LDA WorldStartingLevel, Y
+	STA iCurrentLvl
+	STA sSavedLvl
+	STA iCurrentLevel_Init
+
+	; Set world number
+	INY
+	TYA
+	ORA #$D0
+	STA wWorldWarpDestinationNo
+
+	JSR WaitForNMI_Warp_TurnOffPPU
+
+	JSR SetScrollXYTo0
+	JSR ClearNametablesAndSprites
+	JSR SetBlackAndWhitePalette
+
+	JSR EnableNMI
+
+	LDA #Stack100_Menu
+	STA iStack
+	LDA #WarpUpdateBuffer_RAM_Screen
+	STA zScreenUpdateIndex
+	LDA #0
+	CLC
+	ADC iCurrentWorld
+	ADC iCurrentWorld
+	ADC iCurrentWorld
+	TAY
+	LDA WarpNumberTable, Y
+	STA wWarpNumberTileSequence
+	INY
+	LDA WarpNumberTable, Y
+	STA wWarpNumberTileSequence + 1
+	INY
+	LDA WarpNumberTable, Y
+	STA wWarpNumberTileSequence + 2
+	JSR WorldWarpCHR
+	LDA #Music_StopMusic
+	STA iMusicQueue
+	JSR WaitForNMI_Warp
+	LDA #WarpUpdateBuffer_PalBlack
+	STA zScreenUpdateIndex
+	LDA #Music_MushroomGetJingle
+	STA iMusicQueue
+	JSR WaitForNMI_Warp
+	LDA #0
+	STA wWarpPaletteIndex
+	LDX #4
+DoWorldWarp_PaletteLoop:
+	LDY wWarpPaletteIndex
+	INY
+	INY
+	STY zScreenUpdateIndex
+	LDY #10
+	JSR DelayFrames_Warp
+	INC wWarpPaletteIndex
+	DEX
+	BPL DoWorldWarp_PaletteLoop
+	LDY #120
+	JMP DelayFrames_Warp
+
+WorldWarpCHR:
+	LDY #CHRBank_Warp1
+	STY iBGCHR1
+	STY iObjCHR1
+	INY
+	STY iObjCHR2
+	INY
+	STY iBGCHR2
+	STY iObjCHR3
+	INY
+	STY iObjCHR4
+	RTS
+
+DelayFrames_Warp:
+	PHY
+	PHX
+	JSR WaitForNMI_Warp_TurnOnPPU
+	PLX
+	PLY
+	DEY
+	BNE DelayFrames_Warp
+	RTS
+
+WaitForNMI_Warp_TurnOffPPU:
+	LDA #0
+	STA zPPUMask
+	BEQ WaitForNMI_Warp
+WaitForNMI_Warp_TurnOnPPU:
+	LDA #PPUMask_ShowLeft8Pixels_BG | PPUMask_ShowLeft8Pixels_SPR | PPUMask_ShowBackground | PPUMask_ShowSprites
+	STA zPPUMask
+WaitForNMI_Warp:
+	LDA zScreenUpdateIndex
+	ASL A
+	TAX
+	LDA WarpBufferPointers, X
+	STA zPPUDataBufferPointer
+	LDA WarpBufferPointers + 1, X
+	STA zPPUDataBufferPointer + 1
+
+WaitForNMI_Preset:
+	LDA #$00
+	STA zNMIOccurred
+WaitForNMI_WarpLoop:
+	LDA zNMIOccurred
+	BPL WaitForNMI_WarpLoop
+	RTS
+
+WarpBufferPointers:
+	.dw iPPUBuffer
+	.dw wWarpScreenLayout
+	.dw WarpPaletteDataBlack
+	.dw WarpPaletteFade3
+	.dw WarpPaletteFade2
+	.dw WarpPaletteFade1
+	.dw WarpPalettes
+
+WarpNumberTable:
+	hex fcfcfc
+	hex fcfcfc
+	hex fcfcfc
+	hex 736558 ; 4
+	hex d2d1d0 ; 5
+	hex d5d4d3 ; 6
+	hex d8d7d6 ; 7
+
+WarpPaletteData:
+WarpPaletteDataBlack:
+	.db $3f,$00,$50,$0f
+	.db $00
+WarpPaletteFade3:
+	.db $3f,$00,$10
+	.db $0f,$08,$07,$06
+	.db $0f,$0a,$0a,$06
+	.db $0f,$00,$05,$06
+	.db $0f,$08,$07,$07
+	.db $00
+WarpPaletteFade2:
+	.db $3f,$00,$10
+	.db $0f,$18,$17,$06
+	.db $0f,$1a,$0a,$06
+	.db $0f,$10,$15,$06
+	.db $0f,$18,$07,$07
+	.db $00
+WarpPaletteFade1:
+	.db $3f,$00,$10
+	.db $0f,$28,$17,$16
+	.db $0f,$1a,$1a,$16
+	.db $0f,$10,$15,$16
+	.db $0f,$18,$17,$07
+	.db $00
+WarpPalettes:
+	.db $3f,$00,$10
+	.db $0f,$38,$27,$16
+	.db $0f,$2a,$1a,$16
+	.db $0f,$30,$25,$16
+	.db $0f,$28,$17,$07
+	.db $00

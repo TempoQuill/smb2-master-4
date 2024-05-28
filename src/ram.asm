@@ -83,6 +83,7 @@ zENDTimer:
 	.dsb 1 ; 5                ; $001a
 zCursiveDataBlock:
 	.dsb 1 ; 6                ; $001b
+zWarpPalettePointer:
 zCursiveFrameTimer:
 	.dsb 1 ; 7                ; $001c
 zCursiveFramesLeft:
@@ -1924,7 +1925,6 @@ wHawkDoorBuffer = $721b
 wMamuOAMOffsets = $7265
 
 wBonusLayoutBuffer = $7400
-
 wRawLevelData = $7800
 
 wRawJarData = $7a00
@@ -1994,4 +1994,27 @@ mCoinService:
 	.dsb 1
 mCoinServiceTimer:
 	.dsb 1
+wWarpScreenLayout:
+	.dsb WarpCharacterStills - WarpAllStarsLayout
+wWarpCharacterStills:
+	.dsb WarpNumberTiles - WarpCharacterStills
+wWarpNumberTileSequence:
+	.dsb WarpScreenAttributes - WarpNumberTiles
+wWarpScreenAttributes:
+	.dsb WarpScreenBlack - WarpScreenAttributes
+wWarpScreenBlackPalette:
+	.dsb WarpAllStarsLayoutEND - WarpScreenBlack + 1
+wWarpScreenEnd:
+	.dsb 1
+wWarpPaletteIndex:
+	.dsb 1
+wWarpPalettes:
+	.dsb 3
+wWarpBGPals:
+	.dsb 16
+wWarpObjPals:
+	.dsb 16
+wWarpPalTerminator:
+	.dsb 1
+
 .ende

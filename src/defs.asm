@@ -306,6 +306,13 @@ ScreenUpdateBuffer_PauseOptionsAttribute1 = $19
 ScreenUpdateBuffer_PauseOptionsAttribute2 = $1A
 ScreenUpdateBuffer_PauseOptionsAttribute3 = $1B
 ScreenUpdateBuffer_RAM_BonusChanceThreeCoinService = $1C
+ScreenUpdateBuffer_RAM_WarpScreen = $1D
+ScreenUpdateBuffer_WarpPalBlack = $1E
+ScreenUpdateBuffer_WarpFade1 = $1F
+ScreenUpdateBuffer_WarpFade2 = $20
+ScreenUpdateBuffer_WarpFade3 = $21
+ScreenUpdateBuffer_WarpFinalPalettes = $22
+
 
 ; ---------------------------------------------------------------------------
 ; enum options (width 1 byte)
@@ -330,6 +337,16 @@ EndingUpdateBuffer_Text_PRINCESS = $0A
 EndingUpdateBuffer_Text_TOAD = $0B
 EndingUpdateBuffer_Text_LUIGI = $0C
 EndingUpdateBuffer_Debug = $0D
+
+; ---------------------------------------------------------------------------
+
+WarpUpdateBuffer_RAM_301 = $00
+WarpUpdateBuffer_RAM_Screen = $01
+WarpUpdateBuffer_PalBlack = $02
+WarpUpdateBuffer_Fade1 = $03
+WarpUpdateBuffer_Fade2 = $04
+WarpUpdateBuffer_Fade3 = $05
+WarpUpdateBuffer_FinalPalettes = $06
 
 ; ---------------------------------------------------------------------------
 
@@ -986,6 +1003,9 @@ CHRBank_ChanceBG2 = $36
 
 CHRBank_CelebrationBG1 = $38
 CHRBank_CelebrationBG2 = $3A
+
+CHRBank_Warp1 = $3C
+CHRBank_Warp2 = $3E
 
 CHRBank_TitleCardGrass = $40
 CHRBank_TitleCardDesert = $42
