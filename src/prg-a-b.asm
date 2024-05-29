@@ -967,7 +967,7 @@ WarpAllStarsLayout:
 	.db $22,$02,$82
 	hex 786c
 
-	.db $22,$1c,$82
+	.db $22,$1d,$82
 	hex 6d5f
 
 	.db $23,$80,$60,$fe
