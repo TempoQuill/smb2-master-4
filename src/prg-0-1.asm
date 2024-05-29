@@ -8036,21 +8036,24 @@ DoNewWarp:
 	STA sSavedLvl
 	STA iCurrentLevel_Init
 
+	LDA #Stack100_Transition
+	STA iStack
 	JSR InitIRQData
 DoNewWarp_Loop:
 	JSR IRQWarpLogic
-	JSR WaitForNMI_Warp
+	JSR WaitForNMI_Warp_TurnOnIRQ
 	LDA mIRQIntensity
 	CMP #$a0
 	BCC DoNewWarp_Loop
 
+	LSR mIRQIntensity
 	JSR WaitForNMI_Warp_TurnOffPPU
 
 	JSR SetScrollXYTo0
 	JSR ClearNametablesAndSprites
 	JSR SetBlackAndWhitePalette
 
-	JSR EnableNMI
+	JSR EnableNMI_Warp
 
 	LDA #Stack100_Menu
 	STA iStack
@@ -8071,29 +8074,24 @@ DoNewWarp_Loop:
 	LDA WarpNumberTable, Y
 	STA wWarpNumberTileSequence + 2
 	JSR WorldWarpCHR
-	LDA #Music_StopMusic
-	STA iMusicQueue
 	JSR WaitForNMI_Warp
-	LDA #WarpUpdateBuffer_PalBlack
+	LDA #WarpUpdateBuffer_FinalPalettes
 	STA zScreenUpdateIndex
-	LDA #Music_MushroomGetJingle
-	STA iMusicQueue
 	JSR WaitForNMI_Warp
+	LDA #$80
+	STA MMC5_IRQStatus
+	LDA #2
+	STA MMC5_IRQScanlineCompare
 	LDA #0
 	STA wWarpPaletteIndex
-	LDX #4
-DoWorldWarp_PaletteLoop:
-	LDY wWarpPaletteIndex
-	INY
-	INY
-	STY zScreenUpdateIndex
-	LDY #10
+	LDA #Music_WarpWorld
+	STA iMusicQueue
+	LDY #200
 	JSR DelayFrames_Warp
-	INC wWarpPaletteIndex
-	DEX
-	BPL DoWorldWarp_PaletteLoop
-	LDY #120
-	JMP DelayFrames_Warp
+
+	LDA #Stack100_Menu
+	STA iStack
+	RTS
 
 WorldWarpCHR:
 	LDY #CHRBank_Warp1
@@ -8113,6 +8111,13 @@ DelayFrames_Warp:
 	PHX
 	JSR IRQWarpLogic
 	JSR WaitForNMI_Warp_TurnOnIRQ
+	LDA iCurrentMusic
+	BEQ DelayFrames_Warp_MusicDone
+	LDA #$1f
+	STA SND_CHN
+DelayFrames_Warp_MusicDone:
+	LDA #Stack100_Transition
+	STA iStack
 	PLX
 	PLY
 	DEY
@@ -8120,6 +8125,8 @@ DelayFrames_Warp:
 	RTS
 
 WaitForNMI_Warp_TurnOnIRQ:
+	INC mIRQOffset
+	CLI
 	LDA #$80
 	STA MMC5_IRQStatus
 	BNE WaitForNMI_Warp_TurnOnPPU
@@ -8223,10 +8230,6 @@ InitIRQData:
 	STY iMusicQueue
 	RTS
 
-IRQWarpLogic_SafeQuit:
-	STA mIRQIntensity
-	RTS ; return if cutscene flag is cleared on an off-frame
-
 IRQWarpLogic:
 	LDA mIRQIntensity
 	ORA mActiveUntilPPUTurnsOff
@@ -8248,8 +8251,12 @@ IRQWarpLogic_IntensityCounter: ; on frame
 	RTS
 
 IRQWarpLogic_WorldScreen:
+	LDA mIRQOffset
+	AND #$02
+	BEQ IRQWarpLogic_Quit
 	; PPU has been turned off before arriving here
 	JSR IRQWarpLogic_IncDecIntensity
+	STA mIRQIntensity
 	BCS IRQWarpLogic_Quit ; don't clear IRQ until carry is 0
 	LDA #0
 	STA MMC5_IRQStatus
@@ -8269,3 +8276,9 @@ IRQWarpLogic_IncDecIntensity:
 
 IRQIntensityAdds:
 	.db $fd, $01
+
+EnableNMI_Warp:
+	LDA #PPUCtrl_Base2400 | PPUCtrl_WriteHorizontal | PPUCtrl_Sprite0000 | PPUCtrl_Background1000 | PPUCtrl_SpriteSize8x16 | PPUCtrl_NMIEnabled
+	STA zPPUControl
+	STA PPUCTRL
+	RTS

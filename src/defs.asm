@@ -92,6 +92,8 @@ Music_WartDeath:
 Music_SpadeGameFanfare:
 	.dsb 1
 Music_Warp:
+	.dsb 1
+Music_WarpWorld:
 NUM_MUSIC_TRACKS:
 Music_StopMusic = $FF
 .ende
@@ -216,6 +218,11 @@ DPCM_Save:
 DPCM_Pause:
 	.dsb 1
 DPCM_ClawgripChuck:
+	.dsb 1
+	.dsb 1
+DPCM_Fanfare1:
+	.dsb 1
+DPCM_Fanfare2:
 NUM_DPCM_SFX:
 NUM_DPCM_IDS = NUM_DPCM_SFX - 1
 .ende
@@ -251,8 +258,10 @@ PRGBank_Music_2:
 PRGBank_Music_3:
 	.dsb 1
 IFNDEF NSF_FILE
-	.dsb 3
+	.dsb 2
 ENDIF
+PRGBank_DMC_13:
+	.dsb 1
 PRGBank_DMC_14:
 	.dsb 1
 PRGBank_DMC_15:

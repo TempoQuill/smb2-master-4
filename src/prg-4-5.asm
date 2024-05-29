@@ -420,6 +420,61 @@ ENDIF
 
 .include "src/music/dpcm-queue-2.asm"
 
+PlayDoubleSampleFanfare:
+	LDA #1
+	STA mFanfareSampleQueue
+	LSR A
+	STA iMusicPulse2NoteLength
+	STA iMusicPulse1NoteLength
+	STA iMusicHillNoteLength
+	STA iMusicNoiseNoteLength
+	STA iDPCMNoteLengthCounter
+	STA iDPCMNoteRatioLength
+	LDA #$0f
+	STA SND_CHN
+	LDA #PRGBank_DMC_13
+IFNDEF NSF_FILE
+	ORA #$80
+	STA MMC5_PRGBankSwitch4
+ELSE
+	ASL A
+	STA NSFBank4
+	ORA #1
+	STA NSFBank5
+ENDIF
+	STA SND_CHN
+	LDA #$0F
+	STA DMC_FREQ
+	LDA #$00
+	STA DMC_START
+	LDA #$9B
+	STA DMC_LEN
+	LDA #$10
+	STA SND_CHN
+RunDoubleSampleFanfare:
+	LDA SND_CHN
+	AND #$10
+	BNE RunDoubleSampleFanfare_Running
+	LDA mFanfareSampleQueue
+	BNE StreamNextSample
+	STA iCurrentMusic
+	LDA #$0f
+	STA SND_CHN
+RunDoubleSampleFanfare_Running:
+	RTS
+
+StreamNextSample:
+	DEC mFanfareSampleQueue
+	LDA #$0F
+	STA DMC_FREQ
+	LDA #$27
+	STA DMC_START
+	LDA #$CE
+	STA DMC_LEN
+	LDA #$10
+	STA SND_CHN
+	BNE RunDoubleSampleFanfare
+
 PlayWartDeathSound:
 	LDA #0
 	STA iMusicPulse2NoteLength
@@ -458,6 +513,10 @@ RunWartDeathSound:
 RunWartDeathSound_Running:
 	RTS
 
+ProcessMusicQueue_FanfareSamples:
+	STA iCurrentMusic
+	JMP PlayDoubleSampleFanfare
+
 ProcessMusicQueue_WartDeath:
 	STA iCurrentMusic
 	JMP PlayWartDeathSound
@@ -475,6 +534,9 @@ ProcessMusicQueue:
 	INY
 	BEQ ProcessMusicQueue_StopMusic
 
+	CMP #Music_WarpWorld
+	BEQ ProcessMusicQueue_FanfareSamples
+
 	CMP #Music_WartDeath
 	BEQ ProcessMusicQueue_WartDeath
 
@@ -487,9 +549,14 @@ ProcessMusicQueue:
 	LDA iCurrentMusic
 	CMP #Music_WartDeath
 	BEQ RunWartDeathSound
+	CMP #Music_WarpWorld
+	BEQ ProcessMusicQueue_RunningFanfare
 	AND #$FF
 	BNE ProcessMusicQueue_ThenReadNoteData
 	RTS
+
+ProcessMusicQueue_RunningFanfare:
+	JMP RunDoubleSampleFanfare
 
 ProcessMusicQueue_MusicQueue1:
 	; iMusicQueue != 0, initialize
@@ -1538,6 +1605,7 @@ SongBanks:
 	audio_bank PRGBank_Music_3
 	audio_bank PRGBank_Music_2
 	audio_bank PRGBank_Music_3
+	audio_bank PRGBank_Music_1
 
 InstrumentRAMPointers:
 	.dw iPulse1Ins
@@ -1562,6 +1630,7 @@ MusicStackPermission:
 	.db $01
 	.db $00
 	.db $01
+	.db $00
 	.db $00
 
 ;

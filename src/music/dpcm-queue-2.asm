@@ -15,6 +15,9 @@ DMCStartTable:
 	.db $1F ; $C7C0
 	.db $39 ; $CE40
 	.db $5B ; $D6C0
+	.db $00 ; $c000
+	.db $00 ; $c000
+	.db $27 ; $c9c0
 
 DMCLengthTable:
 	.db $3D ; egg
@@ -33,6 +36,9 @@ DMCLengthTable:
 	.db $67 ; Save
 	.db $85 ; Pause
 	.db $30 ; Clawgrip chuck
+	.db $fc ; Wart Death
+	.db $9b ; fanfare
+	.db $ce ; fanfare
 
 DMCBankTable:
 	audio_bank PRGBank_DMC_16
@@ -51,3 +57,6 @@ DMCBankTable:
 	audio_bank PRGBank_DMC_14
 	audio_bank PRGBank_DMC_14
 	audio_bank PRGBank_DMC_14
+	audio_bank PRGBank_DMC_17
+	audio_bank PRGBank_DMC_13
+	audio_bank PRGBank_DMC_13

@@ -21,4 +21,5 @@ MusicChannelStack:
 	.db $05 ; Crystal 1UP
 	.db $05 ; Wart Death
 	.db $05 ; Spade - UNUSED
-	.db $03 ; Warp - UNUSED
+	.db $03 ; Warp
+	.db $05 ; Warp to world screen

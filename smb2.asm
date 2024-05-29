@@ -136,9 +136,12 @@ ENDIF
 IFNDEF NSF_FILE
 	; ----------------------------------------
 	; extra PRG-ROM pages (5 banks)
-	.dsb (3 * $2000), $00
+	.dsb (2 * $2000), $00
 ENDIF
 
+.base $c000
+.incbin "src/music/smas-1-3-area-13.bin"
+.pad $e000, $55
 .base $c000
 .incbin "src/music/smas-1-3-area-14.bin"
 .base $c000

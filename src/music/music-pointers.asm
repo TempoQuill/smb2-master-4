@@ -24,6 +24,7 @@ MusicPointersFirstPart:
 	musicPart MusicPartPointers_SpadeGameFanfare
 	musicPart MusicPartPointers_SpadeGameFanfare
 	musicPart MusicPartPointers_Warp
+	musicPart MusicPartPointers_Warp
 
 MusicPointersEndPart:
 	musicPart MusicPartPointers_OverworldEnd
@@ -43,6 +44,7 @@ MusicPointersEndPart:
 	musicPart MusicPartPointers_SpadeGameFanfare
 	musicPart MusicPartPointers_SpadeGameFanfare
 	musicPart MusicPartPointers_Warp
+	musicPart MusicPartPointers_Warp
 
 MusicPointersLoopPart:
 	musicPart MusicPartPointers_OverworldLoop
@@ -56,6 +58,7 @@ MusicPointersLoopPart:
 	.db $00
 	.db $00
 	musicPart MusicPartPointers_EndingLoop
+	.db $00
 	.db $00
 	.db $00
 	.db $00

@@ -2027,5 +2027,6 @@ mIRQFinalScroll: ; $5ea5
 mNextScanline: ; $5ea7
 	.dsb 1
 mActiveUntilPPUTurnsOff: ; $5ea8
+mFanfareSampleQueue = $5ffe
 mTempReg = $5fff
 .ende
