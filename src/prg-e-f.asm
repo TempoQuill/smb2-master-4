@@ -5081,12 +5081,6 @@ ChangeMappedMirroredPRGBankWithoutSaving:
 
 ENDIF
 
-; Note that this is NOT CODE.
-; If the NES actually hits a BRK, the game will probably just explode.
-; If you wanted, you could write some sort of crash handler though.
-IRQ:
-	RTI
-
 ;
 ; Save logic
 ;
@@ -5198,6 +5192,68 @@ StopOperationAndReset_ClearStack:
 	DEX
 	BNE StopOperationAndReset_ClearStack
 	JMP RESET
+
+;
+; Public IRQ
+;
+; ***Used for the wave effect during the warp cutscene***
+;
+; ***Screen tearing might occur with mIRQIntensity***
+IRQ:
+	PHA				; 3 3
+	LDA mIRQFinalScroll + 1		; 4 7
+	STA PPUCTRL			; 4 11
+	LDA mIRQFinalScroll		; 4 15
+	STA PPUSCROLL			; 4 19
+	LDA #0				; 2 21
+	STA PPUSCROLL			; 4 25
+	; after updating PPU
+	; index
+	STY mTempReg ; preserve Y	; 4 29
+	INC mIRQIndex			; 6 35
+	LDA mIRQIndex			; 4 39
+	CLC				; 2 41
+	ADC mIRQOffset			; 4 45
+	AND #$07			; 2 47
+	TAY				; 2 49
+	; nametable base		; 2 51
+	LDA #PPUCtrl_Base2400 | PPUCtrl_WriteVertical | PPUCtrl_Sprite0000 | PPUCtrl_Background1000 | PPUCtrl_SpriteSize8x16 | PPUCtrl_NMIEnabled
+	ORA mActiveUntilPPUTurnsOff		; 4 55
+	EOR SineXORs, Y			; 5 60
+	STA mIRQFinalScroll + 1		; 4 64
+	; scanline X position
+	LDA SineData, Y			; 5 69
+	STA MMC5_Multiplier		; 4 73
+	LDA mIRQIntensity		; 4 77
+	STA MMC5_Multiplier + 1		; 4 81
+	LDA MMC5_Multiplier + 1		; 4 85
+	STA mIRQFinalScroll		; 4 89
+	; next scanline
+	LDY mNextScanline		; 4 93
+	INY				; 2 95
+	INY				; 2 97
+	CPY #$e0			; 2 99
+	PLA				; 4 103
+	BCS IRQ_PrepNextFrame		; 2 105	3 106
+	STY mNextScanline		; 4 109
+	STY MMC5_IRQScanlineCompare	; 4 113
+	LDY mTempReg			; 4 117
+	RTI				; 6 123
+
+IRQ_PrepNextFrame:
+	; next scanline
+	LDY #2				; 2 108
+	STY mNextScanline		; 4 112
+	STY MMC5_IRQScanlineCompare	; 4 116
+	; offset
+	INC mIRQOffset			; 6 122
+	LDY mTempReg			; 4 126
+	RTI				; 6 132
+
+SineData:
+	.db $00, $b4, $ff, $b4, $00, $4c, $01, $4c
+SineXORs:
+	.db $00, $00, $00, $00, $00, $01, $01, $01
 
 ;
 ; Vectors for the NES CPU. These must ALWAYS be at $FFFA!

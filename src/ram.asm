@@ -1973,48 +1973,59 @@ mLDPBonusChanceNA:
 mLDPBonusChanceABtn:
 	.dsb 18 ; $5c70
 mLDPBonusChanceCoinService:
-	.dsb 23 ; $5c8d
+	.dsb 23 ; $5c82
 mLDPBonusChanceLifeDisplay:
-	.dsb 11 ; $5c82
+	.dsb 11 ; $5c99
 mLDPBonusChanceLiveEMCount:
-	.dsb 4 ; $5c8d
+	.dsb 4 ; $5ca4
 
 mPauseBuffer:
-	.dsb 14 ; $5c91
+	.dsb 14 ; $5ca8
 
 mTextDeletionBonus:
-	.dsb 5 ; $5c9f
+	.dsb 5 ; $5cb6
 mTextDeletionABtn:
-	.dsb 5 ; $5ca4
+	.dsb 5 ; $5cbb
 mTextDeletionBonusUnused:
-	.dsb 5 ; $5ca9
+	.dsb 5 ; $5cc0
 mTextDeletionPause:
-	.dsb 9 ; $5cae
+	.dsb 9 ; $5cc5
 mCoinService:
-	.dsb 1
+	.dsb 1 ; $5cce
 mCoinServiceTimer:
-	.dsb 1
-wWarpScreenLayout:
+	.dsb 1 ; $5ccf
+wWarpScreenLayout: ; $5cd0
 	.dsb WarpCharacterStills - WarpAllStarsLayout
-wWarpCharacterStills:
+wWarpCharacterStills: ; $5d8d
 	.dsb WarpNumberTiles - WarpCharacterStills
-wWarpNumberTileSequence:
+wWarpNumberTileSequence: ; $5e58
 	.dsb WarpScreenAttributes - WarpNumberTiles
-wWarpScreenAttributes:
+wWarpScreenAttributes: ; $5e5b
 	.dsb WarpScreenBlack - WarpScreenAttributes
-wWarpScreenBlackPalette:
+wWarpScreenBlackPalette: ; $5e77
 	.dsb WarpAllStarsLayoutEND - WarpScreenBlack + 1
-wWarpScreenEnd:
+wWarpScreenEnd: ; $5e7c
 	.dsb 1
-wWarpPaletteIndex:
+wWarpPaletteIndex: ; $5e7d
 	.dsb 1
-wWarpPalettes:
+wWarpPalettes: ; $5e7e
 	.dsb 3
-wWarpBGPals:
+wWarpBGPals: ; $5e81
 	.dsb 16
-wWarpObjPals:
+wWarpObjPals: ; $5e91
 	.dsb 16
-wWarpPalTerminator:
+wWarpPalTerminator: ; $5ea1
 	.dsb 1
-
+mIRQOffset: ; $5ea2
+	.dsb 1
+mIRQIndex: ; $5ea3
+	.dsb 1
+mIRQIntensity: ; $5ea4
+	.dsb 1
+mIRQFinalScroll: ; $5ea5
+	.dsb 2
+mNextScanline: ; $5ea7
+	.dsb 1
+mActiveUntilPPUTurnsOff: ; $5ea8
+mTempReg = $5fff
 .ende
