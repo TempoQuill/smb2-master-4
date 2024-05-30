@@ -426,6 +426,8 @@ SoundEffect3_WartSmokePuff:
 	.dsb 1
 SoundEffect3_DrumRoll:
 	.dsb 1
+SoundEffect3_RocketHiss:
+	.dsb 1
 NUM_NOISE_TRACKS:
 NUM_NOISE_SFX = NUM_NOISE_TRACKS - NOISE_SFX
 

@@ -4455,7 +4455,7 @@ loc_BANK2_959D:
 ;   X = enemy index
 ;
 ApplyVelocityYAndHalfObjectVelocityX:
-	JSR SetzObjectYVelocity
+	JSR SetObjectYVelocity
 	JSR ApplyObjectPhysicsY
 
 ;
@@ -4502,7 +4502,7 @@ EnemyInit_DisableObjectAttributeBit8:
 	LSR zObjectAttributes, X
 
 ;
-; Does SetzObjectYVelocity with y-velocity of 0
+; Does SetObjectYVelocity with y-velocity of 0
 ;
 ResetObjectYVelocity:
 	LDA #$00
@@ -4515,19 +4515,19 @@ ResetObjectYVelocity:
 ;   A = y-velocity
 ;   X = enemy index
 ;
-SetzObjectYVelocity:
+SetObjectYVelocity:
 	STA zObjectYVelocity, X
 	LDA zObjectType, X
 	CMP #Enemy_VegetableSmall
 	LDA zObjectYLo, X
-	BCS SetzObjectYVelocity_Exit
+	BCS SetObjectYVelocity_Exit
 
 	ADC #$08
-	BCC SetzObjectYVelocity_Exit
+	BCC SetObjectYVelocity_Exit
 
 	INC zObjectYHi, X
 
-SetzObjectYVelocity_Exit:
+SetObjectYVelocity_Exit:
 	AND #$F0
 	STA zObjectYLo, X
 	RTS
@@ -4754,7 +4754,7 @@ loc_BANK2_96D4:
 	BEQ loc_BANK2_96EC
 
 	LDA #$14
-	JMP SetzObjectYVelocity
+	JMP SetObjectYVelocity
 
 ; ---------------------------------------------------------------------------
 
@@ -8472,8 +8472,15 @@ EnemyBehavior_Rocket_Flying:
 	LDA zObjectYVelocity, X
 	BEQ EnemyBehavior_Rocket_Slow
 
-	CMP #$FD
+	CMP #$FC
+	BEQ EnemyBehavior_Rocket_Hiss
+	BCS EnemyBehavior_Rocket_Slow
 	BCC EnemyBehavior_Rocket_Fast
+
+EnemyBehavior_Rocket_Hiss:
+	LDA #SoundEffect3_RocketHiss
+	STA iNoiseDrumSFX
+	BNE EnemyBehavior_Rocket_Fast
 
 EnemyBehavior_Rocket_Slow:
 	LDY #$3F

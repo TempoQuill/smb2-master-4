@@ -1472,33 +1472,7 @@ IFNDEF BANK_MIRRORING
 ELSE
 	JSR ChangeMappedMirroredPRGBank
 ENDIF
-
-	JSR CopyBonusChanceLayoutToRAM
-
-	LDA #ScreenUpdateBuffer_RAM_BonusChanceLayout
-	STA zScreenUpdateIndex
-	LDA #Stack100_Menu
-	STA iStack
-	JSR EnableNMI
-
-	JSR WaitForNMI
-
-	LDA #Stack100_Gameplay
-	STA iStack
-	JSR DisableNMI
-
-	JSR sub_BANKF_EA33
-
-	LDA #Music_StopMusic
-	STA iMusicQueue
-	JSR WaitForNMI
-	LDA #Music_MushroomGetJingle
-	STA iMusicQueue
-	JSR Delay80Frames
-	LDA iTotalCoins
-	BNE loc_BANKF_E7F2
-
-	JMP NoCoinsForSlotMachine
+	JMP EndOfLevelSlotMachine_AB
 
 ; ---------------------------------------------------------------------------
 
@@ -2112,6 +2086,19 @@ loc_BANKF_EAD2:
 	STA zObjectXLo, X
 	LDA #SoundEffect2_StopSlot
 	STA iPulse2SFX
+	CPX #$02
+	BEQ TrancateDrumRoll
+	RTS
+
+TrancateDrumRoll:
+	LDA zNoiseSFXOffset
+	CMP #$dd
+	BCS PreserveDrumRoll
+
+	LDA #$dd
+	STA zNoiseSFXOffset
+
+PreserveDrumRoll:
 	RTS
 
 ; End of function CheckStopReel
