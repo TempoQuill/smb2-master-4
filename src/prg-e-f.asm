@@ -52,7 +52,7 @@ ScreenUpdateBufferPointers:
 	.dw PauseOptionPalette2
 	.dw PauseOptionPalette3
 	.dw mLDPBonusChanceCoinService
-	.dw wWarpScreenLayout
+	.dw mWarpScreenLayout
 	.dw WarpPaletteDataBlack
 	.dw WarpPaletteFade3
 	.dw WarpPaletteFade2

@@ -8066,13 +8066,13 @@ DoNewWarp_Loop:
 	ADC iCurrentWorld
 	TAY
 	LDA WarpNumberTable, Y
-	STA wWarpNumberTileSequence
+	STA mWarpNumberTileSequence
 	INY
 	LDA WarpNumberTable, Y
-	STA wWarpNumberTileSequence + 1
+	STA mWarpNumberTileSequence + 1
 	INY
 	LDA WarpNumberTable, Y
-	STA wWarpNumberTileSequence + 2
+	STA mWarpNumberTileSequence + 2
 	JSR WorldWarpCHR
 	JSR WaitForNMI_Warp
 	LDA #WarpUpdateBuffer_FinalPalettes
@@ -8083,7 +8083,7 @@ DoNewWarp_Loop:
 	LDA #2
 	STA MMC5_IRQScanlineCompare
 	LDA #0
-	STA wWarpPaletteIndex
+	STA mWarpPaletteIndex
 	LDA #Music_WarpWorld
 	STA iMusicQueue
 	LDY #200
@@ -8153,7 +8153,7 @@ WaitForNMI_WarpLoop:
 
 WarpBufferPointers:
 	.dw iPPUBuffer
-	.dw wWarpScreenLayout
+	.dw mWarpScreenLayout
 	.dw WarpPaletteDataBlack
 	.dw WarpPaletteFade3
 	.dw WarpPaletteFade2

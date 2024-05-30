@@ -534,14 +534,14 @@ NeedToCopyWarpScreen:
 	LDY #WarpCharacterStills - WarpAllStarsLayout - 1
 CopyWarpScreenPage1:
 	LDA WarpAllStarsLayout, Y
-	STA wWarpScreenLayout, Y
+	STA mWarpScreenLayout, Y
 	DEY
 	CPY #$ff
 	BNE CopyWarpScreenPage1
 	LDY #WarpAllStarsLayoutEND - WarpCharacterStills
 CopyWarpScreenPage2:
 	LDA WarpCharacterStills, Y
-	STA wWarpCharacterStills, Y
+	STA mWarpCharacterStills, Y
 	DEY
 	CPY #$ff
 	BNE CopyWarpScreenPage2
@@ -549,16 +549,16 @@ CopyPalettes:
 	LDY #$02
 CopyWarpPalEntry:
 	LDA WarpPaletteEntry, Y
-	STA wWarpPalettes, Y
+	STA mWarpPalettes, Y
 	DEY
 	BPL CopyWarpPalEntry
 	LDA #0
-	LDY #wWarpObjPals - wWarpBGPals
+	LDY #mWarpObjPals - mWarpBGPals
 CopyWarpPals:
 	DEY
-	STA wWarpPalettes, Y
+	STA mWarpPalettes, Y
 	BNE CopyWarpPals
-	STA wWarpPalTerminator
+	STA mWarpPalTerminator
 	RTS
 
 

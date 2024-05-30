@@ -1994,27 +1994,27 @@ mCoinService:
 	.dsb 1 ; $5cce
 mCoinServiceTimer:
 	.dsb 1 ; $5ccf
-wWarpScreenLayout: ; $5cd0
+mWarpScreenLayout: ; $5cd0
 	.dsb WarpCharacterStills - WarpAllStarsLayout
-wWarpCharacterStills: ; $5d8d
+mWarpCharacterStills: ; $5d8d
 	.dsb WarpNumberTiles - WarpCharacterStills
-wWarpNumberTileSequence: ; $5e58
+mWarpNumberTileSequence: ; $5e58
 	.dsb WarpScreenAttributes - WarpNumberTiles
-wWarpScreenAttributes: ; $5e5b
+mWarpScreenAttributes: ; $5e5b
 	.dsb WarpScreenBlack - WarpScreenAttributes
-wWarpScreenBlackPalette: ; $5e77
+mWarpScreenBlackPalette: ; $5e77
 	.dsb WarpAllStarsLayoutEND - WarpScreenBlack + 1
-wWarpScreenEnd: ; $5e7c
+mWarpScreenEnd: ; $5e7c
 	.dsb 1
-wWarpPaletteIndex: ; $5e7d
+mWarpPaletteIndex: ; $5e7d
 	.dsb 1
-wWarpPalettes: ; $5e7e
+mWarpPalettes: ; $5e7e
 	.dsb 3
-wWarpBGPals: ; $5e81
+mWarpBGPals: ; $5e81
 	.dsb 16
-wWarpObjPals: ; $5e91
+mWarpObjPals: ; $5e91
 	.dsb 16
-wWarpPalTerminator: ; $5ea1
+mWarpPalTerminator: ; $5ea1
 	.dsb 1
 mIRQOffset: ; $5ea2
 	.dsb 1
@@ -2030,7 +2030,6 @@ mActiveUntilPPUTurnsOff: ; $5ea8
 	.dsb 1
 mPlaxCHR:
 	.dsb 1
-wPlaxCHR
 mSampleCounter = $5ffd
 mFanfareSampleQueue = $5ffe
 mTempReg = $5fff
