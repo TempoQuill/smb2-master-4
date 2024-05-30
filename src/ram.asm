@@ -1973,7 +1973,7 @@ mLDPBonusChanceNA:
 mLDPBonusChanceABtn:
 	.dsb 18 ; $5c70
 mLDPBonusChanceCoinService:
-	.dsb 23 ; $5c82
+	.dsb 19 ; $5c82
 mLDPBonusChanceLifeDisplay:
 	.dsb 11 ; $5c99
 mLDPBonusChanceLiveEMCount:

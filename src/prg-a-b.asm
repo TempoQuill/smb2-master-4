@@ -667,8 +667,8 @@ BonusChanceText_PUSH_A_BUTTON:
 	.db $00
 
 BonusChanceText_ThreeCoinsService:
-	.db $22, $87, $13
-	.db $ED, $E1, $EB, $DE, $DE, $FB
+	.db $22, $89, $0F
+	.db $D3, $FB
 	.db $DC, $E8, $E2, $E7, $EC, $FB
 	.DB $EC, $DE, $EB, $EF, $E2, $DC, $DE
 	.db $00
@@ -829,9 +829,10 @@ EndOfLevelSlotMachine_AB:
 	LDA #Music_StopMusic
 	STA iMusicQueue
 	JSR WaitForNMI
-	LDA #Music_MushroomGetJingle
+	LDA #Music_WarpWorld
 	STA iMusicQueue
-	JSR Delay80Frames
+	LDA #90
+	JSR DelayFrames
 	LDA iTotalCoins
 	BEQ EndOfLevelSlotMachine_Exit
 	JMP loc_BANKF_E7F2
