@@ -182,9 +182,7 @@ IFNDEF NSF_FILE
 
 	; ----------------------------------------
 	; extra CHR-ROM pages
-	IFDEF EXPAND_CHR
-		.dsb (16 * $2000), $00
-	ENDIF
+	.dsb (128 * $400), $00
 ELSE
 	.include "src/nsf-home.asm"
 ENDIF

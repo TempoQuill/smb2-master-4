@@ -1039,6 +1039,11 @@ CHRBank_EndingBackground10 = $74
 CHRBank_EndingBackground11 = $78
 CHRBank_EndingBackground12 = $7C
 
+CHRBank_PlaxGrass = $80
+CHRBank_PlaxDesert = $a0
+CHRBank_PlaxIce = $c0
+CHRBank_PlaxSky = $e0
+
 NSFBank0 = $5ff8
 NSFBank1 = $5ff9
 NSFBank2 = $5ffa

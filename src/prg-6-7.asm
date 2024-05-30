@@ -74,12 +74,12 @@ World1BackgroundPalettes:
 	; Underground
 	.db $07, $2C, $1C, $0C ; $20
 	.db $07, $30, $16, $06 ; $24
-	.db $07, $27, $17, $07 ; $28
+	.db $07, $27, $17, $08 ; $28
 	.db $07, $2A, $1A, $0A ; $2C
 	; Jar
-	.db $07, $30, $27, $07 ; $30
+	.db $07, $30, $27, $06 ; $30
 	.db $07, $30, $16, $06 ; $34
-	.db $07, $27, $17, $07 ; $38
+	.db $07, $27, $17, $08 ; $38
 	.db $07, $31, $21, $01 ; $3C
 	; Castle
 	.db $00, $2C, $1C, $0C ; $40
@@ -129,7 +129,7 @@ World2BackgroundPalettes:
 	.db $07, $2A, $1A, $0A ; $40
 	.db $07, $36, $16, $06 ; $44
 	.db $07, $28, $18, $08 ; $48
-	.db $07, $27, $17, $07 ; $4C
+	.db $07, $27, $17, $08 ; $4C
 	; Jar
 	.db $07, $37, $27, $07 ; $30
 	.db $07, $36, $16, $06 ; $34
@@ -182,7 +182,7 @@ World3BackgroundPalettes:
 	; Underground
 	.db $07, $2C, $1C, $0C ; $20
 	.db $07, $36, $16, $06 ; $24
-	.db $07, $27, $17, $07 ; $28
+	.db $07, $27, $17, $08 ; $28
 	.db $07, $2A, $1A, $0A ; $2C
 	; Sunset
 	.db $38, $32, $12, $02 ; $00
@@ -241,7 +241,7 @@ World4BackgroundPalettes:
 	; Jar
 	.db $07, $37, $27, $07 ; $30
 	.db $07, $36, $16, $06 ; $34
-	.db $07, $27, $17, $07 ; $38
+	.db $07, $27, $17, $08 ; $38
 	.db $07, $21, $21, $01 ; $3C
 	; Castle
 	.db $00, $32, $12, $02 ; $40
@@ -295,7 +295,7 @@ World5BackgroundPalettes:
 	; Jar/Tree
 	.db $07, $37, $27, $07 ; $30
 	.db $07, $36, $16, $06 ; $34
-	.db $07, $27, $17, $07 ; $38
+	.db $07, $27, $17, $08 ; $38
 	.db $07, $31, $01, $0F ; $3C
 	; Castle
 	.db $01, $2A, $1A, $0A ; $40
@@ -345,7 +345,7 @@ World6BackgroundPalettes:
 	.db $07, $33, $12, $01 ; $20
 	.db $07, $36, $16, $06 ; $24
 	.db $07, $28, $18, $08 ; $28
-	.db $07, $27, $17, $07 ; $2C
+	.db $07, $27, $17, $08 ; $2C
 	; Jar
 	.db $07, $37, $27, $07 ; $30
 	.db $07, $36, $16, $06 ; $34
@@ -403,7 +403,7 @@ World7BackgroundPalettes:
 	; Jar (unused)
 	.db $07, $36, $16, $06 ; $30
 	.db $07, $36, $16, $06 ; $34
-	.db $07, $27, $17, $07 ; $38
+	.db $07, $27, $17, $08 ; $38
 	.db $07, $31, $01, $0F ; $3C
 	; Castle (unused)
 	.db $05, $3C, $2C, $0C ; $40
@@ -2930,7 +2930,7 @@ CreateObject_DrawBridgeChain_Loop:
 ; - `%00`: default background (ie. sky)
 ; - `%01`: secondary platform (eg. sand)
 ; - `%10`: primary platform (eg. grass)
-; - `%11`: secondary background (eg. black background in 3-2)
+; - `%11`: secondary background (eg. brown background in 3-2)
 ;
 HorizontalGroundSetData:
 	; The ruler here is an assumption based on the comments above,
