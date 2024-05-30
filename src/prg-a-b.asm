@@ -841,7 +841,11 @@ EndOfLevelSlotMachine_Exit:
 	JMP NoCoinsForSlotMachine
 
 CheckForCoinService:
-; if 2 coins are shown, award three coins if it hasn't happened already
+	; if lives weren't awarded, break out
+	TYA
+	BEQ CheckForCoinService_Exit
+
+	; if 2 7's are shown, award three coins if it hasn't happened already
 	LDA mCoinService
 	BMI CheckForCoinService_Exit
 
