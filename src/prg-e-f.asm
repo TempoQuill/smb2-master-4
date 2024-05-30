@@ -1640,7 +1640,7 @@ AddSlotMachineExtraLives:
 	CMP #101
 	BCC loc_BANKF_E8D3 ; Check if adding extra lives has wrapped the counter
 
-	LDA #100 ; If so, set extra lives to 255 (#$FF)
+	LDA #100 ; If so, set extra lives to 100
 
 loc_BANKF_E8D3:
 ; now to check for coin service
