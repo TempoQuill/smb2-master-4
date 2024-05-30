@@ -1593,7 +1593,7 @@ iPulse2SFX:
 ; $80 -N/A-
 iNoiseDrumSFX:
 	.dsb 1 ; $0605
-
+iSampleCounter:
 	.dsb 1 ; $0606
 iCurrentHillSFX:
 	.dsb 1 ; $0607
@@ -2027,6 +2027,7 @@ mIRQFinalScroll: ; $5ea5
 mNextScanline: ; $5ea7
 	.dsb 1
 mActiveUntilPPUTurnsOff: ; $5ea8
+mSampleCounter = $5ffd
 mFanfareSampleQueue = $5ffe
 mTempReg = $5fff
 .ende

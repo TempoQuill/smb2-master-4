@@ -373,13 +373,13 @@ ProcessDPCMSFX_SoundCheck:
 	AND #$10
 	BNE ProcessDPCMSFX_Exit
 
-ProcessDPCMSFX_None:
 	LDA #$00
 	STA iCurrentDPCMSFX
 	STA iDPCMBossPriority
 	LDA #%00001111
 	STA SND_CHN
 
+ProcessDPCMSFX_None:
 ProcessDPCMSFX_Exit:
 	RTS
 
@@ -420,10 +420,7 @@ ENDIF
 
 .include "src/music/dpcm-queue-2.asm"
 
-PlayDoubleSampleFanfare:
-	LDA #1
-	STA mFanfareSampleQueue
-	LSR A
+InitSpecialPCM:
 	STA iMusicPulse2NoteLength
 	STA iMusicPulse1NoteLength
 	STA iMusicHillNoteLength
@@ -432,6 +429,12 @@ PlayDoubleSampleFanfare:
 	STA iDPCMNoteRatioLength
 	LDA #$0f
 	STA SND_CHN
+	RTS
+
+PlayDoubleSampleFanfare:
+	LSR A
+	STA iMusicQueue
+	JSR InitSpecialPCM
 	LDA #PRGBank_DMC_13
 IFNDEF NSF_FILE
 	ORA #$80
@@ -442,18 +445,23 @@ ELSE
 	ORA #1
 	STA NSFBank5
 ENDIF
-	STA SND_CHN
+	LDA #1
+	STA mFanfareSampleQueue
 	LDA #$0F
 	STA DMC_FREQ
 	LDA #$00
 	STA DMC_START
 	LDA #$9B
 	STA DMC_LEN
-	LDA #$10
+	LDA #$0F
 	STA SND_CHN
+	LDA #$1F
+	STA SND_CHN
+	LDA #36
+	STA mSampleCounter
+
 RunDoubleSampleFanfare:
-	LDA SND_CHN
-	AND #$10
+	DEC mSampleCounter
 	BNE RunDoubleSampleFanfare_Running
 	LDA mFanfareSampleQueue
 	BNE StreamNextSample
@@ -464,25 +472,26 @@ RunDoubleSampleFanfare_Running:
 	RTS
 
 StreamNextSample:
-	DEC mFanfareSampleQueue
-	LDA #$0F
+	LDA #0
+	STA mFanfareSampleQueue
+	LDA #$0f
 	STA DMC_FREQ
 	LDA #$27
 	STA DMC_START
 	LDA #$CE
 	STA DMC_LEN
-	LDA #$10
+	LDA #$0F
 	STA SND_CHN
+	LDA #$1F
+	STA SND_CHN
+	LDA #48
+	STA mSampleCounter
 	BNE RunDoubleSampleFanfare
 
 PlayWartDeathSound:
 	LDA #0
-	STA iMusicPulse2NoteLength
-	STA iMusicPulse1NoteLength
-	STA iMusicHillNoteLength
-	STA iMusicNoiseNoteLength
-	STA iDPCMNoteLengthCounter
-	STA iDPCMNoteRatioLength
+	STA iMusicQueue
+	JSR InitSpecialPCM
 	LDA #PRGBank_DMC_17
 IFNDEF NSF_FILE
 	ORA #$80
@@ -499,12 +508,13 @@ ENDIF
 	STA DMC_START
 	LDA #$FC
 	STA DMC_LEN
-	LDA #$0f
+	LDA #$1F
 	STA SND_CHN
-	LDA #$10
-	STA SND_CHN
+	BNE RunWartDeathSound_Running
 
 RunWartDeathSound:
+	LDA #$1F
+	STA SND_CHN
 	LDA SND_CHN
 	BNE RunWartDeathSound_Running
 	STA iCurrentMusic
@@ -514,10 +524,12 @@ RunWartDeathSound_Running:
 	RTS
 
 ProcessMusicQueue_FanfareSamples:
+	LDA iMusicQueue
 	STA iCurrentMusic
 	JMP PlayDoubleSampleFanfare
 
 ProcessMusicQueue_WartDeath:
+	LDA iMusicQueue
 	STA iCurrentMusic
 	JMP PlayWartDeathSound
 
@@ -1305,7 +1317,7 @@ ProcessMusicQueue_DPCMSFXExit:
 
 ProcessMusicQueue_DPCMEnd:
 	; check for sound effects before disabling
-	LDX #iCurrentDPCMSFX
+	LDX iCurrentDPCMSFX
 	BNE ProcessMusicQueue_DPCMExit2
 
 ProcessMusicQueue_DPCMDisable:

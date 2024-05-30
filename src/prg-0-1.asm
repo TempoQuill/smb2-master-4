@@ -8111,11 +8111,6 @@ DelayFrames_Warp:
 	PHX
 	JSR IRQWarpLogic
 	JSR WaitForNMI_Warp_TurnOnIRQ
-	LDA iCurrentMusic
-	BEQ DelayFrames_Warp_MusicDone
-	LDA #$1f
-	STA SND_CHN
-DelayFrames_Warp_MusicDone:
 	LDA #Stack100_Transition
 	STA iStack
 	PLX
