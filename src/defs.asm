@@ -550,6 +550,7 @@ ObjAttrib_UpsideDown = %10000000 ; appears behind background when pulling
 ; ---------------------------------------------------------------------------
 
 ; enum BackgroundTileIds
+; quads 1
 BackgroundTile_Black = $00
 BackgroundTile_BgCloudLeft = $01
 BackgroundTile_BgCloudRight = $02
@@ -614,6 +615,7 @@ BackgroundTile_Unused3C = $3C
 BackgroundTile_Unused3D = $3D
 BackgroundTile_Unused3E = $3E
 BackgroundTile_Unused3F = $3F
+; quads 2
 BackgroundTile_Sky = $40
 BackgroundTile_SubspaceMushroom1 = $41
 BackgroundTile_SubspaceMushroom2 = $42
@@ -678,6 +680,7 @@ BackgroundTile_Unused7C = $7C
 BackgroundTile_Unused7D = $7D
 BackgroundTile_Unused7E = $7E
 BackgroundTile_Unused7F = $7F
+; quads 3
 BackgroundTile_Ladder = $80
 BackgroundTile_LadderShadow = $81
 BackgroundTile_PalmTreeTrunk = $82
@@ -742,6 +745,7 @@ BackgroundTile_UnusedBC = $BC ; SolidPlatformTopLeftOverlap2
 BackgroundTile_UnusedBD = $BD ; SolidPlatformTopRightOverlap2
 BackgroundTile_UnusedBE = $BE ; SolidPlatformTopLeftOverlapEdge2
 BackgroundTile_UnusedBF = $BF ; SolidPlatformTopRightOverlapEdge2
+; quads 4
 BackgroundTile_PalmTreeTop = $C0
 BackgroundTile_VineTop = $C1
 BackgroundTile_Vine = $C2

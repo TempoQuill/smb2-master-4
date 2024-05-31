@@ -103,9 +103,6 @@ MMC5 = 1
 ; extra time on the stopwatch
 ; SIXTEEN_BIT_WATCH_TIMER = 1
 
-; mirror banks that take up less than 8K
-BANK_MIRRORING = 1
-
 ; Go straight to the Mario Sleeping Scene
 ; TEST_SLEEPING_SCENE = 1
 

@@ -579,11 +579,7 @@ DisplayLevelTitleCardAndMore:
 	JSR ChangeTitleCardCHR
 
 	LDA #PRGBank_A_B
-IFNDEF BANK_MIRRORING
 	JSR ChangeMappedPRGBank
-ELSE
-	JSR ChangeMappedMirroredPRGBank
-ENDIF
 
 	JSR CopyCharacterStatsAndStuff
 
@@ -596,11 +592,7 @@ ENDIF
 	JSR LoadWorldCHRBanks
 
 	LDA #PRGBank_A_B
-IFNDEF BANK_MIRRORING
 	JSR ChangeMappedPRGBank
-ELSE
-	JSR ChangeMappedMirroredPRGBank
-ENDIF
 
 	JSR CopyCharacterStatsAndStuff
 
@@ -620,11 +612,7 @@ DoCharacterSelectMenu:
 	JSR LoadCharacterSelectCHRBanks
 
 	LDA #PRGBank_A_B
-IFNDEF BANK_MIRRORING
 	JSR ChangeMappedPRGBank
-ELSE
-	JSR ChangeMappedMirroredPRGBank
-ENDIF
 
 	JSR CopyCharacterStatsAndStuff
 
@@ -635,11 +623,7 @@ ENDIF
 	BEQ loc_BANKF_E2B2
 
 	LDA #PRGBank_A_B
-IFNDEF BANK_MIRRORING
 	JSR ChangeMappedPRGBank
-ELSE
-	JSR ChangeMappedMirroredPRGBank
-ENDIF
 
 	LDA #$A5
 	STA iCHR_A5
@@ -888,11 +872,7 @@ StartLevel_SetPPUCtrlMirror:
 	JSR CopyLevelDataToMemory
 
 	LDA #PRGBank_6_7
-IFNDEF BANK_MIRRORING
 	JSR ChangeMappedPRGBank
-ELSE
-	JSR ChangeMappedMirroredPRGBank
-ENDIF
 
 	JSR GetCurrentArea
 
@@ -1098,11 +1078,7 @@ HidePauseScreen:
 	JSR LoadWorldCHRBanks
 
 	LDA #PRGBank_6_7
-IFNDEF BANK_MIRRORING
 	JSR ChangeMappedPRGBank
-ELSE
-	JSR ChangeMappedMirroredPRGBank
-ENDIF
 
 	JSR LoadCurrentPalette
 
@@ -1142,11 +1118,7 @@ InitializeSubArea:
 	JSR ClearNametablesAndSprites
 
 	LDA #PRGBank_6_7
-IFNDEF BANK_MIRRORING
 	JSR ChangeMappedPRGBank
-ELSE
-	JSR ChangeMappedMirroredPRGBank
-ENDIF
 
 	LDA #$00
 	STA iSubspaceCoinCount
@@ -1163,11 +1135,7 @@ InitializeJar:
 	JSR CopyEnemyDataToMemory
 
 	LDA #PRGBank_6_7
-IFNDEF BANK_MIRRORING
 	JSR ChangeMappedPRGBank
-ELSE
-	JSR ChangeMappedMirroredPRGBank
-ENDIF
 
 	JMP ClearLayoutAndPokeMusic
 
@@ -1195,11 +1163,7 @@ SubArea_Loop:
 	BEQ loc_BANKF_E606
 
 	LDA #PRGBank_6_7
-IFNDEF BANK_MIRRORING
 	JSR ChangeMappedPRGBank
-ELSE
-	JSR ChangeMappedMirroredPRGBank
-ENDIF
 
 	JSR LoadCurrentPalette
 
@@ -1235,11 +1199,7 @@ loc_BANKF_E627:
 	STA iCurrentLvlArea
 	STA sSavedLvlArea
 	LDA #PRGBank_6_7
-IFNDEF BANK_MIRRORING
 	JSR ChangeMappedPRGBank
-ELSE
-	JSR ChangeMappedMirroredPRGBank
-ENDIF
 
 	JSR LoadCurrentPalette
 
@@ -1467,11 +1427,7 @@ EndOfLevelSlotMachine:
 	JSR LoadBonusChanceCHRBanks
 
 	LDA #PRGBank_A_B
-IFNDEF BANK_MIRRORING
 	JSR ChangeMappedPRGBank
-ELSE
-	JSR ChangeMappedMirroredPRGBank
-ENDIF
 	JMP EndOfLevelSlotMachine_AB
 
 ; ---------------------------------------------------------------------------
@@ -1815,11 +1771,7 @@ SetupMarioSleepingScene:
 	JSR WaitForNMI
 
 	LDA #PRGBank_C_D
-IFNDEF BANK_MIRRORING
 	JSR ChangeMappedPRGBank
-ELSE
-	JSR ChangeMappedMirroredPRGBank
-ENDIF
 
 	JMP MarioSleepingScene
 
@@ -4483,9 +4435,9 @@ TileQuads1:
 	.db $FC, $FC, $FC, $FC ; $2C
 	.db $E9, $E9, $A9, $A9 ; $30
 	.db $FC, $48, $FC, $48 ; $34
-	.db $11, $11, $11, $11 ; $38
-	.db $22, $22, $22, $22 ; $3C
-	.db $33, $33, $33, $33 ; $40
+	.db $11, $11, $11, $11 ; $38 ; unused
+	.db $22, $22, $22, $22 ; $3C ; unused
+	.db $33, $33, $33, $33 ; $40 ; unused
 	.db $E8, $EB, $A9, $A9 ; $44
 	.db $74, $76, $75, $77 ; $48
 	.db $98, $9A, $99, $9B ; $4C
@@ -5054,19 +5006,6 @@ ChangeMappedPRGBankWithoutSaving:
 ChangeNametableMirroring:
 	STA MMC5_NametableMapping
 	RTS
-
-IFDEF BANK_MIRRORING
-ChangeMappedMirroredPRGBank:
-	STA iCurrentROMBank
-ChangeMappedMirroredPRGBankWithoutSaving:
-	ASL A
-
-	ORA #$80
-	STA MMC5_PRGBankSwitch2
-	STA MMC5_PRGBankSwitch3
-	RTS
-
-ENDIF
 
 ;
 ; Save logic
