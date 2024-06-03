@@ -114,10 +114,11 @@ BonusChanceLayout:
 	.db $21, $CA, $0C, $15, $13, $13, $17, $15, $13, $13, $17, $15, $13, $13, $17
 	.db $22, $0D, $02, $18, $1A
 	.db $22, $2D, $02, $19, $1B
-	.db $23, $D2, $04, $80, $A0, $A0, $20
+	.db $23, $CA, $04, $F0, $F0, $F0, $F0
+	.db $23, $D2, $04, $8F, $AF, $AF, $2F
 	.db $23, $DA, $04, $88, $AA, $AA, $22
-	.db $23, $E4, $01, $0A
-	.db $23, $EA, $05, $A0, $A0, $A0, $A0, $20
+	.db $23, $E3, $02, $0F, $0A
+	.db $23, $E9, $06, $04, $A5, $A5, $A5, $A5, $25
 	.db $00
 
 
@@ -580,7 +581,7 @@ WartOAMOffsets:
 PlayerSelectPalettes:
 	.db $3F, $00, $20
 	.db $0F, $28, $16, $06
-	.db $0F, $30, $12, $16
+	.db $0F, $30, $26, $16
 	.db $0F, $30, $16, $12
 	.db $0F, $30, $12, $16
 	.db $0F, $22, $12, $01
@@ -599,10 +600,10 @@ BonusChanceText_EXTRA_LIFE_1:
 	.db $00
 
 BonusChanceBackgroundPalettes:
-	.db $0F, $27, $17, $07 ; $00
-	.db $0F, $37, $16, $12 ; $04
-	.db $0F, $30, $10, $00 ; $08
-	.db $0F, $21, $12, $01 ; $0C
+	.db $0F, $37, $16, $07 ; Most of screen, outline, etc.
+	.db $0F, $36, $26, $08 ; 2
+	.db $0F, $30, $27, $01 ; Logo
+	.db $0F, $37, $27, $06 ; Copyright, Story, Sclera
 
 BonusChanceReel1Order:
 	.db Slot_Turnip ; $03
@@ -824,7 +825,7 @@ EndOfLevelSlotMachine_AB:
 	STA iStack
 	JSR DisableNMI
 
-	JSR sub_BANKF_EA33
+	JSR ResetScrollAndSetBonusChancePalettes
 
 	LDA #Music_StopMusic
 	STA iMusicQueue

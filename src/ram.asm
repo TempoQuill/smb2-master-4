@@ -1372,7 +1372,7 @@ i599:
 i59a:
 	.dsb 1 ; $059a
 	.dsb 1 ; $059b
-i59C:
+iBonusChanceBGPal:
 	.dsb 1 ; $059c
 	.dsb 1 ; $059d
 	.dsb 1 ; $059e
@@ -2028,7 +2028,13 @@ mNextScanline: ; $5ea7
 	.dsb 1
 mActiveUntilPPUTurnsOff: ; $5ea8
 	.dsb 1
-mPlaxCHR:
+mBonusChanceFlashOffset:
+	.dsb 1
+mBonusChanceFlashFlag:
+	.dsb 1
+mBonusChanceFlashUpdate:
+	.dsb 3
+	.dsb 16
 	.dsb 1
 mSampleCounter = $5ffd
 mFanfareSampleQueue = $5ffe

@@ -321,6 +321,7 @@ ScreenUpdateBuffer_WarpFade1 = $1F
 ScreenUpdateBuffer_WarpFade2 = $20
 ScreenUpdateBuffer_WarpFade3 = $21
 ScreenUpdateBuffer_WarpFinalPalettes = $22
+ScreenUpdateBuffer_RAM_BonusChanceFlash = $22
 
 
 ; ---------------------------------------------------------------------------

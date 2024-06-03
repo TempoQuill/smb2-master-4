@@ -58,6 +58,7 @@ ScreenUpdateBufferPointers:
 	.dw WarpPaletteFade2
 	.dw WarpPaletteFade1
 	.dw WarpPalettes
+	.dw mBonusChanceFlashUpdate
 
 PPUBuffer_CharacterSelect:
 	.db $21, $49, $06, $E9, $E5, $DE, $DA, $EC, $DE ; PLEASE
@@ -126,12 +127,12 @@ PPUBuffer_TitleCard:
 	.db $3E, $0E, $0E, $0E, $0E, $0E, $0E, $8E, $32
 	.db $23, $CF, $01, $8C
 	.db $23, $D0, $10
-	.db $32, $00, $A0, $A0, $A0, $20, $00, $8C, $32, $00, $00, $0A, $02, $00, $00, $8C
+	.db $32, $00, $50, $50, $50, $10, $00, $8C, $32, $00, $00, $05, $01, $00, $00, $8C
 	.db $23, $E0, $09
 	.db $32, $00, $00, $0E, $00, $00, $00, $8C, $32
 	.db $23, $EF, $01, $8C
 	.db $23, $F0, $06
-	.db $32, $00, $A0, $A0, $A0, $A0
+	.db $32, $00, $50, $50, $50, $50
 	.db $23, $F7, $09
 	.db $8C, $0E, $0E, $0E, $0E, $0E, $0E, $0E, $0E
 	.db $24, $00, $60, $FF
@@ -1537,7 +1538,7 @@ SpinSlots_Handling:
 
 	JSR TimedSlotIncrementation
 
-	JSR sub_BANKF_EAF6
+	JSR UpdateSlotSprites
 
 	JSR SlotMachineTextFlashIndex
 
@@ -1581,13 +1582,13 @@ CheckReel3Symbol:
 	CMP #$00 ; Were they all cherries?
 	BNE MaybeCoins ; Okay, they could be 7s
 
-	INY ; Yes, add 1 more extra life
+	DEY ; Yes, 3 lives total
 
 MaybeCoins:
 	CMP #$20 ; 7s?
 	BNE AddSlotMachineExtraLives ; Nope, all done
 
-	LDY #10 ; just hard code 9 lives, faster that way
+	LDY #10 ; just hard code 10 lives, faster that way
 
 AddSlotMachineExtraLives:
 	TYA ; Y contains extra lives to add
@@ -1871,7 +1872,7 @@ EnableNMI:
 
 ; =============== S U B R O U T I N E =======================================
 
-sub_BANKF_EA33:
+ResetScrollAndSetBonusChancePalettes:
 	JSR SetScrollXYTo0
 
 	LDA PPUSTATUS
@@ -1881,7 +1882,7 @@ sub_BANKF_EA33:
 	STY PPUADDR
 
 loc_BANKF_EA43:
-	LDA i59C, Y
+	LDA iBonusChanceBGPal, Y
 	STA PPUDATA
 	INY
 	CPY #$10
@@ -1901,7 +1902,7 @@ SetBonusChancePalette:
 	CPY #$10
 	BCC SetBonusChancePalette
 
-; End of function sub_BANKF_EA33
+; End of function ResetScrollAndSetBonusChancePalettes
 
 ; =============== S U B R O U T I N E =======================================
 
@@ -2084,7 +2085,7 @@ loc_BANKF_EAF2:
 
 ; =============== S U B R O U T I N E =======================================
 
-sub_BANKF_EAF6:
+UpdateSlotSprites:
 	LDA #$02
 	STA z00
 
@@ -2129,7 +2130,7 @@ loc_BANKF_EB1F:
 	BPL loc_BANKF_EB1F
 	RTS
 
-; End of function sub_BANKF_EAF6
+; End of function UpdateSlotSprites
 
 ;
 ; NMI logic for during a transition
@@ -5187,6 +5188,68 @@ SineXORs:
 SineControls:
 	.db $b5, $b5, $b5, $b5, $b5, $b5, $b5, $b5
 	.db $b5, $b4, $b4, $b4, $b4, $b4, $b4, $b4
+
+CopyBonusChanceFlashOffset:
+	RAY
+	LDA BonusChanceFlashOffsetsLO, Y
+	STA z00
+	LDA BonusChanceFlashOffsetsHI, Y
+	STA z01
+	LDY #$13
+CopyBonusChanceFlashOffset_Loop:
+	LDA (z00), Y
+	STA mBonusChanceFlashUpdate, Y
+	DEY
+	BPL CopyBonusChanceFlashOffset_Loop
+	LDA #ScreenUpdateBuffer_RAM_BonusChanceFlash
+	STA zScreenUpdateIndex
+	RTS
+
+BonusChanceFlashOffsetsHI:
+	.dh BonusChanceBackgroundFlashPalettes0
+	.dh BonusChanceBackgroundFlashPalettes1
+	.dh BonusChanceBackgroundFlashPalettes2
+	.dh BonusChanceBackgroundFlashPalettes3
+	.dh BonusChanceBackgroundFlashPalettes2
+
+BonusChanceFlashOffsetsLO:
+	.dh BonusChanceBackgroundFlashPalettes0
+	.dl BonusChanceBackgroundFlashPalettes1
+	.dl BonusChanceBackgroundFlashPalettes2
+	.dl BonusChanceBackgroundFlashPalettes3
+	.dl BonusChanceBackgroundFlashPalettes2
+
+BonusChanceBackgroundFlashPalettes1:
+	.db $3F, $00, $10
+	.db $0F, $37, $16, $07 ; Most of screen, outline, etc.
+	.db $0F, $27, $38, $08 ; 2
+	.db $0F, $28, $28, $08 ; Logo
+	.db $0F, $28, $28, $08 ; Copyright, Story, Sclera
+	.db $00
+
+BonusChanceBackgroundFlashPalettes2:
+	.db $3F, $00, $10
+	.db $0F, $37, $16, $07 ; Most of screen, outline, etc.
+	.db $0F, $27, $38, $08 ; 2
+	.db $0F, $21, $21, $01 ; Logo
+	.db $0F, $21, $21, $01 ; Copyright, Story, Sclera
+	.db $00
+
+BonusChanceBackgroundFlashPalettes3:
+	.db $3F, $00, $10
+	.db $0F, $37, $36, $07 ; Most of screen, outline, etc.
+	.db $0F, $27, $38, $08 ; 2
+	.db $0F, $21, $21, $01 ; Logo
+	.db $0F, $21, $21, $01 ; Copyright, Story, Sclera
+	.db $00
+
+BonusChanceBackgroundFlashPalettes0:
+	.db $3F, $00, $10
+	.db $0F, $37, $16, $07 ; Most of screen, outline, etc.
+	.db $0F, $27, $38, $08 ; 2
+	.db $0F, $30, $27, $01 ; Logo
+	.db $0F, $37, $27, $30 ; Copyright, Story, Sclera
+	.db $00
 
 ;
 ; Vectors for the NES CPU. These must ALWAYS be at $FFFA!
