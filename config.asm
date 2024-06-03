@@ -83,6 +83,8 @@ FIX_SUBSPACE_TILES = 1
 ; Go to the Charater Select screen after death
 CHARACTER_SELECT_AFTER_DEATH = 1
 
+; RGME audio
+; RGME_AUDIO = 1
 
 ; ----------------------------------------
 ; Patches and enhancements largely useful

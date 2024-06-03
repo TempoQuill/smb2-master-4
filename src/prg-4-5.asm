@@ -549,10 +549,17 @@ ProcessMusicQueue:
 	BEQ ProcessMusicQueue_StopMusic
 
 	CMP #Music_WarpWorld
+IFNDEF RGME_AUDIO
 	BEQ ProcessMusicQueue_FanfareSamples
+ELSE
+	BEQ ProcessMusicQueue_StopMusic
+ENDIF
 
 	CMP #Music_WartDeath
 	BEQ ProcessMusicQueue_WartDeath
+IFDEF RGME_AUDIO
+	RTS
+ENDIF
 
 	; if iMusicQueue != 0, branch
 	LDA iMusicQueue
