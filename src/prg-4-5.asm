@@ -513,8 +513,10 @@ ENDIF
 	BNE RunWartDeathSound_Running
 
 RunWartDeathSound:
+IFNDEF NSF_FILE
 	LDA #$1F
 	STA SND_CHN
+ENDIF
 	LDA SND_CHN
 	BNE RunWartDeathSound_Running
 	STA iCurrentMusic

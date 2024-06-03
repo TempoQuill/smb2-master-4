@@ -1994,6 +1994,7 @@ mCoinService:
 	.dsb 1 ; $5cce
 mCoinServiceTimer:
 	.dsb 1 ; $5ccf
+IFNDEF NSF_FILE
 mWarpScreenLayout: ; $5cd0
 	.dsb WarpCharacterStills - WarpAllStarsLayout
 mWarpCharacterStills: ; $5d8d
@@ -2004,6 +2005,7 @@ mWarpScreenAttributes: ; $5e5b
 	.dsb WarpScreenBlack - WarpScreenAttributes
 mWarpScreenBlackPalette: ; $5e77
 	.dsb WarpAllStarsLayoutEND - WarpScreenBlack + 1
+ENDIF
 mWarpScreenEnd: ; $5e7c
 	.dsb 1
 mWarpPaletteIndex: ; $5e7d
@@ -2036,7 +2038,12 @@ mBonusChanceFlashUpdate:
 	.dsb 3
 	.dsb 16
 	.dsb 1
+IFNDEF NSF_FILE
 mSampleCounter = $5ffd
 mFanfareSampleQueue = $5ffe
+ELSE
+mSampleCounter = $6000
+mFanfareSampleQueue = $6001
+ENDIF
 mTempReg = $5fff
 .ende
