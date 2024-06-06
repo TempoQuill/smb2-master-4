@@ -1644,7 +1644,12 @@ SlotMachineLoseFanfare:
 
 	JSR sub_BANKF_EA68
 
+IFNDEF RGME_AUDIO
 	JSR SlotMachine_WaitforJingle
+ELSE
+	LDA #$7c
+	JSR DelayFrames
+ENDIF
 
 loc_BANKF_E90C:
 	LDA #ScreenUpdateBuffer_RAM_EraseBonusMessageTextUnused
@@ -5022,6 +5027,13 @@ BackUpSaveData_Loop:
 	BPL BackUpSaveData_Loop
 	RTS
 
+;
+; Save data checksum
+;
+; Up to v1.5, the checksum routine adds all relevant data into one value,
+; except for lives, which is stashed separately to avoid setting carry,
+; then the sum and life stash is multiplied into the following two bytes.
+;
 GenerateChecksum:
 	; 2 3-byte strings
 	LDY #3
