@@ -1842,6 +1842,7 @@ MMC5_CHRBankSwitchUpper = $5130
 MMC5_IRQScanlineCompare = $5203
 MMC5_IRQStatus = $5204
 
+; used for note lengths, checksum product, and dynamic wave effect
 MMC5_Multiplier = $5205
 
 MMC5_ExpansionRAMStart = $5c00

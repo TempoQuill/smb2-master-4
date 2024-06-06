@@ -83,7 +83,7 @@ FIX_SUBSPACE_TILES = 1
 ; Go to the Charater Select screen after death
 CHARACTER_SELECT_AFTER_DEATH = 1
 
-; RGME audio
+; mutes music to work around potential copyright issues in transformative videos
 ; RGME_AUDIO = 1
 
 ; ----------------------------------------
