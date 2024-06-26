@@ -11,7 +11,7 @@ ENDM
 	.dw StartProcessingSoundQueue
 	.dw PLAY
 	.dw StartProcessingSoundQueue
-	.db "SMB2: All-Stars Music/Sound"
+	.db "SMB2: All-Stars Backport"
 .pad $2e, $00
 	.db "Koji Kondo"
 .pad $4e, $00

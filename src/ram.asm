@@ -2040,11 +2040,11 @@ mBonusChanceFlashUpdate:
 	.dsb 16
 	.dsb 1
 IFNDEF NSF_FILE
-mSampleCounter = $5ffd
-mFanfareSampleQueue = $5ffe
+mSampleCounter = $5ffc
+mFanfareSampleQueue = $5ffd
 ELSE
 mSampleCounter = $6000
 mFanfareSampleQueue = $6001
 ENDIF
-mTempReg = $5fff
+mTempReg = $5ffe
 .ende
