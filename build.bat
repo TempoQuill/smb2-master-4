@@ -8,10 +8,7 @@ move /y smb2.cdl bin > nul
 echo Done.
 echo.
 
-echo SHA1 hash check:
-echo 47ba60fad332fdea5ae44b7979fe1ee78de1d316ee027fea2ad5fe3c0d86f25a PRG0
-echo 6ca47e9da206914730895e45fef4f7393e59772c1c80e9b9befc1a01d7ecf724 PRG1
-echo Yours:
+echo Your hash number:
 certutil -hashfile bin\smb2.nes SHA256 | findstr /V ":"
 
 
