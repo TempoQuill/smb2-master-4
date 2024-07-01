@@ -362,11 +362,7 @@ ProcessDPCMSFX:
 	BNE ProcessDPCMSFX_Part2
 
 	LDA iCurrentDPCMSFX
-	BNE ProcessDPCMSFX_SoundCheck
-
-	LDA iCurrentDPCMOffset
 	BEQ ProcessDPCMSFX_None
-	RTS
 
 ProcessDPCMSFX_SoundCheck:
 	LDA SND_CHN
