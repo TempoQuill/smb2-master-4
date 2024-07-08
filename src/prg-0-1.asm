@@ -7928,7 +7928,17 @@ RetrieveBackupData_LoadContributorData:
 	STA iCharacterLevelCount, Y
 	DEY
 	BPL RetrieveBackupData_LoadContributorData
-	JMP GenerateChecksum
+	JSR GenerateChecksum
+	; now, if all values are zero's, generate a new game
+	LDY #SAVE_DATA_WIDTH - 1
+	LDA sSaveData, Y
+RetrieveBackupData_Zeros:
+	ORA sSaveData, Y
+	DEY
+	BPL RetrieveBackupData_Zeros
+	TAY
+	BEQ InitNewGame
+	RTS
 
 InitNewGame:
 	LDA #5
