@@ -3375,7 +3375,7 @@ EnemyBehavior_PickUpMushroom:
 	INC iPlayerMaxHP
 	JSR RestorePlayerToFullHealth
 
-	LDA #Music_MushroomGetJingle
+	LDA #Music_WarpWorld
 	STA iMusicQueue
 	RTS
 

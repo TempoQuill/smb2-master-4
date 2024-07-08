@@ -416,6 +416,13 @@ ENDIF
 
 .include "src/music/dpcm-queue-2.asm"
 
+BackupPreviousSong:
+	LDA iCurrentMusic
+	STA iMusicStack
+	LDA iMusicQueue
+	STA iCurrentMusic
+	RTS
+
 InitSpecialPCM:
 	STA iMusicPulse2NoteLength
 	STA iMusicPulse1NoteLength
@@ -464,6 +471,9 @@ RunDoubleSampleFanfare:
 	STA iCurrentMusic
 	LDA #$0f
 	STA SND_CHN
+	LDA iMusicStack
+	STA iMusicQueue
+	JMP ProcessMusicQueue
 RunDoubleSampleFanfare_Running:
 	RTS
 
@@ -509,10 +519,6 @@ ENDIF
 	BNE RunWartDeathSound_Running
 
 RunWartDeathSound:
-IFNDEF NSF_FILE
-	LDA #$1F
-	STA SND_CHN
-ENDIF
 	LDA SND_CHN
 	BNE RunWartDeathSound_Running
 	STA iCurrentMusic
@@ -522,8 +528,7 @@ RunWartDeathSound_Running:
 	RTS
 
 ProcessMusicQueue_FanfareSamples:
-	LDA iMusicQueue
-	STA iCurrentMusic
+	JSR BackupPreviousSong
 	JMP PlayDoubleSampleFanfare
 
 ProcessMusicQueue_WartDeath:
