@@ -899,9 +899,11 @@ ExecuteCoinService_Loop:
 	JSR WaitForNMI
 	INC mCoinServiceTimer
 	LDA mCoinServiceTimer
-	AND #$3f
-	BNE ExecuteCoinService_Loop
+	CMP #$34
+	BCC ExecuteCoinService_Loop
 
+	LDA #0
+	STA mCoinServiceTimer
 	LDA #ScreenUpdateBuffer_RAM_BonusChanceCoinsExtraLife
 	STA zScreenUpdateIndex
 
