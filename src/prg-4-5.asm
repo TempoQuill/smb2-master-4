@@ -358,6 +358,10 @@ NoiseSFX_None:
 ;		So this is only used for sound effects here.
 ;
 ProcessDPCMSFX:
+	LDA mSampleCounter
+	ORA mFanfareSampleQueue
+	BNE ProcessDPCMSFX_Exit
+
 	LDA iDPCMSFX
 	BNE ProcessDPCMSFX_Part2
 
@@ -419,6 +423,7 @@ ENDIF
 BackupPreviousSong:
 	LDA iCurrentMusic
 	STA iMusicStack
+	JSR StopMusic
 	LDA iMusicQueue
 	STA iCurrentMusic
 	RTS
