@@ -720,7 +720,7 @@ ProcessMusicQueue_DefaultNotelength:
 	STA iDPCMNoteLengthCounter
 	STA iDPCMNoteRatioLength
 
-	; initialize offsets / fractions
+	; initialize offsets / accumulators
 	LDA #$00
 	STA iCurrentDrum
 	STA iCurrentPulse2Offset
@@ -728,11 +728,12 @@ ProcessMusicQueue_DefaultNotelength:
 	STA iCurrentPulse1Offset
 	STA iCurrentNoiseOffset
 	STA iCurrentDPCMOffset
-	STA iMusicPulse2NoteLengthFraction
-	STA iMusicPulse1NoteLengthFraction
-	STA iMusicHillNoteLengthFraction
-	STA iMusicNoiseNoteLengthFraction
-	STA iMusicDPCMNoteLengthFraction
+	; initialize note length accumulators
+	STA iMusicPulse2FPNA
+	STA iMusicPulse1FPNA
+	STA iMusicHillFPNA
+	STA iMusicNoiseFPNA
+	STA iMusicDPCMFPNA
 	STA iSweep
 
 ProcessMusicQueue_ReadNoteData:
@@ -886,8 +887,8 @@ ProcessMusicQueue_Square2ContinueNote:
 	; set note length
 	LDA iMusicPulse2NoteSubFrames
 	CLC
-	ADC iMusicPulse2NoteLengthFraction
-	STA iMusicPulse2NoteLengthFraction
+	ADC iMusicPulse2FPNA
+	STA iMusicPulse2FPNA
 	LDA iPulse2NoteLength
 	ADC #0
 	STA iMusicPulse2NoteLength
@@ -991,8 +992,8 @@ ProcessMusicQueue_Square1UpdateNoteOffset:
 	; set note length
 	LDA iMusicPulse1NoteSubFrames
 	CLC
-	ADC iMusicPulse1NoteLengthFraction
-	STA iMusicPulse1NoteLengthFraction
+	ADC iMusicPulse1FPNA
+	STA iMusicPulse1FPNA
 	LDA iPulse1NoteLength
 	ADC #0
 	STA iMusicPulse1NoteLength
@@ -1120,8 +1121,8 @@ ProcessMusicQueue_TriangleSkipPitch:
 	; iMusicHillNoteLength:
 	LDA iMusicHillNoteSubFrames
 	CLC
-	ADC iMusicHillNoteLengthFraction
-	STA iMusicHillNoteLengthFraction
+	ADC iMusicHillFPNA
+	STA iMusicHillFPNA
 	LDA iHillNoteLength
 	ADC #0
 	STA iMusicHillNoteLength
@@ -1205,8 +1206,8 @@ ProcessMusicQueue_NoiseNote:
 ProcessMusicQueue_NoiseLengthCarry:
 	LDA iMusicNoiseNoteSubFrames
 	CLC
-	ADC iMusicNoiseNoteLengthFraction
-	STA iMusicNoiseNoteLengthFraction
+	ADC iMusicNoiseFPNA
+	STA iMusicNoiseFPNA
 	LDA iNoiseNoteLength
 	ADC #0
 	STA iMusicNoiseNoteLength
@@ -1326,8 +1327,8 @@ ENDIF
 ProcessMusicQueue_DPCMSFXExit:
 	LDA iMusicDPCMNoteSubFrames
 	CLC
-	ADC iMusicDPCMNoteLengthFraction
-	STA iMusicDPCMNoteLengthFraction
+	ADC iMusicDPCMFPNA
+	STA iMusicDPCMFPNA
 	LDA iDPCMNoteLength
 	ADC #0
 	STA iDPCMNoteLengthCounter

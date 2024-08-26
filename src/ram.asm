@@ -1480,15 +1480,15 @@ iMusicNoiseNoteSubFrames:
 	.dsb 1 ; $05e5
 iMusicDPCMNoteSubFrames:
 	.dsb 1 ; $05e6
-iMusicPulse2NoteLengthFraction:
+iMusicPulse2FPNA:
 	.dsb 1 ; $05e7
-iMusicPulse1NoteLengthFraction:
+iMusicPulse1FPNA:
 	.dsb 1 ; $05e8
-iMusicHillNoteLengthFraction:
+iMusicHillFPNA:
 	.dsb 1 ; $05e9
-iMusicNoiseNoteLengthFraction:
+iMusicNoiseFPNA:
 	.dsb 1 ; $05ea
-iMusicDPCMNoteLengthFraction:
+iMusicDPCMFPNA:
 	.dsb 1 ; $05eb
 
 iCurrentMusicOffset:
