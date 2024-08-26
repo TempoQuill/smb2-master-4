@@ -817,8 +817,17 @@ ClearChannelNoise:
 	STA NOISE_VOL
 
 ClearChannelDPCM:
+	LDA mSampleCounter
+	ORA mFanfareSampleQueue
+	BNE ClearChannelDPCMSpecial
 	LDA iCurrentDPCMSFX
 	BNE ClearChannelDone
+	JMP ProcessMusicQueue_DPCMDisable
+
+ClearChannelDPCMSpecial:
+	LDA #0
+	STA mFanfareSampleQueue
+	STA mSampleCounter
 	JMP ProcessMusicQueue_DPCMDisable
 
 ClearChannelDone:
