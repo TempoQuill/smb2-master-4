@@ -137,10 +137,11 @@ CopyBonusChanceLayoutToRAM_Loop1:
 
 	; seems $100 wasn't enough memory though, huh?
 	; Y's immediate number was hacked to take on the low byte of the data range
-	LDY #<(CopyBonusChanceLayoutToRAM - BonusChanceLayout) - 1
+	LDY #<(CopyBonusChanceLayoutToRAM - BonusChanceLayout) ; amount of data to copy
 CopyBonusChanceLayoutToRAM_Loop2:
-	LDA BonusChanceLayout + $100, Y
-	STA wBonusLayoutBuffer + $100, Y
+	; Y at 0 causes a branch, blindly adding a page to address skips $7500
+	LDA BonusChanceLayout + $ff, Y
+	STA wBonusLayoutBuffer + $ff, Y
 	DEY
 	BNE CopyBonusChanceLayoutToRAM_Loop2
 	RTS
