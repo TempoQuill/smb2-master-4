@@ -2038,6 +2038,8 @@ mBonusChanceFlashFlag:
 mBonusChanceFlashUpdate:
 	.dsb 3
 	.dsb 16
+	.dsb 1 ; end of buffer area
+mContinueFlag:
 	.dsb 1
 IFNDEF NSF_FILE
 mSampleCounter = $5ffc

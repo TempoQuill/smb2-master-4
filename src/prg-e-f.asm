@@ -817,6 +817,9 @@ StartGame:
 
 	JSR TitleScreen ; The whole title screen is a subroutine, lol
 
+	LDA #0
+	STA mContinueFlag
+
 ; We return here after picking "CONTINUE" from the game over menu.
 ContinueGame:
 	LDA sExtraMen
@@ -828,6 +831,9 @@ GoToWorldStartingLevel:
 	LDY WorldStartingLevel, X
 	CPY sSavedLvl
 	BEQ GoToWorldStartingLevel_SaveMatch
+
+	LDA mContinueFlag
+	BNE GoToWorldStartingLevel_SaveMatch
 
 	LDY sSavedLvl
 
@@ -1364,6 +1370,9 @@ loc_BANKF_E747:
 	STA iTotalCoins
 	LDA #5
 	STA sExtraMen
+	INC mContinueFlag
+	LDA #Stack100_Save
+	STA iStack
 	JMP ContinueGame
 
 ; ---------------------------------------------------------------------------
@@ -2150,6 +2159,7 @@ NMI_Transition:
 	LDA zPPUMask
 	STA PPUMASK
 	JSR DoSoundProcessing
+	JSR EngageSave
 
 	LDA zPPUControl
 	STA PPUCTRL
