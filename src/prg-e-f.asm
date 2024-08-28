@@ -531,7 +531,6 @@ SetStack100Gameplay:
 InitializeSomeLevelStuff:
 	LDA #$00
 	STA iCurrentLvlArea
-	STA sSavedLvlArea
 	STA iCurrentLevelArea_Init
 	STA iCurrentLvlEntryPage
 	STA sSavedLvlEntryPage
@@ -828,6 +827,8 @@ ContinueGame:
 GoToWorldStartingLevel:
 	LDX sSavedWorld
 	STX iCurrentWorld
+	LDY sLifeUpEventFlag
+	STY iLifeUpEventFlag
 	LDY WorldStartingLevel, X
 	CPY sSavedLvl
 	BEQ GoToWorldStartingLevel_SaveMatch
@@ -1204,7 +1205,6 @@ loc_BANKF_E61A:
 loc_BANKF_E627:
 	LDA iCurrentAreaBackup
 	STA iCurrentLvlArea
-	STA sSavedLvlArea
 	LDA #PRGBank_6_7
 	JSR ChangeMappedPRGBank
 
@@ -1281,6 +1281,7 @@ ResetAreaAndProcessGameMode_NotTitleCard:
 	STA iPlayerMaxHP
 	STA iKeyUsed
 	STA iLifeUpEventFlag
+	STA sLifeUpEventFlag
 	STA iMushroomFlags
 	STA iMushroomFlags + 1
 	STA iSubspaceVisitCount
@@ -3091,8 +3092,6 @@ LevelInitialization:
 	LDY #$03
 	LDA iCurrentLevel_Init
 	STA sSavedLvl
-	LDA iCurrentLevelArea_Init
-	STA sSavedLvlArea
 
 ; Loop through and set level, area, page, and transition from RAM
 LevelInitialization_AreaSetupLoop:
@@ -3238,7 +3237,6 @@ SetPlayerScreenPosition_ExitSubAreaJar:
 	STY iSubAreaFlags
 	LDA iCurrentAreaBackup
 	STA iCurrentLvlArea
-	STA sSavedLvlArea
 	LDA #PRGBank_8_9
 	JSR ChangeMappedPRGBank
 
@@ -4294,7 +4292,6 @@ FollowCurrentAreaPointer:
 	LSR A
 	LSR A
 	STA iCurrentLvlArea
-	STA sSavedLvlArea
 	LDA iAreaAddresses, Y
 	AND #$0F
 	STA iCurrentLvlEntryPage

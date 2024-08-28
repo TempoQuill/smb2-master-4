@@ -3300,6 +3300,7 @@ EnemyBehavior_Mushroom1up:
 Award1upMushroom:
 IFNDEF STATS_TESTING_PURPOSES ; infinite 1UP mushrooms
 	INC iLifeUpEventFlag
+	INC sLifeUpEventFlag
 ENDIF
 	LDA iExtraMen
 	CMP #100

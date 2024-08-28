@@ -7911,6 +7911,10 @@ LoadPreviousGame_Data:
 	BNE RetrieveBackupData
 	DEY
 	BPL LoadPreviousGame_Data
+	; is the life up flag out of bounds?
+	LDA sLifeUpEventFlag
+	AND #$fe
+	BNE InitNewGame
 	; Yay!  No corruption!
 
 RetrieveBackupData:

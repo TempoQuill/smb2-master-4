@@ -1862,7 +1862,7 @@ wLevelDataBuffer = $6000
 sSaveData:
 sSavedLvl:
 	.dsb 1
-sSavedLvlArea:
+sLifeUpEventFlag:
 	.dsb 1
 sSavedLvlEntryPage:
 	.dsb 1
@@ -1876,7 +1876,7 @@ sExtraMen:
 sBackupSaveData:
 sBackupLvl:
 	.dsb 1
-sBackupLvlArea:
+sBackupLifeUpEventFlag:
 	.dsb 1
 sBackupLvlEntryPage:
 	.dsb 1
@@ -1887,7 +1887,7 @@ sBackupContributors:
 sBackupExtraMen:
 	.dsb 1
 ; method:
-; byte 0: sSavedLvl + sSavedLvlArea + sSavedWorld + sContributors (bytes 0-3)
+; byte 0: sSavedLvl + sLifeUpEventFlag + sSavedWorld + sContributors (bytes 0-3)
 ; byte 2: sExtraMen
 ; byte 3-4: Product of bytes 1 + 2
 sMultiChecksum:

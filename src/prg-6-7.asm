@@ -3454,7 +3454,6 @@ ClearSubAreaTileLayout_Loop:
 	STA iCurrentAreaBackup
 	LDA #$04 ; jar is always area 4
 	STA iCurrentLvlArea
-	STA sSavedLvlArea
 	LDA #$0A
 	JSR HijackLevelDataCopyAddressWithJar
 
@@ -3561,7 +3560,6 @@ Unused_ChangeAreaMusic_Exit:
 	LSR A
 	LSR A
 	STA iCurrentLvlArea
-	STA sSavedLvlArea
 	LDA iAreaAddresses, Y
 	AND #$0F
 	STA iCurrentLvlEntryPage
