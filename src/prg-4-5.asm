@@ -229,14 +229,15 @@ HillSFXPointersHi:
 	.db >HillSFXData_Fireball
 
 HillSFXLinears:
-	.db $81
-	.db $81
-	.db $03
-	.db $81
-	.db $81
-	.db $03
-	.db $03
-	.db $03
+	.db $81 ; jump
+	.db $81 ; vine
+	.db $03 ; cherry
+	.db $81 ; watch
+	.db $81 ; fall
+	.db $03 ; mushroom
+	.db $03 ; lamp
+	.db $03 ; select
+	.db $03 ; fireball
 
 .include "src/music/sound-effects/hill-sfx-data.asm"
 
