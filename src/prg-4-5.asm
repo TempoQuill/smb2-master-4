@@ -124,7 +124,7 @@ Pulse2SFXPointersLo:
 	.db <Pulse2SFXData_Coin
 	.db <Pulse2SFXData_Shrink
 	.db <Pulse2SFXData_Injury
-	.db <Pulse2SFXData_Watch
+	.db <Pulse2SFXData_Throw
 	.db <Pulse2SFXData_HawkUp
 	.db <Pulse2SFXData_HawkDown
 
@@ -134,7 +134,7 @@ Pulse2SFXPointersHi:
 	.db >Pulse2SFXData_Coin
 	.db >Pulse2SFXData_Shrink
 	.db >Pulse2SFXData_Injury
-	.db >Pulse2SFXData_Watch
+	.db >Pulse2SFXData_Throw
 	.db >Pulse2SFXData_HawkUp
 	.db >Pulse2SFXData_HawkDown
 
@@ -142,7 +142,7 @@ Pulse2SFXVolumes:
 	.db $99, $9F, $9F, $1F, $1F, $9F, $1F, $1F
 
 Pulse2SFXEnvelopes:
-	.db $87, $81, $84, $00, $00, $82, $00, $00
+	.db $87, $81, $84, $00, $00, $80, $00, $00
 
 .include "src/music/sound-effects/pulse-1-sfx-data.asm"
 
@@ -160,19 +160,12 @@ ProcessHillSFX_Part2:
 	CMP iHillBossPriority
 	BNE ProcessHillSFX_Part3
 
-ProcessHillSFX_SkipPriority
+ProcessHillSFX_SkipPriority:
 	STA iCurrentHillSFX
 	LDY #0
 	STY iHillSFXOffset
-	LSR A
-	BCS ProcessHillSFX_DesignatePointer
-
-ProcessHillSFX_PointerLoop:
-	INY
-	LSR A
-	BCC ProcessHillSFX_PointerLoop
-
-ProcessHillSFX_DesignatePointer:
+	TAY
+	DEY
 	LDA HillSFXPointersLo, Y
 	STA zHillIndexPointer
 	LDA HillSFXPointersHi, Y
@@ -217,21 +210,23 @@ HillSFXPointersLo:
 	.db <HillSFXData_Jump
 	.db <HillSFXData_Vine
 	.db <HillSFXData_Cherry
-	.db <HillSFXData_Throw
+	.db <HillSFXData_Watch
 	.db <HillSFXData_Fall
 	.db <HillSFXData_Mushroom
 	.db <HillSFXData_LampBossDeath
 	.db <HillSFXData_Select
+	.db <HillSFXData_Fireball
 
 HillSFXPointersHi:
 	.db >HillSFXData_Jump
 	.db >HillSFXData_Vine
 	.db >HillSFXData_Cherry
-	.db >HillSFXData_Throw
+	.db >HillSFXData_Watch
 	.db >HillSFXData_Fall
 	.db >HillSFXData_Mushroom
 	.db >HillSFXData_LampBossDeath
 	.db >HillSFXData_Select
+	.db >HillSFXData_Fireball
 
 HillSFXLinears:
 	.db $81

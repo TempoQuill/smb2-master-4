@@ -57,6 +57,19 @@ APUOffset_Triangle = $08
 APUOffset_Noise = $0C
 .ende
 
+RC_ = $0d5b
+RC# = $0c9c
+RD_ = $0be6
+RD# = $0b3b
+RE_ = $0a9a
+RF_ = $0a01
+RF# = $0972
+RG_ = $08ea
+RG# = $086a
+RA_ = $07f1
+RA# = $077f
+RB_ = $0713
+
 .enum $0001
 ; enum Music
 Music_Overworld:
@@ -175,12 +188,13 @@ ControllerInput_A = %10000000
 ; enum Hill (width 1 byte)
 Hill_Jump = $01
 Hill_Vine = $02
-Hill_Cherry = $04
-Hill_Throw = $08
-Hill_Fall = $10
-Hill_Grow = $20
-Hill_LampBossDeath = $40
-Hill_Select = $80
+Hill_Cherry = $03
+Hill_Throw = $04
+Hill_Fall = $05
+Hill_Grow = $06
+Hill_LampBossDeath = $07
+Hill_Select = $08
+Hill_Fireball = $09
 .ende
 
 ; ---------------------------------------------------------------------------
@@ -361,11 +375,6 @@ WarpUpdateBuffer_FinalPalettes = $06
 ; ---------------------------------------------------------------------------
 
 ; enum SoundEffect2 (width 1 byte)
-SoundEffect2_Jump = $01
-SoundEffect2_Climbing = $02
-SoundEffect2_IntroFallSlide = $10
-SoundEffect2_Growing = $20
-
 SoundEffect2_StopSlot = $01
 SoundEffect2_1UP = $02
 SoundEffect2_CoinGet = $04

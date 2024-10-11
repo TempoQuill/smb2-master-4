@@ -1,3 +1,13 @@
+MACRO pulse_note pitch, octave, length
+t = ((pitch >> octave) | $0800) - 1
+	.dh t
+	.dl t
+	REPT length - 1
+		.db $40
+	ENDR
+ENDM
+
+
 Pulse2SFXData_StopSlot:
 IFNDEF PAL
 	.db $08, $46, $40, $40
@@ -122,31 +132,19 @@ REPT 3
 ENDR
 	.db $00
 
-Pulse2SFXData_Watch:
+Pulse2SFXData_Throw:
 IFNDEF PAL
-	.db $F8
-	.db $08, $54, $40, $40, $40, $40
-	.db      $40, $40, $40, $40, $40
-	.db $FB
-	.db $08, $6A, $40, $40
-	.db      $40, $40
-	.db $F8
-	.db $08, $5F, $40, $40
-	.db      $40, $40
-	.db $08, $8E, $40, $40, $40, $40
-	.db      $40, $40, $40, $40, $40, $40
+	pulse_note RC_, 6, 3
+	pulse_note RD_, 6, 3
+	pulse_note RE_, 6, 3
+	pulse_note RF_, 6, 3
+	pulse_note RG_, 6, 3
 ELSE
-	.db $F8
-	.db $08, $4E, $40, $40, $40
-	.db      $40, $40, $40, $40
-	.db $08, $63, $40, $40
-	.db $FB
-	.db      $40
-	.db $F8
-	.db $08, $58, $40, $40
-	.db      $40, $40
-	.db $08, $84, $40, $40, $40
-	.db      $40, $40, $40, $40
+	pulse_note RC_, 6, 2
+	pulse_note RD_, 6, 3
+	pulse_note RE_, 6, 2
+	pulse_note RF_, 6, 3
+	pulse_note RG_, 6, 2
 ENDIF
 	.db $00
 

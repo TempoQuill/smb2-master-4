@@ -286,8 +286,8 @@ ENDIF
 	AND #$1F
 	BNE AreaMainRoutine_DecrementStopwatch
 
-	LDY #SoundEffect2_Watch
-	STY iPulse2SFX
+	LDY #Hill_Throw
+	STY iHillSFX
 
 AreaMainRoutine_DecrementStopwatch:
 	LSR A

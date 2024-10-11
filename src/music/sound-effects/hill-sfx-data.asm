@@ -1,3 +1,17 @@
+MACRO hill_note pitch, octave, length
+	REPT length
+	t = ((pitch >> octave) | $0800) - 1
+		.dh t
+		.dl t
+	ENDR
+ENDM
+
+MACRO hill_rest length
+	REPT length
+		.db $07, $Ff
+	ENDR
+ENDM
+
 HillSFXData_Jump:
 IFNDEF PAL
 	.db $08, $5B
@@ -21,176 +35,146 @@ ENDIF
 
 HillSFXData_Mushroom:
 IFNDEF PAL
-	.db $08, $69
-	.db $08, $8D
-	.db $07, $FF
-	.db $08, $69
-	.db $07, $FF
-	.db $08, $53
-	.db $07, $FF
-	.db $08, $46
-	.db $08, $34
-	.db $07, $FF
-	.db $08, $46
-	.db $07, $FF
-
-	.db $08, $85
-	.db $07, $FF
-	.db $08, $69
-	.db $08, $58
-	.db $07, $FF
-	.db $08, $42
-	.db $07, $FF
-	.db $08, $58
-	.db $07, $FF
-	.db $08, $42
-	.db $08, $34
-	.db $07, $FF
-	.db $08, $2B
-	.db $07, $FF
-	.db $08, $20
-	.db $07, $FF
-	.db $08, $2B
-
-	.db $08, $76
-	.db $07, $FF
-	.db $08, $5E
-	.db $07, $FF
-	.db $08, $4F
-	.db $07, $FF
-	.db $08, $3A
-	.db $08, $4F
-	.db $07, $FF
-	.db $08, $3A
-	.db $07, $FF
-	.db $08, $2E
-	.db $07, $FF
-	.db $08, $27
-	.db $08, $1C
-	.db $07, $FF
-	.db $08, $27
+	hill_note RC_, 5, 1
+	hill_note RG_, 4, 1
+	hill_rest 1
+	hill_note RC_, 5, 1
+	hill_rest 1
+	hill_note RE_, 5, 1
+	hill_rest 1
+	hill_note RG_, 5, 1
+	hill_note RC_, 6, 1
+	hill_rest 1
+	hill_note RG_, 5, 1
+	hill_rest 1
+	hill_note RG#, 4, 1
+	hill_rest 1
+	hill_note RC_, 5, 1
+	hill_note RD#, 5, 1
+	hill_rest 1
+	hill_note RG#, 5, 1
+	hill_rest 1
+	hill_note RD#, 5, 1
+	hill_rest 1
+	hill_note RG#, 5, 1
+	hill_note RC_, 6, 1
+	hill_rest 1
+	hill_note RD#, 6, 1
+	hill_rest 1
+	hill_note RG#, 6, 1
+	hill_rest 1
+	hill_note RD#, 6, 1
+	hill_note RA#, 4, 1
+	hill_rest 1
+	hill_note RD_, 5, 1
+	hill_rest 1
+	hill_note RF_, 5, 1
+	hill_rest 1
+	hill_note RA#, 5, 1
+	hill_note RF_, 5, 1
+	hill_rest 1
+	hill_note RA#, 5, 1
+	hill_rest 1
+	hill_note RD_, 6, 1
+	hill_rest 1
+	hill_note RF_, 6, 1
+	hill_note RA#, 6, 1
+	hill_rest 1
+	hill_note RF_, 6, 1
 ELSE
-	.db $08, $62
-	.db $08, $83
-	.db $08, $62
-	.db $07, $FF
-	.db $08, $4D
-	.db $08, $41
-	.db $07, $FF
-	.db $08, $30
-	.db $08, $41
-	.db $07, $FF
-
-	.db $08, $7C
-	.db $08, $62
-	.db $07, $FF
-	.db $08, $52
-	.db $08, $3D
-	.db $08, $52
-	.db $07, $FF
-	.db $08, $3D
-	.db $08, $30
-	.db $07, $FF
-	.db $08, $28
-	.db $08, $1E
-	.db $07, $FF
-	.db $08, $28
-
-	.db $08, $6E
-	.db $07, $FF
-	.db $08, $57
-	.db $08, $49
-	.db $08, $36
-	.db $07, $FF
-	.db $08, $49
-	.db $08, $36
-	.db $07, $FF
-	.db $08, $2B
-	.db $08, $24
-	.db $07, $FF
-	.db $08, $1A
-	.db $08, $24
+	hill_note RC_, 5, 1
+	hill_note RG_, 4, 1
+	hill_note RC_, 5, 1
+	hill_rest 1
+	hill_note RE_, 5, 1
+	hill_note RG_, 5, 1
+	hill_rest 1
+	hill_note RC_, 6, 1
+	hill_note RG_, 5, 1
+	hill_rest 1
+	hill_note RG#, 4, 1
+	hill_note RC_, 5, 1
+	hill_rest 1
+	hill_note RD#, 5, 1
+	hill_note RG#, 5, 1
+	hill_note RD#, 5, 1
+	hill_rest 1
+	hill_note RG#, 5, 1
+	hill_note RC_, 6, 1
+	hill_rest 1
+	hill_note RD#, 6, 1
+	hill_note RG#, 6, 1
+	hill_rest 1
+	hill_note RD#, 6, 1
+	hill_note RA#, 4, 1
+	hill_rest 1
+	hill_note RD_, 5, 1
+	hill_note RF_, 5, 1
+	hill_note RA#, 5, 1
+	hill_rest 1
+	hill_note RF_, 5, 1
+	hill_note RA#, 5, 1
+	hill_rest 1
+	hill_note RD_, 6, 1
+	hill_note RF_, 6, 1
+	hill_rest 1
+	hill_note RA#, 6, 1
+	hill_note RF_, 6, 1
 ENDIF
 	.db $00
 
 HillSFXData_LampBossDeath:
 IFNDEF PAL
-	.db $08, $C8
-	.db $08, $BD
-	.db $07, $FF
-	.db $08, $B2
-	.db $07, $FF
-	.db $08, $A8
-	.db $07, $FF
-	.db $08, $9F
-	.db $08, $96
-	.db $07, $FF
-	.db $08, $8D
-	.db $07, $FF
-	.db $08, $85
-	.db $07, $FF
-	.db $08, $9F
-	.db $08, $96
-	.db $07, $FF
-	.db $08, $8D
-	.db $07, $FF
-	.db $08, $85
-	.db $07, $FF
-	.db $08, $9F
-	.db $08, $96
-	.db $07, $FF
-	.db $08, $8D
-	.db $07, $FF
-	.db $08, $85
-	.db $07, $FF
-	.db $08, $9F
-	.db $08, $96
-	.db $07, $FF
-	.db $08, $8D
-	.db $07, $FF
-	.db $08, $85
-	.db $07, $FF
-	.db $08, $9F
-	.db $08, $96
-	.db $07, $FF
-	.db $08, $8D
-	.db $07, $FF
-	.db $08, $85
+	hill_note RC#, 4, 1
+	hill_note RD_, 4, 1
+	hill_rest 1
+	hill_note RD#, 4, 1
+	hill_rest 1
+	hill_note RE_, 4, 1
+	REPT 5
+		hill_rest 1
+		hill_note RF_, 4, 1
+		hill_note RF#, 4, 1
+		hill_rest 1
+		hill_note RG_, 4, 1
+		hill_rest 1
+		hill_note RG#, 4, 1
+	ENDR
 ELSE
-	.db $08, $BA
-	.db $08, $AF
-	.db $08, $A5
-	.db $07, $FF
-	.db $08, $9C
-	.db $08, $93
-	.db $07, $FF
-	.db $08, $8B
-	.db $08, $83
-	.db $07, $FF
-	.db $08, $7C
-	.db $08, $93
-	.db $07, $FF
-	.db $08, $8B
-	.db $08, $83
-	.db $08, $7C
-	.db $07, $FF
-	.db $08, $93
-	.db $08, $8B
-	.db $07, $FF
-	.db $08, $83
-	.db $08, $7C
-	.db $07, $FF
-	.db $08, $93
-	.db $08, $8B
-	.db $07, $FF
-	.db $08, $83
-	.db $08, $7C
-	.db $08, $93
-	.db $07, $FF
-	.db $08, $8B
-	.db $08, $83
-	.db $07, $FF
-	.db $08, $7C
+	hill_note RC#, 4, 1
+	hill_note RD_, 4, 1
+	hill_note RD#, 4, 1
+	hill_rest 1
+	hill_note RE_, 4, 1
+	hill_note RF_, 4, 1
+	hill_rest 1
+	hill_note RF#, 4, 1
+	hill_note RG_, 4, 1
+	hill_rest 1
+	hill_note RG#, 4, 1
+	hill_note RF_, 4, 1
+	hill_rest 1
+	hill_note RF#, 4, 1
+	hill_note RG_, 4, 1
+	hill_note RG#, 4, 1
+	hill_rest 1
+	hill_note RF_, 4, 1
+	hill_note RF#, 4, 1
+	hill_rest 1
+	hill_note RG_, 4, 1
+	hill_note RG#, 4, 1
+	hill_rest 1
+	hill_note RF_, 4, 1
+	hill_note RF#, 4, 1
+	hill_rest 1
+	hill_note RG_, 4, 1
+	hill_note RG#, 4, 1
+	hill_note RF_, 4, 1
+	hill_rest 1
+	hill_note RF#, 4, 1
+	hill_note RG_, 4, 1
+	hill_rest 1
+	hill_note RG#, 4, 1
 ENDIF
 	.db $00
 
@@ -212,51 +196,34 @@ ELSE
 ENDIF
 	.db $00
 
-HillSFXData_Throw:
+HillSFXData_Watch:
 IFNDEF PAL
-	.db $08, $19
-	.db $08, $19
-	.db $07, $FF
-	.db $08, $16
-	.db $08, $16
-	.db $07, $FF
-	.db $08, $14
-	.db $08, $14
-	.db $07, $FF
-	.db $08, $13
-	.db $08, $13
-	.db $07, $FF
-	.db $08, $10
-	.db $08, $10
+	hill_note RE_, 6, 3
+	hill_rest 6
+	hill_note RC_, 6, 3
+	hill_rest 2
+	hill_note RD_, 6, 3
+	hill_rest 2
+	hill_note RG_, 5, 3
 ELSE
-	.db $08, $17
-	.db $07, $FF
-	.db $08, $15
-	.db $08, $15
-	.db $07, $FF
-	.db $08, $12
-	.db $07, $FF
-	.db $08, $11
-	.db $08, $11
-	.db $07, $FF
-	.db $08, $0F
-	.db $08, $0F
+	hill_note RE_, 6, 2
+	hill_rest 6
+	hill_note RC_, 6, 2
+	hill_rest 2
+	hill_note RD_, 6, 2
+	hill_rest 3
+	hill_note RG_, 5, 3
 ENDIF
 	.db $00
 
 HillSFXData_Cherry:
+	hill_note RA_, 6, 1
 IFNDEF PAL
-	.db $08, $1E
-	.db $07, $FF
-	.db $08, $29
-	.db $07, $FF
-	.db $08, $20
-ELSE
-	.db $08, $1C
-	.db $08, $26
-	.db $07, $FF
-	.db $08, $1E
+	hill_rest 1
 ENDIF
+	hill_note RE_, 6, 1
+	hill_rest 1
+	hill_note RG#, 6, 1
 	.db $00
 
 HillSFXData_Fall:
@@ -333,25 +300,19 @@ ENDIF
 	.db $00
 
 HillSFXData_Select:
-IFNDEF PAL
-	REPT 2
-		.db $08, $19
-		.db $07, $FF
-		.db $08, $20
-		.db $07, $FF
-	ENDR
-	.db $08, $19
-	.db $07, $FF
-	.db $08, $20
-ELSE
-	REPT 2
-		.db $08, $17
-		.db $07, $FF
-		.db $08, $1E
-		.db $07, $FF
-	ENDR
-	.db $08, $17
-	.db $07, $FF
-	.db $08, $1E
-ENDIF
+REPT 2
+	hill_note RC_, 7, 1
+	hill_rest 1
+	hill_note RG#, 6, 1
+	hill_rest 1
+ENDR
+	hill_note RC_, 7, 1
+	hill_rest 1
+	hill_note RG#, 6, 1
+	.db $00
+
+HillSFXData_Fireball:
+	hill_note RG#, 5, 1
+	hill_note RC_, 6, 1
+	hill_note RF#, 6, 1
 	.db $00

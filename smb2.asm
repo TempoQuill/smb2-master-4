@@ -47,12 +47,14 @@ IFNDEF NSF_FILE
 	; Banks 0 and 1. Basically potpourri.
 	; Lots of crap everywhere.
 	; Title screen and some other stuff too.
+	; Just shy of 4K of space left
 	.base $8000
 	.include "src/prg-0-1.asm"
 	.pad $c000, $00
 
 	; ----------------------------------------
 	; Banks 2 and 3. Enemy/object code.
+	; Nearly full, more than 15K of code/data
 	.base $8000
 	.include "src/prg-2-3.asm"
 	.pad $c000, $00
@@ -60,17 +62,29 @@ ENDIF
 
 ; ----------------------------------------
 ; Banks 4 and 5. Music engine and song data.
+; Can only take up 8K, and really just takes up roughly 5K
 .base $8000
 .include "src/prg-4-5.asm"
 .pad $c000, $00
 
 IFNDEF NSF_FILE
+	; Proceeding banks are quite sparce.  These
+	; likely had graphics data when the MMC1 was
+	; still used.  With the move to fancier
+	; hardware, there was no more need for CHR RAM
+	; as the chunks of graphics became smaller and
+	; more numerous, and R&D4 simply migrated the
+	; graphics to CHR ROM without moving PRG data
+
+	; If so inclined, the vanilla game could have
+	; its free space counted to see if a smaller
+	; ROM size is possible by condensing code.
 	; ----------------------------------------
 	; Bank 6 and 7. Level handling ode, I think.
 	; Hmm, I wonder how this actually works when
 	; dealing with the fact the level data is
 	; in another bank...
-	; Bank 7 is empty
+	; Bank 7 is empty - just shy of 10K available
 	.base $8000
 	.include "src/prg-6-7.asm"
 	.pad $c000, $00
@@ -78,6 +92,7 @@ IFNDEF NSF_FILE
 	; ----------------------------------------
 	; Bank 8 and 9. Entirely level data.
 	; Some more unused space as usual.
+	; Roughly 4K is available
 	.base $8000
 	.include "src/prg-8-9.asm"
 	.pad $c000, $00
@@ -86,6 +101,7 @@ IFNDEF NSF_FILE
 	; Banks A and B. Mostly bonus chance,
 	; character stats, and some PPU commands.
 	; Lots of empty space here too
+	; An astounding 13K+ free
 	.base $8000
 	.include "src/prg-a-b.asm"
 	.pad $c000, $00
@@ -94,6 +110,7 @@ IFNDEF NSF_FILE
 	; Banks C and D. The first half is
 	; a lot of data for the credits.
 	; The second half is empty.
+	; Takes up less than 6K
 	.base $8000
 	.include "src/prg-c-d.asm"
 	.pad $c000, $00

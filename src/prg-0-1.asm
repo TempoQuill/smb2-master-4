@@ -1892,7 +1892,7 @@ SetObjectLocks_Loop:
 
 GrowShrinkSFXIndexes:
 	.db SoundEffect2_Shrinking
-	.db SoundEffect2_Growing
+	.db Hill_Grow
 
 
 HandlePlayerState:
@@ -3064,8 +3064,8 @@ loc_BANK0_8E42:
 	LDA #$0A
 	STA zWalkCycleTimer
 	DEC zHeldItem
-	LDA #Hill_Throw
-	STA iHillSFX
+	LDA #SoundEffect2_Watch
+	STA iPulse2SFX
 	LDA #$00
 	STA zPlayerHitBoxHeight
 	STA zInputBottleneck
@@ -6088,8 +6088,8 @@ FreeSubconsScene_Subcons_Loop:
 	CMP #$01
 	BNE FreeSubconsScene_Subcons_Next
 
-	LDA #Hill_Throw
-	STA iHillSFX
+	LDA #SoundEffect2_Watch
+	STA iPulse2SFX
 	BNE FreeSubconsScene_Subcons_Next
 
 FreeSubconsScene_Subcons_Movement:
