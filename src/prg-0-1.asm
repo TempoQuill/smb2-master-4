@@ -8024,9 +8024,18 @@ RunSaveFileMenu_StartLoop:
 	JSR InitNewGame
 	JMP loc_BANK0_9C1F
 
+SaveDataCopypasta_Fail:
+	JMP RunSaveFileMenu
+
 SaveDataCopypasta:
+	LDA #Hill_LampBossDeath
+	STA iHillSFX
+	JSR CheckSaveIfCorruptOrBlank
+	BCS SaveDataCopypasta_Fail
 	LDA #SoundEffect3_Stomp
 	STA iNoiseDrumSFX
+	LDA #0
+	STA iHillSFX
 	LDA mPRGRAMBank
 	STA mCopypastaSource
 	STA mCopypastaTarget
@@ -8054,7 +8063,7 @@ SaveDataCopypasta_Loop:
 
 SaveDataCopypasta_Left:
 	LDA mCopypastaTarget
-	CMP #$D0
+	CMP #$D1
 	BCC SaveDataCopypasta_Loop
 	DEC mCopypastaTarget
 	DEC mPRGRAMBank
