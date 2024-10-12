@@ -5086,12 +5086,12 @@ TitleStoryText_Line14:
 	.db $FB, $FB, $FB, $FB ; IN HIS DREAM....
 
 TitleStoryText_Line15:
-	.db $EC, $ED, $DA, $EB, $ED, $FB, $F4, $FB, $E7, $DE, $F0, $FB, $E0, $DA, $E6, $DE
-	.db $FB, $FB, $FB, $FB ; START - NEW GAME
+	.db $ED, $E8, $FB, $E9, $EB, $E8, $DC, $DE, $DE, $DD, $F7, $FB, $E9, $EB, $DE, $EC
+	.db $EC, $FB, $DA, $FB ; TO PROCEED, PRESS A
 
 TitleStoryText_Line16:
-	.db $FB, $DA, $B9, $DB, $FB, $F4, $FB, $E5, $E8, $DA, $DD, $FB, $E0, $DA, $E6, $DE
-	.db $FB, $FB, $FB, $FB ; B+A - LOAD GAME
+	.db $FB, $E8, $EB, $FB, $EC, $ED, $DA, $EB, $ED, $F6, $FB, $FB, $FB, $FB, $FB, $FB
+	.db $FB, $FB, $FB, $FB ; OR START
 
 TitleAttributeData1:
 	.db $23, $CB, $42, $FF
