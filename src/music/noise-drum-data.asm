@@ -103,3 +103,18 @@ NoiseDrumData_OWSnare:
 	.db $12, $7E
 	.db $11, $7E
 	.db $00
+
+NoiseSFX_Stomp:
+	.db $17,$09
+	.db $16,$07
+	.db $15,$05
+	.db $14,$04
+	.db $13,$03
+	.db $12,$02
+	.db $1f,$08
+	.db $19,$7E
+	.db $17,$7E
+	.db $15,$7E
+	.db $14,$7E
+	.db $13,$7E
+	.db $00

@@ -195,6 +195,7 @@ Hill_Grow = $06
 Hill_LampBossDeath = $07
 Hill_Select = $08
 Hill_Fireball = $09
+Hill_SpinJump = $0A
 .ende
 
 ; ---------------------------------------------------------------------------
@@ -437,6 +438,8 @@ SoundEffect3_WartSmokePuff:
 SoundEffect3_DrumRoll:
 	.dsb 1
 SoundEffect3_RocketHiss:
+	.dsb 1
+SoundEffect3_Stomp:
 	.dsb 1
 NUM_NOISE_TRACKS:
 NUM_NOISE_SFX = NUM_NOISE_TRACKS - NOISE_SFX

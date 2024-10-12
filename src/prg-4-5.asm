@@ -216,6 +216,7 @@ HillSFXPointersLo:
 	.db <HillSFXData_LampBossDeath
 	.db <HillSFXData_Select
 	.db <HillSFXData_Fireball
+	.db <HillSFXData_SpinJump
 
 HillSFXPointersHi:
 	.db >HillSFXData_Jump
@@ -227,6 +228,7 @@ HillSFXPointersHi:
 	.db >HillSFXData_LampBossDeath
 	.db >HillSFXData_Select
 	.db >HillSFXData_Fireball
+	.db >HillSFXData_SpinJump
 
 HillSFXLinears:
 	.db $81 ; jump
@@ -238,6 +240,7 @@ HillSFXLinears:
 	.db $03 ; lamp
 	.db $03 ; select
 	.db $03 ; fireball
+	.db $03 ; spin jump
 
 .include "src/music/sound-effects/hill-sfx-data.asm"
 

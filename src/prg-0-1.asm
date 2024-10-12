@@ -1,3 +1,15 @@
+SAVE_MENU_INIT_INDEX_MAX = SaveFileInit_PacketEnd - SaveFileInit_Packet
+SAVE_MENU_BUFFER_INDEX_MAX = (SaveFilePPUDataCopypastaPointer - SaveFilePPUDataPointers) / 2
+SAVE_MENU_BFR_RAM = 0
+SAVE_MENU_BFR_8 = 1
+SAVE_MENU_BFR_7 = 2
+SAVE_MENU_BFR_6 = 3
+SAVE_MENU_BFR_5 = 4
+SAVE_MENU_BFR_4 = 5
+SAVE_MENU_BFR_3 = 6
+SAVE_MENU_BFR_2 = 7
+SAVE_MENU_BFR_1 = 8
+SAVE_MENU_BFR_ATTRIBUTES = 9
 ;
 ; Bank 0 & Bank 1
 ; ===============
@@ -4741,7 +4753,26 @@ PageHeightCompensation_Exit:
 TitleScreenPPUDataPointers:
 	.dw iPPUBuffer
 	.dw TitleLayout
+SaveFilePPUDataPointers:
+	.dw mLoadedDataBuffer
+	.dw SaveFileLayout8
+	.dw SaveFileLayout7
+	.dw SaveFileLayout6
+	.dw SaveFileLayout5
+	.dw SaveFileLayout4
+	.dw SaveFileLayout3
+	.dw SaveFileLayout2
+	.dw SaveFileLayout1
+	.dw SaveFileAttributes
+SaveFilePPUDataCopypastaPointer:
+	.dw SaveFileCopypastaData
 
+WaitForNMI_SaveFileMenu:
+	LDX mLoadedDataBufferIndex
+	INX
+	INX
+	STX zScreenUpdateIndex
+	BNE WaitForNMI_TitleScreen
 
 WaitForNMI_TitleScreen_TurnOnPPU:
 	LDA #PPUMask_ShowLeft8Pixels_BG | PPUMask_ShowLeft8Pixels_SPR | PPUMask_ShowBackground | PPUMask_ShowSprites
@@ -5180,16 +5211,16 @@ InitTitleBackgroundPalettesLoop:
 	LDA #$25
 	STA zTitleScreenTimer
 	LDA #$20
-	STA zPlayerXHi
+	STA zTitleScreePPUClearAddress
 	LDA #$C7
-	STA zObjectXHi
+	STA zTitleScreePPUClearAddress + 1
 	LDA #$52
-	STA zObjectXHi + 1
+	STA zTitleScreePPUClearSizeRLE
 
 loc_BANK0_9AB4:
 	JSR WaitForNMI_TitleScreen
 
-	LDA zObjectXHi + 2
+	LDA zTitleScreePPUClearInc
 	BNE loc_BANK0_9AF3
 
 loc_BANK0_9ABB:
@@ -5198,60 +5229,62 @@ loc_BANK0_9ABB:
 	AND #$0F
 	BEQ loc_BANK0_9AC6
 
-	JMP loc_BANK0_9B4D
+	JMP HandleTitleScreenInputs
 
 ; ---------------------------------------------------------------------------
 
 loc_BANK0_9AC6:
-	DEC z02
-	LDA z02
+	DEC zTitleScreenTimer
+	LDA zTitleScreenTimer
 	CMP #$06
-	BNE loc_BANK0_9B4D
+	BNE HandleTitleScreenInputs
 
-	INC zObjectXHi + 2
-	LDA zPlayerXHi
+	INC zTitleScreePPUClearInc
+	LDA zTitleScreePPUClearAddress
 	STA iPPUBuffer
-	LDA zObjectXHi
+	LDA zTitleScreePPUClearAddress + 1
 	STA iPPUBuffer + 1
-	LDA zObjectXHi + 1
+	LDA zTitleScreePPUClearSizeRLE
 	STA iPPUBuffer + 2
+	; adjust pointer
 	LDA #$E6
-	STA zObjectXHi
+	STA zTitleScreePPUClearAddress + 1
+	; adjust rle
 	LDA #$54
-	STA zObjectXHi + 1
-	LDA #$0FB
+	STA zTitleScreePPUClearSizeRLE
+	LDA #$FB ; empty tile
 	STA iPPUBuffer + 3
-	LDA #$00
+	LDA #$00 ; terminator
 	STA iPPUBuffer + 4
-	BEQ loc_BANK0_9B4D
+	BEQ HandleTitleScreenInputs
 
 loc_BANK0_9AF3:
-	LDA zPlayerXHi
+	LDA zTitleScreePPUClearAddress
 	STA iPPUBuffer
-	LDA zObjectXHi
+	LDA zTitleScreePPUClearAddress + 1
 	STA iPPUBuffer + 1
-	LDA zObjectXHi + 1
+	LDA zTitleScreePPUClearSizeRLE
 	STA iPPUBuffer + 2
-	LDA #$0FB
+	LDA #$FB ; empty tile
 	STA iPPUBuffer + 3
-	LDA #$00
+	LDA #$00 ; terminator
 	STA iPPUBuffer + 4
-	LDA zObjectXHi
+	LDA zTitleScreePPUClearAddress + 1
 	CLC
 	ADC #$20
-	STA zObjectXHi
-	LDA zPlayerXHi
+	STA zTitleScreePPUClearAddress + 1
+	LDA zTitleScreePPUClearAddress
 	ADC #$00
-	STA zPlayerXHi
+	STA zTitleScreePPUClearAddress
 	CMP #$23
 
 loc_BANK0_9B1B:
-	BCC loc_BANK0_9B4D
+	BCC HandleTitleScreenInputs
 
 	LDA #$20
 	STA z10
-	LDX #$17
-	LDY #$00
+	LDX #$17 ; string length
+	LDY #$00 ; string offset
 
 loc_BANK0_9B25:
 	LDA TitleAttributeData1, Y
@@ -5260,12 +5293,12 @@ loc_BANK0_9B25:
 	DEX
 	BPL loc_BANK0_9B25
 
-	LDA #$00
+	LDA #$00 ; terminator
 	STA iPPUBuffer + 4, Y
 	JSR WaitForNMI_TitleScreen
 
-	LDX #$1B
-	LDY #$00
+	LDX #$1B ; string length
+	LDY #$00 ; string offset
 
 loc_BANK0_9B3B:
 	LDA TitleAttributeData2, Y
@@ -5280,20 +5313,12 @@ loc_BANK0_9B3B:
 
 ; ---------------------------------------------------------------------------
 
-loc_BANK0_9B4D:
+HandleTitleScreenInputs:
 	LDA zInputBottleneck
-	AND #ControllerInput_A | ControllerInput_B
-	BNE LoadSave
-
-	LDA zInputBottleneck
-	AND #ControllerInput_Start
+	AND #ControllerInput_Start | ControllerInput_A
 	BEQ loc_BANK0_9B56
-	JSR InitNewGame
-	JMP loc_BANK0_9C1F
-
-LoadSave:
-	JSR LoadPreviousGame
-	JMP loc_BANK0_9C1F
+LoadNewGame:
+	JMP SaveFileMenu
 
 ; ---------------------------------------------------------------------------
 
@@ -5308,7 +5333,7 @@ loc_BANK0_9B59:
 	LDA zObjectXHi + 4
 	BEQ loc_BANK0_9B63
 
-	JMP loc_BANK0_9C19
+	JMP HandleCrawlInputs
 
 ; ---------------------------------------------------------------------------
 
@@ -5323,14 +5348,14 @@ loc_BANK0_9B63:
 	DEC z10
 	BMI TitleScreen_WriteSTORYText
 
-	JMP loc_BANK0_9C19
+	JMP HandleCrawlInputs
 
 ; ---------------------------------------------------------------------------
 
 TitleScreen_WriteSTORYText:
 	LDA #$20
 	STA iPPUBuffer
-	LDA #$0AE
+	LDA #$AE
 	STA iPPUBuffer + 1
 	LDA #$05 ; Length of STORY text (5 bytes)
 	STA iPPUBuffer + 2
@@ -5353,11 +5378,11 @@ loc_BANK0_9B93:
 	STA zObjectXHi
 	LDA #$40
 	STA zObjectXHi + 5
-	BNE loc_BANK0_9C19
+	BNE HandleCrawlInputs
 
 loc_BANK0_9BA3:
 	DEC zObjectXHi + 5
-	BPL loc_BANK0_9C19
+	BPL HandleCrawlInputs
 
 loc_BANK0_9BA7:
 	LDA #$40
@@ -5400,12 +5425,12 @@ loc_BANK0_9BCB:
 	STA zPlayerXHi
 	LDA zObjectXHi + 3
 	CMP #$09
-	BCC loc_BANK0_9C19
+	BCC HandleCrawlInputs
 
 	BNE loc_BANK0_9C0B
 
 	LDA #$09
-	STA z02
+	STA zTitleScreenTimer
 	LDA #$03
 	STA z10
 	LDA #$20
@@ -5415,31 +5440,28 @@ loc_BANK0_9BCB:
 	LDA #$52
 	STA zObjectXHi + 1
 	LDA #$00
-	STA zObjectXHi + 2
+	STA zTitleScreePPUClearInc
 	JMP loc_BANK0_9ABB
 
 ; ---------------------------------------------------------------------------
 
 loc_BANK0_9C0B:
 	CMP #$12
-	BCC loc_BANK0_9C19
+	BCC HandleCrawlInputs
 
 	INC zObjectXHi + 4
 	LDA #$25
-	STA z02
+	STA zTitleScreenTimer
 	LDA #$03
 	STA z10
 
-loc_BANK0_9C19:
+HandleCrawlInputs:
 	LDA zInputCurrentState
-	AND #ControllerInput_A | ControllerInput_B
-	BNE LoadSaveGame
-
-	LDA zInputCurrentState
-	AND #ControllerInput_Start
+	AND #ControllerInput_Start | ControllerInput_A
 	BEQ loc_BANK0_9C35
 
-	JSR InitNewGame
+loc_BANK0_9C1C:
+	JMP SaveFileMenu
 
 loc_BANK0_9C1F:
 	LDA #Music_StopMusic
@@ -5459,10 +5481,6 @@ loc_BANK0_9C2A:
 
 	INC iMainGameState
 	RTS
-
-LoadSaveGame:
-	JSR LoadPreviousGame
-	JMP loc_BANK0_9C1F
 
 ; ---------------------------------------------------------------------------
 
@@ -7860,8 +7878,416 @@ PlaceCorkRoomJar_Loop:
 PlaceCorkRoomJar_Exit:
 	RTS
 
-LoadPreviousGame_Corrupt:
+InitSaveFileMenu:
+	LDY #Hill_SpinJump
+	STY iHillSFX
+	LDY #SAVE_MENU_INIT_INDEX_MAX - 1
+	STY mSaveFileInitIndex
+@Loop1:
+	LDY mSaveFileInitIndex
+	LDX #0
+	LDA SaveFileInit_Hi, Y
+	STA iPPUBuffer, X
+	INX
+	LDA SaveFileInit_Lo, Y
+	STA iPPUBuffer, X
+	INX
+	LDA SaveFileInit_Packet, Y
+	STA iPPUBuffer, X
+	INX
+	LDA #$FB
+	STA iPPUBuffer, X
+	INX
+	LDA #$00
+	STA iPPUBuffer, X
+	STA zScreenUpdateIndex
+	JSR WaitForNMI_TitleScreen
+	DEC mSaveFileInitIndex
+	BPL @Loop1
+	LDA #SAVE_MENU_BFR_ATTRIBUTES
+	STA mLoadedDataBufferIndex
+@Loop2:
+	JSR WaitForNMI_SaveFileMenu
+	DEC mLoadedDataBufferIndex
+	BNE @Loop2
+	LDY #SaveFileRAMBufferEnd - SaveFileRAMBuffer
+@Loop3:
+	LDA SaveFileRAMBuffer, Y
+	STA mLoadedDataBuffer, Y
+	DEY
+	BPL @Loop3
+
+CheckSaveIfCorruptOrBlank:
+	LDA mPRGRAMBank
+	AND #$03
+	STA MMC5_PRGBankSwitch1
+	LDA #0
+	STA mLoadedDataBufferIndex
+	JSR LoadPreviousGame
+	BCC RetrieveSaveData
+	JSR ClearSaveData ; show no data if blank or corrupt!
 	JMP InitNewGame
+
+RetrieveSaveData:
+	LDA sBackupExtraMen
+	SEC
+	SBC #1
+	JSR GetTwoDigitNumberTiles
+	STY mLoadedLivesBCD
+	STA mLoadedLivesBCD + 1
+	LDA sBackupWorld
+	CLC
+	ADC #$D1
+	STA mLoadedWorld
+	LDA sBackupLvl
+	SEC
+	SBC sBackupWorld ; assumes three levels per world!
+	SBC sBackupWorld
+	SBC sBackupWorld
+	CLC
+	ADC #$D1
+	STA mLoadedLevelRelative
+	LDY sBackupLifeUpEventFlag
+	LDA LifeUpEventFlagTiles, Y
+	STA mLoaded1upFlagTile
+	RTS
+
+LifeUpEventFlagTiles:
+	.db $FB
+	.db $BA
+
+SaveFileMenu:
+	JSR InitSaveFileMenu
+
+RunSaveFileMenu:
+	JSR WaitForNMI_SaveFileMenu
+
+	LDA zInputBottleneck
+	LSR A ; right - dec file number
+	BCC RunSaveFileMenu_CheckLeft
+	LDY #Hill_Fireball
+	STY iHillSFX
+	LDY mPRGRAMBank
+	CPY #$D3
+	BCS RunSaveFileMenu_CheckLeft
+	INC mPRGRAMBank
+RunSaveFileMenu_CheckLeft:
+	LSR A ; left - inc file number (limit of 4, shown as 3)
+	BCC RunSaveFileMenu_CheckA
+	LDY #Hill_Fireball
+	STY iHillSFX
+	LDY mPRGRAMBank
+	CPY #$D1
+	BCC RunSaveFileMenu_CheckA
+	DEC mPRGRAMBank
+RunSaveFileMenu_CheckA:
+	LDA zInputBottleneck
+	ASL A ; a - load game
+	BCC RunSaveFileMenu_CheckB
+	LDA #Music_StopMusic
+	STA iMusicQueue
+	LDA #SoundEffect2_CoinGet
+	STA iPulse2SFX
+	JSR CheckSaveIfCorruptOrBlank
+RunSaveFileMenu_ALoop:
+	JSR WaitForNMI_SaveFileMenu
+	LDA iCurrentPulse2SFX
+	BNE RunSaveFileMenu_ALoop
+	JMP loc_BANK0_9C1F
+RunSaveFileMenu_CheckB
+	ASL A ; b - delete file
+	BCC RunSaveFileMenu_CheckSelectStart
+	PHA
+	LDA #SoundEffect2_Shrinking
+	STA iPulse2SFX
+	JSR ClearSaveData
+	PLA
+RunSaveFileMenu_CheckSelectStart:
+	; select - copy/paste
+	; start - new game
+	ASL A
+	BCS SaveDataCopypasta
+	BMI RunSaveFileMenu_Start
+	JSR CheckSaveIfCorruptOrBlank
+	JMP RunSaveFileMenu
+
+RunSaveFileMenu_Start:
+	LDA #Music_StopMusic
+	STA iMusicQueue
+	LDA #SoundEffect2_CoinGet
+	STA iPulse2SFX
+	JSR CheckSaveIfCorruptOrBlank
+RunSaveFileMenu_StartLoop:
+	JSR WaitForNMI_SaveFileMenu
+	LDA iCurrentPulse2SFX
+	BNE RunSaveFileMenu_StartLoop
+	JSR InitNewGame
+	JMP loc_BANK0_9C1F
+
+SaveDataCopypasta:
+	LDA #SoundEffect3_Stomp
+	STA iNoiseDrumSFX
+	LDA mPRGRAMBank
+	STA mCopypastaSource
+	STA mCopypastaTarget
+	LDA #SAVE_MENU_BUFFER_INDEX_MAX
+	STA mLoadedDataBufferIndex
+SaveDataCopypasta_Loop:
+	JSR WaitForNMI_SaveFileMenu
+	LDA #0
+	STA mLoadedDataBufferIndex
+	LDA zInputBottleneck
+	AND #ControllerInput_Left | ControllerInput_Right | ControllerInput_A
+	BEQ SaveDataCopypasta_Loop
+	BMI SaveDataCopypasta_A
+	LDY #Hill_Fireball
+	STY iHillSFX
+	LSR A
+	BCC SaveDataCopypasta_Left
+
+	LDA mCopypastaTarget
+	CMP #$D3
+	BCS SaveDataCopypasta_Loop
+	INC mCopypastaTarget
+	INC mPRGRAMBank
+	BCC SaveDataCopypasta_Loop
+
+SaveDataCopypasta_Left:
+	LDA mCopypastaTarget
+	CMP #$D0
+	BCC SaveDataCopypasta_Loop
+	DEC mCopypastaTarget
+	DEC mPRGRAMBank
+	BCS SaveDataCopypasta_Loop
+
+SaveDataCopypasta_A:
+	LDA mCopypastaTarget
+	STA mPRGRAMBank
+	LDA mCopypastaSource
+	AND #$03
+	STA MMC5_PRGBankSwitch1
+	LDY #(SAVE_DATA_WIDTH * 2)
+SaveDataCopypasta_ALoopIn:
+	LDA sSaveData, Y
+	STA mSaveDataBuffer, Y
+	DEY
+	BPL SaveDataCopypasta_ALoopIn
+	LDA #0
+	STA iPPUBuffer
+	STA zPPUDataBufferPointer
+	JSR WaitForNMI_TitleScreen
+	LDA mCopypastaTarget
+	AND #$03
+	STA MMC5_PRGBankSwitch1
+	LDY #(SAVE_DATA_WIDTH * 2)
+SaveDataCopypasta_ALoouOut:
+	LDA mSaveDataBuffer, Y
+	STA sSaveData, Y
+	DEY
+	BPL SaveDataCopypasta_ALoouOut
+	JSR GenerateChecksum
+	JSR GenerateBackupChecksum
+	JSR CheckSaveIfCorruptOrBlank
+	LDA #SAVE_MENU_BFR_2
+	STA mLoadedDataBufferIndex
+	JSR WaitForNMI_SaveFileMenu
+	LDA #SoundEffect2_1UP
+	STA iPulse2SFX
+	LDA #0
+	STA mLoadedDataBufferIndex
+	JMP RunSaveFileMenu
+
+ClearSaveData:
+	LDA #$F4
+	STA mLoadedWorld
+	STA mLoadedLevelRelative
+	STA mLoadedLivesBCD
+	STA mLoadedLivesBCD + 1
+	LDA #$FB
+	STA mLoaded1upFlagTile
+	LDA #0
+	LDY #SAVE_DATA_WIDTH - 1
+@Loop:
+	STA sBackupSaveData, Y
+	STA sSaveData, Y
+	DEY
+	BPL @Loop
+	RTS
+
+SaveFileInit_Packet:
+REPT 16
+	.dl $54
+ENDR
+	.dl $50
+	.dl $50
+	.dl $50
+SaveFileInit_PacketEnd:
+
+SaveFileInit_Lo:
+	.dl $22e6
+	.dl $22c6
+	.dl $22a6
+	.dl $2286
+	.dl $2266
+	.dl $2246
+	.dl $2226
+	.dl $2206
+	.dl $21e6
+	.dl $21c6
+	.dl $21a6
+	.dl $2186
+	.dl $2166
+	.dl $2146
+	.dl $2126
+	.dl $2106
+	.dl $20e8
+	.dl $20c8
+	.dl $20a8
+
+SaveFileInit_Hi:
+	.dh $22e6
+	.dh $22c6
+	.dh $22a6
+	.dh $2286
+	.dh $2266
+	.dh $2246
+	.dh $2226
+	.dh $2206
+	.dh $21e6
+	.dh $21c6
+	.dh $21a6
+	.dh $2186
+	.dh $2166
+	.dh $2146
+	.dh $2126
+	.dh $2106
+	.dh $20e8
+	.dh $20c8
+	.dh $20a8
+
+SaveFileAttributes:
+	.db $23,$C9,(+b - +a)
++a
+	.db     $00,$A0,$A0,$A0,$A0,$00,$00
+	.db $00,$8C,$AF,$AF,$AF,$AF,$23,$00
+	.db $00,$88,$AA,$AA,$AA,$AA,$22,$00
+	.db $00,$CC,$FF,$FF,$FF,$FF,$33,$00
+	.db $00,$CC,$FF,$FF,$FF,$FF,$33,$00
++b
+	.db $00
+
+SaveFileCopypastaData:
+	.db $21,$26,(+b - +a)
++a
+	.db "TARGET"+$99
+	.db $FB
+	.db "FILE"+$99
+	.db $F6, $F6, $F6
+	.db $FB, $FB, $FB
+	.db $F4
++b
+	.db $00
+
+SaveFileLayout1:
+	.db $20,$CB,(+b - +a)
++a
+	.db "SAVE"+$99
+	.db $FB
+	.db "FILES"+$99
++b
+	.db $00
+SaveFileLayout2:
+	.db $21,$26,(+b - +a)
++a
+	.db "LOADED"+$99
+	.db $FB
+	.db "GAME"+$99
+	.db $F6, $F6, $F6
+	.db $FB, $FB, $FB
+	.db $F4
++b
+	.db $00
+
+SaveFileLayout3:
+	.db $21,$66,(+b - +a)
++a
+	.db "LEVEL"+$99
+	.db $F6, $F6, $F6, $F6, $F6, $F6, $F6, $F6, $F6
+	.db $FB, $FB
+	.db $F4, $F4, $F4, $FB
++b
+	.db $00
+
+SaveFileLayout4:
+	.db $21,$a6,(+b - +a)
++a
+	.db "EXTRA"+$99
+	.db $FB
+	.db "MEN"+$99
+	.db $F6, $F6, $F6, $F6, $F6
+	.db $FB, $FB
+	.db $F4, $F4, $FB, $FB
++b
+	.db $00
+
+SaveFileLayout5:
+	.db $22,$26,(+b - +a)
++a
+	.db "B"+$99
+	.db $FB, $F4, $FB
+	.db "DELETE"+$99
+	.db $FB
+	.db "THIS"+$99
+	.db $FB
+	.db "GAME"+$99
++b
+	.db $00
+
+SaveFileLayout6:
+	.db $22,$66,(+b - +a)
++a
+	.db "SELECT"+$99
+	.db $FB, $F4, $FB
+	.db "COPY"+$99
+	.db $B9
+	.db "PASTE"+$99
++b
+	.db $00
+
+SaveFileLayout7:
+	.db $22,$a8,(+b - +a)
++a
+	.db "A"+$99
+	.db $FB, $F4, $FB
+	.db "LOAD"+$99
+	.db $FB
+	.db "THIS"+$99
+	.db $FB
+	.db "GAME"+$99
++b
+	.db $00
+
+SaveFileLayout8:
+	.db $22,$e8,(+b - +a)
++a
+	.db "START"+$99
+	.db $FB, $F4, $FB
+	.db "NEW"+$99
+	.db $FB
+	.db "GAME"+$99
++b
+	.db $00
+
+SaveFileRAMBuffer:
+	.db $21, $37, $01, $D0
+	.db $21, $76, $04, $F4, $F4, $F4, $FB
+	.db $21, $b6, $02, $f4, $f4
+SaveFileRAMBufferEnd:
+	.db $00
+
+LoadPreviousGame_Corrupt:
+	SEC
+	RTS
 
 LoadPreviousGame:
 ; integrity check, make sure backup data matches
@@ -7914,7 +8340,7 @@ LoadPreviousGame_Data:
 	; is the life up flag out of bounds?
 	LDA sLifeUpEventFlag
 	AND #$fe
-	BNE InitNewGame
+	BNE LoadPreviousGame_Corrupt
 	; Yay!  No corruption!
 
 RetrieveBackupData:
@@ -7941,8 +8367,10 @@ RetrieveBackupData_Zeros:
 	DEY
 	BPL RetrieveBackupData_Zeros
 	TAY
-	BEQ InitNewGame
-	RTS
+	CLC
+	BNE +
+	SEC
++	RTS
 
 InitNewGame:
 	LDA #5

@@ -20,6 +20,7 @@ NoiseSFXPointersLo:
 	dl NoiseSFX_WartSmokePuff
 	dl NoiseSFX_DrumRoll
 	dl NoiseSFX_Rocket2
+	dl NoiseSFX_Stomp
 
 NoiseSFXPointersHi:
 	dh NoiseDrumData_ClosedHihat
@@ -43,3 +44,4 @@ NoiseSFXPointersHi:
 	dh NoiseSFX_WartSmokePuff
 	dh NoiseSFX_DrumRoll
 	dh NoiseSFX_Rocket2
+	dh NoiseSFX_Stomp

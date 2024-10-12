@@ -70,11 +70,15 @@ zBreakStartLevelLoop:
 	.dsb 1 ; $0013
 
 ; area is also used for the "Mario sleeping" animation
+; not to mention the title screen
+zTitleScreePPUClearAddress:
 zPlayerXHi:
 	.dsb 1 ; $0014
 zObjectXHi:
 	.dsb 1 ; $0015
+zTitleScreePPUClearSizeRLE:
 	.dsb 1 ; 1                ; $0016
+zTitleScreePPUClearInc:
 	.dsb 1 ; 2                ; $0017
 	.dsb 1 ; 3                ; $0018
 zCursiveDataOffset:
@@ -500,6 +504,7 @@ iPPUBuffer:
 	.dsb 1 ; $0302
 	.dsb 1 ; $0303
 	.dsb 1 ; $0304
+iTitleAttribute
 	.dsb 1 ; $0305
 	.dsb 1 ; $0306
 	.dsb 1 ; $0307
@@ -2041,6 +2046,29 @@ mBonusChanceFlashUpdate:
 	.dsb 1 ; end of buffer area
 mContinueFlag:
 	.dsb 1
+mLoadedDataBufferIndex:
+	.dsb 1
+mLoadedDataBuffer:
+mLoadedGameNoAddress:	.dsb 2 ; $2139
+mLoadedGameSize:	.dsb 1 ; $01
+mPRGRAMBank:		.dsb 1
+mLoadedLevelAddress:	.dsb 2 ; $2176
+mLoadedLevelSize:	.dsb 1 ; $04
+mLoadedWorld:		.dsb 2
+mLoadedLevelRelative:	.dsb 1
+mLoaded1upFlagTile:	.dsb 1
+mLoadedLivesAddress:	.dsb 2 ; $21b6
+mLoadedLivesSize:	.dsb 1 ; $02
+mLoadedLivesBCD:	.dsb 2
+mLoadedDataBufferTerminator:
+	.dsb 1
+mSaveFileInitIndex:
+	.dsb 1
+mCopypastaSource:
+	.dsb 1
+mCopypastaTarget:
+	.dsb 18
+mSaveDataBuffer:
 IFNDEF NSF_FILE
 mSampleCounter = $5ffc
 mFanfareSampleQueue = $5ffd

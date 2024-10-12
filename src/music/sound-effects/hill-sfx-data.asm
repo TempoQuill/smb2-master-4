@@ -316,3 +316,29 @@ HillSFXData_Fireball:
 	hill_note RC_, 6, 1
 	hill_note RF#, 6, 1
 	.db $00
+
+HillSFXData_SpinJump:
+	hill_note RD_, 5, 1
+	hill_note RD#, 5, 1
+	hill_rest 4
+	hill_note RF_, 5, 1
+	hill_rest 1
+	hill_note RF#, 5, 1
+	hill_rest 1
+	hill_note RG_, 5, 1
+	hill_note RG#, 5, 1
+	hill_rest 1
+	hill_note RF_, 5, 1
+	hill_rest 1
+	hill_note RF#, 5, 1
+	hill_note RG_, 5, 1
+	hill_rest 1
+	hill_note RG#, 5, 1
+	hill_rest 1
+	hill_note RF_, 5, 1
+	hill_note RF#, 5, 1
+	hill_rest 1
+	hill_note RG_, 5, 1
+	hill_rest 1
+	hill_note RG#, 5, 1
+	.db $00
