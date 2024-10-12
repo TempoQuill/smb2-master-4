@@ -183,19 +183,32 @@ ControllerInput_Start = %00010000
 ControllerInput_Select = %00100000
 ControllerInput_B = %01000000
 ControllerInput_A = %10000000
+.ende
 
 ; ---------------------------------------------------------------------------
 ; enum Hill (width 1 byte)
-Hill_Jump = $01
-Hill_Vine = $02
-Hill_Cherry = $03
-Hill_Throw = $04
-Hill_Fall = $05
-Hill_Grow = $06
-Hill_LampBossDeath = $07
-Hill_Select = $08
-Hill_Fireball = $09
-Hill_SpinJump = $0A
+.enum $0001
+Hill_Jump:
+	.dsb 1
+Hill_Vine:
+	.dsb 1
+Hill_Cherry:
+	.dsb 1
+Hill_Throw:
+	.dsb 1
+Hill_Fall:
+	.dsb 1
+Hill_Grow:
+	.dsb 1
+Hill_LampBossDeath:
+	.dsb 1
+Hill_Select:
+	.dsb 1
+Hill_Fireball:
+	.dsb 1
+Hill_SpinJump:
+NUM_HILL_SFX:
+NUM_HILL_IDS = NUM_HILL_SFX - 1
 .ende
 
 ; ---------------------------------------------------------------------------

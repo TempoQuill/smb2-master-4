@@ -6,7 +6,7 @@ MACRO nsf_bank_define const
 ENDM
 
 	.db "NESM", $1a, $01
-	.db NUM_MUSIC_TRACKS + NUM_DPCM_SFX + NUM_NOISE_SFX + (NUM_BITWISE_SFX * 2)
+	.db NUM_MUSIC_TRACKS + NUM_HILL_SFX + NUM_DPCM_SFX + NUM_NOISE_SFX + NUM_BITWISE_SFX
 	.db 1  ; track offset
 	.dw StartProcessingSoundQueue
 	.dw PLAY
