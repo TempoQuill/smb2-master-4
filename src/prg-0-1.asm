@@ -7878,12 +7878,24 @@ PlaceCorkRoomJar_Loop:
 PlaceCorkRoomJar_Exit:
 	RTS
 
+;
+; The following four routines are for the save file menu, and the data to go
+; along is mostly referenced by the local update index, with some bits of RAM
+; bait thrown in, mostly just the save data presented by the menu
+;
+; This first one clears out the center area of the title screen, then prints
+; out the menu line by line, as per VBlank rules.  A resulting quirk is that
+; the template data can be seen for a few frames as the menu is being
+; constructed before the save data fills in the blanks
+;
 InitSaveFileMenu:
 	LDY #Hill_SpinJump
 	STY iHillSFX
 	LDY #SAVE_MENU_INIT_INDEX_MAX - 1
 	STY mSaveFileInitIndex
 @Loop1:
+; send RAM bait to clear title screen, one entry at a time
+; this loop runs once a frame
 	LDY mSaveFileInitIndex
 	LDX #0
 	LDA SaveFileInit_Hi, Y
@@ -7904,12 +7916,16 @@ InitSaveFileMenu:
 	JSR WaitForNMI_TitleScreen
 	DEC mSaveFileInitIndex
 	BPL @Loop1
+	; once we finish clearing out the title screen
+	; it's time to construct the menu
 	LDA #SAVE_MENU_BFR_ATTRIBUTES
 	STA mLoadedDataBufferIndex
 @Loop2:
+; runs once a frame
 	JSR WaitForNMI_SaveFileMenu
 	DEC mLoadedDataBufferIndex
 	BNE @Loop2
+	; send the second bit of RAM bait
 	LDY #SaveFileRAMBufferEnd - SaveFileRAMBuffer
 @Loop3:
 	LDA SaveFileRAMBuffer, Y
@@ -7917,36 +7933,50 @@ InitSaveFileMenu:
 	DEY
 	BPL @Loop3
 
+;
+; This is later treated as its own routine, as the initialization routine falls
+; through once loading in the RAM bait to internal mapper RAM.  Our goal here's
+; to fill in the blanks left by the template we've just constructed.
+;
 CheckSaveIfCorruptOrBlank:
+	; make sure the correct RAM bank is loaded in according to the
+	; corresponding number
 	LDA mPRGRAMBank
-	AND #$03
+	AND #$03 ; 32K mask
 	STA MMC5_PRGBankSwitch1
 	LDA #0
-	STA mLoadedDataBufferIndex
+	STA mLoadedDataBufferIndex ; reference the RAM bait
 	JSR LoadPreviousGame
 	BCC RetrieveSaveData
 	JSR ClearSaveData ; show no data if blank or corrupt!
 	JMP InitNewGame
 
 RetrieveSaveData:
+; We land here if the data we load passes integrity checks, that is if data
+; exists the first place.
+	; get the amount of lives we have
 	LDA sBackupExtraMen
-	SEC
+	SEC ; convey as "extra men"
 	SBC #1
+	; retrieve two tiles for decimal equivalent
 	JSR GetTwoDigitNumberTiles
 	STY mLoadedLivesBCD
 	STA mLoadedLivesBCD + 1
+	; fetch world number, display as counting number instead of whole
 	LDA sBackupWorld
 	CLC
 	ADC #$D1
 	STA mLoadedWorld
+	; fetch level number, relative to world
 	LDA sBackupLvl
 	SEC
 	SBC sBackupWorld ; assumes three levels per world!
 	SBC sBackupWorld
 	SBC sBackupWorld
-	CLC
+	CLC ; display as a counting number, not a whole number
 	ADC #$D1
 	STA mLoadedLevelRelative
+	; load the 1up mushroom tile depending on the flag
 	LDY sBackupLifeUpEventFlag
 	LDA LifeUpEventFlagTiles, Y
 	STA mLoaded1upFlagTile
@@ -7956,14 +7986,27 @@ LifeUpEventFlagTiles:
 	.db $FB
 	.db $BA
 
+;
+; This routine is where we land once we press A or Start. It calls
+; initialization, and then gives us a few options to work with
+;
+; Inputs:
+; Left - previous file
+; Right - next file
+; Select - Copy and paste game (called "copypasta" here for humor)
+; Start - New game
+; B - Delete game
+; A - Load game
+;
 SaveFileMenu:
 	JSR InitSaveFileMenu
 
 RunSaveFileMenu:
+; start a fresh frame
 	JSR WaitForNMI_SaveFileMenu
-
+	; comb through inputs
 	LDA zInputBottleneck
-	LSR A ; right - dec file number
+	LSR A ; right - inc file number (limit of 4, shown as 3)
 	BCC RunSaveFileMenu_CheckLeft
 	LDY #Hill_Fireball
 	STY iHillSFX
@@ -7972,7 +8015,7 @@ RunSaveFileMenu:
 	BCS RunSaveFileMenu_CheckLeft
 	INC mPRGRAMBank
 RunSaveFileMenu_CheckLeft:
-	LSR A ; left - inc file number (limit of 4, shown as 3)
+	LSR A ; left - dec file number
 	BCC RunSaveFileMenu_CheckA
 	LDY #Hill_Fireball
 	STY iHillSFX
@@ -8024,23 +8067,39 @@ RunSaveFileMenu_StartLoop:
 	JSR InitNewGame
 	JMP loc_BANK0_9C1F
 
+;
+; "Copy+Paste" function, humorously called "copypasta"
+;
+; We land here by pressing select on the menu. Two things can happen to start:
+; If we don't have valid data, we're immediately booted back to hte menu
+; If we do, we can copy that data to another bank
+;
 SaveDataCopypasta_Fail:
 	JMP RunSaveFileMenu
 
 SaveDataCopypasta:
+	; fail sound
 	LDA #Hill_LampBossDeath
 	STA iHillSFX
 	JSR CheckSaveIfCorruptOrBlank
 	BCS SaveDataCopypasta_Fail
+	; we pass integrity beyond this point
+	; replace the sound
 	LDA #SoundEffect3_Stomp
 	STA iNoiseDrumSFX
 	LDA #0
 	STA iHillSFX
+	; send bank to copypasta queues
 	LDA mPRGRAMBank
 	STA mCopypastaSource
 	STA mCopypastaTarget
+	; "TARGET FILE..."
 	LDA #SAVE_MENU_BUFFER_INDEX_MAX
 	STA mLoadedDataBufferIndex
+; Inputs:
+; Left - previous file
+; Right - next file
+; A - paste to current file
 SaveDataCopypasta_Loop:
 	JSR WaitForNMI_SaveFileMenu
 	LDA #0
@@ -8053,7 +8112,7 @@ SaveDataCopypasta_Loop:
 	STY iHillSFX
 	LSR A
 	BCC SaveDataCopypasta_Left
-
+; right - maximum of 4 (shown as 3)
 	LDA mCopypastaTarget
 	CMP #$D3
 	BCS SaveDataCopypasta_Loop
@@ -8070,49 +8129,62 @@ SaveDataCopypasta_Left:
 	BCS SaveDataCopypasta_Loop
 
 SaveDataCopypasta_A:
+	; set bank as target
 	LDA mCopypastaTarget
 	STA mPRGRAMBank
+	; we need the source bank first
 	LDA mCopypastaSource
 	AND #$03
 	STA MMC5_PRGBankSwitch1
 	LDY #(SAVE_DATA_WIDTH * 2)
 SaveDataCopypasta_ALoopIn:
+	; copy to mapper RAM
 	LDA sSaveData, Y
 	STA mSaveDataBuffer, Y
 	DEY
 	BPL SaveDataCopypasta_ALoopIn
+	; pause updates for one frame
 	LDA #0
 	STA iPPUBuffer
 	STA zPPUDataBufferPointer
 	JSR WaitForNMI_TitleScreen
+	; now we need our target bank
 	LDA mCopypastaTarget
 	AND #$03
 	STA MMC5_PRGBankSwitch1
 	LDY #(SAVE_DATA_WIDTH * 2)
-SaveDataCopypasta_ALoouOut:
+SaveDataCopypasta_ALoopOut:
 	LDA mSaveDataBuffer, Y
 	STA sSaveData, Y
 	DEY
-	BPL SaveDataCopypasta_ALoouOut
+	BPL SaveDataCopypasta_ALoopOut
+	; generate local checksums for integrity
 	JSR GenerateChecksum
 	JSR GenerateBackupChecksum
+	; immediately test the generated checksums
 	JSR CheckSaveIfCorruptOrBlank
+	; "LOADED GAME..."
 	LDA #SAVE_MENU_BFR_2
 	STA mLoadedDataBufferIndex
 	JSR WaitForNMI_SaveFileMenu
+	; We did it! Reward the ears!
 	LDA #SoundEffect2_1UP
 	STA iPulse2SFX
+	; flash the file number again
 	LDA #0
 	STA mLoadedDataBufferIndex
-	JMP RunSaveFileMenu
-
+	JMP RunSaveFileMenu ; now back to your regularly scheduled menu code
+;
+; A sub that clears save data, that is if it's empty, corrupt, or the player
+; just felt like deleting it for some reason.
+;
 ClearSaveData:
-	LDA #$F4
+	LDA #$F4 ; dash
 	STA mLoadedWorld
 	STA mLoadedLevelRelative
 	STA mLoadedLivesBCD
 	STA mLoadedLivesBCD + 1
-	LDA #$FB
+	LDA #$FB ; blank
 	STA mLoaded1upFlagTile
 	LDA #0
 	LDY #SAVE_DATA_WIDTH - 1
@@ -8125,11 +8197,11 @@ ClearSaveData:
 
 SaveFileInit_Packet:
 REPT 16
-	.dl $54
+	.db $54
 ENDR
-	.dl $50
-	.dl $50
-	.dl $50
+	.db $50
+	.db $50
+	.db $50
 SaveFileInit_PacketEnd:
 
 SaveFileInit_Lo:
