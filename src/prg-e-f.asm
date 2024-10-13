@@ -4934,6 +4934,7 @@ RESET_VBlank2Loop:
 ; Switches the current CHR banks
 ;
 ChangeCHRBanks:
+	CLC ; added for lag frames
 	LDA iObjCHR1
 	STA MMC5_CHRBankSwitch1
 
