@@ -4178,35 +4178,65 @@ WarpDestinations:
 	.db $05
 	.db $06
 
-
 ;
 ; Updates joypad press/held values
 ;
+UpdateJoypadsSimple:	
+	JSR ReadJoypads
+	LDX #1
+	JMP UpdateJoypads_Loop
+
 UpdateJoypads:
 	; Work around DPCM sample bug,
 	; where some spurious inputs are read
+	LDA SND_CHN
+	AND #$F0
+	BEQ UpdateJoypadsSimple
 	JSR ReadJoypads
 	LDA zInputBottleneck
-	STA iBackupInput
+	STA iBackupPlayer1Input
+	LDA zInputBottleneck + 1
+	STA iBackupPlayer2Input
 	JSR ReadJoypads
 	LDA zInputBottleneck
-	STA iBackupInput + 1
-	LDX #1
-	EOR iBackupInput
-	BEQ UpdateJoypads_Loop
+	STA iBackupPlayer1Input + 1
+	LDA zInputBottleneck + 1
+	STA iBackupPlayer2Input + 1
+	LDA iBackupPlayer1Input + 1
+	EOR iBackupPlayer1Input
+	BEQ UpdateJoypads_CheckPlayer2
 	TAX
 
-	LDA iBackupInput + 1
+	LDA iBackupPlayer1Input + 1
 	BEQ UpdateJoypads_FoundCorrectInput
-	LDA iBackupInput
+	LDA iBackupPlayer1Input
 	BEQ UpdateJoypads_FoundCorrectInput
 
 	JSR UpdateJoypads_FindDeletion
 
-	LDA iBackupInput, Y
+	LDA iBackupPlayer1Input, Y
 
 UpdateJoypads_FoundCorrectInput:
 	STA zInputBottleneck
+
+UpdateJoypads_CheckPlayer2:
+	LDA iBackupPlayer2Input + 1
+	LDX #1
+	EOR iBackupPlayer2Input
+	BEQ UpdateJoypads_Loop
+	TAX
+	LDA iBackupPlayer2Input + 1
+	BEQ UpdateJoypads_FoundCorrectPlayer2Input
+	LDA iBackupPlayer2Input
+	BEQ UpdateJoypads_FoundCorrectPlayer2Input
+
+	JSR UpdateJoypads_FindDeletionPlayer2
+
+	LDA iBackupPlayer2Input, Y
+
+UpdateJoypads_FoundCorrectPlayer2Input:
+	STA zInputBottleneck + 1
+
 	LDX #1
 
 UpdateJoypads_Loop:
@@ -4220,24 +4250,33 @@ UpdateJoypads_Loop:
 	BPL UpdateJoypads_Loop
 	RTS
 
+UpdateJoypads_FindDeletionPlayer2:
+	TXA
+	AND iBackupPlayer2Input
+	STA iInputPatch
+	TXA
+	AND iBackupPlayer2Input + 1
+	JMP UpdateJoypads_FindDeletion_Common
+
 UpdateJoypads_FindDeletion:
 	TXA
-	AND iBackupInput
-	STA iBackupInput + 2
+	AND iBackupPlayer1Input
+	STA iInputPatch
 	TXA
-	AND iBackupInput + 1
-	STA iBackupInput + 3
+	AND iBackupPlayer1Input + 1
+UpdateJoypads_FindDeletion_Common:
+	STA iInputPatch + 1
 	LDY #0
 UpdateJoypads_FindDeletion_Loop:
-	LSR iBackupInput + 3
+	LSR iInputPatch + 1
 	BCS UpdateJoypads_FindDeletion_Found
 	LDY #1
-	LDA iBackupInput + 3
+	LDA iInputPatch + 1
 	BEQ UpdateJoypads_FindDeletion_Found
-	LSR iBackupInput + 2
+	LSR iInputPatch
 	BCS UpdateJoypads_FindDeletion_Found
 	LDY #0
-	LDA iBackupInput + 2
+	LDA iInputPatch
 	BNE UpdateJoypads_FindDeletion_Loop
 UpdateJoypads_FindDeletion_Found:
 	RTS

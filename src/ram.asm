@@ -767,14 +767,14 @@ iHorScrollBuffer:
 iObjectFlickerer:
 	.dsb 1 ; $0400
 
-iBackupInput:
+iBackupPlayer1Input:
 	.dsb 1 ; $0401
 	.dsb 1 ; $0402
+iBackupPlayer2Input:
 	.dsb 1 ; $0403
 	.dsb 1 ; $0404
-; FOR RENT
+iInputPatch:
 	.dsb 1 ; $0405
-iBonusDrumRoll:
 	.dsb 1 ; $0406
 
 iPlayerXSubpixel:
@@ -837,7 +837,7 @@ iSpriteTempScreenY:
 iHeldItemIndex:
 	.dsb 1 ; $042d
 
-; FOR RENT
+iBonusDrumRoll:
 	.dsb 1 ; $042e
 iObjectBulletTimer:
 	.dsb 1 ; $042f
@@ -1039,7 +1039,6 @@ iSwarmType:
 	.dsb 1 ; $04b9
 ; FOR RENT
 	.dsb 1 ; $04ba
-; FOR RENT
 	.dsb 1 ; $04bb
 iSkyColor:
 	.dsb 1 ; $04bc
