@@ -518,6 +518,8 @@ ENDIF
 	STA DMC_START
 	LDA #$FC
 	STA DMC_LEN
+	LDA #$10
+	STA SND_CHN
 	LDA #$1F
 	STA SND_CHN
 	BNE RunWartDeathSound_Running
