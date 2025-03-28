@@ -11449,7 +11449,7 @@ ItemCarryYOffsets:
 ;
 ; Seems to determine what kind of tile the object has collided with?
 ;
-; Duplicate of subroutine in bank 0: sub_BANK0_924F
+; Duplicate of subroutine in bank 0: JudgeCollidedTile
 ;
 ; Input
 ;   X = object index (0 = player)
