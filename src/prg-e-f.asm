@@ -5081,21 +5081,21 @@ BackUpSaveData_Loop:
 ; except for lives, which is stashed separately to avoid setting carry,
 ; then the sum and life stash is multiplied into the following two bytes.
 ;
-GenerateChecksum:
+ComputeCheckArea:
 	; 2 3-byte strings
 	LDY #3
 	; start with Luigi's saved contributor number
 	LDA sContributors + 3
 	CLC
 
-GenerateChecksum_Loop:
+ComputeCheckArea_Loop:
 	; + Toad's SCN + World
 	; + Peach's SCN + Level Area
 	; + Mario's SCN + Level
 	ADC sContributors, Y
 	ADC sSavedLvl, Y
 	DEY
-	BPL GenerateChecksum_Loop
+	BPL ComputeCheckArea_Loop
 	; stash the sum in byte 0, transfer to Y as well
 	STA sMultiChecksum
 	TAY
@@ -5112,21 +5112,21 @@ GenerateChecksum_Loop:
 	STY sMultiChecksum + 3
 	RTS
 
-GenerateBackupChecksum:
+ComputeBackupCheckArea:
 	; do the backup save
 	; 2 3-byte strings
 	LDY #3
 	; start with Luigi's backup contributor number
 	LDA sBackupContributors + 3
 	CLC
-GenerateBackupChecksum_Loop:
+ComputeBackupCheckArea_Loop:
 	; + Toad's BCN + World
 	; + Peach's BCN + Level Area
 	; + Mario's BCN + Level
 	ADC sBackupContributors, Y
 	ADC sBackupLvl, Y
 	DEY
-	BPL GenerateBackupChecksum_Loop
+	BPL ComputeBackupCheckArea_Loop
 	; stash the sum in byte 0, transfer to Y as well
 	STA sBackupMultiChecksum
 	TAY
@@ -5151,8 +5151,8 @@ EngageSave:
 	BNE EngageSave_Exit
 EngageSave_Save:
 	JSR BackUpSaveData
-	JSR GenerateChecksum
-	JMP GenerateBackupChecksum
+	JSR ComputeCheckArea
+	JMP ComputeBackupCheckArea
 EngageSave_Exit:
 	RTS
 

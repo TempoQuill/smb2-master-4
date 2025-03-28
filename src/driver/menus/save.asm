@@ -279,8 +279,8 @@ SaveDataCopypasta_ALoopOut:
 	DEY
 	BPL SaveDataCopypasta_ALoopOut
 	; generate local checksums for integrity
-	JSR GenerateChecksum
-	JSR GenerateBackupChecksum
+	JSR ComputeCheckArea
+	JSR ComputeBackupCheckArea
 	; immediately test the generated checksums
 	JSR CheckSaveIfCorruptOrBlank
 	; "LOADED GAME..."
@@ -521,7 +521,7 @@ LoadPreviousGame_BackupByte0:
 	CPY sBackupMultiChecksum + 3
 	BNE LoadPreviousGame_Corrupt
 	; checksums
-	JSR GenerateChecksum
+	JSR ComputeCheckArea
 	LDY #3
 LoadPreviousGame_Checksums:
 	LDA sMultiChecksum, Y
@@ -559,7 +559,7 @@ RetrieveBackupData_LoadContributorData:
 	STA iCharacterLevelCount, Y
 	DEY
 	BPL RetrieveBackupData_LoadContributorData
-	JSR GenerateChecksum
+	JSR ComputeCheckArea
 	; now, if all values are zero's, generate a new game
 	LDY #SAVE_DATA_WIDTH - 1
 	LDA sSaveData, Y
