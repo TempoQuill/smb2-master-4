@@ -2540,7 +2540,11 @@ loc_BANK2_8C8E:
 ; ---------------------------------------------------------------------------
 
 EnemyInit_Key:
+IFNDEF FREE_FOR_ALL
 	LDY #$05
+ELSE
+	LDY #$08
+ENDIF
 
 loc_BANK2_8C93:
 	LDA zEnemyState, Y
@@ -2572,7 +2576,11 @@ loc_BANK2_8CAE:
 ; ---------------------------------------------------------------------------
 
 EnemyInit_CrystalBallStarmanStopwatch:
+IFNDEF FREE_FOR_ALL
 	LDY #$05
+ELSE
+	LDY #$08
+ENDIF
 
 loc_BANK2_8CB3:
 	LDA zEnemyState, Y
@@ -3612,7 +3620,11 @@ AttachObjectToBirdo:
 	LDA zObjectVariables, X
 	BNE AttachObjectToBirdo_Skip
 
+IFNDEF FREE_FOR_ALL
 	LDY #$05
+ELSE
+	LDY #$08
+ENDIF
 AttachObjectToBirdo_Loop:
 	LDA zEnemyState, Y
 	CMP #EnemyState_Alive
@@ -3825,11 +3837,16 @@ loc_BANK2_92BE:
 ;   z00 = slot used
 ;
 CreateEnemy_TryAllSlots:
+IFDEF FREE_FOR_ALL
+CreateEnemy:
+ENDIF
 	LDY #$08
+IFNDEF FREE_FOR_ALL
 	BNE CreateEnemy_FindSlot
 
 CreateEnemy:
 	LDY #$05
+ENDIF
 
 CreateEnemy_FindSlot:
 	LDA zEnemyState, Y

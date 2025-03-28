@@ -2056,8 +2056,10 @@ loc_BANK0_8A9D:
 	LDA PlayerLiftFrames, Y
 	STA zPlayerAnimFrame
 	LDA zEnemyState, X
+IFNDEF FREE_FOR_ALL
 	CMP #$06
 	BEQ loc_BANK0_8AB0
+ENDIF
 
 	LDA zObjectType, X
 	CMP #Enemy_VegetableSmall
@@ -3584,7 +3586,11 @@ PickUpToEnemyTypeTable:
 
 ; find a slot for the item being lifted
 loc_BANK0_9074:
+IFNDEF FREE_FOR_ALL
 	LDX #$06
+ELSE
+	LDX #$00
+ENDIF
 
 loc_BANK0_9076:
 	LDA zEnemyState, X
@@ -7706,11 +7712,16 @@ loc_BANK1_BB0B:
 ;   z00 = slot used
 ;
 CreateEnemy_TryAllSlots_Bank1:
+IFDEF FREE_FOR_ALL
+CreateEnemy_Bank1:
+ENDIF
 	LDY #$08
+IFNDEF FREE_FOR_ALL
 	BNE CreateEnemy_Bank1_FindSlot
 
 CreateEnemy_Bank1:
 	LDY #$05
+ENDIF
 
 CreateEnemy_Bank1_FindSlot:
 	LDA zEnemyState, Y

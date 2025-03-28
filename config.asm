@@ -86,6 +86,8 @@ CHARACTER_SELECT_AFTER_DEATH = 1
 ; mutes music to work around potential copyright issues in transformative videos
 ; RGME_AUDIO = 1
 
+; FREE_FOR_ALL = 1
+
 ; ----------------------------------------
 ; Patches and enhancements largely useful
 ; only to people hacking the game
