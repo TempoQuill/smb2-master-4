@@ -10,26 +10,15 @@ ENDM
 
 Pulse2SFXData_StopSlot:
 IFNDEF PAL
-	.db $08, $46, $40, $40
-	.db      $40, $40, $40, $40
-	.db $08, $37, $40, $40
-	.db      $40, $40, $40, $40
-	.db $08, $2E, $40, $40
-	.db      $40, $40, $40, $40
-	.db $08, $22, $40, $40, $40
-	.db      $40, $40, $40, $40, $40
-	.db      $40, $40, $40, $40
-	.db      $40, $40, $40, $40, $40
+	pulse_note RG_, 5, 7
+	pulse_note RB_, 5, 7
+	pulse_note RD_, 6, 7
+	pulse_note RG_, 6, 18
 ELSE
-	.db $08, $41, $40, $40
-	.db      $40, $40, $40
-	.db $08, $33, $40, $40
-	.db      $40, $40, $40
-	.db $08, $2B, $40, $40
-	.db      $40, $40, $40
-	.db $08, $20, $40, $40, $40, $40
-	.db      $40, $40, $40, $40, $40
-	.db      $40, $40, $40, $40, $40
+	pulse_note RG_, 5, 6
+	pulse_note RB_, 5, 6
+	pulse_note RD_, 6, 6
+	pulse_note RG_, 6, 15
 ENDIF
 	.db $00
 
@@ -113,21 +102,21 @@ Pulse2SFXData_Shrink:
 	.db $A1
 REPT 3
 	IFNDEF PAL
-		.db $08, $FE, $40
-		.db $09, $7C, $40
-		.db $08, $FE, $40
-		.db $09, $7C, $40
-		.db $0A, $3A, $40
-		.db $0B, $56, $40
-		.db $0D, $00, $40
+		pulse_note RA_, 3, 2
+		pulse_note RD_, 3, 2
+		pulse_note RA_, 3, 2
+		pulse_note RD_, 3, 2
+		pulse_note RG_, 2, 2
+		pulse_note RC_, 2, 2
+		pulse_note RF_, 1, 2
 	ELSE
-		.db $08, $EC
-		.db $09, $61, $40
-		.db $08, $EC, $40
-		.db $09, $61
-		.db $0A, $12, $40
-		.db $0B, $1A, $40
-		.db $0C, $A5, $40
+		pulse_note RA_, 3, 1
+		pulse_note RD_, 3, 2
+		pulse_note RA_, 3, 2
+		pulse_note RD_, 3, 1
+		pulse_note RG_, 2, 2
+		pulse_note RC_, 2, 2
+		pulse_note RF_, 1, 2
 	ENDIF
 ENDR
 	.db $00
@@ -150,19 +139,19 @@ ENDIF
 
 Pulse2SFXData_1UP:
 IFNDEF PAL
-	.db $08, $53, $40, $40, $40
-	.db $08, $46, $40, $40, $40, $40
-	.db $08, $29, $40, $40, $40
-	.db $08, $34, $40, $40, $40, $40
-	.db $08, $2E, $40, $40, $40
-	.db $08, $22, $40, $40, $40, $40
+	pulse_note RE_, 5, 4
+	pulse_note RG_, 5, 5
+	pulse_note RE_, 6, 4
+	pulse_note RC_, 6, 5
+	pulse_note RD_, 6, 4
+	pulse_note RG_, 6, 5
 ELSE
-	.db $08, $4D, $40, $40
-	.db $08, $41, $40, $40, $40
-	.db $08, $26, $40, $40, $40
-	.db $08, $30, $40, $40, $40
-	.db $08, $2B, $40, $40
-	.db $08, $20, $40, $40, $40
+	pulse_note RE_, 5, 3
+	pulse_note RG_, 5, 4
+	pulse_note RE_, 6, 4
+	pulse_note RC_, 6, 4
+	pulse_note RD_, 6, 3
+	pulse_note RG_, 6, 4
 ENDIF
 	.db $00
 
@@ -187,15 +176,10 @@ ENDIF
 
 Pulse2SFXData_Coin:
 IFNDEF PAL
-	.db $08, $37, $40, $40, $40
-	.db $08, $29, $40, $40, $40, $40
-	.db      $40, $40, $40, $40
-	.db      $40, $40, $40, $40, $40
-	.db      $40, $40, $40, $40
+	pulse_note RB_, 5, 4
+	pulse_note RE_, 6, 18
 ELSE
-	.db $08, $33, $40, $40
-	.db $08, $26, $40, $40, $40, $40
-	.db      $40, $40, $40, $40, $40
-	.db      $40, $40, $40, $40, $40
+	pulse_note RB_, 5, 3
+	pulse_note RE_, 6, 15
 ENDIF
 	.db $00
