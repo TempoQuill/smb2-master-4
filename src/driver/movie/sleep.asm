@@ -64,7 +64,7 @@ DisableNMI_BankC:
 
 
 .include "src/data/ending/sleep/layout.asm"
-.indluce "src/data/ending/sleep/animation.asm"
+.include "src/data/ending/sleep/animation.asm"
 
 MarioSleepingScene:
 	INC iMainGameState
