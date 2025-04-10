@@ -132,7 +132,7 @@ MusicHeaderSpadeGameFanfare:
 	musicHeader NoteLengthTable_SpadeGame, MusicDataSpadeGameFanfare, MusicDataSpadeGameFanfare_Triangle, MusicDataSpadeGameFanfare_Square1, MusicDataSpadeGameFanfare_Noise, MusicDataSpadeGameFanfare_DPCM
 
 ; ----------------------------------------
-; Warp theme ported to NES, but unused
+; Warp theme
 MusicHeaderWarp:
 	musicHeader NoteLengthTable_Warp, MusicDataWarp, MusicDataWarp_Triangle, MusicDataWarp_Square1, -1, -1
 

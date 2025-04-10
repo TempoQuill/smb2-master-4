@@ -19,12 +19,8 @@ NoiseDrumData_OpenHihat:
 	.db $00
 
 NoiseDrumData_Kick:
-IFNDEF PAL
 	.db $1F, $8D
 	.db      $8E
-ELSE
-	.db $1F, $8E
-ENDIF
 	.db $40, $01, $7E, $7E
 	.db $00
 
@@ -78,12 +74,8 @@ NoiseDrumData_OWOpenHihat:
 	.db $00
 
 NoiseDrumData_OWKick:
-IFNDEF PAL
 	.db $1A, $8D
 	.db      $8E
-ELSE
-	.db $1A, $8E
-ENDIF
 	.db $1A, $01
 	.db $17, $7E
 	.db $14, $7E

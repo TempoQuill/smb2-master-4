@@ -1651,24 +1651,24 @@ InstrumentRAMPointers:
 
 MusicStackPermission:
 	.db $FF
-	.db $00
-	.db $00
-	.db $00
-	.db $00
-	.db $00
-	.db $00
-	.db $00
-	.db $00
-	.db $01
-	.db $00
-	.db $00
-	.db $00
-	.db $00
-	.db $01
-	.db $00
-	.db $01
-	.db $00
-	.db $00
+	.db $00 ; overworld
+	.db $00 ; CHR Select
+	.db $00 ; inside / cave
+	.db $00 ; boss
+	.db $00 ; starman
+	.db $00 ; subspace
+	.db $00 ; Wart (final boss)
+	.db $00 ; title
+	.db $01 ; mushroom / warp fanfare (normal, unused)
+	.db $00 ; boss clear
+	.db $00 ; ending / cast roll
+	.db $00 ; player down
+	.db $00 ; game over
+	.db $01 ; crystal ball collect
+	.db $00 ; Wart death
+	.db $01 ; unused SMB3 spade game lumped in with the SMB2 SPC's
+	.db $00 ; warp
+	.db $00 ; mushroom / warp fanfare (DPCM)
 
 ;
 ; -------------------------------------------------------------------------

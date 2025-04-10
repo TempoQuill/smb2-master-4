@@ -394,7 +394,6 @@ SetScrollXYTo0:
 	STA zXScrollPage
 	RTS
 
-
 ;
 ; Clears the screen and resets the scroll position for the title card
 ;
@@ -664,59 +663,53 @@ loc_BANKF_E30B:
 	LDA zCurrentCharacter
 	AND #$03
 	STA zCurrentCharacter
+	BPL CopyArrowData
 
 loc_BANKF_E311:
-	LDY #$00
-	LDA #$21
-	STA iPPUBuffer
-	LDA #$C9
-	STA iPPUBuffer + 1
-	LDA #$4F
-	STA iPPUBuffer + 2
-	LDA #$FB
-	STA iPPUBuffer + 3
-	LDA #$21
-	STA iPPUBuffer + 4
-	LDA #$E9
-	STA iPPUBuffer + 5
-	LDA #$4F
-	STA iPPUBuffer + 6
-	LDA #$FB
-	STA iPPUBuffer + 7
+	JSR InitCharacterSelectFadeIn
+CopyArrowData:
+	LDY #CharacterSelectArrowData_End - CharacterSelectArrowData
+CopyArrowData_Loop:
+	LDA CharacterSelectArrowData, Y
+	STA iPPUBuffer, Y
+	DEY
+	BPL CopyArrowData_Loop
 	LDY zCurrentCharacter
-	LDA #$21
-	STA iPPUBuffer + 8
 	LDA PlayerSelectArrowTop, Y
 	STA iPPUBuffer + 9
-	LDA #$02
-	STA iPPUBuffer + 10
-	LDA #$BE
-	STA iPPUBuffer + 11
-	LDA #$C0
-	STA iPPUBuffer + 12
-	LDA #$21
-	STA iPPUBuffer + 13
 	LDA PlayerSelectArrowBottom, Y
 	STA iPPUBuffer + 14
-	LDA #$02
-	STA iPPUBuffer + 15
-	LDA #$BF
-	STA iPPUBuffer + 16
-	LDA #$C1
-	STA iPPUBuffer + 17
-	LDA #$00
-	STA iPPUBuffer + 18
+	JSR WaitForNMI
+
+CharacterSelectMenuLoop:
+	JSR DoCharacterSelectFadeIn
 	JSR WaitForNMI_TurnOnPPU
 
-	LDX #$12
+	LDA zInputBottleneck
+	AND #ControllerInput_A
+	BNE loc_BANKF_E3AE
+
+	JMP loc_BANKF_E2E8
+
+CharacterSelectArrowData:
+	.db $21, $C9, $4F, $FB
+	.db $21, $E9, $4F, $FB
+	.db $21, $00, $02, $BE, $C0
+	.db $21, $00, $02, $BF, $C1
+CharacterSelectArrowData_End:
+	.db $00
+
+CopyPaletteData:
+	LDX #$22
 	LDY #$00
 
-loc_BANKF_E37D:
-	LDA PlayerSelectSpritePalettesDark, Y
+CopyPaletteData_Loop:
+	LDA iStartingPalettes, Y
 	STA iPPUBuffer, Y
 	INY
 	DEX
-	BPL loc_BANKF_E37D
+	BPL CopyPaletteData_Loop
+	LDX #$00
 
 	LDA #$06
 	STA z0a
@@ -734,15 +727,7 @@ loc_BANKF_E391:
 
 	LDA #$00
 	STA iPPUBuffer, Y
-
-CharacterSelectMenuLoop:
-	JSR WaitForNMI_TurnOnPPU
-
-	LDA zInputBottleneck
-	AND #ControllerInput_A
-	BNE loc_BANKF_E3AE
-
-	JMP loc_BANKF_E2E8
+	RTS
 
 ; ---------------------------------------------------------------------------
 
@@ -771,6 +756,7 @@ loc_BANKF_E3CC:
 	BPL loc_BANKF_E3CC
 
 loc_BANKF_E3D6:
+	JSR DoCharacterSelectFadeIn
 	JSR WaitForNMI
 
 	DEC z10
@@ -3133,21 +3119,12 @@ PlayerHealthValueByHeartCount:
 	.db PlayerHealth_4_HP
 ; Max hearts = (hearts - 2), value is 0,$01,2
 ; This table determines what the player's HP is set to
-IFNDEF PAL
 ClimbSpeed:
 	.db $00
 ClimbSpeedDown:
 	.db $20
 ClimbSpeedUp:
 	.db $F0
-ELSE
-ClimbSpeed:
-	.db $00
-ClimbSpeedDown:
-	.db $26
-ClimbSpeedUp:
-	.db $ED
-ENDIF
 ; Bug: The climb speed index is determined by checking the up/down flags in
 ; zInputCurrentState. If both are enabled, the index it out of bounds and uses
 ; the LDA ($A5) below, which zips the player up the vine!
@@ -4286,31 +4263,19 @@ UpdateJoypads_FindDeletion_Found:
 ;
 ReadJoypads:
 	LDX #$01
+	STX zInputBottleneck + 1 ; set bottleneck 2 to 1 for signal
 	STX JOY1
 	DEX
 	STX JOY1
 
-	LDX #$08
-ReadJoypadLoop:
-	LDA JOY1
+ReadJoypadLoop1:
+	LDA JOY1 ; $4016.0 = standard controller 1 bit data
 	LSR A
-	; Read D0 standard controller data
 	ROL zInputBottleneck
-	LSR A
-	; Read D1 expansion port controller data
-	;
-	; Before you get too excited, keep in mind that this code is basically ported from the FDS bios.
-	; Code to mux D1 and D0 isn't present, so even if you had an expansion port controller that used
-	; D1, the game wouldn't use it!
-	ROL iExpansionInput
-
-	LDA JOY2
+	LDA JOY2 ; $4017.0 = standard controller 2 bit data
 	LSR A
 	ROL zInputBottleneck + 1
-	LSR A
-	ROL iExpansionInput + 1
-	DEX
-	BNE ReadJoypadLoop
+	BCC ReadJoypadLoop1 ; loop until signel is sent to carry
 	RTS
 
 

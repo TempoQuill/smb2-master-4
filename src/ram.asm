@@ -1711,9 +1711,10 @@ iCurrentROMBank:
 ;   $03 = Mario sleeping
 iMainGameState:
 	.dsb 1 ; $06f3
-
-iExpansionInput:
-	.dsb 2 ; $06f4
+iCHRSelectPaletteFade:
+	.dsb 1 ; $06f4
+; FOR RENT
+	.dsb 1 ; $06f5
 
 iCurrentPlayerSize:
 	.dsb 1 ; $06f6

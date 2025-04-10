@@ -14,6 +14,10 @@ SaveFilePPUDataPointers:
 	.dw SaveFileAttributes
 SaveFilePPUDataCopypastaPointer:
 	.dw SaveFileCopypastaData
+TitleSaveFileMenuFade:
+	.dw TitleSaveMenuFade1
+	.dw TitleSaveMenuFade2
+	.dw TitleSaveMenuFade3
 
 WaitForNMI_SaveFileMenu:
 	LDX mLoadedDataBufferIndex
@@ -714,6 +718,14 @@ loc_BANK0_9C1C:
 loc_BANK0_9C1F:
 	LDA #Music_StopMusic
 	STA iMusicQueue
+	LDA #SAVE_MENU_FADE_1 + 2
+	STA zScreenUpdateIndex
+	JSR WaitForNMI_TitleScreen
+	LDA #SAVE_MENU_FADE_2 + 2
+	STA zScreenUpdateIndex
+	JSR WaitForNMI_TitleScreen
+	LDA #SAVE_MENU_FADE_3 + 2
+	STA zScreenUpdateIndex
 	JSR WaitForNMI_TitleScreen
 
 	LDA #$00

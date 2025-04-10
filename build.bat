@@ -1,7 +1,7 @@
 @echo off
 
 echo Assembling...
-tools\asm6f.exe smb2.asm -n -c -L %* bin\smb2.nes > bin\assembler.log
+tools\asm6f.exe smb2.asm -n -c -l %* bin\smb2.nes > bin\assembler.log
 if %ERRORLEVEL% neq 0 goto buildfail
 move /y smb2.lst bin > nul
 move /y smb2.cdl bin > nul

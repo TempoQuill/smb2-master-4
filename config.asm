@@ -110,7 +110,4 @@ MMC5 = 1
 ; Go straight to the Mario Sleeping Scene
 ; TEST_SLEEPING_SCENE = 1
 
-; optimize for PAL regions
-; PAL = 1
-
 .endinl

@@ -968,8 +968,10 @@ ContributorScene_CharacterLoop:
 	STA zScrollCondition
 
 loc_BANK1_AAD4:
+	; vblank
 	JSR WaitForNMI_Ending_TurnOnPPU
 
+	; contributor animations
 	INC zf3
 	INC z10
 	JSR ContributorTicker
@@ -980,11 +982,15 @@ loc_BANK1_AAD4:
 	CMP #$03
 	BCS loc_BANK1_AB20
 
+; subcon animations
 loc_BANK1_AAE7:
+	; %01000000 = sprite zero
+	; proceed if off
 	BIT PPUSTATUS
 	BVS loc_BANK1_AAE7
 
 loc_BANK1_AAEC:
+	; now proceed if on
 	BIT PPUSTATUS
 	BVC loc_BANK1_AAEC
 
@@ -993,6 +999,8 @@ loc_BANK1_AAEC:
 loc_BANK1_AAF3:
 	LDY #$00
 
+; this looks like a manual delay, we keep reading, but we don't do anything for
+; 512 loops
 loc_BANK1_AAF5:
 	LDA z00
 	LDA z00
@@ -1003,9 +1011,9 @@ loc_BANK1_AAF5:
 	BNE loc_BANK1_AAF3
 
 	LDA PPUSTATUS
-	LDA zf2
+	LDA zf2 ; x
 	STA PPUSCROLL
-	LDA #$00
+	LDA #$00 ; y
 	STA PPUSCROLL
 	LDA zf3
 	CMP #$0A

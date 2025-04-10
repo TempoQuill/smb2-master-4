@@ -869,16 +869,7 @@ PlayerGravity_Falling:
 	LDY zPlayerYVelocity
 	BMI loc_BANK0_8D13
 
-IFNDEF PAL
 	CPY #$39
-ELSE
-	CLC
-	ADC zPlayerYVelocity
-	CMP #$40
-	BCC loc_BANK0_8D16
-	LDA #$40
-	STA zPlayerYVelocity
-ENDIF
 	BCS loc_BANK0_8D18
 
 loc_BANK0_8D13:

@@ -271,7 +271,6 @@ StatOffsets:
 
 CharacterStats:
 MarioStats:
-IFNDEF PAL
 	.db $00 ; Pick-up Speed, frame 1/6 - pulling
 	.db $04 ; Pick-up Speed, frame 2/6 - pulling
 	.db $02 ; Pick-up Speed, frame 3/6 - ducking
@@ -295,34 +294,8 @@ IFNDEF PAL
 	.db $E8 ; Running Speed, left - no object
 	.db $E8 ; Running Speed, left - with object
 	.db $FC ; Running Speed, left - in quicksand
-ELSE
-	.db $00 ; Pick-up Speed, frame 1/6 - pulling
-	.db $03 ; Pick-up Speed, frame 2/6 - pulling
-	.db $02 ; Pick-up Speed, frame 3/6 - ducking
-	.db $01 ; Pick-up Speed, frame 4/6 - ducking
-	.db $03 ; Pick-up Speed, frame 5/6 - ducking
-	.db $06 ; Pick-up Speed, frame 6/6 - ducking
-	.db $A0 ; Jump Speed, still - no object
-	.db $A0 ; Jump Speed, still - with object
-	.db $84 ; Jump Speed, charged - no object
-	.db $84 ; Jump Speed, charged - with object
-	.db $94 ; Jump Speed, running - no object
-	.db $99 ; Jump Speed, running - with object
-	.db $DA ; Jump Speed - in quicksand
-	.db $00 ; Floating Time
-	.db $09 ; Gravity without Jump button pressed
-	.db $06 ; Gravity with Jump button pressed
-	.db $0B ; Gravity in quicksand
-	.db $1D ; Running Speed, right - no object
-	.db $1D ; Running Speed, right - with object
-	.db $05 ; Running Speed, right - in quicksand
-	.db $E3 ; Running Speed, left - no object
-	.db $E3 ; Running Speed, left - with object
-	.db $FB ; Running Speed, left - in quicksand
-ENDIF
 
 ToadStats:
-IFNDEF PAL
 	.db $00 ; Pick-up Speed, frame 1/6 - pulling
 	.db $01 ; Pick-up Speed, frame 2/6 - pulling
 	.db $01 ; Pick-up Speed, frame 3/6 - ducking
@@ -346,31 +319,6 @@ IFNDEF PAL
 	.db $E8 ; Running Speed, left - no object
 	.db $E3 ; Running Speed, left - with object
 	.db $FC ; Running Speed, left - in quicksand
-ELSE
-	.db $00 ; Pick-up Speed, frame 1/6 - pulling
-	.db $01 ; Pick-up Speed, frame 2/6 - pulling
-	.db $01 ; Pick-up Speed, frame 3/6 - ducking
-	.db $01 ; Pick-up Speed, frame 4/6 - ducking
-	.db $01 ; Pick-up Speed, frame 5/6 - ducking
-	.db $01 ; Pick-up Speed, frame 6/6 - ducking
-	.db $A2 ; Jump Speed, still - no object
-	.db $A2 ; Jump Speed, still - with object
-	.db $84 ; Jump Speed, charged - no object
-	.db $84 ; Jump Speed, charged - with object
-	.db $98 ; Jump Speed, running - no object
-	.db $98 ; Jump Speed, running - with object
-	.db $DA ; Jump Speed - in quicksand
-	.db $00 ; Floating Time
-	.db $09 ; Gravity without Jump button pressed
-	.db $06 ; Gravity with Jump button pressed
-	.db $0B ; Gravity in quicksand
-	.db $1D ; Running Speed, right - no object
-	.db $23 ; Running Speed, right - with object
-	.db $05 ; Running Speed, right - in quicksand
-	.db $E3 ; Running Speed, left - no object
-	.db $DD ; Running Speed, left - with object
-	.db $FB ; Running Speed, left - in quicksand
-ENDIF
 
 LuigiStats:
 	.db $00 ; Pick-up Speed, frame 1/6 - pulling
@@ -431,6 +379,71 @@ ToadPalette:
 	.db $0F, $01, $30, $27
 LuigiPalette:
 	.db $0F, $01, $2A, $36
+
+InitCharacterSelectFadeIn:
+	LDA #$D0
+	STA iCHRSelectPaletteFade
+	RTS
+
+DoCharacterSelectFadeIn:
+	JSR CopyPaletteData
+	LDA iCHRSelectPaletteFade
+	BPL DoCharacterSelectFadeIn_End
+
+	LDX #CharacterSelect_PaletteOffsetsEnd - CharacterSelect_PaletteOffsets - 1
+
+DoCharacterSelectFadeIn_Loop:
+	LDY CharacterSelect_PaletteOffsets, X
+	JSR DoCharacterSelectFadeIn_Parse
+	DEX
+	BPL DoCharacterSelectFadeIn_Loop
+
+	LDA iCHRSelectPaletteFade
+	CLC
+	ADC #$10
+	STA iCHRSelectPaletteFade
+	RTS
+
+DoCharacterSelectFadeIn_End:
+	LDA #0
+	STA iCHRSelectPaletteFade
+	RTS
+
+DoCharacterSelectFadeIn_Parse:
+	LDA iPPUBuffer, Y
+	CMP #$0F ; black
+	BNE DoCharacterSelectFadeIn_Color
+DoCharacterSelectFadeIn_Done:
+	STA iPPUBuffer, Y
+	RTS
+
+DoCharacterSelectFadeIn_Color:
+	CLC
+	ADC iCHRSelectPaletteFade
+	BCC DoCharacterSelectFadeIn_TryCarry
+	CMP #$20 ; white duplicate
+	BNE DoCharacterSelectFadeIn_Done
+	RTS
+DoCharacterSelectFadeIn_TryCarry:
+	ADC #$10
+	BCC DoCharacterSelectFadeIn_TryCarry
+	BCS DoCharacterSelectFadeIn_Done
+
+CharacterSelect_PaletteOffsets:
+	; 0-2 pal pointer+count
+	; 3/7/B/F/13/17/1B/1F - main color
+	; 23-25 player palette+count
+	; 26 - main color
+	.db $04, $05, $06
+	.db $08, $09, $0A
+	.db $0C, $0D, $0E
+	.db $10, $11, $12
+	.db $14, $15, $16
+	.db $18, $19, $1A
+	.db $1C, $1D, $1E
+	.db $20, $21, $22
+	.db $27, $28, $29
+CharacterSelect_PaletteOffsetsEnd:
 
 ;
 ; This copies the selected character's stats
