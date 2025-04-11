@@ -47,7 +47,7 @@ IFNDEF NSF_FILE
 	; Banks 0 and 1. Basically potpourri.
 	; Lots of crap everywhere.
 	; Title screen and some other stuff too.
-	; Just shy of 4K of space left
+	; Just shy of 3K of space left
 	.base $8000
 	.include "src/prg-0-1.asm"
 	.pad $c000, $00
@@ -80,7 +80,7 @@ IFNDEF NSF_FILE
 	; its free space counted to see if a smaller
 	; ROM size is possible by condensing code.
 	; ----------------------------------------
-	; Bank 6 and 7. Level handling ode, I think.
+	; Bank 6 and 7. Level handling code, I think.
 	; Hmm, I wonder how this actually works when
 	; dealing with the fact the level data is
 	; in another bank...
@@ -116,6 +116,11 @@ IFNDEF NSF_FILE
 	.pad $c000, $00
 ENDIF
 
+; Add the music banks
+; Contains instruments and music in each, so each song has one of three flavors
+; depending on which bank it's nestled in
+; Space was clearly no issue, as no bank comes close to using 4K.  Instead, the
+; banks stem from instrument variety.
 .base $a000
 .include "src/music/instruments-smas-1.asm"
 .include "src/music/segments/jingles/crystal.asm"
@@ -152,10 +157,11 @@ ENDIF
 
 IFNDEF NSF_FILE
 	; ----------------------------------------
-	; extra PRG-ROM pages (5 banks)
+	; extra PRG-ROM pages (2 banks)
 	.dsb (2 * $2000), $00
 ENDIF
 
+; Add the DPCM banks.  Sound effect area
 .base $c000
 .incbin "src/music/smas-1-3-area-13.bin"
 .pad $e000, $55
@@ -180,7 +186,7 @@ ENDIF
 ; SFX DPCM AREA
 IFNDEF NSF_FILE
 	; ----------------------------------------
-	; extra PRG-ROM pages (5 banks)
+	; extra PRG-ROM pages (3 banks)
 	.dsb (3 * $2000), $00
 ENDIF
 
@@ -188,7 +194,7 @@ ENDIF
 ; Banks 1E and 1F.
 ; Important things like NMI and often-used
 ; routines.
-.base $e000    ; Technically not needed but consistent
+.base $e000
 IFNDEF NSF_FILE
 	.include "src/prg-e-f.asm"
 
@@ -198,7 +204,8 @@ IFNDEF NSF_FILE
 	.incbin "smb2.chr"
 
 	; ----------------------------------------
-	; extra CHR-ROM pages
+	; extra CHR-ROM pages, originally planned for CHR parallax
+	; abandoned due to lack of coverage in some tiles + attribute conflicts
 	.dsb (128 * $400), $00
 ELSE
 	.include "src/nsf-home.asm"
