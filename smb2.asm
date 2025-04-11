@@ -32,7 +32,7 @@ ENDIF
 .include "src/ram.asm"
 
 ; -----------------------------------------
-; Add each of the 16 banks.
+; Add each of the 32 banks.
 ; In SMB2, banks are swapped in pairs.
 ; The game was clearly designed originally to use the MMC1 mapper,
 ; and very minimal changes were made to make that work.
