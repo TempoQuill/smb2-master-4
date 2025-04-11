@@ -113,7 +113,7 @@ EndingCelebrationFloorAndSubconParade:
 	.db $00, $00, $0A, $0A, $0A, $0A, $00, $00
 	.db $00, $00, $80, $A0, $A0, $20, $00, $00
 	.db $00, $00, $08, $2A, $8A, $02, $00, $00
-	.db $FF, $FF, $FF, $EE, $BB, $FF, $FF, $FF
+	.db $55, $55, $55, $66, $99, $55, $55, $55
 
 	.db $23, $F0, $48, $A5
 	.db $23, $F8, $48, $0A
@@ -138,7 +138,7 @@ EndingCelebrationUnusedText_THE_END:
 EndingCelebrationPaletteFade1:
 	.db $3F, $00, $20
 	.db $38, $30, $21, $0F
-	.db $38, $30, $16, $0F
+	.db $38, $10, $16, $0F
 	.db $38, $28, $18, $0F
 	.db $38, $10, $00, $0F
 	.db $38, $27, $16, $01
