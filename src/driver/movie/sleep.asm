@@ -1489,7 +1489,7 @@ DoPostCastPrompt_PromptSpriteData:
 	STA iVirtualOAM + $20, Y
 	DEY
 	BPL DoPostCastPrompt_PromptSpriteData
-	LDA #DPCM_EndingPrompt
+	LDA #SFX_POST_CAST_PROMPT
 	STA iDPCMSFX
 	INC zENDTimer
 	LDA #1
@@ -1503,7 +1503,7 @@ DoPostCastPrompt_WaitForStart:
 	RTS
 
 DoPostCastPrompt_Pressed:
-	LDA #DPCM_Pause
+	LDA #SFX_PAUSE
 	STA iDPCMSFX
 	INC zMarioSleepingSceneIndex
 	RTS
@@ -1511,7 +1511,7 @@ DoPostCastPrompt_Pressed:
 PostCastMenu_Up:
 	LDA #1
 	STA iStack + 1
-	LDA #SoundEffect2_CoinGet
+	LDA #SFX_COIN
 	STA iPulse2SFX
 	BNE PostCastMenu_UpdatePPUBuffer
 
@@ -1523,12 +1523,12 @@ PostCastMenu_Down:
 	DEX
 	DEY
 	BPL PostCastMenu_Down
-	LDA #SoundEffect2_CoinGet
+	LDA #SFX_COIN
 	STA iPulse2SFX
 	RTS
 
 PostCastMenu_AStart:
-	LDA #DPCM_Save
+	LDA #SFX_SAVE
 	STA iDPCMSFX
 	LDA iStack + 1
 	BEQ PostCastMenu_ThenStop

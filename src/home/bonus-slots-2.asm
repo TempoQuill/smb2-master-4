@@ -151,7 +151,7 @@ locret_BANKF_EAD1:
 	BNE CheckStopReel_Eject
 
 	; Play the drum roll!
-	LDX #SoundEffect3_DrumRoll
+	LDX #SFX_DRUM_ROLL
 	STX iNoiseDrumSFX
 	INC iBonusDrumRoll
 
@@ -163,7 +163,7 @@ CheckStopReel_Eject:
 loc_BANKF_EAD2:
 	LDA #$00
 	STA zObjectXLo, X
-	LDA #SoundEffect2_StopSlot
+	LDA #SFX_STOP_SLOT
 	STA iPulse2SFX
 	CPX #$02
 	BEQ TrancateDrumRoll

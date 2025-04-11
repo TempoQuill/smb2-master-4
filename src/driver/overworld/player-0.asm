@@ -1,6 +1,6 @@
 GrowShrinkSFXIndexes:
-	.db SoundEffect2_Shrinking
-	.db Hill_Grow
+	.db SFX_SHRINK
+	.db SFX_GROW
 
 
 HandlePlayerState:
@@ -208,134 +208,134 @@ byte_BANK0_8ACE:
 ; ---------------------------------------------------------------------------
 
 PickupSounds:
-	.db DPCM_Uproot   ; Enemy_Heart
-	.db DPCM_ItemPull ; Enemy_Shyguy
-	.db DPCM_ItemPull ; Enemy_Tweeter
-	.db DPCM_ItemPull ; Enemy_Shyguy
-	.db DPCM_ItemPull ; Enemy_Porcupo
-	.db DPCM_ItemPull ; Enemy_Snifit
-	.db DPCM_ItemPull ; Enemy_Snifit
-	.db DPCM_ItemPull ; Enemy_Snifit
-	.db DPCM_ItemPull ; Enemy_Ostro
-	.db DPCM_Uproot   ; Enemy_BobOmb
-	.db DPCM_ItemPull ; Enemy_Albatoss
-	.db DPCM_ItemPull ; Enemy_Albatoss
-	.db DPCM_ItemPull ; Enemy_Albatoss
-	.db DPCM_ItemPull ; Enemy_Ninji
-	.db DPCM_ItemPull ; Enemy_Ninji
-	.db DPCM_ItemPull ; Enemy_Beezo
-	.db DPCM_ItemPull ; Enemy_Beezo
-	.db DPCM_Uproot   ; Enemy_WartBubble
-	.db DPCM_ItemPull ; Enemy_Pidgit
-	.db DPCM_ItemPull ; Enemy_Trouter
-	.db DPCM_ItemPull ; Enemy_Hoopstar
-	.db DPCM_ItemPull ; Enemy_Shyguy
-	.db DPCM_ItemPull ; Enemy_BobOmb
-	.db DPCM_ItemPull ; Enemy_Phanto
-	.db DPCM_ItemPull ; Enemy_Cobrat
-	.db DPCM_ItemPull ; Enemy_Cobrat
-	.db DPCM_ItemPull ; Enemy_Pokey
-	.db DPCM_Uproot   ; Enemy_Bullet
-	.db DPCM_ItemPull ; Enemy_Birdo
-	.db DPCM_ItemPull ; Enemy_Mouser
-	.db DPCM_ItemPull ; Enemy_Egg
-	.db DPCM_ItemPull ; Enemy_Tryclyde
-	.db DPCM_ItemPull ; Enemy_Fireball
-	.db DPCM_ItemPull ; Enemy_Clawgrip
-	.db DPCM_ItemPull ; Enemy_ClawgripRock
-	.db DPCM_ItemPull ; Enemy_Panser
-	.db DPCM_ItemPull ; Enemy_Panser
-	.db DPCM_ItemPull ; Enemy_Panser
-	.db DPCM_ItemPull ; Enemy_Autobomb
-	.db DPCM_ItemPull ; Enemy_AutobombFire
-	.db DPCM_Uproot   ; Enemy_WhaleSpout
-	.db DPCM_ItemPull ; Enemy_Flurry
-	.db DPCM_ItemPull ; Enemy_Fryguy
-	.db DPCM_ItemPull ; Enemy_FryguySplit
-	.db DPCM_ItemPull ; Enemy_Wart
-	.db DPCM_ItemPull ; Enemy_Hawkmouth
-	.db DPCM_ItemPull ; Enemy_Spark
-	.db DPCM_ItemPull ; Enemy_Spark
-	.db DPCM_ItemPull ; Enemy_Spark
-	.db DPCM_ItemPull ; Enemy_Spark
-	.db DPCM_Uproot   ; Enemy_Vegetable
-	.db DPCM_Uproot   ; Enemy_Vegetable
-	.db DPCM_Uproot   ; Enemy_Vegetable
-	.db DPCM_Uproot   ; Enemy_Shell
-	.db DPCM_Uproot   ; Enemy_Coin
-	.db DPCM_Uproot   ; Enemy_Bomb
-	.db DPCM_Uproot   ; Enemy_Rocket
-	.db DPCM_ItemPull ; Enemy_MushroomBlock
-	.db DPCM_ItemPull ; Enemy_POWBlock
-	.db DPCM_ItemPull ; Enemy_FallingLogs
-	.db DPCM_ItemPull ; Enemy_SubspaceDoor
-	.db DPCM_ItemPull ; Enemy_Key
-	.db DPCM_Uproot   ; Enemy_SubspacePotion
-	.db DPCM_ItemPull ; 
-	.db DPCM_Uproot   ; 
-	.db DPCM_ItemPull ; 
-	.db DPCM_ItemPull ; 
-	.db DPCM_ItemPull ; 
-	.db DPCM_ItemPull ; 
-	.db DPCM_Uproot   ; 
-	.db DPCM_Uproot   ; 
-	.db DPCM_ItemPull ; 
-	.db DPCM_ItemPull ; 
-	.db DPCM_Uproot   ; 
-	.db DPCM_ItemPull ; 
-	.db DPCM_Uproot   ; 
-	.db DPCM_Uproot   ; 
-	.db DPCM_Uproot   ; 
-	.db DPCM_Uproot   ; 
-	.db DPCM_Uproot   ; 
-	.db DPCM_Uproot   ; 
-	.db DPCM_Uproot   ; 
-	.db DPCM_Uproot   ; 
-	.db DPCM_Uproot   ; 
-	.db DPCM_Uproot   ; 
-	.db DPCM_Uproot   ; 
-	.db DPCM_Uproot   ; 
-	.db DPCM_Uproot   ; 
-	.db DPCM_Uproot   ; 
-	.db DPCM_Uproot   ; 
-	.db DPCM_Uproot   ; 
-	.db DPCM_Uproot   ; 
-	.db DPCM_ItemPull ; 
-	.db DPCM_ItemPull ; 
-	.db DPCM_ItemPull ; 
-	.db DPCM_ItemPull ; 
-	.db DPCM_ItemPull ; 
-	.db DPCM_ItemPull ; 
-	.db DPCM_ItemPull ; 
-	.db DPCM_ItemPull ; 
-	.db DPCM_ItemPull ; 
-	.db DPCM_ItemPull ; 
-	.db DPCM_ItemPull ; 
-	.db DPCM_ItemPull ; 
-	.db DPCM_ItemPull ; 
-	.db DPCM_ItemPull ; 
-	.db DPCM_ItemPull ; 
-	.db DPCM_ItemPull ; 
-	.db DPCM_ItemPull ; 
-	.db DPCM_ItemPull ; 
-	.db DPCM_ItemPull ; 
-	.db DPCM_ItemPull ; 
-	.db DPCM_ItemPull ; 
-	.db DPCM_ItemPull ; 
-	.db DPCM_Uproot   ; 
-	.db DPCM_Uproot   ; 
-	.db DPCM_Uproot   ; 
-	.db DPCM_ItemPull ; 
-	.db DPCM_Uproot   ; 
-	.db DPCM_Uproot   ; 
-	.db DPCM_Uproot   ; 
-	.db DPCM_ItemPull ; 
-	.db DPCM_ItemPull ; 
-	.db DPCM_ItemPull ; 
-	.db DPCM_ItemPull ; 
-	.db DPCM_ItemPull ; 
-	.db DPCM_Uproot   ; 
-	.db DPCM_ItemPull ; 
+	.db SFX_UPROOT   ; Enemy_Heart
+	.db SFX_HELD_ITEM ; Enemy_Shyguy
+	.db SFX_HELD_ITEM ; Enemy_Tweeter
+	.db SFX_HELD_ITEM ; Enemy_Shyguy
+	.db SFX_HELD_ITEM ; Enemy_Porcupo
+	.db SFX_HELD_ITEM ; Enemy_Snifit
+	.db SFX_HELD_ITEM ; Enemy_Snifit
+	.db SFX_HELD_ITEM ; Enemy_Snifit
+	.db SFX_HELD_ITEM ; Enemy_Ostro
+	.db SFX_UPROOT   ; Enemy_BobOmb
+	.db SFX_HELD_ITEM ; Enemy_Albatoss
+	.db SFX_HELD_ITEM ; Enemy_Albatoss
+	.db SFX_HELD_ITEM ; Enemy_Albatoss
+	.db SFX_HELD_ITEM ; Enemy_Ninji
+	.db SFX_HELD_ITEM ; Enemy_Ninji
+	.db SFX_HELD_ITEM ; Enemy_Beezo
+	.db SFX_HELD_ITEM ; Enemy_Beezo
+	.db SFX_UPROOT   ; Enemy_WartBubble
+	.db SFX_HELD_ITEM ; Enemy_Pidgit
+	.db SFX_HELD_ITEM ; Enemy_Trouter
+	.db SFX_HELD_ITEM ; Enemy_Hoopstar
+	.db SFX_HELD_ITEM ; Enemy_Shyguy
+	.db SFX_HELD_ITEM ; Enemy_BobOmb
+	.db SFX_HELD_ITEM ; Enemy_Phanto
+	.db SFX_HELD_ITEM ; Enemy_Cobrat
+	.db SFX_HELD_ITEM ; Enemy_Cobrat
+	.db SFX_HELD_ITEM ; Enemy_Pokey
+	.db SFX_UPROOT   ; Enemy_Bullet
+	.db SFX_HELD_ITEM ; Enemy_Birdo
+	.db SFX_HELD_ITEM ; Enemy_Mouser
+	.db SFX_HELD_ITEM ; Enemy_Egg
+	.db SFX_HELD_ITEM ; Enemy_Tryclyde
+	.db SFX_HELD_ITEM ; Enemy_Fireball
+	.db SFX_HELD_ITEM ; Enemy_Clawgrip
+	.db SFX_HELD_ITEM ; Enemy_ClawgripRock
+	.db SFX_HELD_ITEM ; Enemy_Panser
+	.db SFX_HELD_ITEM ; Enemy_Panser
+	.db SFX_HELD_ITEM ; Enemy_Panser
+	.db SFX_HELD_ITEM ; Enemy_Autobomb
+	.db SFX_HELD_ITEM ; Enemy_AutobombFire
+	.db SFX_UPROOT   ; Enemy_WhaleSpout
+	.db SFX_HELD_ITEM ; Enemy_Flurry
+	.db SFX_HELD_ITEM ; Enemy_Fryguy
+	.db SFX_HELD_ITEM ; Enemy_FryguySplit
+	.db SFX_HELD_ITEM ; Enemy_Wart
+	.db SFX_HELD_ITEM ; Enemy_Hawkmouth
+	.db SFX_HELD_ITEM ; Enemy_Spark
+	.db SFX_HELD_ITEM ; Enemy_Spark
+	.db SFX_HELD_ITEM ; Enemy_Spark
+	.db SFX_HELD_ITEM ; Enemy_Spark
+	.db SFX_UPROOT   ; Enemy_Vegetable
+	.db SFX_UPROOT   ; Enemy_Vegetable
+	.db SFX_UPROOT   ; Enemy_Vegetable
+	.db SFX_UPROOT   ; Enemy_Shell
+	.db SFX_UPROOT   ; Enemy_Coin
+	.db SFX_UPROOT   ; Enemy_Bomb
+	.db SFX_UPROOT   ; Enemy_Rocket
+	.db SFX_HELD_ITEM ; Enemy_MushroomBlock
+	.db SFX_HELD_ITEM ; Enemy_POWBlock
+	.db SFX_HELD_ITEM ; Enemy_FallingLogs
+	.db SFX_HELD_ITEM ; Enemy_SubspaceDoor
+	.db SFX_HELD_ITEM ; Enemy_Key
+	.db SFX_UPROOT   ; Enemy_SubspacePotion
+	.db SFX_HELD_ITEM ; 
+	.db SFX_UPROOT   ; 
+	.db SFX_HELD_ITEM ; 
+	.db SFX_HELD_ITEM ; 
+	.db SFX_HELD_ITEM ; 
+	.db SFX_HELD_ITEM ; 
+	.db SFX_UPROOT   ; 
+	.db SFX_UPROOT   ; 
+	.db SFX_HELD_ITEM ; 
+	.db SFX_HELD_ITEM ; 
+	.db SFX_UPROOT   ; 
+	.db SFX_HELD_ITEM ; 
+	.db SFX_UPROOT   ; 
+	.db SFX_UPROOT   ; 
+	.db SFX_UPROOT   ; 
+	.db SFX_UPROOT   ; 
+	.db SFX_UPROOT   ; 
+	.db SFX_UPROOT   ; 
+	.db SFX_UPROOT   ; 
+	.db SFX_UPROOT   ; 
+	.db SFX_UPROOT   ; 
+	.db SFX_UPROOT   ; 
+	.db SFX_UPROOT   ; 
+	.db SFX_UPROOT   ; 
+	.db SFX_UPROOT   ; 
+	.db SFX_UPROOT   ; 
+	.db SFX_UPROOT   ; 
+	.db SFX_UPROOT   ; 
+	.db SFX_UPROOT   ; 
+	.db SFX_HELD_ITEM ; 
+	.db SFX_HELD_ITEM ; 
+	.db SFX_HELD_ITEM ; 
+	.db SFX_HELD_ITEM ; 
+	.db SFX_HELD_ITEM ; 
+	.db SFX_HELD_ITEM ; 
+	.db SFX_HELD_ITEM ; 
+	.db SFX_HELD_ITEM ; 
+	.db SFX_HELD_ITEM ; 
+	.db SFX_HELD_ITEM ; 
+	.db SFX_HELD_ITEM ; 
+	.db SFX_HELD_ITEM ; 
+	.db SFX_HELD_ITEM ; 
+	.db SFX_HELD_ITEM ; 
+	.db SFX_HELD_ITEM ; 
+	.db SFX_HELD_ITEM ; 
+	.db SFX_HELD_ITEM ; 
+	.db SFX_HELD_ITEM ; 
+	.db SFX_HELD_ITEM ; 
+	.db SFX_HELD_ITEM ; 
+	.db SFX_HELD_ITEM ; 
+	.db SFX_HELD_ITEM ; 
+	.db SFX_UPROOT   ; 
+	.db SFX_UPROOT   ; 
+	.db SFX_UPROOT   ; 
+	.db SFX_HELD_ITEM ; 
+	.db SFX_UPROOT   ; 
+	.db SFX_UPROOT   ; 
+	.db SFX_UPROOT   ; 
+	.db SFX_HELD_ITEM ; 
+	.db SFX_HELD_ITEM ; 
+	.db SFX_HELD_ITEM ; 
+	.db SFX_HELD_ITEM ; 
+	.db SFX_HELD_ITEM ; 
+	.db SFX_UPROOT   ; 
+	.db SFX_HELD_ITEM ; 
 
 HandlePlayerState_Climbing:
 	LDA zInputCurrentState
@@ -405,7 +405,7 @@ PlayerClimbAnimation:
 	LDA zPlayerFacing
 	EOR #$01
 	STA zPlayerFacing
-	LDA #Hill_Vine
+	LDA #SFX_VINE
 	STA iHillSFX
 
 PlayerClimbAnimation_Exit:
@@ -677,7 +677,7 @@ loc_BANK0_8C2B:
 	STA zPlayerAnimFrame
 	JSR PlayerStartJump
 
-	LDA #Hill_Jump
+	LDA #SFX_JUMP
 	STA iHillSFX
 
 loc_BANK0_8C3D:
@@ -745,7 +745,7 @@ loc_BANK0_8C92:
 	LDA zSFXReelTimer
 	BNE loc_skipsound
 
-	LDA #DPCM_ChargeJump
+	LDA #SFX_JUMP_CHARGE
 	STA iDPCMSFX
 	LDA #1
 	STA zSFXReelTimer
@@ -1164,7 +1164,7 @@ loc_BANK0_8E42:
 	LDA #$0A
 	STA zWalkCycleTimer
 	DEC zHeldItem
-	LDA #SoundEffect2_Watch
+	LDA #SFX_TOSS
 	STA iPulse2SFX
 	LDA #$00
 	STA zPlayerHitBoxHeight
@@ -1577,7 +1577,7 @@ PlayerTileCollision_CheckCherryAndClimbable_AfterTick:
 	JSR CreateStarman
 
 PlayerTileCollision_Cherry:
-	LDA #Hill_Cherry
+	LDA #SFX_COLLECT
 	STA iHillSFX
 	LDA #BackgroundTile_Sky
 	JMP loc_BANK0_937C
@@ -1829,7 +1829,7 @@ TileBehavior_GoDownJar:
 	STA zPlayerXVelocity
 
 	; We're going down the jar!
-	LDA #DPCM_GoingDownJar
+	LDA #SFX_JAR_DOWN
 	STA iDPCMSFX
 	LDA #PlayerState_GoingDownJar
 	STA zPlayerState
@@ -2031,7 +2031,7 @@ DoorHandling_GoThroughDoor:
 	INC iPlayerLock
 	JSR SnapPlayerToTile
 
-	LDA #SoundEffect3_Door
+	LDA #SFX_THROUGH_DOOR
 	STA iNoiseDrumSFX
 
 DoorHandling_Exit:

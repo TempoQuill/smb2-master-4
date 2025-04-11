@@ -95,12 +95,12 @@ EngageSave_Exit:
 	RTS
 
 PauseSounds:
-	.db DPCM_Pause
-	.db DPCM_Save
-	.db DPCM_Save ; unused
+	.db SFX_PAUSE
+	.db SFX_SAVE
+	.db SFX_SAVE ; unused
 
 StopOperationAndReset:
-	LDA #DPCM_Save
+	LDA #SFX_SAVE
 	STA iDPCMSFX
 	LDA #Stack100_Save
 	STA iStack

@@ -61,7 +61,7 @@ AreaInitialization_CarryYOffsetLoop:
 	ORA iCurrentLvl
 	BNE AreaInitialization_CheckObjectCarriedOver
 
-	LDA #Hill_Fall
+	LDA #SFX_FALL
 	STA iHillSFX
 
 AreaInitialization_CheckObjectCarriedOver:
@@ -251,7 +251,7 @@ ENDIF
 	AND #$1F
 	BNE AreaMainRoutine_DecrementStopwatch
 
-	LDY #Hill_Throw
+	LDY #SFX_WATCH
 	STY iHillSFX
 
 AreaMainRoutine_DecrementStopwatch:

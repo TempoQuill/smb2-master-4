@@ -1,10 +1,10 @@
 
 LevelMusicIndexes:
-	.db Music_Overworld
-	.db Music_Inside ; 1 ; Music indexes.
-	.db Music_Boss ; 2
-	.db Music_Wart ; 3
-	.db Music_Subspace ; 4
+	.db MUSIC_OVERWORLD
+	.db MUSIC_INSIDE ; 1 ; Music indexes.
+	.db MUSIC_BOSS ; 2
+	.db MUSIC_WART ; 3
+	.db MUSIC_SUBSPACE ; 4
 
 
 ; =============== S U B R O U T I N E =======================================
@@ -17,7 +17,7 @@ sub_BANKF_F0F9:
 
 	; boss clear fanfare locks player movement
 	LDA iCurrentMusic
-	CMP #Music_BossClearFanfare
+	CMP #MUSIC_BOSS_CLEAR
 	BEQ loc_BANKF_F115
 
 	LDA iPlayerLock
@@ -55,7 +55,7 @@ RunFrame_Horizontal:
 	; If the boss clear fanfare is playing or `iPlayerLock` is set, skip the
 	; player state update subroutine
 	LDA iCurrentMusic
-	CMP #Music_BossClearFanfare
+	CMP #MUSIC_BOSS_CLEAR
 	BEQ RunFrame_Horizontal_AfterPlayerState
 
 	LDA iPlayerLock
@@ -133,7 +133,7 @@ RunFrame_Vertical:
 	; If the boss clear fanfare is playing or `iPlayerLock` is set, skip the
 	; player state update subroutine
 	LDA iCurrentMusic
-	CMP #Music_BossClearFanfare
+	CMP #MUSIC_BOSS_CLEAR
 	BEQ RunFrame_Vertical_AfterPlayerState
 
 	LDA iPlayerLock
@@ -319,7 +319,7 @@ SetPlayerScreenPosition_Above:
 	STY zPlayerHitBoxHeight
 	STY zPlayerYVelocity
 	STY zPlayerXVelocity
-	LDA #DPCM_ExitingJar
+	LDA #SFX_JAR_UP
 	STA iDPCMSFX
 	LDA #PlayerState_ExitingJar
 	STA zPlayerState

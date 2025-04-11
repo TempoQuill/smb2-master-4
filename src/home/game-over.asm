@@ -1,6 +1,6 @@
 DoGameOverStuff:
 	STY iCurrentPlayerSize
-	LDA #Music_GameOver
+	LDA #MUSIC_GAME_OVER
 	STA iMusicQueue
 	JSR WaitForNMI_TurnOffPPU
 

@@ -454,7 +454,7 @@ InitTitleBackgroundPalettesLoop:
 
 	JSR PlaceTitleSprites
 
-	LDA #Music_Title
+	LDA #MUSIC_TITLE_SCREEN
 	STA iMusicQueue
 	JSR WaitForNMI_TitleScreen_TurnOnPPU
 
@@ -716,7 +716,7 @@ loc_BANK0_9C1C:
 	JMP SaveFileMenu
 
 loc_BANK0_9C1F:
-	LDA #Music_StopMusic
+	LDA #MUSIC_NONE
 	STA iMusicQueue
 	LDA #SAVE_MENU_FADE_1 + 2
 	STA zScreenUpdateIndex

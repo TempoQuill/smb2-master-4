@@ -9,7 +9,7 @@
 ; constructed before the save data fills in the blanks
 ;
 InitSaveFileMenu:
-	LDY #Hill_SpinJump
+	LDY #SFX_SPIN_JUMP
 	STY iHillSFX
 	LDY #SAVE_MENU_INIT_INDEX_MAX - 1
 	STY mSaveFileInitIndex
@@ -128,7 +128,7 @@ RunSaveFileMenu:
 	LDA zInputBottleneck
 	LSR A ; right - inc file number (limit of 4, shown as 3)
 	BCC RunSaveFileMenu_CheckLeft
-	LDY #Hill_Fireball
+	LDY #SFX_FLOWER_FIREBALL
 	STY iHillSFX
 	LDY mPRGRAMBank
 	CPY #$D3
@@ -137,7 +137,7 @@ RunSaveFileMenu:
 RunSaveFileMenu_CheckLeft:
 	LSR A ; left - dec file number
 	BCC RunSaveFileMenu_CheckA
-	LDY #Hill_Fireball
+	LDY #SFX_FLOWER_FIREBALL
 	STY iHillSFX
 	LDY mPRGRAMBank
 	CPY #$D1
@@ -147,9 +147,9 @@ RunSaveFileMenu_CheckA:
 	LDA zInputBottleneck
 	ASL A ; a - load game
 	BCC RunSaveFileMenu_CheckB
-	LDA #Music_StopMusic
+	LDA #MUSIC_NONE
 	STA iMusicQueue
-	LDA #SoundEffect2_CoinGet
+	LDA #SFX_COIN
 	STA iPulse2SFX
 	JSR CheckSaveIfCorruptOrBlank
 RunSaveFileMenu_ALoop:
@@ -161,7 +161,7 @@ RunSaveFileMenu_CheckB
 	ASL A ; b - delete file
 	BCC RunSaveFileMenu_CheckSelectStart
 	PHA
-	LDA #SoundEffect2_Shrinking
+	LDA #SFX_SHRINK
 	STA iPulse2SFX
 	JSR ClearSaveData
 	PLA
@@ -175,9 +175,9 @@ RunSaveFileMenu_CheckSelectStart:
 	JMP RunSaveFileMenu
 
 RunSaveFileMenu_Start:
-	LDA #Music_StopMusic
+	LDA #MUSIC_NONE
 	STA iMusicQueue
-	LDA #SoundEffect2_CoinGet
+	LDA #SFX_COIN
 	STA iPulse2SFX
 	JSR CheckSaveIfCorruptOrBlank
 RunSaveFileMenu_StartLoop:
@@ -199,13 +199,13 @@ SaveDataCopypasta_Fail:
 
 SaveDataCopypasta:
 	; fail sound
-	LDA #Hill_LampBossDeath
+	LDA #SFX_DEFEAT_BOSS
 	STA iHillSFX
 	JSR CheckSaveIfCorruptOrBlank
 	BCS SaveDataCopypasta_Fail
 	; we pass integrity beyond this point
 	; replace the sound
-	LDA #SoundEffect3_Stomp
+	LDA #SFX_ENEMY_STOMP
 	STA iNoiseDrumSFX
 	LDA #0
 	STA iHillSFX
@@ -228,7 +228,7 @@ SaveDataCopypasta_Loop:
 	AND #ControllerInput_Left | ControllerInput_Right | ControllerInput_A
 	BEQ SaveDataCopypasta_Loop
 	BMI SaveDataCopypasta_A
-	LDY #Hill_Fireball
+	LDY #SFX_FLOWER_FIREBALL
 	STY iHillSFX
 	LSR A
 	BCC SaveDataCopypasta_Left
@@ -288,7 +288,7 @@ SaveDataCopypasta_ALoopOut:
 	STA mLoadedDataBufferIndex
 	JSR WaitForNMI_SaveFileMenu
 	; We did it! Reward the ears!
-	LDA #SoundEffect2_1UP
+	LDA #SFX_1UP
 	STA iPulse2SFX
 	; flash the file number again
 	LDA #0

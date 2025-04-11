@@ -15,10 +15,10 @@ EndOfLevelSlotMachine_AB:
 
 	JSR ResetScrollAndSetBonusChancePalettes
 
-	LDA #Music_StopMusic
+	LDA #MUSIC_NONE
 	STA iMusicQueue
 	JSR WaitForNMI
-	LDA #Music_WarpWorld
+	LDA #MUSIC_BONUS_DPCM
 	STA iMusicQueue
 	LDA #90
 	JSR DelayFrames
@@ -72,7 +72,7 @@ ExecuteCoinService_PlaySound:
 	INC iTotalCoins
 	DEC mCoinService
 
-	LDA #SoundEffect2_CoinGet
+	LDA #SFX_COIN
 	STA iPulse2SFX
 
 	LDA iTotalCoins

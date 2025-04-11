@@ -541,10 +541,10 @@ ProcessMusicQueue:
 	INY
 	BEQ ProcessMusicQueue_StopMusic
 
-	CMP #Music_WarpWorld
+	CMP #MUSIC_BONUS_DPCM
 	BEQ ProcessMusicQueue_FanfareSamples
 
-	CMP #Music_WartDeath
+	CMP #MUSIC_WART_DEATH
 	BEQ ProcessMusicQueue_WartDeath
 
 IFDEF RGME_AUDIO
@@ -560,9 +560,9 @@ ENDIF
 	; if any music is playing, read note data
 	; else return
 	LDA iCurrentMusic
-	CMP #Music_WartDeath
+	CMP #MUSIC_WART_DEATH
 	BEQ RunWartDeathSound
-	CMP #Music_WarpWorld
+	CMP #MUSIC_BONUS_DPCM
 	BEQ ProcessMusicQueue_RunningFanfare
 	AND #$FF
 	BNE ProcessMusicQueue_ThenReadNoteData
@@ -581,7 +581,7 @@ ProcessMusicQueue_MusicQueue1:
 	LDA MusicStackPermission, Y
 	BNE ProcessMusicQueue_ReadFirstPointer
 
-	LDA #Music_StopMusic
+	LDA #MUSIC_NONE
 	STA iMusicStack
 
 ProcessMusicQueue_ReadFirstPointer:

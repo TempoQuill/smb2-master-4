@@ -468,7 +468,7 @@ PlayerTileCollision_HurtPlayer:
 
 loc_BANK1_BAE5:
 	STA zPlayerYVelocity
-	LDA #SoundEffect2_Injury
+	LDA #SFX_LOSE_HEART
 	STA iPulse2SFX
 
 locret_BANK1_BAEC:

@@ -115,7 +115,7 @@ FreeSubconsScene_JumpingLoop:
 	CMP #$25
 	BNE FreeSubconsScene_JumpingLoop
 
-	LDY #Music_EndingAndCast
+	LDY #MUSIC_ENDING
 	STY iMusicQueue
 	BNE FreeSubconsScene_JumpingLoop
 
@@ -177,7 +177,7 @@ FreeSubconsScene_Phase1:
 	STA zPlayerAnimFrame
 
 FreeSubconsScene_Jump:
-	LDA #Hill_Jump
+	LDA #SFX_JUMP
 	STA iHillSFX
 	JMP PlayerStartJump
 
@@ -276,7 +276,7 @@ FreeSubconsScene_Phase4:
 	LDA #SpriteAnimation_Jumping
 	STA zPlayerAnimFrame
 
-	LDA #DPCM_Uproot
+	LDA #SFX_UPROOT
 	STA iDPCMSFX
 
 	LDA #$A0
@@ -346,7 +346,7 @@ FreeSubconsScene_Subcons_Loop:
 	CMP #$01
 	BNE FreeSubconsScene_Subcons_Next
 
-	LDA #SoundEffect2_Watch
+	LDA #SFX_TOSS
 	STA iPulse2SFX
 	BNE FreeSubconsScene_Subcons_Next
 

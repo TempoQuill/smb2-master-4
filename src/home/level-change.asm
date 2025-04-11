@@ -15,7 +15,7 @@ DoWorldWarp:
 
 EndOfLevel:
 	; Stop the music
-	LDA #Music_StopMusic ; Stop music
+	LDA #MUSIC_NONE ; Stop music
 	STA iMusicQueue
 
 	; Increase current characters "contribution" counter

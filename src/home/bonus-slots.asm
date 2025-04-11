@@ -21,7 +21,7 @@ SpinSlots:
 	DEC zSFXReelTimer
 	BNE SpinSlots_Handling
 
-	LDA #DPCM_Slot ; Play "reel sound" sound effect
+	LDA #SFX_SLOT ; Play "reel sound" sound effect
 	STA iDPCMSFX
 	LDA #7
 	STA zSFXReelTimer
@@ -106,7 +106,7 @@ loc_BANKF_E8D3:
 	STY mLDPBonusChanceLiveEMCount - 1
 	STA mLDPBonusChanceLiveEMCount ; Update number of lives won
 	JSR SlotMachine_WaitforSFX
-	LDA #Music_CrystalGetFanfare ; Play winner jingle
+	LDA #MUSIC_CRYSTAL ; Play winner jingle
 	STA iMusicQueue
 	LDA #$A0
 	STA z06
@@ -131,7 +131,7 @@ loc_BANKF_E8ED:
 SlotMachineLoseFanfare:
 	JSR SlotMachine_WaitforSFX
 
-	LDA #Music_DeathJingle
+	LDA #MUSIC_PLAYER_DOWN
 	STA iMusicQueue
 	JSR WaitForNMI
 
@@ -189,7 +189,7 @@ SlotMachineTextFlashIndex:
 
 NoCoinsForSlotMachine:
 
-	LDA #Music_DeathJingle
+	LDA #MUSIC_PLAYER_DOWN
 	STA iMusicQueue
 
 	STA z06

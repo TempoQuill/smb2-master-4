@@ -11,7 +11,7 @@ ShowPauseScreen:
 	; used when running sound queues
 	LDA #Stack100_Pause
 	STA iStack
-	LDA #DPCM_Pause
+	LDA #SFX_PAUSE
 	STA iDPCMSFX
 
 	JSR WaitForNMI
@@ -103,6 +103,6 @@ HidePauseScreen_SFX:
 	JMP HidePauseScreen_01
 
 HidePauseScreen_SFXStart:
-	LDA #DPCM_Pause
+	LDA #SFX_PAUSE
 	STA iDPCMSFX
 	JMP HidePauseScreen_01

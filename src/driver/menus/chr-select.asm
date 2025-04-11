@@ -40,7 +40,7 @@ LoadCHRSelect:
 
 	JSR DisableNMI
 
-	LDA #Music_CharacterSelect
+	LDA #MUSIC_CHR_SELECT
 	STA iMusicQueue
 
 	LDY #$3F

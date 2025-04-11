@@ -6,7 +6,7 @@ ChooseSaveChoiceAttribute:
 ;		1 - Save & Continue
 ;		2 - Save & Quit
 	; up or down?
-	LDA #SoundEffect2_CoinGet
+	LDA #SFX_COIN
 	STA iPulse2SFX
 	LDY zInputBottleneck
 	TYA

@@ -631,7 +631,7 @@ loc_BANK2_8509:
 
 	JSR Swarm_Stop
 
-	LDA #Music_BossClearFanfare
+	LDA #MUSIC_BOSS_CLEAR
 	STA iMusicQueue
 	LDA iEndOfLevelDoorPage, X
 	STA zObjectXHi, X
@@ -2101,7 +2101,7 @@ loc_BANK2_8C65:
 	LDA zObjectXHi, X
 	SBC #$00
 	STA zObjectXHi, X
-	LDA #DPCM_Fire
+	LDA #SFX_PANSER_FIREBALL
 	STA iDPCMSFX
 	LDA #Enemy_Fireball
 	STA zObjectType, X
@@ -2317,7 +2317,7 @@ loc_BANK2_8D7B:
 	DEC iMaskPreamble
 	BNE loc_BANK2_8D78
 
-	LDA #SoundEffect2_HawkUp
+	LDA #SFX_HAWK_OPEN
 	STA iPulse2SFX
 
 loc_BANK2_8D8A:
@@ -2402,7 +2402,7 @@ loc_BANK2_8DDB:
 	STA zPlayerStateTimer
 	LDA #$FC
 	STA zPlayerYVelocity
-	LDA #SoundEffect2_HawkDown
+	LDA #SFX_HAWK_CLOSE
 	STA iPulse2SFX
 	INC iMaskClosingFlag
 
@@ -2802,7 +2802,7 @@ BirdoBehavior_SpitProjectile:
 	CPY #$08
 	BNE loc_BANK2_901B
 
-	LDA #DPCM_Egg
+	LDA #SFX_EGG
 	STA iDPCMSFX
 	JSR sub_BANK2_95E5
 
@@ -2875,7 +2875,7 @@ EnemyBehavior_Coin:
 	CMP #$EA
 	BNE EnemyBehavior_Mushroom1up
 
-	LDA #SoundEffect2_CoinGet
+	LDA #SFX_COIN
 	STA iPulse2SFX
 
 EnemyBehavior_Mushroom1up:
@@ -2907,7 +2907,7 @@ ENDIF
 	INC sExtraMen
 
 loc_BANK2_9050:
-	LDA #SoundEffect2_1UP
+	LDA #SFX_1UP
 	STA iPulse2SFX
 	RTS
 
@@ -2947,7 +2947,7 @@ EnemyBehavior_Mushroom_PickUp:
 	LDA iMaskDoorOpenFlag
 	BNE EnemyBehavior_CrystalBall_Exit
 
-	LDA #Music_CrystalGetFanfare
+	LDA #MUSIC_CRYSTAL
 	STA iMusicQueue
 	LDA #$60
 	STA iMaskPreamble
@@ -2973,7 +2973,7 @@ EnemyBehavior_PickUpMushroom:
 	INC iPlayerMaxHP
 	JSR RestorePlayerToFullHealth
 
-	LDA #Music_WarpWorld
+	LDA #MUSIC_BONUS_DPCM
 	STA iMusicQueue
 	RTS
 
@@ -3066,7 +3066,7 @@ EnemyBehavior_Bomb_Explode:
 	LDA #$20
 	STA zSpriteTimer, X
 	STA iSkyFlashTimer
-	LDA #SoundEffect3_Bomb
+	LDA #SFX_EXPLOSION
 	STA iNoiseDrumSFX
 	LSR A
 	; A = $00
@@ -3140,7 +3140,7 @@ EnemyBehavior_SubspacePotion_CheckGroundCollision:
 	STA zObjectXHi, X
 	LDA #$10
 	STA iSpriteTimer, X
-	LDA #Hill_LampBossDeath
+	LDA #SFX_DEFEAT_BOSS
 	STA iHillSFX
 	INC zEnemyArray, X
 	LDA #Enemy_SubspaceDoor
@@ -3155,7 +3155,7 @@ EnemyBehavior_SubspacePotion_CheckGroundCollision:
 	BNE EnemyBehavior_SubspacePotion_CreateDoor
 
 	; subspace door fail
-	LDA #DPCM_BossHurt
+	LDA #SFX_PLAYER_HIT
 	STA iDPCMSFX
 	JSR EnemyDestroy
 
@@ -3605,7 +3605,7 @@ Phanto_AfterFlashing:
 	STA iObjectShakeTimer, X
 
 	; Play Phanto activation sound effect
-	LDA #DPCM_Phanto
+	LDA #SFX_PHANTO
 	STA iDPCMSFX
 
 Phanto_AfterSound:
@@ -4372,7 +4372,7 @@ loc_BANK2_96EC:
 
 	LDA #$20
 	STA iPOWTimer
-	LDA #SoundEffect3_POW
+	LDA #SFX_POW_LAND
 	STA iNoiseDrumSFX
 	JMP sub_BANK2_98C4
 
@@ -4734,7 +4734,7 @@ EnemyBehavior_Shell:
 
 EnemyBehavior_Shell_Destroy:
 	; shell destruction
-	LDA #DPCM_Shell
+	LDA #SFX_SHELL
 	STA iDPCMSFX
 	JMP TurnIntoPuffOfSmoke
 
@@ -4979,12 +4979,12 @@ EnemyBehavior_CheckDamagedInterrupt_SoundEffect:
 	LDA iDPCMSFX
 	BNE EnemyBehavior_CheckDamagedInterrupt_CheckPidgit
 
-	LDA #DPCM_Impact
+	LDA #SFX_IMPACT
 	STA iDPCMSFX
 	BNE EnemyBehavior_CheckDamagedInterrupt_CheckPidgit
 
 EnemyBehavior_CheckDamagedInterrupt_BossDeathSound:
-	LDA #Hill_LampBossDeath
+	LDA #SFX_DEFEAT_BOSS
 	STA iHillSFX
 	STA iHillBossPriority
 
@@ -6222,7 +6222,7 @@ loc_BANK3_A17D:
 	LDA iPRNGValue
 	AND #$07
 	TAY
-	LDA #DPCM_ClawgripChuck
+	LDA #SFX_CLAWGRIP_CHUCK
 	STA iDPCMSFX
 	LDA ClawgripRock_JumpVelocityY, Y
 	STA zObjectYVelocity, X
@@ -7590,7 +7590,7 @@ EnemyBehavior_Tryclyde_SpitFireball:
 
 	BMI RenderSprite_Tryclyde_Exit
 
-	LDA #SoundEffect3_Autobomb
+	LDA #SFX_AUTOBOMB_TRICLYDE_FIREBALL
 	STA iNoiseDrumSFX
 	LDY z00
 	LDA #Enemy_Fireball
@@ -7851,7 +7851,7 @@ EnemyBehavior_CobratJar_Blocked:
 	LDA #$E0
 	STA zObjectYVelocity, X
 	; jar blocked
-	LDA #DPCM_BossHurt
+	LDA #SFX_PLAYER_HIT
 	STA iDPCMSFX
 
 EnemyBehavior_CobratJar_CheckReset:
@@ -8085,7 +8085,7 @@ EnemyBehavior_Rocket_Flying:
 	BCC EnemyBehavior_Rocket_Fast
 
 EnemyBehavior_Rocket_Hiss:
-	LDA #SoundEffect3_RocketHiss
+	LDA #SFX_ROCKET_HISS
 	STA iNoiseDrumSFX
 	BNE EnemyBehavior_Rocket_Fast
 
@@ -8200,7 +8200,7 @@ EnemyBehavior_Rocket_Launching:
 	; Setting zEnemyArray puts the rocket in the area
 	STA zEnemyArray, X
 	STA iIsInRocket
-	LDA #SoundEffect3_Rocket
+	LDA #SFX_ROCKET_RUMBLE
 	STA iNoiseDrumSFX
 	LDA #$FE
 	STA zObjectYVelocity, X
@@ -8395,7 +8395,7 @@ loc_BANK3_ACE7:
 
 	JSR CreateEnemy
 
-	LDX #DPCM_Fire
+	LDX #SFX_PANSER_FIREBALL
 	STX iDPCMSFX
 	LDX z00
 	LDA #Enemy_Fireball
@@ -8637,7 +8637,7 @@ loc_BANK3_AE28:
 	; Should have pushed it to stack instead.
 	JSR EnemyBehavior_SpitProjectile
 
-	LDX #SoundEffect3_Autobomb
+	LDX #SFX_AUTOBOMB_TRICLYDE_FIREBALL
 	STX iNoiseDrumSFX
 	LDX z00
 	DEC zObjectYLo, X
@@ -8747,7 +8747,7 @@ loc_BANK3_AEC3:
 	STA zObjectYLo, X
 
 loc_BANK3_AECD:
-	LDA #SoundEffect3_ShortNoise
+	LDA #SFX_WHALE_SPOUT
 	STA iNoiseDrumSFX
 	LDA zObjectVariables, X
 	CMP #$80
@@ -9056,14 +9056,14 @@ HawkmouthEat:
 	STA zPlayerStateTimer
 	LDA #$FC
 	STA zPlayerYVelocity
-	LDA #SoundEffect2_HawkDown
+	LDA #SFX_HAWK_CLOSE
 	STA iPulse2SFX
 	RTS
 
 ; =============== S U B R O U T I N E =======================================
 
 sub_BANK3_B095:
-	LDA #SoundEffect2_HawkUp
+	LDA #SFX_HAWK_OPEN
 	STA iPulse2SFX
 
 locret_BANK3_B09A:
@@ -9373,7 +9373,7 @@ EnemyBehavior_Wart_PhysicsX:
 
 	BMI EnemyBehavior_Wart_Exit
 
-	LDA #SoundEffect3_Bubbles
+	LDA #SFX_BUBBLE_FIRING
 	STA iNoiseDrumSFX
 	; determines how high to spit the bubble
 	LDA i480, X
@@ -9433,7 +9433,7 @@ EnemyBehavior_Wart_DeathFall:
 	AND #$1F
 	BNE EnemyBehavior_Wart_CheckDeathComplete
 
-	LDA #SoundEffect3_WartSmokePuff
+	LDA #SFX_SMOKE_PUFF
 	STA iNoiseDrumSFX
 	JSR CreateEnemy
 
@@ -9488,7 +9488,7 @@ RenderSprite_Wart:
 	LDA iWartDefeated
 	BNE RenderSprite_Wart_ObjAttrib
 
-	LDA #Music_WartDeath
+	LDA #MUSIC_WART_DEATH
 	STA iMusicQueue
 	INC iWartDefeated
 
@@ -10265,7 +10265,7 @@ CheckCollisionWithPlayer:
 
 	; accept the heart into your life
 	STA zEnemyState, Y
-	LDA #Hill_Cherry
+	LDA #SFX_COLLECT
 	STA iHillSFX
 	LDY iPlayerMaxHP
 	LDA iPlayerHP
@@ -10296,7 +10296,7 @@ ELSE
 	LDA #$FF
 ENDIF
 	STA iStarTimer
-	LDA #Music_Invincible
+	LDA #MUSIC_STARMAN
 	STA iMusicQueue
 	LDA #EnemyState_Inactive
 	STA zEnemyState, Y
@@ -10717,7 +10717,7 @@ loc_BANK3_BA2A:
 	STA zPlayerYVelocity
 
 loc_BANK3_BA2C:
-	LDA #SoundEffect2_Injury
+	LDA #SFX_LOSE_HEART
 	STA iPulse2SFX
 
 locret_BANK3_BA31:
@@ -10790,7 +10790,7 @@ loc_BANK3_BA7A:
 ; End of function sub_BANK3_BA5D
 
 PlayBossHurtSound:
-	LDA #DPCM_BossHurt
+	LDA #SFX_PLAYER_HIT
 	STA iDPCMSFX
 	STA iDPCMBossPriority
 	RTS
@@ -11158,7 +11158,7 @@ DoorHandling_GoThroughDoor_Bank3:
 	INC iPlayerLock
 	JSR SnapPlayerToTile_Bank3
 
-	LDA #SoundEffect3_Door
+	LDA #SFX_THROUGH_DOOR
 	STA iNoiseDrumSFX
 	RTS
 

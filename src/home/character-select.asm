@@ -47,7 +47,7 @@ CharacterSelect_ChangeCharacter:
 	BEQ loc_BANKF_E2FE
 
 	DEC zCurrentCharacter
-	LDA #SoundEffect2_CoinGet
+	LDA #SFX_COIN
 	STA iPulse2SFX
 
 loc_BANKF_E2FE:
@@ -56,7 +56,7 @@ loc_BANKF_E2FE:
 	BEQ loc_BANKF_E30B
 
 	INC zCurrentCharacter
-	LDA #SoundEffect2_CoinGet
+	LDA #SFX_COIN
 	STA iPulse2SFX
 
 loc_BANKF_E30B:
@@ -132,7 +132,7 @@ loc_BANKF_E391:
 ; ---------------------------------------------------------------------------
 
 loc_BANKF_E3AE:
-	LDA #Hill_Select
+	LDA #SFX_SELECT
 	STA iHillSFX
 	LDX iCurrentWorld
 	LDY iCurrentLvl
@@ -179,6 +179,6 @@ loc_BANKF_E3EC:
 	DEC z10
 	BPL loc_BANKF_E3EC
 
-	LDA #Music_StopMusic
+	LDA #MUSIC_NONE
 	STA iMusicQueue
 	RTS

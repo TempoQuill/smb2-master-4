@@ -59,7 +59,7 @@ DoNewWarp_Loop:
 	STA MMC5_IRQScanlineCompare
 	LDA #0
 	STA mWarpPaletteIndex
-	LDA #Music_WarpWorld
+	LDA #MUSIC_BONUS_DPCM
 	STA iMusicQueue
 	LDY #200
 	JSR DelayFrames_Warp
@@ -179,7 +179,7 @@ WarpPalettes:
 
 ; initializes the wave effect RAM
 InitIRQData:
-	LDA #Music_StopMusic
+	LDA #MUSIC_NONE
 	STA iMusicQueue
 	JSR WaitForNMI
 	LDY #0
@@ -196,7 +196,7 @@ InitIRQData:
 	INY
 	STY mNextScanline
 	STY MMC5_IRQScanlineCompare
-	LDY #Music_Warp
+	LDY #MUSIC_WARP
 	STY iMusicQueue
 	RTS
 

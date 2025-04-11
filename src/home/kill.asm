@@ -31,7 +31,7 @@ loc_BANKF_F747:
 
 loc_BANKF_F749:
 	; Set music to death jingle
-	LDA #Music_DeathJingle
+	LDA #MUSIC_PLAYER_DOWN
 	STA iMusicQueue
 	LDA iStack
 	CMP #Stack100_Pause
