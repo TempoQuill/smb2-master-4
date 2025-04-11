@@ -67,13 +67,14 @@
 ;
 ; **NMI** is the code that runs each frame during the VBlank.
 ;
-; **RESET** is code that runs after the console starts or resets.
+; **RESET** is code that runs after the console starts or resets.  Serves as
+; the main game loop.
 ;
-; **IRQ** is not used, but would handle things like `BRK` or scanline counter
-; interrupts. Note that the MMC3 scanline counter is clocked incorrectly due to
-; the use of both sides of the nametable for sprites as well as using the right
-; rather than left nametable for backgrounds, which effectively prevents using
-; the scanline counter for things like precise screen splits.
+; **IRQ** is used for the sine effect for warping.  General uses:
+;	-DMC streaming via %1------- at $4010 (doesn't need HBlank)
+;	-On-screen tile expansion
+;	-Non-CHR parallax
+;	-Independent setpiece movement (status bar, logo entrance)
 ;
 .pad $FFFA, $00
 
