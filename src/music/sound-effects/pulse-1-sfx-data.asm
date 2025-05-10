@@ -115,3 +115,23 @@ Pulse2SFXData_Coin:
 	pulse_note RB_, 5, 4
 	pulse_note RE_, 6, 18
 	.db $00
+
+Pulse2SFXData_ClawgripChuck:
+	.db $8A
+	pulse_note RA_, 3, 2
+	.db $83
+	pulse_note RA_, 5, 8
+	.db $00
+
+Pulse2SFXData_Impact:
+	pulse_note RG_, 2, 1
+	pulse_note RG#, 2, 1
+	pulse_note RB_, 8, 1
+	pulse_note RA_, 2, 1
+	pulse_note RG_, 2, 1
+	pulse_note RB_, 8, 1
+	pulse_note RC#, 3, 1
+	pulse_note RD#, 2, 1
+	pulse_note RB_, 8, 1
+	pulse_note RG_, 3, 1
+	.db $00

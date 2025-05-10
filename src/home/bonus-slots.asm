@@ -22,7 +22,7 @@ SpinSlots:
 	BNE SpinSlots_Handling
 
 	LDA #SFX_SLOT ; Play "reel sound" sound effect
-	STA iDPCMSFX
+	STA iHillSFX
 	LDA #7
 	STA zSFXReelTimer
 

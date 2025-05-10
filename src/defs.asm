@@ -154,7 +154,8 @@ SFX_GROW:		.dsb 1 ; 05
 SFX_DEFEAT_BOSS:	.dsb 1 ; 06
 SFX_SELECT:		.dsb 1 ; 07
 SFX_FLOWER_FIREBALL:	.dsb 1 ; 08
-SFX_SPIN_JUMP:                 ; 09
+SFX_SPIN_JUMP:		.dsb 1 ; 09
+SFX_SLOT:                      ; 0A
 NUM_HILL_SFX:
 NUM_HILL_IDS = NUM_HILL_SFX - 1
 .ende
@@ -165,11 +166,11 @@ NUM_HILL_IDS = NUM_HILL_SFX - 1
 ; enum DPCM (width 1 byte)
 SFX_EGG:		.dsb 1 ; 00
 SFX_UPROOT:		.dsb 1 ; 01
-SFX_SLOT:		.dsb 1 ; 02
+	.dsb 1 ; 02
 SFX_HELD_ITEM:		.dsb 1 ; 03
 SFX_JUMP_CHARGE:	.dsb 1 ; 04
 SFX_PLAYER_HIT:		.dsb 1 ; 05
-SFX_IMPACT:		.dsb 1 ; 06
+	.dsb 1 ; 06
 SFX_SHELL:		.dsb 1 ; 07
 SFX_JAR_DOWN:		.dsb 1 ; 08
 SFX_JAR_UP:		.dsb 1 ; 09
@@ -178,7 +179,7 @@ SFX_PANSER_FIREBALL:	.dsb 1 ; 0B
 SFX_POST_CAST_PROMPT:	.dsb 1 ; 0C
 SFX_SAVE:		.dsb 1 ; 0D
 SFX_PAUSE:		.dsb 1 ; 0E
-SFX_CLAWGRIP_CHUCK:	.dsb 1 ; 0F
+	.dsb 1 ; 0F
 	.dsb 2
 NUM_DPCM_SFX:
 NUM_DPCM_IDS = NUM_DPCM_SFX - 1
@@ -314,18 +315,22 @@ WarpUpdateBuffer_Fade1 = $03
 WarpUpdateBuffer_Fade2 = $04
 WarpUpdateBuffer_Fade3 = $05
 WarpUpdateBuffer_FinalPalettes = $06
+.ende
 
 ; ---------------------------------------------------------------------------
 
 ; enum SoundEffect2 (width 1 byte)
-SFX_STOP_SLOT = $01
-SFX_1UP = $02
-SFX_COIN = $04
-SFX_SHRINK = $08
-SFX_LOSE_HEART = $10
-SFX_TOSS = $20
-SFX_HAWK_OPEN = $40
-SFX_HAWK_CLOSE = $80
+.enum $0001
+SFX_STOP_SLOT:		.dsb 1
+SFX_1UP:		.dsb 1
+SFX_COIN:		.dsb 1
+SFX_SHRINK:		.dsb 1
+SFX_LOSE_HEART:		.dsb 1
+SFX_TOSS:		.dsb 1
+SFX_HAWK_OPEN:		.dsb 1
+SFX_HAWK_CLOSE:		.dsb 1
+SFX_CLAWGRIP_CHUCK:	.dsb 1
+SFX_IMPACT:
 
 ; ---------------------------------------------------------------------------
 

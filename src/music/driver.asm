@@ -34,15 +34,8 @@ ProcessPulseSFX_Part2:
 	LDY #0
 	STY zPulse2SFXOffset
 	STY iPulse2SFXSweep
-	LSR A
-	BCS ProcessPulseSFX_DesignatePointer
-
-ProcessPulseSFX_PointerLoop:
-	INY
-	LSR A
-	BCC ProcessPulseSFX_PointerLoop
-
-ProcessPulseSFX_DesignatePointer:
+	TAY
+	DEY
 	LDA Pulse2SFXVolumes, Y
 	STA iPulse2SFXVolume
 	LDA Pulse2SFXEnvelopes, Y
@@ -105,30 +98,36 @@ ProcessPulseSFX_End:
 	RTS
 
 Pulse2SFXPointersLo:
-	.db <Pulse2SFXData_StopSlot
-	.db <Pulse2SFXData_1UP
-	.db <Pulse2SFXData_Coin
-	.db <Pulse2SFXData_Shrink
-	.db <Pulse2SFXData_Injury
-	.db <Pulse2SFXData_Throw
-	.db <Pulse2SFXData_HawkUp
-	.db <Pulse2SFXData_HawkDown
+	.dl Pulse2SFXData_StopSlot
+	.dl Pulse2SFXData_1UP
+	.dl Pulse2SFXData_Coin
+	.dl Pulse2SFXData_Shrink
+	.dl Pulse2SFXData_Injury
+	.dl Pulse2SFXData_Throw
+	.dl Pulse2SFXData_HawkUp
+	.dl Pulse2SFXData_HawkDown
+	.dl Pulse2SFXData_ClawgripChuck
+	.dl Pulse2SFXData_Impact
 
 Pulse2SFXPointersHi:
-	.db >Pulse2SFXData_StopSlot
-	.db >Pulse2SFXData_1UP
-	.db >Pulse2SFXData_Coin
-	.db >Pulse2SFXData_Shrink
-	.db >Pulse2SFXData_Injury
-	.db >Pulse2SFXData_Throw
-	.db >Pulse2SFXData_HawkUp
-	.db >Pulse2SFXData_HawkDown
+	.dh Pulse2SFXData_StopSlot
+	.dh Pulse2SFXData_1UP
+	.dh Pulse2SFXData_Coin
+	.dh Pulse2SFXData_Shrink
+	.dh Pulse2SFXData_Injury
+	.dh Pulse2SFXData_Throw
+	.dh Pulse2SFXData_HawkUp
+	.dh Pulse2SFXData_HawkDown
+	.dh Pulse2SFXData_ClawgripChuck
+	.dh Pulse2SFXData_Impact
 
 Pulse2SFXVolumes:
 	.db $99, $9F, $9F, $1F, $1F, $9F, $1F, $1F
+	.db $96, $00
 
 Pulse2SFXEnvelopes:
 	.db $87, $81, $84, $00, $00, $80, $00, $00
+	.db $88, $00
 
 .include "src/music/sound-effects/pulse-1-sfx-data.asm"
 
@@ -193,28 +192,30 @@ ProcessHillSFX_Done:
 	RTS
 
 HillSFXPointersLo:
-	.db <HillSFXData_Jump
-	.db <HillSFXData_Vine
-	.db <HillSFXData_Cherry
-	.db <HillSFXData_Watch
-	.db <HillSFXData_Fall
-	.db <HillSFXData_Mushroom
-	.db <HillSFXData_LampBossDeath
-	.db <HillSFXData_Select
-	.db <HillSFXData_Fireball
-	.db <HillSFXData_SpinJump
+	.dl HillSFXData_Jump
+	.dl HillSFXData_Vine
+	.dl HillSFXData_Cherry
+	.dl HillSFXData_Watch
+	.dl HillSFXData_Fall
+	.dl HillSFXData_Mushroom
+	.dl HillSFXData_LampBossDeath
+	.dl HillSFXData_Select
+	.dl HillSFXData_Fireball
+	.dl HillSFXData_SpinJump
+	.dl HillSFXData_Slot
 
 HillSFXPointersHi:
-	.db >HillSFXData_Jump
-	.db >HillSFXData_Vine
-	.db >HillSFXData_Cherry
-	.db >HillSFXData_Watch
-	.db >HillSFXData_Fall
-	.db >HillSFXData_Mushroom
-	.db >HillSFXData_LampBossDeath
-	.db >HillSFXData_Select
-	.db >HillSFXData_Fireball
-	.db >HillSFXData_SpinJump
+	.dh HillSFXData_Jump
+	.dh HillSFXData_Vine
+	.dh HillSFXData_Cherry
+	.dh HillSFXData_Watch
+	.dh HillSFXData_Fall
+	.dh HillSFXData_Mushroom
+	.dh HillSFXData_LampBossDeath
+	.dh HillSFXData_Select
+	.dh HillSFXData_Fireball
+	.dh HillSFXData_SpinJump
+	.dh HillSFXData_Slot
 
 HillSFXLinears:
 	.db $81 ; jump

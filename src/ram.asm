@@ -504,7 +504,7 @@ iPPUBuffer:
 	.dsb 1 ; $0302
 	.dsb 1 ; $0303
 	.dsb 1 ; $0304
-iTitleAttribute
+iTitleAttribute:
 	.dsb 1 ; $0305
 	.dsb 1 ; $0306
 	.dsb 1 ; $0307

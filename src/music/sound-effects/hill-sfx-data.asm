@@ -112,9 +112,9 @@ HillSFXData_Watch:
 HillSFXData_Cherry:
 	hill_note RA_, 6, 1
 	hill_rest 1
-	hill_note RE_, 6, 1
-	hill_rest 1
 	hill_note RG#, 6, 1
+	hill_rest 1
+	hill_note RE_, 6, 1
 	.db $00
 
 HillSFXData_Fall:
@@ -226,4 +226,12 @@ HillSFXData_SpinJump:
 	hill_note RG_, 5, 1
 	hill_rest 1
 	hill_note RG#, 5, 1
+	.db $00
+
+HillSFXData_Slot:
+	hill_note RD#, 7, 1
+	hill_note RE_, 7, 1
+	hill_note RF_, 7, 1
+	hill_note RF#, 7, 1
+	hill_note RF#, 7, 1
 	.db $00

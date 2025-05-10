@@ -20,13 +20,13 @@ EndOfLevelSlotMachine_AB:
 	JSR WaitForNMI
 	LDA #MUSIC_BONUS_DPCM
 	STA iMusicQueue
-	LDA #90
-	JSR DelayFrames
 	LDA iTotalCoins
 	BEQ EndOfLevelSlotMachine_Exit
 	JMP loc_BANKF_E7F2
 
 EndOfLevelSlotMachine_Exit:
+	LDA #90
+	JSR DelayFrames
 	JMP NoCoinsForSlotMachine
 
 CheckForCoinService:

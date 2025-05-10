@@ -4976,11 +4976,11 @@ EnemyBehavior_CheckDamagedInterrupt_SoundEffect:
 	BNE EnemyBehavior_CheckDamagedInterrupt_BossDeathSound
 
 	; normal enemy hit sound
-	LDA iDPCMSFX
+	LDA iPulse2SFX
 	BNE EnemyBehavior_CheckDamagedInterrupt_CheckPidgit
 
 	LDA #SFX_IMPACT
-	STA iDPCMSFX
+	STA iPulse2SFX
 	BNE EnemyBehavior_CheckDamagedInterrupt_CheckPidgit
 
 EnemyBehavior_CheckDamagedInterrupt_BossDeathSound:
@@ -6223,7 +6223,7 @@ loc_BANK3_A17D:
 	AND #$07
 	TAY
 	LDA #SFX_CLAWGRIP_CHUCK
-	STA iDPCMSFX
+	STA iPulse2SFX
 	LDA ClawgripRock_JumpVelocityY, Y
 	STA zObjectYVelocity, X
 	DEC zObjectYLo, X
