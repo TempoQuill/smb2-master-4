@@ -6661,7 +6661,7 @@ loc_BANK3_A3A5:
 loc_BANK3_A3C7:
 	STY wCarpetVelocity
 	LDA zInputCurrentState
-	AND #ControllerInput_Right | ControllerInput_Left
+	AND #DPad_Right | DPad_Left
 	TAY
 	AND zPlayerCollision
 
@@ -10124,7 +10124,7 @@ EnemyCollisionBehavior_Door:
 	BNE EnemyCollisionBehavior_Exit
 
 	LDA zInputBottleneck
-	AND #ControllerInput_Up
+	AND #DPad_Up
 	BEQ EnemyCollisionBehavior_Exit
 
 	LDA zPlayerCollision

@@ -32,7 +32,7 @@ DoSuicideCheatCheck:
 	BEQ PauseScreenExitCheck ; If so, skip the suicide code check
 
 	LDA zInputCurrentState + 1 ; Check for suicide code
-	CMP #ControllerInput_Up | ControllerInput_B | ControllerInput_A ; Up + A + B
+	CMP #DPad_Up | ControllerInput_B | ControllerInput_A ; Up + A + B
 	BNE PauseScreenExitCheck ; Not being held! Nothing to see here
 
 	JSR KillPlayer ; KILL THYSELF

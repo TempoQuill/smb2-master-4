@@ -165,6 +165,6 @@ SaveFileLayout8:
 SaveFileRAMBuffer:
 	.db $21, $37, $01, $D0
 	.db $21, $76, $04, $F4, $F4, $F4, $FB
-	.db $21, $b6, $02, $f4, $f4
+	.db $21, $b6, $02, $F4, $F4
 SaveFileRAMBufferEnd:
 	.db $00

@@ -1546,15 +1546,15 @@ PostCastMenu:
 	BPL PostCastMenu_Update
 
 	LDA zInputBottleneck
-	AND #ControllerInput_Up
+	AND #DPad_Up
 	BNE PostCastMenu_Up
 
 	LDA zInputBottleneck
-	AND #ControllerInput_Down
+	AND #DPad_Down
 	BNE PostCastMenu_Down
 
 	LDA zInputBottleneck
-	AND #ControllerInput_A + ControllerInput_Start
+	AND #ControllerInput_Start
 	BNE PostCastMenu_AStart
 	RTS
 

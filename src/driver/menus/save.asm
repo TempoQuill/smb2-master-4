@@ -225,7 +225,7 @@ SaveDataCopypasta_Loop:
 	LDA #0
 	STA mLoadedDataBufferIndex
 	LDA zInputBottleneck
-	AND #ControllerInput_Left | ControllerInput_Right | ControllerInput_A
+	AND #DPad_Left | DPad_Right | ControllerInput_A
 	BEQ SaveDataCopypasta_Loop
 	BMI SaveDataCopypasta_A
 	LDY #SFX_FLOWER_FIREBALL
@@ -256,7 +256,7 @@ SaveDataCopypasta_A:
 	LDA mCopypastaSource
 	AND #$03
 	STA MMC5_PRGBankSwitch1
-	LDY #(SAVE_DATA_WIDTH * 2)
+	LDY #(SAVE_DATA_WIDTH * 2) - 1
 SaveDataCopypasta_ALoopIn:
 	; copy to mapper RAM
 	LDA sSaveData, Y
@@ -272,7 +272,7 @@ SaveDataCopypasta_ALoopIn:
 	LDA mCopypastaTarget
 	AND #$03
 	STA MMC5_PRGBankSwitch1
-	LDY #(SAVE_DATA_WIDTH * 2)
+	LDY #(SAVE_DATA_WIDTH * 2) - 1
 SaveDataCopypasta_ALoopOut:
 	LDA mSaveDataBuffer, Y
 	STA sSaveData, Y

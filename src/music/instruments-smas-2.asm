@@ -20,7 +20,7 @@ Audio2_InstrumentDVE_80_Short:
 Audio2_InstrumentDVE_90_E0:
 .incbin "src/music/smas-instrument-data/audio-2-90.bin"
 
-Audio2_InstrumentDVE_90_E0_Short
+Audio2_InstrumentDVE_90_E0_Short:
 .incbin "src/music/smas-instrument-data/audio-2-90t.bin"
 
 Audio2_InstrumentDVE_A0:
@@ -32,7 +32,7 @@ Audio2_InstrumentDVE_A0_Short:
 Audio2_InstrumentDVE_B0:
 .incbin "src/music/smas-instrument-data/audio-2-b0.bin"
 
-Audio2_InstrumentDVE_B0_Short
+Audio2_InstrumentDVE_B0_Short:
 .incbin "src/music/smas-instrument-data/audio-2-b0t.bin"
 
 Audio2_InstrumentDVE_C0_Short:

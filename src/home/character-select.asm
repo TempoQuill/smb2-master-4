@@ -34,7 +34,7 @@ loc_BANKF_E2B2:
 
 loc_BANKF_E2E8:
 	LDA zInputBottleneck
-	AND #ControllerInput_Right | ControllerInput_Left
+	AND #DPad_Right | DPad_Left
 	BNE CharacterSelect_ChangeCharacter
 
 	JMP CharacterSelectMenuLoop
@@ -43,7 +43,7 @@ loc_BANKF_E2E8:
 
 CharacterSelect_ChangeCharacter:
 	LDA zInputBottleneck
-	AND #ControllerInput_Right
+	AND #DPad_Right
 	BEQ loc_BANKF_E2FE
 
 	DEC zCurrentCharacter
@@ -52,7 +52,7 @@ CharacterSelect_ChangeCharacter:
 
 loc_BANKF_E2FE:
 	LDA zInputBottleneck
-	AND #ControllerInput_Left
+	AND #DPad_Left
 	BEQ loc_BANKF_E30B
 
 	INC zCurrentCharacter

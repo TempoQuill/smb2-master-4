@@ -14,6 +14,7 @@
 ;   - warp cutscene
 ;
 .include "src/def/save-menu.asm"
+.include "src/def/sound-test.asm"
 .include "src/driver/overworld/scroll-0.asm"
 .include "src/driver/overworld/player-0.asm"
 .include "src/driver/overworld-0.asm"
@@ -23,3 +24,4 @@
 .include "src/driver/menus/save.asm"
 .include "src/driver/menus/pause.asm"
 .include "src/driver/movie/warp.asm"
+.include "src/driver/menus/sound-test.asm"

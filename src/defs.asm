@@ -72,24 +72,24 @@ RB_ = $0713
 
 .enum $0001
 ; enum Music
-MUSIC_OVERWORLD:	.dsb 1 ; 00
-MUSIC_CHR_SELECT:	.dsb 1 ; 01
-MUSIC_INSIDE:		.dsb 1 ; 02
-MUSIC_BOSS:		.dsb 1 ; 03
-MUSIC_STARMAN:		.dsb 1 ; 04
-MUSIC_SUBSPACE:		.dsb 1 ; 05
-MUSIC_WART:		.dsb 1 ; 06
-MUSIC_TITLE_SCREEN:	.dsb 1 ; 07
-MUSIC_BONUS_UNUSED:	.dsb 1 ; 08
-MUSIC_BOSS_CLEAR:	.dsb 1 ; 09
-MUSIC_ENDING:		.dsb 1 ; 0A
-MUSIC_PLAYER_DOWN:	.dsb 1 ; 0B
-MUSIC_GAME_OVER:	.dsb 1 ; 0C
-MUSIC_CRYSTAL:		.dsb 1 ; 0D
-MUSIC_WART_DEATH:	.dsb 1 ; 0E
-MUSIC_SPADE_GAME:	.dsb 1 ; 0F
-MUSIC_WARP:		.dsb 1 ; 10
-MUSIC_BONUS_DPCM:              ; 11
+MUSIC_OVERWORLD:	.dsb 1 ; 1
+MUSIC_CHR_SELECT:	.dsb 1 ; 2
+MUSIC_INSIDE:		.dsb 1 ; 3
+MUSIC_BOSS:		.dsb 1 ; 4
+MUSIC_STARMAN:		.dsb 1 ; 5
+MUSIC_SUBSPACE:		.dsb 1 ; 6
+MUSIC_WART:		.dsb 1 ; 7
+MUSIC_TITLE_SCREEN:	.dsb 1 ; 8
+MUSIC_BONUS_UNUSED:	.dsb 1 ; 9 - (dpr'd due to SFX density in slots)
+MUSIC_BOSS_CLEAR:	.dsb 1 ; 10
+MUSIC_ENDING:		.dsb 1 ; 11
+MUSIC_PLAYER_DOWN:	.dsb 1 ; 12
+MUSIC_GAME_OVER:	.dsb 1 ; 13
+MUSIC_CRYSTAL:		.dsb 1 ; 14
+MUSIC_WART_DEATH:	.dsb 1 ; 15 - uses DPCM-exclusive playback
+MUSIC_SPADE_GAME:	.dsb 1 ; 16 - obviously unused
+MUSIC_WARP:		.dsb 1 ; 17
+MUSIC_BONUS_DPCM:              ; 18 - uses DPCM-exclusive playback
 NUM_MUSIC_TRACKS:
 MUSIC_NONE = $FF
 .ende
@@ -132,10 +132,10 @@ WHOLE_TRIPLET:                 ; f
 
 .enum $0000
 ; enum ControllerInput (bitfield) (width 1 byte)
-ControllerInput_Right = %00000001
-ControllerInput_Left = %00000010
-ControllerInput_Down = %00000100
-ControllerInput_Up =  %00001000
+DPad_Right = %00000001
+DPad_Left = %00000010
+DPad_Down = %00000100
+DPad_Up =  %00001000
 ControllerInput_Start = %00010000
 ControllerInput_Select = %00100000
 ControllerInput_B = %01000000
@@ -143,19 +143,19 @@ ControllerInput_A = %10000000
 .ende
 
 ; ---------------------------------------------------------------------------
-; enum Hill (width 1 byte)
 .enum $0001
-SFX_JUMP:		.dsb 1 ; 00
-SFX_VINE:		.dsb 1 ; 01
-SFX_COLLECT:		.dsb 1 ; 02
-SFX_WATCH:		.dsb 1 ; 03
-SFX_FALL:		.dsb 1 ; 04
-SFX_GROW:		.dsb 1 ; 05
-SFX_DEFEAT_BOSS:	.dsb 1 ; 06
-SFX_SELECT:		.dsb 1 ; 07
-SFX_FLOWER_FIREBALL:	.dsb 1 ; 08
-SFX_SPIN_JUMP:		.dsb 1 ; 09
-SFX_SLOT:                      ; 0A
+; enum Hill (width 1 byte)
+SFX_JUMP:		.dsb 1 ; 1
+SFX_VINE:		.dsb 1 ; 2
+SFX_COLLECT:		.dsb 1 ; 3
+SFX_WATCH:		.dsb 1 ; 4
+SFX_FALL:		.dsb 1 ; 5
+SFX_GROW:		.dsb 1 ; 6
+SFX_DEFEAT_BOSS:	.dsb 1 ; 7
+SFX_SELECT:		.dsb 1 ; 8
+SFX_FLOWER_FIREBALL:	.dsb 1 ; 9
+SFX_SPIN_JUMP:		.dsb 1 ; 10
+SFX_SLOT:                      ; 11
 NUM_HILL_SFX:
 NUM_HILL_IDS = NUM_HILL_SFX - 1
 .ende
@@ -164,23 +164,24 @@ NUM_HILL_IDS = NUM_HILL_SFX - 1
 
 .enum $0001
 ; enum DPCM (width 1 byte)
-SFX_EGG:		.dsb 1 ; 00
-SFX_UPROOT:		.dsb 1 ; 01
-	.dsb 1 ; 02
-SFX_HELD_ITEM:		.dsb 1 ; 03
-SFX_JUMP_CHARGE:	.dsb 1 ; 04
-SFX_PLAYER_HIT:		.dsb 1 ; 05
-	.dsb 1 ; 06
-SFX_SHELL:		.dsb 1 ; 07
-SFX_JAR_DOWN:		.dsb 1 ; 08
-SFX_JAR_UP:		.dsb 1 ; 09
-SFX_PHANTO:		.dsb 1 ; 0A
-SFX_PANSER_FIREBALL:	.dsb 1 ; 0B
-SFX_POST_CAST_PROMPT:	.dsb 1 ; 0C
-SFX_SAVE:		.dsb 1 ; 0D
-SFX_PAUSE:		.dsb 1 ; 0E
-	.dsb 1 ; 0F
-	.dsb 2
+SFX_EGG:		.dsb 1 ; 1
+SFX_UPROOT:		.dsb 1 ; 2
+	.dsb 1 ; 3 - old spin reel sound (Music-18 overrides DPCM sound effects)
+SFX_HELD_ITEM:		.dsb 1 ; 4
+SFX_JUMP_CHARGE:	.dsb 1 ; 5
+SFX_PLAYER_HIT:		.dsb 1 ; 6
+	.dsb 1 ; 7 - old impact sound (would override DPCM-06)
+SFX_SHELL:		.dsb 1 ; 8
+SFX_JAR_DOWN:		.dsb 1 ; 9
+SFX_JAR_UP:		.dsb 1 ; 10
+SFX_PHANTO:		.dsb 1 ; 11
+SFX_PANSER_FIREBALL:	.dsb 1 ; 12
+SFX_POST_CAST_PROMPT:	.dsb 1 ; 13
+SFX_SAVE:		.dsb 1 ; 14
+SFX_PAUSE:		.dsb 1 ; 15
+	.dsb 1 ; 16 - old clawgrip chuck (moved to Pulse-09 for audibility)
+	.dsb 1 ; 17 - wart death
+	.dsb 1 ; 18-19 - fanfare fragments
 NUM_DPCM_SFX:
 NUM_DPCM_IDS = NUM_DPCM_SFX - 1
 .ende
@@ -319,18 +320,20 @@ WarpUpdateBuffer_FinalPalettes = $06
 
 ; ---------------------------------------------------------------------------
 
-; enum SoundEffect2 (width 1 byte)
 .enum $0001
-SFX_STOP_SLOT:		.dsb 1
-SFX_1UP:		.dsb 1
-SFX_COIN:		.dsb 1
-SFX_SHRINK:		.dsb 1
-SFX_LOSE_HEART:		.dsb 1
-SFX_TOSS:		.dsb 1
-SFX_HAWK_OPEN:		.dsb 1
-SFX_HAWK_CLOSE:		.dsb 1
-SFX_CLAWGRIP_CHUCK:	.dsb 1
-SFX_IMPACT:
+; enum SoundEffect2 (width 1 byte)
+SFX_STOP_SLOT:		.dsb 1 ; 1
+SFX_1UP:		.dsb 1 ; 2
+SFX_COIN:		.dsb 1 ; 3
+SFX_SHRINK:		.dsb 1 ; 4
+SFX_LOSE_HEART:		.dsb 1 ; 5
+SFX_TOSS:		.dsb 1 ; 6
+SFX_HAWK_OPEN:		.dsb 1 ; 7
+SFX_HAWK_CLOSE:		.dsb 1 ; 8
+SFX_CLAWGRIP_CHUCK:	.dsb 1 ; 9
+SFX_IMPACT:		.dsb 1 ; 10
+NUM_PULSE_SFX:
+NUM_PULSE_IDS = NUM_PULSE_SFX - 1
 
 ; ---------------------------------------------------------------------------
 
@@ -343,29 +346,29 @@ PPUStatus_VBlankHit = %10000000
 
 ; enum SoundEffect3
 .enum $0001
-Noise_ClosedHihat:		.dsb 1 ; 00
-Noise_UpperSnare:		.dsb 1 ; 01
-Noise_OpenHihat:		.dsb 1 ; 02
-Noise_Kick:			.dsb 1 ; 03
-Noise_Snare:			.dsb 1 ; 04
-Noise_DoubleSnare:		.dsb 1 ; 05
-Noise_OWClosedHihat:		.dsb 1 ; 06
-Noise_OWOpenHihat:		.dsb 1 ; 07
-Noise_OWKick:			.dsb 1 ; 08
-Noise_OWSnare:			.dsb 1 ; 09
-Noise_StarSnare:		.dsb 1 ; 0A
+Noise_ClosedHihat:		.dsb 1 ; 1
+Noise_UpperSnare:		.dsb 1 ; 2
+Noise_OpenHihat:		.dsb 1 ; 3
+Noise_Kick:			.dsb 1 ; 4
+Noise_Snare:			.dsb 1 ; 5
+Noise_DoubleSnare:		.dsb 1 ; 6
+Noise_OWClosedHihat:		.dsb 1 ; 7
+Noise_OWOpenHihat:		.dsb 1 ; 8
+Noise_OWKick:			.dsb 1 ; 9
+Noise_OWSnare:			.dsb 1 ; 10
+Noise_StarSnare:		.dsb 1 ; 11
 NOISE_SFX:
-SFX_WHALE_SPOUT:		.dsb 1 ; 0B
-SFX_ROCKET_RUMBLE:		.dsb 1 ; 0C
-SFX_POW_LAND:			.dsb 1 ; 0D
-SFX_THROUGH_DOOR:		.dsb 1 ; 0E
-SFX_EXPLOSION:			.dsb 1 ; 0F
-SFX_AUTOBOMB_TRICLYDE_FIREBALL:	.dsb 1 ; 10
-SFX_BUBBLE_FIRING:		.dsb 1 ; 11
-SFX_SMOKE_PUFF:			.dsb 1 ; 12
-SFX_DRUM_ROLL:			.dsb 1 ; 13
-SFX_ROCKET_HISS:		.dsb 1 ; 14
-SFX_ENEMY_STOMP:		.dsb 1 ; 15
+SFX_WHALE_SPOUT:		.dsb 1 ; 12
+SFX_ROCKET_RUMBLE:		.dsb 1 ; 13
+SFX_POW_LAND:			.dsb 1 ; 14
+SFX_THROUGH_DOOR:		.dsb 1 ; 15
+SFX_EXPLOSION:			.dsb 1 ; 16
+SFX_AUTOBOMB_TRICLYDE_FIREBALL:	.dsb 1 ; 17
+SFX_BUBBLE_FIRING:		.dsb 1 ; 18
+SFX_SMOKE_PUFF:			.dsb 1 ; 19
+SFX_DRUM_ROLL:			.dsb 1 ; 20
+SFX_ROCKET_HISS:		.dsb 1 ; 21
+SFX_ENEMY_STOMP:		.dsb 1 ; 22
 NUM_NOISE_TRACKS:
 NUM_NOISE_SFX = NUM_NOISE_TRACKS - NOISE_SFX
 

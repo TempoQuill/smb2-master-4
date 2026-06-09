@@ -1,8 +1,9 @@
 ;
 ; Updates joypad press/held values
 ;
-UpdateJoypadsSimple:	
-	JSR ReadJoypads
+UpdateJoypadsSimple:
+	JSR ReadJoypadPlayer1
+	JSR ReadJoypadPlayer2
 	LDX #1
 	JMP UpdateJoypads_Loop
 
@@ -12,17 +13,12 @@ UpdateJoypads:
 	LDA SND_CHN
 	AND #$F0
 	BEQ UpdateJoypadsSimple
-	JSR ReadJoypads
+	JSR ReadJoypadPlayer1
 	LDA zInputBottleneck
 	STA iBackupPlayer1Input
-	LDA zInputBottleneck + 1
-	STA iBackupPlayer2Input
-	JSR ReadJoypads
+	JSR ReadJoypadPlayer1
 	LDA zInputBottleneck
 	STA iBackupPlayer1Input + 1
-	LDA zInputBottleneck + 1
-	STA iBackupPlayer2Input + 1
-	LDA iBackupPlayer1Input + 1
 	EOR iBackupPlayer1Input
 	BEQ UpdateJoypads_CheckPlayer2
 	TAX
@@ -40,7 +36,12 @@ UpdateJoypads_FoundCorrectInput:
 	STA zInputBottleneck
 
 UpdateJoypads_CheckPlayer2:
-	LDA iBackupPlayer2Input + 1
+	JSR ReadJoypadPlayer2
+	LDA zInputBottleneck + 1
+	STA iBackupPlayer2Input
+	JSR ReadJoypadPlayer2
+	LDA zInputBottleneck + 1
+	STA iBackupPlayer2Input + 1
 	LDX #1
 	EOR iBackupPlayer2Input
 	BEQ UpdateJoypads_Loop
@@ -104,19 +105,29 @@ UpdateJoypads_FindDeletion_Found:
 ;
 ; Reads joypad pressed input
 ;
-ReadJoypads:
+ReadJoypadPlayer1:
+	LDX #$01
+	STX JOY1
+	DEX
+	STX JOY1
+	STX zInputBottleneck + 1 ; set bottleneck 2 to 1 for signal
+
+REPT 8
+	LDA JOY1 ; $4016.0 = standard controller 1 bit data
+	LSR A
+	ROL zInputBottleneck
+ENDR
+	RTS
+
+ReadJoypadPlayer2:
 	LDX #$01
 	STX zInputBottleneck + 1 ; set bottleneck 2 to 1 for signal
 	STX JOY1
 	DEX
 	STX JOY1
-
-ReadJoypadLoop1:
-	LDA JOY1 ; $4016.0 = standard controller 1 bit data
-	LSR A
-	ROL zInputBottleneck
+REPT 8
 	LDA JOY2 ; $4017.0 = standard controller 2 bit data
 	LSR A
 	ROL zInputBottleneck + 1
-	BCC ReadJoypadLoop1 ; loop until signel is sent to carry
+ENDR
 	RTS

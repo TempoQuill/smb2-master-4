@@ -1551,50 +1551,13 @@ iCurrentDPCMOffset:
 ; $FF Silence (stops music)
 iMusicQueue:
 	.dsb 1 ; $0600
-
-; $01 Jump
-; $02 Vine
-; $04 Cherry
-; $08 Throw
-; $10 Fall
-; $20 Grow
-; $40 Potion / Boss defeated
-; $80 Select
 iHillSFX:
 	.dsb 1 ; $0601
-
-; $01 Shot
-; $02 Lamp
-; $04 Select
-; $08 Throw
-; $10 Defeat
-; $20 Squawk
-; $40 Impact
-; $80 Down
 iDPCMSFX:
 	.dsb 1 ; $0602
-
 	.dsb 1 ; $0603
-
-; $01 Jump
-; $02 Vine
-; $04 Coin
-; $08 Shrink
-; $10 Fall
-; $20 Grow
-; $40 -N/A-
-; $80 -N/A-
 iPulse2SFX:
 	.dsb 1 ; $0604
-
-; $01 Short noise
-; $02 Rumbling sound (phanto, rocket)
-; $04 Rumbling sound (POW)
-; $08 Door / Bomb
-; $10 Hawk / Bubbles
-; $20 -N/A-
-; $40 -N/A-
-; $80 -N/A-
 iNoiseDrumSFX:
 	.dsb 1 ; $0605
 iSampleCounter:
@@ -2067,8 +2030,31 @@ mSaveFileInitIndex:
 mCopypastaSource:
 	.dsb 1
 mCopypastaTarget:
-	.dsb 18
+	.dsb 1
 mSaveDataBuffer:
+	.dsb SAVE_DATA_WIDTH * 2
+mSoundTestDataBuffer:
+mLoadedMusicAddress:	.dsb 2 ; $2137
+mLoadedMusicSize:	.dsb 1 ; $02
+mLoadedMusicBCD:	.dsb 2
+mLoadedPulseAddress:	.dsb 2 ; $2177
+mLoadedPulseSize:	.dsb 1 ; $02
+mLoadedPulseBCD:	.dsb 2
+mLoadedHillAddress:	.dsb 2 ; $21B7
+mLoadedHillSize:	.dsb 1 ; $02
+mLoadedHillBCD:		.dsb 2
+mLoadedStaticAddress:	.dsb 2 ; $21F7
+mLoadedStaticSize:	.dsb 1 ; $02
+mLoadedStaticBCD:	.dsb 2
+mLoadedSnippetAddress:	.dsb 2 ; $2237
+mLoadedSnippetSize:	.dsb 1 ; $02
+mLoadedSnippetBCD:	.dsb 2
+mSoundTestDataBufferTerminator:
+	.dsb 1
+mSoundTestIndex:
+mSoundTestOffset:	.dsb 1
+mSoundTestDataIndex:	.dsb 5
+mSoundTestDataOffset:	.dsb 1
 IFNDEF NSF_FILE
 mSampleCounter = $5ffc
 mFanfareSampleQueue = $5ffd

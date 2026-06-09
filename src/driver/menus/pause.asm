@@ -10,10 +10,10 @@ ChooseSaveChoiceAttribute:
 	STA iPulse2SFX
 	LDY zInputBottleneck
 	TYA
-	AND #ControllerInput_Down
+	AND #DPad_Down
 	BNE ChooseSaveChoiceAttribute_Down
 	TYA
-	AND #ControllerInput_Up
+	AND #DPad_Up
 	BNE ChooseSaveChoiceAttribute_Up
 	; nothing was pressed
 	LDY iStack + 1

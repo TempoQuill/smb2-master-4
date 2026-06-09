@@ -339,7 +339,7 @@ PickupSounds:
 
 HandlePlayerState_Climbing:
 	LDA zInputCurrentState
-	AND #ControllerInput_Down | ControllerInput_Up
+	AND #DPad_Down | DPad_Up
 	LSR A
 	LSR A
 	TAY
@@ -352,7 +352,7 @@ loc_BANK0_8ADF:
 	LDA ClimbSpeed, Y
 	STA zPlayerYVelocity
 	LDA zInputCurrentState
-	AND #ControllerInput_Right | ControllerInput_Left
+	AND #DPad_Right | DPad_Left
 	TAY
 	LDA byte_BANK0_8ACE, Y
 	STA zPlayerXVelocity
@@ -688,7 +688,7 @@ loc_BANK0_8C3D:
 	BNE ResetPartialCrouchJumpTimer
 
 	LDA zInputCurrentState ; skip if down button is not pressed
-	AND #ControllerInput_Down
+	AND #DPad_Down
 	BEQ ResetPartialCrouchJumpTimer
 
 	INC zPlayerHitBoxHeight ; set ducking state?
@@ -716,7 +716,7 @@ ResetPartialCrouchJumpTimer: ; reset crouch jump timer if it isn't full
 
 loc_BANK0_8C6F:
 	LDA zInputCurrentState
-	AND #ControllerInput_Right | ControllerInput_Left
+	AND #DPad_Right | DPad_Left
 	BEQ loc_BANK0_8C92
 
 	AND #$01
@@ -1584,7 +1584,7 @@ PlayerTileCollision_Cherry:
 
 PlayerTileCollision_Climbable:
 	LDA zInputCurrentState
-	AND #ControllerInput_Down | ControllerInput_Up
+	AND #DPad_Down | DPad_Up
 	BEQ PlayerTileCollision_Climbable_Exit
 
 	LDY zHeldItem
@@ -1989,7 +1989,7 @@ loc_BANK0_91E3:
 ;   Y = tile index in DoorTiles
 loc_BANK0_91EB:
 	LDA zInputBottleneck
-	AND #ControllerInput_Up
+	AND #DPad_Up
 	BEQ locret_BANK0_91CE
 
 	; player is holding up and is trying to go through this door
