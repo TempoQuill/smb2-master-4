@@ -1,3 +1,10 @@
+;
+; All of this is mostly just used in RAM so as to remain within the ROM budget
+; best to leave alone unless one knows what they're doing.
+;
+; It does eat up precious RAM though, so strike against Nintendo on that one,
+; since most of these are relatively static.
+;
 FlyingCarpetAcceleration:
 	.db $00
 	.db $01

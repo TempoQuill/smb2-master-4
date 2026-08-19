@@ -2,7 +2,7 @@ StartSlotMachine:
 	DEC iTotalCoins
 	JSR WaitForNMI
 
-	JSR sub_BANKF_EA68
+	JSR UpdateExtraMenNCoins
 
 	LDA #7
 	STA zSFXReelTimer
@@ -112,7 +112,7 @@ loc_BANKF_E8D3:
 	STA z06
 	JSR WaitForNMI
 
-	JSR sub_BANKF_EA68
+	JSR UpdateExtraMenNCoins
 
 loc_BANKF_E8ED:
 	JSR WaitForNMI
@@ -135,7 +135,7 @@ SlotMachineLoseFanfare:
 	STA iMusicQueue
 	JSR WaitForNMI
 
-	JSR sub_BANKF_EA68
+	JSR UpdateExtraMenNCoins
 
 IFNDEF RGME_AUDIO
 	JSR SlotMachine_WaitforJingle

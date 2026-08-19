@@ -1311,71 +1311,24 @@ iRunSpeeds:
 iSurface:
 	.dsb 1 ; $055e
 iStartingPalettes:
-	.dsb 1 ; $055f
-	.dsb 1 ; $0560
-	.dsb 1 ; $0561
-	.dsb 1 ; $0562
-	.dsb 1 ; $0563
-	.dsb 1 ; $0564
-	.dsb 1 ; $0565
-	.dsb 1 ; $0566
-	.dsb 1 ; $0567
-	.dsb 1 ; $0568
-	.dsb 1 ; $0569
-	.dsb 1 ; $056a
-	.dsb 1 ; $056b
-	.dsb 1 ; $056c
-	.dsb 1 ; $056d
-	.dsb 1 ; $056e
-	.dsb 1 ; $056f
-	.dsb 1 ; $0570
-	.dsb 1 ; $0571
-	.dsb 1 ; $0572
-	.dsb 1 ; $0573
-	.dsb 1 ; $0574
-	.dsb 1 ; $0575
-	.dsb 1 ; $0576
-	.dsb 1 ; $0577
-	.dsb 1 ; $0578
-	.dsb 1 ; $0579
-	.dsb 1 ; $057a
-	.dsb 1 ; $057b
-	.dsb 1 ; $057c
-	.dsb 1 ; $057d
-	.dsb 1 ; $057e
-	.dsb 1 ; $057f
-	.dsb 1 ; $0580
-	.dsb 1 ; $0581
-	.dsb 1 ; $0582
+	.dsb 2 ; $055f ; address
+	.dsb 1 ; $0561 ; size
+	.dsb 32 ; $0562
+	.dsb 1 ; $0582 ; terminator
 iBonusNotes:
-	.dsb 1 ; $0583
-	.dsb 1 ; $0584
-	.dsb 1 ; $0585
-	.dsb 1 ; $0586
-	.dsb 1 ; $0587
-i588:
-	.dsb 1 ; $0588
-	.dsb 1 ; $0589
-	.dsb 1 ; $058a
-	.dsb 1 ; $058b
-	.dsb 1 ; $058c
-	.dsb 1 ; $058d
-	.dsb 1 ; $058e
-	.dsb 1 ; $058f
-	.dsb 1 ; $0590
-	.dsb 1 ; $0591
-	.dsb 1 ; $0592
-	.dsb 1 ; $0593
-	.dsb 1 ; $0594
-	.dsb 1 ; $0595
-	.dsb 1 ; $0596
-	.dsb 1 ; $0597
-	.dsb 1 ; $0598
-i599:
-	.dsb 1 ; $0599
-i59a:
-	.dsb 1 ; $059a
-	.dsb 1 ; $059b
+iCoinsDisplay:
+	.dsb 2 ; $0583 ; address
+	.dsb 1 ; $0585 ; size
+	.dsb 1 ; $0586 ; "x"
+iCoinsBCD:
+	.dsb 2 ; $0587
+iExtraLifeDisplay:
+	.dsb 2 ; $0589 ; address
+	.dsb 1 ; $058b ; size
+	.dsb 13 ; $058c
+iExtraMenBCD:
+	.dsb 2 ; $0599
+	.dsb 1 ; $059b ; end
 iBonusChanceBGPal:
 	.dsb 1 ; $059c
 	.dsb 1 ; $059d
@@ -1855,7 +1808,7 @@ sBackupContributors:
 sBackupExtraMen:
 	.dsb 1
 ; method:
-; byte 0: sSavedLvl + sLifeUpEventFlag + sSavedWorld + sContributors (bytes 0-3)
+; byte 1: sSavedLvl + sLifeUpEventFlag + sSavedWorld + sContributors (bytes 0-3)
 ; byte 2: sExtraMen
 ; byte 3-4: Product of bytes 1 + 2
 sMultiChecksum:

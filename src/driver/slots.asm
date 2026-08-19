@@ -77,8 +77,8 @@ ExecuteCoinService_PlaySound:
 
 	LDA iTotalCoins
 	JSR GetTwoDigitNumberTiles
-	STY i588 - 1
-	STA i588
+	STY iCoinsBCD
+	STA iCoinsBCD + 1
 
 	LDA #ScreenUpdateBuffer_RAM_BonusChanceCoinsExtraLife
 	STA zScreenUpdateIndex

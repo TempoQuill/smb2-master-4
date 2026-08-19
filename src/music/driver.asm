@@ -1549,6 +1549,9 @@ PlayNote_IncrementOctave:
 	STA iBasePitchComplement
 	LDA IsInstrumentTranspositionOkay
 	BEQ PlayNote_LoadFrequencyData
+	; If permitted, instrument $a0 is transposed an octave up
+	; Banks 1 and 2 use it, but 3 doesn't.
+	; Exclusive to SMB2:ASBP
 	TXA
 	LSR A
 	TAY

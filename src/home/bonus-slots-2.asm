@@ -32,18 +32,18 @@ SetBonusChancePalette:
 
 ; =============== S U B R O U T I N E =======================================
 
-sub_BANKF_EA68:
+UpdateExtraMenNCoins:
 	LDY iExtraMen
 	DEY
 	TYA
 	JSR GetTwoDigitNumberTiles
-	STY i599
-	STA i59a
+	STY iExtraMenBCD
+	STA iExtraMenBCD + 1
 
 	LDA iTotalCoins
 	JSR GetTwoDigitNumberTiles
-	STY i588 - 1
-	STA i588
+	STY iCoinsBCD
+	STA iCoinsBCD + 1
 
 	LDA #ScreenUpdateBuffer_RAM_BonusChanceCoinsExtraLife
 	STA zScreenUpdateIndex
@@ -53,7 +53,7 @@ sub_BANKF_EA68:
 
 	JMP WaitForNMI
 
-; End of function sub_BANKF_EA68
+; End of function UpdateExtraMenNCoins
 
 
 ;

@@ -73,7 +73,7 @@ CheckSaveIfCorruptOrBlank:
 
 RetrieveSaveData:
 ; We land here if the data we load passes integrity checks, that is if data
-; exists the first place.
+; exists in the first place.
 	; get the amount of lives we have
 	LDA sBackupExtraMen
 	SEC ; convey as "extra men"
@@ -157,7 +157,7 @@ RunSaveFileMenu_ALoop:
 	LDA iCurrentPulse2SFX
 	BNE RunSaveFileMenu_ALoop
 	JMP loc_BANK0_9C1F
-RunSaveFileMenu_CheckB
+RunSaveFileMenu_CheckB:
 	ASL A ; b - delete file
 	BCC RunSaveFileMenu_CheckSelectStart
 	PHA
