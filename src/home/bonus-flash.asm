@@ -1,5 +1,5 @@
 CopyBonusChanceFlashOffset:
-	RAY
+	TAY
 	LDA BonusChanceFlashOffsetsLO, Y
 	STA z00
 	LDA BonusChanceFlashOffsetsHI, Y
