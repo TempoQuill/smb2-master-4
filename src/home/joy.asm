@@ -11,7 +11,7 @@ UpdateJoypads:
 	; Work around DPCM sample bug,
 	; where some spurious inputs are read
 	LDA SND_CHN
-	AND #$F0
+	AND #$10
 	BEQ UpdateJoypadsSimple
 	JSR ReadJoypadPlayer1
 	LDA zInputBottleneck
