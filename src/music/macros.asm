@@ -15,9 +15,10 @@ ENDM
 ; MusicHeader macro, to replace this:
 ;	.db NoteLengthTable_Death
 ;	.dw MusicDataXXX
-;	.db MusicDataXXX_Triangle - MusicDataXXX
+;	.db MusicDataXXX_Triangle - MusicDataXXX_Square1
 ;	.db MusicDataXXX_Square1 - MusicDataXXX
-;	.db MusicDataXXX_Noise - MusicDataXXX
+;	.db MusicDataXXX_Noise - MusicDataXXX_Triangle
+;	.db MusicDataXXX_DPCM - MusicDataXXX_Noise
 ;	; no noise channel, using $00 from below
 ;
 ; Setting "noise" or "dpcm" to -1 will suppress output of $00 for music headers

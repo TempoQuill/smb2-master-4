@@ -1,20 +1,22 @@
 @echo off
 
 echo Assembling...
-if NSF_FILE == 0 goto nsffail
-tools\asm6f.exe smb2.asm -n -c -L %* bin\smb2.nsf > bin\assembler.log
+tools\asm6f.exe smb2.asm -n -c -l %* bin\smb2.nsf > bin\assembler.log
 if %ERRORLEVEL% neq 0 goto buildfail
 move /y smb2-nsf.lst bin > nul
 move /y smb2-nsf.cdl bin > nul
 echo Done.
 echo.
 
-echo SHA1 hash check:
-echo 47ba60fad332fdea5ae44b7979fe1ee78de1d316ee027fea2ad5fe3c0d86f25a PRG0
-echo Yours:
+echo Your hash number.
 certutil -hashfile bin\smb2.nsf SHA256 | findstr /V ":"
 
 
+goto end
+
+:rgmefail
+echo You are trying to build a proper NSF.  Comment
+echo the configuration if you wish to build this way.
 goto end
 
 :nsffail

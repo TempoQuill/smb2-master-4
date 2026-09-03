@@ -4,9 +4,6 @@
 ;
 ;
 
-; Include COMPATIBILITY-flag-related macros
-include "src/compatibility-shims.asm"
-
 ; distTo
 ; Outputs distance (byte) to label
 ; e.g.:
