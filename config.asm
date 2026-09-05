@@ -83,9 +83,10 @@ FIX_SUBSPACE_TILES = 1
 ; Go to the Charater Select screen after death
 CHARACTER_SELECT_AFTER_DEATH = 1
 
-; mutes music to work around potential copyright issues in transformative videos
+; intended for transformative videos
 ; RGME_AUDIO = 1
 
+; supposed to open every used sprite slot
 ; FREE_FOR_ALL = 1
 
 ; ----------------------------------------

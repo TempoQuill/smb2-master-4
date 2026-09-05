@@ -35,7 +35,7 @@ MusicDataOverworld2_Square1:
 	note B_, 3
 	note D#, 4
 	rest
-	note_type 2, QRT_HF_TIE
+	note_type 2, QUARTER_HALF_TIE
 	note B_, 3
 	note_type 2, HALF_TRIPLET
 	rest
@@ -58,7 +58,7 @@ MusicDataOverworld2_Square1:
 	note C#, 4
 	note E_, 4
 	rest
-	note_type 2, QRT_HF_TIE
+	note_type 2, QUARTER_HALF_TIE
 	note C#, 4
 	note_type 2, QUARTER_TRIPLET
 	rest
@@ -101,7 +101,7 @@ MusicDataOverworld2_Square1:
 	note C_, 4
 	note B_, 3
 	rest
-	note_type 2, QRT_HF_TIE
+	note_type 2, QUARTER_HALF_TIE
 	note G_, 3
 	note_type 2, WHOLE_TRIPLET
 	rest

@@ -117,7 +117,7 @@ QUARTER_TRIPLET:	.dsb 2 ; 2
 EIGHTH:			.dsb 1 ; 4
 DOTTED_EIGHTH:		.dsb 1 ; 5
 HALF_TRIPLET:		.dsb 1 ; 6
-QRT_HF_TIE:		.dsb 1 ; 7
+QUARTER_HALF_TIE:	.dsb 1 ; 7
 QUARTER:		.dsb 1 ; 8
 DOTTED_QUARTER:		.dsb 1 ; 9
 HALF:			.dsb 1 ; a
