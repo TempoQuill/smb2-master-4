@@ -228,6 +228,7 @@ HillSFXLinears:
 	.db $03 ; select
 	.db $03 ; fireball
 	.db $03 ; spin jump
+	.db $81 ; slot
 
 .include "src/music/sound-effects/hill-sfx-data.asm"
 

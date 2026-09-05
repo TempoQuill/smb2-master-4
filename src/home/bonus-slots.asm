@@ -140,7 +140,7 @@ SlotMachineLoseFanfare:
 IFNDEF RGME_AUDIO
 	JSR SlotMachine_WaitforJingle
 ELSE
-	LDA #$7c
+	LDA #$88
 	JSR DelayFrames
 ENDIF
 
