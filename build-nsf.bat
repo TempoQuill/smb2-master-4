@@ -1,5 +1,8 @@
 @echo off
 
+findstr /b "RGME_AUDIO" config.asm >nul && goto rgmefail
+findstr /b "NSF_FILE"  config.asm >nul || goto nsffail
+
 echo Assembling...
 tools\asm6f.exe smb2.asm -n -c -l %* bin\smb2.nsf > bin\assembler.log
 if %ERRORLEVEL% neq 0 goto buildfail
@@ -20,8 +23,8 @@ echo the configuration if you wish to build this way.
 goto end
 
 :nsffail
-echo The configuration is off.  Uncomment it if you
-echo wish to build this way.
+echo You are trying to build an NSF file.  Uncomment
+echo the configuration if you wish to build this way.
 goto end
 
 :buildfail

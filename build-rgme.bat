@@ -1,5 +1,8 @@
 @echo off
 
+findstr /b "RGME_AUDIO" config.asm >nul || goto rgmefail
+findstr /b "NSF_FILE"  config.asm >nul && goto nsffail
+
 echo Assembling...
 tools\asm6f.exe smb2.asm -n -c -l %* bin\smb2-rgme.nes > bin\assembler.log
 if %ERRORLEVEL% neq 0 goto buildfail
@@ -12,6 +15,16 @@ echo Your hash number:
 certutil -hashfile bin\smb2-rgme.nes SHA256 | findstr /V ":"
 
 
+goto end
+
+:rgmefail
+echo You are trying to build a video-aware ROM.  Uncomment
+echo the configuration if you wish to build this way.
+goto end
+
+:nsffail
+echo You are trying to build a video-aware ROM.  Comment
+echo the configuration if you wish to build this way.
 goto end
 
 :buildfail
