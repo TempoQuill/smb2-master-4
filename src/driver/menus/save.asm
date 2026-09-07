@@ -327,7 +327,7 @@ LoadPreviousGame:
 	; byte 0
 	CLC
 	LDY #3
-	LDA sBackupContributors + 3
+	LDA #0
 LoadPreviousGame_BackupByte0:
 	ADC sBackupContributors, Y
 	ADC sBackupLvl, Y

@@ -19,16 +19,19 @@ BackUpSaveData_Loop:
 ; except for lives, which is stashed separately to avoid setting carry,
 ; then the sum and life stash is multiplied into the following two bytes.
 ;
+; UPDATE: The checksum generations have received a bugfix where Luigi's
+; contributor number is only counted once now rather than twice.
+;
 ComputeCheckArea:
-	; 2 3-byte strings
+	; 2 4-byte strings
 	LDY #3
-	; start with Luigi's saved contributor number
-	LDA sContributors + 3
+	LDA #0
 	CLC
 
 ComputeCheckArea_Loop:
-	; + Toad's SCN + World
-	; + Peach's SCN + Level Area
+	; + Luigi's SCN + World
+	; + Toad's SCN + Level Area
+	; + Peach's SCN + Per-level 1up event Flag
 	; + Mario's SCN + Level
 	ADC sContributors, Y
 	ADC sSavedLvl, Y
@@ -52,14 +55,15 @@ ComputeCheckArea_Loop:
 
 ComputeBackupCheckArea:
 	; do the backup save
-	; 2 3-byte strings
+	; 2 4-byte strings
 	LDY #3
-	; start with Luigi's backup contributor number
-	LDA sBackupContributors + 3
+	LDA #0
 	CLC
+
 ComputeBackupCheckArea_Loop:
-	; + Toad's BCN + World
-	; + Peach's BCN + Level Area
+	; + Luigi's BCN + World
+	; + Toad's BCN + Level Area
+	; + Peach's BCN + Per-level 1up event Flag
 	; + Mario's BCN + Level
 	ADC sBackupContributors, Y
 	ADC sBackupLvl, Y
