@@ -15,6 +15,7 @@ MusicPartPointers_BossBeaten:
 
 ; This version of the crystal fanfare is unused, because special logic in
 ; ProcessMusicQueue uses this slot for the ending theme instead.
+; AFAIK, this duplicate was once the "THANK YOU [CHR]" theme from DDP
 MusicPartPointers_CrystalUnused:
 	musicHeaderPointer MusicHeaderCrystal
 

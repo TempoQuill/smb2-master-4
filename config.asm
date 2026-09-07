@@ -18,6 +18,9 @@
 ; For example, to build a PRG1/Rev A ROM,
 ; build -dREV_A
 
+; Quick note: (DPR'd) means a config doesn't show up anywhere in the codebase
+; outside of here.
+
 ; ----------------------------------------
 ; Preserve unused space.
 ; Free space in the original ROM will continue to be padded outwards,
@@ -28,7 +31,7 @@
 ; within them to the end, making it easier to add your own code anywhere.
 ; ...but it might also cause problems if data gets relocated
 ; when it isn't properly pointed to.
-; PRESERVE_UNUSED_SPACE = 1
+; PRESERVE_UNUSED_SPACE = 1 ; (DPR'd)
 
 ; NSF Building
 ; NSF_FILE = 1
@@ -52,7 +55,7 @@
 ;          at the worst possible time.
 ;          The fix just waits for an NMI cycle before doing its work.
 ;
-; REV_A = 1
+; REV_A = 1 ; (DPR'd)
 
 
 
@@ -86,7 +89,7 @@ CHARACTER_SELECT_AFTER_DEATH = 1
 ; intended for transformative videos
 ; RGME_AUDIO = 1
 
-; supposed to open every used sprite slot
+; supposed to de-gate every used enemy sprite slot
 ; FREE_FOR_ALL = 1
 
 ; ----------------------------------------
@@ -95,12 +98,12 @@ CHARACTER_SELECT_AFTER_DEATH = 1
 
 
 ; Expand PRG and/or CHR to max capacity
-; EXPAND_PRG = 1
-; EXPAND_CHR = 1
+; EXPAND_PRG = 1 ; (DPR'd)
+; EXPAND_CHR = 1 ; (DPR'd)
 
 ; Use MMC5 (mapper 5) instead of MMC3 (mapper 4)
 ; Based on RetroRain's MMC5 patch (https://www.romhacking.net/hacks/2568)
-MMC5 = 1
+MMC5 = 1 ; locked
 
 ; Make Toad good at jumping and running for testing purposes
 ; STATS_TESTING_PURPOSES = 1
@@ -109,6 +112,6 @@ MMC5 = 1
 ; SIXTEEN_BIT_WATCH_TIMER = 1
 
 ; Go straight to the Mario Sleeping Scene
-; TEST_SLEEPING_SCENE = 1
+; TEST_SLEEPING_SCENE = 1 ; (DPR'd)
 
 .endinl

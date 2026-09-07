@@ -7,7 +7,7 @@
 ; square 1, and noise are stored as offets relative to the main pointer.
 ;
 ; Bytes:
-;   00: Note length table (from $8F00)
+;   00: Tick length
 ;   01: Main address / Square 2 (lo)
 ;   02: Main address / Square 2 (hi)
 ;   03: Triangle offset from Square 1
@@ -24,116 +24,117 @@ MusicHeaders:
 
 ; ----------------------------------------
 ; Character select segments 1 through 5
-; (6 through 8 are a ways below this)
+; (6 through 8 were a ways below this)
+; 6-8 no longer exist now because 1-5 now includes that portion SMB2 added to DDP
 MusicHeaderCharacterSelect1:
-	musicHeader NoteLengthTable_CHR, MusicDataCharacterSelect1, MusicDataCharacterSelect1_Triangle, MusicDataCharacterSelect1_Square1, MusicDataCharacterSelect1_Noise, MusicDataCharacterSelect1_DPCM
+	musicHeader TickLength_CHR, MusicDataCharacterSelect1, MusicDataCharacterSelect1_Triangle, MusicDataCharacterSelect1_Square1, MusicDataCharacterSelect1_Noise, MusicDataCharacterSelect1_DPCM
 
 MusicHeaderCharacterSelect2:
-	musicHeader NoteLengthTable_CHR, MusicDataCharacterSelect2, MusicDataCharacterSelect2_Triangle, MusicDataCharacterSelect2_Square1, MusicDataCharacterSelect2_Noise, MusicDataCharacterSelect2_DPCM
+	musicHeader TickLength_CHR, MusicDataCharacterSelect2, MusicDataCharacterSelect2_Triangle, MusicDataCharacterSelect2_Square1, MusicDataCharacterSelect2_Noise, MusicDataCharacterSelect2_DPCM
 
 MusicHeaderCharacterSelect3:
-	musicHeader NoteLengthTable_CHR, MusicDataCharacterSelect3, MusicDataCharacterSelect3_Triangle, MusicDataCharacterSelect3_Square1, MusicDataCharacterSelect3_Noise, MusicDataCharacterSelect3_DPCM
+	musicHeader TickLength_CHR, MusicDataCharacterSelect3, MusicDataCharacterSelect3_Triangle, MusicDataCharacterSelect3_Square1, MusicDataCharacterSelect3_Noise, MusicDataCharacterSelect3_DPCM
 
 MusicHeaderCharacterSelect4:
-	musicHeader NoteLengthTable_CHR, MusicDataCharacterSelect4, MusicDataCharacterSelect4_Triangle, MusicDataCharacterSelect4_Square1, MusicDataCharacterSelect4_Noise, MusicDataCharacterSelect4_DPCM
+	musicHeader TickLength_CHR, MusicDataCharacterSelect4, MusicDataCharacterSelect4_Triangle, MusicDataCharacterSelect4_Square1, MusicDataCharacterSelect4_Noise, MusicDataCharacterSelect4_DPCM
 
 MusicHeaderCharacterSelect5:
-	musicHeader NoteLengthTable_CHR, MusicDataCharacterSelect5, MusicDataCharacterSelect5_Triangle, MusicDataCharacterSelect5_Square1, MusicDataCharacterSelect5_Noise, MusicDataCharacterSelect5_DPCM
+	musicHeader TickLength_CHR, MusicDataCharacterSelect5, MusicDataCharacterSelect5_Triangle, MusicDataCharacterSelect5_Square1, MusicDataCharacterSelect5_Noise, MusicDataCharacterSelect5_DPCM
 
 ; ----------------------------------------
 ; Overworld music headers
 MusicHeaderOverworld1:
-	musicHeader NoteLengthTable_Overworld, MusicDataOverworld1, MusicDataOverworld1_Triangle, MusicDataOverworld1_Square1, MusicDataOverworld1_Noise, MusicDataOverworld1_DPCM
+	musicHeader TickLength_Overworld, MusicDataOverworld1, MusicDataOverworld1_Triangle, MusicDataOverworld1_Square1, MusicDataOverworld1_Noise, MusicDataOverworld1_DPCM
 
 MusicHeaderOverworld2:
-	musicHeader NoteLengthTable_Overworld, MusicDataOverworld2, MusicDataOverworld2_Triangle, MusicDataOverworld2_Square1, MusicDataOverworld2_Noise, MusicDataOverworld2_DPCM
+	musicHeader TickLength_Overworld, MusicDataOverworld2, MusicDataOverworld2_Triangle, MusicDataOverworld2_Square1, MusicDataOverworld2_Noise, MusicDataOverworld2_DPCM
 
 MusicHeaderOverworld3:
-	musicHeader NoteLengthTable_Overworld, MusicDataOverworld3, MusicDataOverworld3_Triangle, MusicDataOverworld3_Square1, MusicDataOverworld3_Noise, MusicDataOverworld3_DPCM
+	musicHeader TickLength_Overworld, MusicDataOverworld3, MusicDataOverworld3_Triangle, MusicDataOverworld3_Square1, MusicDataOverworld3_Noise, MusicDataOverworld3_DPCM
 
 MusicHeaderOverworld4:
-	musicHeader NoteLengthTable_Overworld, MusicDataOverworld4, MusicDataOverworld4_Triangle, MusicDataOverworld4_Square1, MusicDataOverworld4_Noise, MusicDataOverworld4_DPCM
+	musicHeader TickLength_Overworld, MusicDataOverworld4, MusicDataOverworld4_Triangle, MusicDataOverworld4_Square1, MusicDataOverworld4_Noise, MusicDataOverworld4_DPCM
 
 MusicHeaderOverworld5:
-	musicHeader NoteLengthTable_Overworld, MusicDataOverworld5, MusicDataOverworld5_Triangle, MusicDataOverworld5_Square1, MusicDataOverworld5_Noise, MusicDataOverworld5_DPCM
+	musicHeader TickLength_Overworld, MusicDataOverworld5, MusicDataOverworld5_Triangle, MusicDataOverworld5_Square1, MusicDataOverworld5_Noise, MusicDataOverworld5_DPCM
 
 ; ----------------------------------------
 ; Underground music
 MusicHeaderUnderground:
-	musicHeader NoteLengthTable_Underground, MusicDataUnderground, MusicDataUnderground_Triangle, MusicDataUnderground_Square1, MusicDataUnderground_Noise, MusicDataUnderground_DPCM
+	musicHeader TickLength_Underground, MusicDataUnderground, MusicDataUnderground_Triangle, MusicDataUnderground_Square1, MusicDataUnderground_Noise, MusicDataUnderground_DPCM
 
 ; ----------------------------------------
 ; Boss and boss area music
 MusicHeaderBoss:
-	musicHeader NoteLengthTable_Boss, MusicDataBoss, MusicDataBoss_Triangle, MusicDataBoss_Square1, MusicDataBoss_Noise, -1
+	musicHeader TickLength_Boss, MusicDataBoss, MusicDataBoss_Triangle, MusicDataBoss_Square1, MusicDataBoss_Noise, -1
 
 ; ----------------------------------------
 ; Starman music
 MusicHeaderStar:
-	musicHeader NoteLengthTable_Star, MusicDataStar, MusicDataStar_Triangle, MusicDataStar_Square1, MusicDataStar_Noise, MusicDataStar_DPCM
+	musicHeader TickLength_Star, MusicDataStar, MusicDataStar_Triangle, MusicDataStar_Square1, MusicDataStar_Noise, MusicDataStar_DPCM
 
 ; ----------------------------------------
 ; Wart's final boss music
 MusicHeaderWart:
-	musicHeader NoteLengthTable_Wart, MusicDataWart, MusicDataWart_Triangle, MusicDataWart_Square1, MusicDataWart_Noise, MusicDataWart_DPCM
+	musicHeader TickLength_Wart, MusicDataWart, MusicDataWart_Triangle, MusicDataWart_Square1, MusicDataWart_Noise, MusicDataWart_DPCM
 
 ; ----------------------------------------
 ; Various shorter jingles, extra character select segments (8, 7, 6), and other potpourri
 
 MusicHeaderCrystal:
-	musicHeader NoteLengthTable_Crystal, MusicDataCrystal, MusicDataCrystal_Triangle, MusicDataCrystal_Square1, MusicDataCrystal_Noise, MusicDataCrystal_DPCM
+	musicHeader TickLength_Crystal, MusicDataCrystal, MusicDataCrystal_Triangle, MusicDataCrystal_Square1, MusicDataCrystal_Noise, MusicDataCrystal_DPCM
 
 MusicHeaderGameOver:
- 	musicHeader NoteLengthTable_GameOver, MusicDataGameOver, MusicDataGameOver_Triangle, MusicDataGameOver_Square1, MusicDataGameOver_Noise, MusicDataGameOver_DPCM
+ 	musicHeader TickLength_GameOver, MusicDataGameOver, MusicDataGameOver_Triangle, MusicDataGameOver_Square1, MusicDataGameOver_Noise, MusicDataGameOver_DPCM
 
 MusicHeaderBossBeaten:
- 	musicHeader NoteLengthTable_BossBeaten, MusicDataBossBeaten, MusicDataBossBeaten_Triangle, MusicDataBossBeaten_Square1, MusicDataBossBeaten_Noise, MusicDataBossBeaten_DPCM
+ 	musicHeader TickLength_BossBeaten, MusicDataBossBeaten, MusicDataBossBeaten_Triangle, MusicDataBossBeaten_Square1, MusicDataBossBeaten_Noise, MusicDataBossBeaten_DPCM
 
 MusicHeaderMushroomBonusChance:
- 	musicHeader NoteLengthTable_BonusChance, MusicDataMushroomBonusChance, MusicDataMushroomBonusChance_Triangle, MusicDataMushroomBonusChance_Square1, MusicDataMushroomBonusChance_Noise, MusicDataMushroomBonusChance_DPCM
+ 	musicHeader TickLength_BonusChance, MusicDataMushroomBonusChance, MusicDataMushroomBonusChance_Triangle, MusicDataMushroomBonusChance_Square1, MusicDataMushroomBonusChance_Noise, MusicDataMushroomBonusChance_DPCM
 
 MusicHeaderDeath:
- 	musicHeader NoteLengthTable_Death, MusicDataDeath, MusicDataDeath_Triangle, MusicDataDeath_Square1, MusicDataDeath_Noise, MusicDataDeath_DPCM
+ 	musicHeader TickLength_Death, MusicDataDeath, MusicDataDeath_Triangle, MusicDataDeath_Square1, MusicDataDeath_Noise, MusicDataDeath_DPCM
 
 ; ----------------------------------------
 ; Title screen segments
 
 MusicHeaderTitleScreen:
-	musicHeader NoteLengthTable_Title, MusicDataTitleScreen, MusicDataTitleScreen_Triangle, MusicDataTitleScreen_Square1, MusicDataTitleScreen_Noise, MusicDataTitleScreen_DPCM
+	musicHeader TickLength_Title, MusicDataTitleScreen, MusicDataTitleScreen_Triangle, MusicDataTitleScreen_Square1, MusicDataTitleScreen_Noise, MusicDataTitleScreen_DPCM
 
 ; ----------------------------------------
 ; Subspace music, quite longer than normally heard
 
 MusicHeaderSubspace1:
-	musicHeader NoteLengthTable_Subspace, MusicDataSubspace, MusicDataSubspace_Triangle, MusicDataSubspace_Square1, MusicDataSubspace_Noise, MusicDataSubspace_DPCM
+	musicHeader TickLength_Subspace, MusicDataSubspace, MusicDataSubspace_Triangle, MusicDataSubspace_Square1, MusicDataSubspace_Noise, MusicDataSubspace_DPCM
 
 ; ----------------------------------------
 ; Ending music
 
 MusicHeaderEnding1:
-	musicHeader NoteLengthTable_Ending12, MusicDataEnding1, MusicDataEnding1_Triangle, MusicDataEnding1_Square1, MusicDataEnding1_Noise, MusicDataEnding1_DPCM
+	musicHeader TickLength_Ending12, MusicDataEnding1, MusicDataEnding1_Triangle, MusicDataEnding1_Square1, MusicDataEnding1_Noise, MusicDataEnding1_DPCM
 
 MusicHeaderEnding2:
-	musicHeader NoteLengthTable_Ending12, MusicDataEnding2, MusicDataEnding2_Triangle, MusicDataEnding2_Square1, MusicDataEnding2_Noise, MusicDataEnding2_DPCM
+	musicHeader TickLength_Ending12, MusicDataEnding2, MusicDataEnding2_Triangle, MusicDataEnding2_Square1, MusicDataEnding2_Noise, MusicDataEnding2_DPCM
 
 MusicHeaderEnding3:
-	musicHeader NoteLengthTable_Ending34, MusicDataEnding3, MusicDataEnding3_Triangle, MusicDataEnding3_Square1, MusicDataEnding3_Noise, MusicDataEnding3_DPCM
+	musicHeader TickLength_Ending34, MusicDataEnding3, MusicDataEnding3_Triangle, MusicDataEnding3_Square1, MusicDataEnding3_Noise, MusicDataEnding3_DPCM
 
 MusicHeaderEnding4:
-	musicHeader NoteLengthTable_Ending34, MusicDataEnding4, MusicDataEnding4_Triangle, MusicDataEnding4_Square1, MusicDataEnding4_Noise, MusicDataEnding4_DPCM
+	musicHeader TickLength_Ending34, MusicDataEnding4, MusicDataEnding4_Triangle, MusicDataEnding4_Square1, MusicDataEnding4_Noise, MusicDataEnding4_DPCM
 
 MusicHeaderEnding5:
-	musicHeader NoteLengthTable_Ending5, MusicDataEnding5, MusicDataEnding5_Triangle, MusicDataEnding5_Square1, MusicDataEnding5_Noise, MusicDataEnding5_DPCM
+	musicHeader TickLength_Ending5, MusicDataEnding5, MusicDataEnding5_Triangle, MusicDataEnding5_Square1, MusicDataEnding5_Noise, MusicDataEnding5_DPCM
 
 ; ----------------------------------------
 ; Unused Spade Game fanfare for SMB3
 
 MusicHeaderSpadeGameFanfare:
-	musicHeader NoteLengthTable_SpadeGame, MusicDataSpadeGameFanfare, MusicDataSpadeGameFanfare_Triangle, MusicDataSpadeGameFanfare_Square1, MusicDataSpadeGameFanfare_Noise, MusicDataSpadeGameFanfare_DPCM
+	musicHeader TickLength_SpadeGame, MusicDataSpadeGameFanfare, MusicDataSpadeGameFanfare_Triangle, MusicDataSpadeGameFanfare_Square1, MusicDataSpadeGameFanfare_Noise, MusicDataSpadeGameFanfare_DPCM
 
 ; ----------------------------------------
 ; Warp theme
 MusicHeaderWarp:
-	musicHeader NoteLengthTable_Warp, MusicDataWarp, MusicDataWarp_Triangle, MusicDataWarp_Square1, -1, -1
+	musicHeader TickLength_Warp, MusicDataWarp, MusicDataWarp_Triangle, MusicDataWarp_Square1, -1, -1
 
 .pad MusicHeaders + $100, $FF

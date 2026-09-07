@@ -47,7 +47,7 @@ IFNDEF NSF_FILE
 	; Banks 0 and 1. Basically potpourri.
 	; Lots of crap everywhere.
 	; Title screen and some other stuff too.
-	; Just shy of 3K of space left
+	; Around 2K of space left
 	.base $8000
 	.include "src/prg-0-1.asm"
 	.pad $c000, $00
@@ -68,7 +68,7 @@ ENDIF
 .pad $c000, $00
 
 IFNDEF NSF_FILE
-	; Proceeding banks are quite sparce.  These
+	; Proceeding banks are quite sparse.  These
 	; likely had graphics data when the MMC1 was
 	; still used.  With the move to fancier
 	; hardware, there was no more need for CHR RAM
@@ -161,7 +161,7 @@ IFNDEF NSF_FILE
 	.dsb (2 * $2000), $00
 ENDIF
 
-; Add the DPCM banks.  Sound effect area
+; Add the DPCM banks.  SFX AREA.
 .base $c000
 .incbin "src/music/smas-1-3-area-13.bin"
 .pad $e000, $55
@@ -183,7 +183,7 @@ ENDIF
 .incbin "src/music/dpcmsaw-octave-5-area.bin"
 .base $c000
 .incbin "src/music/dpcmsaw-octave-2-area.bin"
-; SFX DPCM AREA
+
 IFNDEF NSF_FILE
 	; ----------------------------------------
 	; extra PRG-ROM pages (3 banks)
@@ -191,7 +191,7 @@ IFNDEF NSF_FILE
 ENDIF
 
 ; ----------------------------------------
-; Banks 1E and 1F.
+; Bank 1F (HomeROM).
 ; Important things like NMI and often-used
 ; routines.
 .base $e000

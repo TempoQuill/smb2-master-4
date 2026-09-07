@@ -21,10 +21,10 @@ MusicPointersFirstPart:
 	musicPart MusicPartPointers_Death
 	musicPart MusicPartPointers_GameOver
 	musicPart MusicPartPointers_Crystal
-	musicPart MusicPartPointers_SpadeGameFanfare
+	musicPart MusicPartPointers_SpadeGameFanfare ; wart death sample
 	musicPart MusicPartPointers_SpadeGameFanfare
 	musicPart MusicPartPointers_Warp
-	musicPart MusicPartPointers_Warp
+	musicPart MusicPartPointers_Warp ; bonus chance samples
 
 MusicPointersEndPart:
 	musicPart MusicPartPointers_OverworldEnd
@@ -41,10 +41,10 @@ MusicPointersEndPart:
 	musicPart MusicPartPointers_Death
 	musicPart MusicPartPointers_GameOver
 	musicPart MusicPartPointers_Crystal
-	musicPart MusicPartPointers_SpadeGameFanfare
+	musicPart MusicPartPointers_SpadeGameFanfare ; wart death sample
 	musicPart MusicPartPointers_SpadeGameFanfare
 	musicPart MusicPartPointers_Warp
-	musicPart MusicPartPointers_Warp
+	musicPart MusicPartPointers_Warp ; bonus chance samples
 
 MusicPointersLoopPart:
 	musicPart MusicPartPointers_OverworldLoop
@@ -61,7 +61,7 @@ MusicPointersLoopPart:
 	.db $00
 	.db $00
 	.db $00
+	.db $00 ; wart death sample
 	.db $00
 	.db $00
-	.db $00
-	.db $00
+	.db $00 ; bonus chance samples

@@ -1,38 +1,3 @@
-TitleScreenPPUDataPointers:
-	.dw iPPUBuffer
-	.dw TitleLayout
-SaveFilePPUDataPointers:
-	.dw mLoadedDataBuffer
-	.dw SaveFileLayout8
-	.dw SaveFileLayout7
-	.dw SaveFileLayout6
-	.dw SaveFileLayout5
-	.dw SaveFileLayout4
-	.dw SaveFileLayout3
-	.dw SaveFileLayout2
-	.dw SaveFileLayout1
-	.dw SaveFileAttributes
-SaveFilePPUDataCopypastaPointer:
-	.dw SaveFileCopypastaData
-TitleSaveFileMenuFade:
-	.dw TitleSaveMenuFade1
-	.dw TitleSaveMenuFade2
-	.dw TitleSaveMenuFade3
-SoundTestPPUDataPointers:
-	.dw mSoundTestDataBuffer
-	.dw SoundTestTitle
-	.dw SoundTestMusic
-	.dw SoundTestPulseSFX
-	.dw SoundTestHillSFX
-	.dw SoundTestStaticSFX
-	.dw SoundTestSnippets
-	.dw SoundTestSTARTATest
-	.dw SoundTestLRID
-	.dw SoundTestUDCursor
-	.dw SoundTestBExit
-	.dw SoundTestAttributes
-SoundTestPPUDataPointers_End:
-
 WaitForNMI_SoundTestMenu:
 	LDA #(SoundTestPPUDataPointers - TitleScreenPPUDataPointers) / 2
 	CLC
@@ -273,7 +238,12 @@ loc_BANK0_9B3B:
 
 ; ---------------------------------------------------------------------------
 
+; TODO: Find a way to check for sequential input.
 HandleTitleScreenInputs:
+; NOTE: Because sound test access looks for three particular holds, the target
+; input state will have to be isolated first before measuring it up.  Otherwise
+; the other buttons could interfere with accessing the sound test.
+; Realistically though, this measure would be unnecessary for the base joypad.
 	LDA zInputCurrentState
 	AND #ControllerInput_Select | ControllerInput_B | ControllerInput_A
 	CMP #ControllerInput_Select | ControllerInput_B | ControllerInput_A
@@ -321,7 +291,7 @@ loc_BANK0_9B63:
 ; ---------------------------------------------------------------------------
 
 TitleScreen_WriteSTORYText:
-	LDA #$20
+	LDA #$20 ; lookin' at $20ae (14*8, 5*8) as the base PPU address
 	STA iPPUBuffer
 	LDA #$AE
 	STA iPPUBuffer + 1
@@ -423,7 +393,12 @@ loc_BANK0_9C0B:
 	LDA #$03
 	STA z10
 
+; TODO: Find a way to check for sequential input.
 HandleCrawlInputs:
+; NOTE: Because sound test access looks for three particular holds, the target
+; input state will have to be isolated first before measuring it up.  Otherwise
+; the other buttons could interfere with accessing the sound test.
+; Realistically though, this measure would be unnecessary for the base joypad.
 	LDA zInputCurrentState
 	AND #ControllerInput_Select | ControllerInput_B | ControllerInput_A
 	CMP #ControllerInput_Select | ControllerInput_B | ControllerInput_A

@@ -18,6 +18,7 @@
 .include "src/driver/overworld/scroll-0.asm"
 .include "src/driver/overworld/player-0.asm"
 .include "src/driver/overworld-0.asm"
+.include "src/data/title/ppu-data-pointers.asm"
 .include "src/driver/movie/titlescreen.asm"
 .include "src/driver/movie/ending-0.asm"
 .include "src/driver/overworld/misc-0.asm"

@@ -14,34 +14,34 @@
 ; $x4: 1/8 note
 ; $x5: dotted 1/8 note
 ; $x6: 1/2 note triplet
-; $x7: 1/2 note triplet
+; $x7: 1/2 triplet-1/4 tied note (bank 1), 1/2 note triplet (bank 2-3)
 ; $x8: 1/4 note
 ; $x9: dotted 1/4 note
 ; $xA: 1/2 note
 ; $xB: dotted 1/2 note
 ; $xC: whole note
-; $xD: 1/16 triplet, 1/8 triplet  (underground, overworld arps, subspace arps)
-; $xE: 1/8 triplet                (overworld arps)
-; $xF: whole triplet, 1/8 triplet (overworld triangle long note)
+; $xD: 1/16 triplet (bank 1), 1/8 triplet (bank 2-3)
+; $xE: 1/8 triplet
+; $xF: whole triplet (bank 1), 1/8 triplet (bank 2-3)
 ;
-NoteLengthTable_Warp = $22
-NoteLengthTable_SpadeGame = $3C
-NoteLengthTable_Death = $42
-NoteLengthTable_CHR = $44 ; $43
-NoteLengthTable_Crystal = $48
-NoteLengthTable_BossBeaten = $4E
-NoteLengthTable_Ending12 = $50
-NoteLengthTable_Ending34 = $54
-NoteLengthTable_Subspace = $5C
-NoteLengthTable_Boss = $64
-NoteLengthTable_Overworld = $6C
-NoteLengthTable_Wart = $70
-NoteLengthTable_Star = $78
-NoteLengthTable_GameOver = $88
-NoteLengthTable_Underground = $8C
-NoteLengthTable_BonusChance = $94
-NoteLengthTable_Ending5 = $A8
-NoteLengthTable_Title = $B0 ; $af
+TickLength_Warp = $22
+TickLength_SpadeGame = $3C
+TickLength_Death = $42
+TickLength_CHR = $44 ; $43
+TickLength_Crystal = $48
+TickLength_BossBeaten = $4E
+TickLength_Ending12 = $50
+TickLength_Ending34 = $54
+TickLength_Subspace = $5C
+TickLength_Boss = $64
+TickLength_Overworld = $6C
+TickLength_Wart = $70
+TickLength_Star = $78
+TickLength_GameOver = $88
+TickLength_Underground = $8C
+TickLength_BonusChance = $94
+TickLength_Ending5 = $A8
+TickLength_Title = $B0 ; $af
 
 ;
 ; Triangle Linearity Indeces

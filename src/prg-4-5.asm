@@ -8,7 +8,7 @@
 ;   - Sound effects engine
 ;   - Sound effect pointers and data
 ;   - Song pointers and data
-;   - Note length tables (tempos)
+;   - Tick length defs
 ;   - Instrument tables and data
 ;
 
@@ -23,7 +23,7 @@
 ; Frequency table for notes; standard between various Mario games
 .include "src/music/frequency-table.asm";
 
-; Base note lengths and TRI_LINEAR parameters
+; Note tick lengths and TRI_LINEAR parameters
 .include "src/music/note-lengths.asm"
 
 ; Pointers to music segments, padded to full length with $ff
